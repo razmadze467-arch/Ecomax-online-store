@@ -35,7 +35,7 @@ footer{text-align:center;padding:45px 20px;color:#5f7780;border-top:1px solid #0
 <div class="tools"><input id="search" class="input" placeholder="🔎 მოძებნე პროდუქტი..." oninput="renderProducts()"><select id="filter" class="selectbox" onchange="renderProducts()"><option value="all">ყველა პროდუქტი</option><option value="clean">წმენდა</option><option value="care">მოვლა</option><option value="special">სპეციალური</option></select></div>
 <div class="grid" id="grid"></div></section>
 
-<div class="ai-console" id="ai"><div class="ai-card"><div class="ai-head"><div><span class="ai-dot"></span><b>ECOMAX AI COMPANION</b><div style="color:#8199a2;font-size:12px;margin-top:6px">შენი ბიზნესის ციფრული დამხმარე — პროდუქტი, უსაფრთხოება, შეკვეთა და სწრაფი გადაწყვეტილებები ერთ სივრცეში.</div></div><span class="pill">ONLINE</span></div><div class="quick"><button onclick="aiAsk('რომელი პროდუქტი გამოვიყენო?')">რომელი პროდუქტი მჭირდება?</button><button onclick="aiAsk('გაზავების წესები')">გაზავების წესები</button><button onclick="aiAsk('უსაფრთხოების წესები')">უსაფრთხოება</button><button onclick="aiAsk('შეკვეთის დახმარება')">შეკვეთის დახმარება</button></div><div id="aiReply" style="margin-top:14px;color:#a8bcc4;line-height:1.6">მოგესალმები ECOMAX AI-ში. აირჩიე კითხვა და დაგეხმარები კატალოგის მიხედვით.</div></div></div><section class="section" id="experience"><div class="title"><h2>12+ წლიანი გამოცდილება</h2><p>პროფესიონალური მიდგომა ავტომობილის მოვლის სფეროში.</p></div><div class="business"><div class="card"><strong>12+</strong><p>წლის გამოცდილება</p></div><div class="card"><strong>100%</strong><p>მომხმარებლის ყურადღება</p></div><div class="card"><strong>24/7</strong><p>ონლაინ შეკვეთის მიღება</p></div><div class="card"><strong>⚠️</strong><p>უსაფრთხო გამოყენების პრიორიტეტი</p></div></div><div class="trust">ℹ️ <b>უსაფრთხოება:</b> ქიმიური პროდუქტების გამოყენებისას ყოველთვის დაიცავი კონკრეტული პროდუქტის ეტიკეტზე მითითებული ინსტრუქციები, დამცავი საშუალებების მოთხოვნები და შენახვის პირობები. ეს ზოგადი რეკომენდაციებია და არ ცვლის პროდუქტის ეტიკეტს ან უსაფრთხოების მონაცემთა ფურცელს (SDS).</div></section><section class="section" id="about"><div class="title"><h2>რატომ ECOMAX?</h2><p>მარტივი, სწრაფი და მოსახერხებელი ონლაინ არჩევა.</p></div><div class="info"><div class="card"><h3>🚗 ავტო მოვლა</h3><p>პროდუქტები ყოველდღიური და პროფესიონალური ავტომოვლისთვის.</p></div><div class="card"><h3>📦 მარტივი შეკვეთა</h3><p>აირჩიე რაოდენობა, ნახე ჯამური ფასი და მოამზადე შეკვეთა.</p></div><div class="card"><h3>⚡ სწრაფი არჩევა</h3><p>ძიება და კატეგორიები გეხმარება სასურველი პროდუქტის სწრაფად პოვნაში.</p></div></div></section>
+<div class="ai-console" id="ai"><div class="ai-card"><div class="ai-head"><div><span class="ai-dot"></span><b>ECOMAX AI COMPANION</b><div style="color:#8199a2;font-size:12px;margin-top:6px">შენი ბიზნესის ციფრული დამხმარე — პროდუქტი, უსაფრთხოება, შეკვეთა და სწრაფი გადაწყვეტილებები ერთ სივრცეში.</div></div><span class="pill">ONLINE</span></div><div style="display:flex;gap:8px;margin-top:14px"><input id="aiInput" class="input" style="flex:1" placeholder="მაგ: ძრავი ძალიან დასვრილია, რა გამოვიყენო?"><button class="checkout" style="width:auto;margin:0" onclick="aiAsk(document.getElementById('aiInput').value)">AI კითხვა</button></div><div class="quick"><button onclick="aiAsk('რომელი პროდუქტი გამოვიყენო?')">რომელი პროდუქტი მჭირდება?</button><button onclick="aiAsk('გაზავების წესები')">გაზავების წესები</button><button onclick="aiAsk('უსაფრთხოების წესები')">უსაფრთხოება</button><button onclick="aiAsk('შეკვეთის დახმარება')">შეკვეთის დახმარება</button></div><div id="aiReply" style="margin-top:14px;color:#a8bcc4;line-height:1.6">მოგესალმები ECOMAX AI-ში. აირჩიე კითხვა და დაგეხმარები კატალოგის მიხედვით.</div></div></div><section class="section" id="experience"><div class="title"><h2>12+ წლიანი გამოცდილება</h2><p>პროფესიონალური მიდგომა ავტომობილის მოვლის სფეროში.</p></div><div class="business"><div class="card"><strong>12+</strong><p>წლის გამოცდილება</p></div><div class="card"><strong>100%</strong><p>მომხმარებლის ყურადღება</p></div><div class="card"><strong>24/7</strong><p>ონლაინ შეკვეთის მიღება</p></div><div class="card"><strong>⚠️</strong><p>უსაფრთხო გამოყენების პრიორიტეტი</p></div></div><div class="trust">ℹ️ <b>უსაფრთხოება:</b> ქიმიური პროდუქტების გამოყენებისას ყოველთვის დაიცავი კონკრეტული პროდუქტის ეტიკეტზე მითითებული ინსტრუქციები, დამცავი საშუალებების მოთხოვნები და შენახვის პირობები. ეს ზოგადი რეკომენდაციებია და არ ცვლის პროდუქტის ეტიკეტს ან უსაფრთხოების მონაცემთა ფურცელს (SDS).</div></section><section class="section" id="about"><div class="title"><h2>რატომ ECOMAX?</h2><p>მარტივი, სწრაფი და მოსახერხებელი ონლაინ არჩევა.</p></div><div class="info"><div class="card"><h3>🚗 ავტო მოვლა</h3><p>პროდუქტები ყოველდღიური და პროფესიონალური ავტომოვლისთვის.</p></div><div class="card"><h3>📦 მარტივი შეკვეთა</h3><p>აირჩიე რაოდენობა, ნახე ჯამური ფასი და მოამზადე შეკვეთა.</p></div><div class="card"><h3>⚡ სწრაფი არჩევა</h3><p>ძიება და კატეგორიები გეხმარება სასურველი პროდუქტის სწრაფად პოვნაში.</p></div></div></section>
 
 <section class="section" id="orders"><div class="title"><h2>ჩემი შეკვეთები</h2><p>ამ მოწყობილობაზე შენახული ბოლო შეკვეთები.</p></div><div class="grid" id="orderHistory"></div></section>
 <section class="section" id="contact"><div class="title"><h2>კონტაქტი</h2><p>შეკვეთის ან პროდუქტის შესახებ დაგვიკავშირდი.</p></div><div class="card" style="max-width:850px;margin:auto"><h3>ECOMAX</h3><p>📞 ტელეფონი: 599-88-16-81 · ელგუჯა<br>📍 მისამართი: ქ. ქუთაისი, ზვიად გამსახურდიას №22<br>🕒 სამუშაო საათები: ორშაბათი–შაბათი</p><div class="social"><a href="tel:+995599881681">📞 დარეკვა</a><a href="mailto:datogringo@gmail.com">✉️ ელფოსტა: datogringo@gmail.com</a></div></div></section>
@@ -99,65 +99,11 @@ function renderCart(){
  document.getElementById('cartTotal').textContent=total+'₾';
 }
 function aiAsk(q){
- const r=document.getElementById('aiReply');let t='აირჩიე პროდუქტი და გახსენი მისი პროფესიონალური გვერდი დეტალური ინსტრუქციისთვის.';
- if(q.includes('გაზავ'))t='ძრავის სარეცხი: 1:1–1:3 დასვრილიანობის მიხედვით. დისკებისა და რადიატორის სარეცხი: 1:1. ქაფი: 2 ლ / 100 ლ წყალში ან 1.5 ლ / 80 ლ ბალონში. სანთელი: 1:10.';
- else if(q.includes('უსაფრთხ'))t='გამოიყენე ხელთათმანი და თვალის დაცვა, უზრუნველყავი ვენტილაცია და არ შეურიო სხვა ქიმიურ პროდუქტებს. კონკრეტული ეტიკეტი და SDS ყოველთვის პრიორიტეტულია.';
- else if(q.includes('შეკვეთ'))t='დაამატე პროდუქტი კალათაში → აირჩიე შეფუთვა → შეავსე სახელი, ტელეფონი და მისამართი → აირჩიე მიწოდება/თვითგატანა → დაადასტურე.';
- else if(q.includes('რომელი'))t='მითხარი რა ზედაპირის ან პრობლემის მოგვარება გინდა — მაგალითად: ძრავი, დისკები, ნაჭერი, ტყავი, ჟანგი, გუდრონი ან ცემენტი — და კატალოგიდან შესაბამის მიმართულებას გიჩვენებ.';
+ const r=document.getElementById('aiReply'); let t='მითხარი რა ზედაპირი ან პრობლემა გაქვს და ECOMAX-ის კატალოგიდან დაგეხმარები.';
+ const x=(q||'').toLowerCase();
+ if(x.includes('გაზავ')||x.includes('განზავ')) t='ძრავის სარეცხი: 1:1–1:3 დასვრილიანობის მიხედვით. დისკების და რადიატორის სარეცხი: 1:1. ქაფი: 2 ლ / 100 ლ წყალში ან 1.5 ლ / 80 ლ ბალონში. სანთელი: 1:10.';
+ else if(x.includes('უსაფრთხ')||x.includes('საფრთხ')) t='უსაფრთხოება: ხელთათმანი + თვალის დაცვა, კარგი ვენტილაცია, არ შეურიო სხვა ქიმიურ პროდუქტებს და დაიცავი ეტიკეტი/SDS.';
+ else if(x.includes('შეკვეთ')) t='შეკვეთა: აირჩიე პროდუქტი → შეფუთვა → კალათაში დამატება → სახელი/ტელეფონი/მისამართი → მიწოდება ან თვითგატანა → დადასტურება.';
+ else { const map=[['ძრავ','ძრავის სარეცხი — 1:1–1:3, დასვრილიანობის მიხედვით'],['დისკ','დისკების სარეცხი — 1:1'],['რადიატ','რადიატორის სარეცხი — 1:1'],['ნაჭერ','ნაჭრის ქიმწმენდა — 1:1, დასვრილიანობის მიხედვით'],['ტყავ','ტყავის ქიმწმენდა — 1:1, დასვრილიანობის მიხედვით'],['ქაფ','მანქანის სარეცხი ქაფი — 2 ლ / 100 ლ წყალში ან 1.5 ლ / 80 ლ ბალონში'],['ჟანგ','ჟანგის მოსაშორებელი'],['გუდრონ','გუდრონის მოსაშორებელი'],['ცემენტ','ცემენტის მოსაშორებელი']]; const hit=map.find(a=>x.includes(a[0])); t=hit?'რეკომენდაცია: '+hit[1]+'. პროდუქტის სრულ გვერდზე ნახავ გამოყენებისა და უსაფრთხოების ინფორმაციას.':'მითხარი პრობლემა: ძრავი, დისკები, რადიატორი, ნაჭერი, ტყავი, ქაფი, ჟანგი, გუდრონი ან ცემენტი — და შესაბამის პროდუქტს გიპოვი.'; }
  r.textContent=t;
-}function orderLines(){
- return Object.keys(cart).map(id=>{const p=products.find(x=>x.id==id);return p.name+' — '+cart[id]+' ც. (500 მლ)';});
-}
-function cartTotal(){return Object.values(cart).reduce((a,b)=>a+b,0)*5;}
-function openCheckout(){
- if(!Object.keys(cart).length){showToast('ჯერ დაამატე პროდუქტი კალათაში');return;}
- document.getElementById('checkoutTotal').textContent=cartTotal()+'₾';
- document.getElementById('orderSummary').innerHTML='<b>შეკვეთის შემადგენლობა</b><p style="color:#9fb2b9;line-height:1.7">'+orderLines().join('<br>')+'</p><div class="total"><span>ჯამი</span><span>'+cartTotal()+'₾</span></div>';
- document.getElementById('cartOverlay').classList.remove('show');
- document.getElementById('orderSuccess').innerHTML='';
- document.getElementById('orderForm').style.display='block';
- document.getElementById('checkoutOverlay').classList.add('show');
-}
-function closeCheckout(){document.getElementById('checkoutOverlay').classList.remove('show');}
-function submitOrder(e){
- e.preventDefault();
- const order={id:'EC-'+Date.now().toString().slice(-8),name:document.getElementById('customerName').value.trim(),phone:document.getElementById('customerPhone').value.trim(),address:document.getElementById('customerAddress').value.trim(),note:document.getElementById('customerNote').value.trim(),delivery:document.getElementById('delivery').value,payment:document.getElementById('payment').value,items:orderLines(),total:cartTotal(),created:new Date().toISOString()};
- localStorage.setItem('ecomax_last_order',JSON.stringify(order));
- const message='ECOMAX შეკვეთა\\n№ '+order.id+'\\n\\n'+order.items.join('\\n')+'\\n\\nჯამი: '+order.total+'₾\\nსახელი: '+order.name+'\\nტელ: '+order.phone+'\\nმისამართი: '+order.address+(order.note?'\\nკომენტარი: '+order.note:'');
- navigator.clipboard?.writeText(message).catch(()=>{}); localStorage.setItem('ecomax_orders',JSON.stringify([order,...JSON.parse(localStorage.getItem('ecomax_orders')||'[]')].slice(0,20)));
- document.getElementById('orderForm').style.display='none';
- document.getElementById('orderSuccess').innerHTML='<div class="success"><h3>✅ შეკვეთა მომზადებულია</h3><p>შეკვეთის ნომერი: <b>'+order.id+'</b></p><p style="color:#9fb2b9">შეკვეთის ტექსტი დაკოპირდა. გაუგზავნე ECOMAX-ს მესენჯერში.</p><button class="checkout" onclick="finishOrder()">დასრულება</button></div>';
-}
-function finishOrder(){cart={};saveCart();closeCheckout();showToast('შეკვეთა დასრულებულია');}
-function openAdmin(){renderAdmin();document.getElementById('adminOverlay').classList.add('show')}
-function closeAdmin(){document.getElementById('adminOverlay').classList.remove('show')}
-function renderAdmin(){
- const orders=JSON.parse(localStorage.getItem('ecomax_orders')||'[]');
- document.getElementById('adminStats').innerHTML='<div class="info" style="margin-bottom:18px"><div class="card"><h3>შეკვეთები</h3><p>'+orders.length+'</p></div><div class="card"><h3>შემოსავალი</h3><p>'+orders.reduce((s,o)=>s+Number(o.total||0),0)+'₾</p></div><div class="card"><h3>ბოლო შეკვეთა</h3><p>'+(orders[0]?.id||'—')+'</p></div></div>';
- document.getElementById('adminOrders').innerHTML=orders.length?orders.map((o,i)=>'<div class="cart-row"><div><b>'+o.id+'</b><br><small style="color:#8199a2">'+o.name+' · '+o.phone+'<br>'+o.address+'<br>'+o.items.join('<br>')+'</small></div><div><b>'+o.total+'₾</b><br><button class="btn" onclick="shareOrder('+JSON.stringify(o).replace(/"/g,'&quot;')+')">გაზიარება</button></div></div>').join(''):'<p style="color:#8199a2">შეკვეთები არ არის.</p>';
-}
-function exportOrders(){
- const data=localStorage.getItem('ecomax_orders')||'[]'; const blob=new Blob([data],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ecomax-orders.json';a.click();URL.revokeObjectURL(a.href);
-}
-function clearOrders(){if(confirm('ნამდვილად წავშალოთ ამ მოწყობილობაზე შენახული შეკვეთები?')){localStorage.removeItem('ecomax_orders');renderOrders();renderAdmin();showToast('შეკვეთების ისტორია გასუფთავდა')}}
-function productPrices(p){return p.prices.map(x=>x[0]+' — '+x[1]+'₾').join(' · ')}
-function openProduct(id){
- const p=products.find(x=>x.id===id),i=productInfo[id]||{};
- document.getElementById('productDetail').innerHTML='<div class="product-hero"><span class="pill">ECOMAX PROFESSIONAL</span><h2>'+p.name+'</h2><p style="color:#a8bcc4;line-height:1.7">'+p.desc+'</p><div class="product-meta"><span class="pill">12+ წლიანი გამოცდილება</span><span class="pill">უსაფრთხო გამოყენება</span><span class="pill">500 მლ · 1 ლ · 5 ლ</span></div><div class="price">'+priceText+'</div><button class="checkout" onclick="addToCart('+p.id+');closeProduct()">კალათაში დამატება</button></div><div class="product-block"><h4>გამოყენება</h4><p>'+i.use+'</p></div><div class="product-block"><h4>სად შეიძლება გამოყენება</h4><p>'+i.surfaces+'</p></div><div class="product-block"><h4>არ გამოიყენო</h4><p>'+i.avoid+'</p></div><div class="product-block"><h4>გამოყენების ზოგადი წესი</h4><p>'+i.steps+'</p></div><div class="safety"><strong>⚠️ უსაფრთხოების წესები</strong><ul><li>ატარეთ შესაბამისი ხელთათმანი და თვალის დაცვა.</li><li>არ შეურიოთ სხვა ქიმიურ პროდუქტებს.</li><li>უზრუნველყავით შესაბამისი ვენტილაცია.</li><li>შეინახეთ ბავშვებისა და ცეცხლისგან მოშორებით.</li><li>ეტიკეტი და SDS ყოველთვის პრიორიტეტულია.</li></ul></div>';
- document.getElementById('productOverlay').classList.add('show')
-}
-function closeProduct(){document.getElementById('productOverlay').classList.remove('show')}
-function showToast(t){const x=document.getElementById('toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),2600)}
-function renderOrders(){
- const box=document.getElementById('orderHistory'), orders=JSON.parse(localStorage.getItem('ecomax_orders')||'[]');
- box.innerHTML=orders.length?orders.map(o=>'<article class="card"><h3>'+o.id+'</h3><p>'+new Date(o.created).toLocaleString('ka-GE')+'<br>'+o.items.join('<br>')+'</p><div class="price">'+o.total+'₾ · '+(o.delivery==='pickup'?'თვითგატანა':'მიწოდება')+'</div><button class="btn" onclick="shareOrder('+JSON.stringify(o).replace(/"/g,'&quot;')+')">შეკვეთის გაზიარება</button></article>').join(''):'<div class="empty">შეკვეთები ჯერ არ გაქვს.</div>';
-}
-async function shareOrder(o){
- const msg='ECOMAX შეკვეთა № '+o.id+'\\n'+o.items.join('\\n')+'\\nჯამი: '+o.total+'₾\\nსახელი: '+o.name+'\\nტელ: '+o.phone+'\\nმისამართი: '+o.address;
- if(navigator.share){try{await navigator.share({title:'ECOMAX შეკვეთა '+o.id,text:msg});return;}catch(e){}}
- navigator.clipboard?.writeText(msg).catch(()=>{});showToast('შეკვეთის ტექსტი დაკოპირდა');
-}
-renderProducts();updateCount();renderOrders();
-</script>
-</body>
-</html>
+}>
