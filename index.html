@@ -1,335 +1,463 @@
-<!DOCTYPE html><html lang="ka">
+<!DOCTYPE html>
+<html lang="ka">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ecomax — ონლაინ მაღაზია</title>
-  <meta name="description" content="Ecomax — თანამედროვე ონლაინ მაღაზია. საუკეთესო არჩევანი ყოველდღიური ცხოვრებისთვის.">  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECOMAX — ონლაინ მაღაზია</title>
 
-    body {
-      font-family: Arial, sans-serif;
-      background: #f7f7f7;
-      color: #171717;
-    }
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f5f5f5;
+  color:#111;
+}
+a{text-decoration:none;color:inherit}
 
-    header {
-      background: #111;
-      color: white;
-      padding: 18px 5%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+header{
+  background:#111;
+  color:white;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
 
-    .logo {
-      font-size: 25px;
-      font-weight: 800;
-      letter-spacing: 2px;
-    }
+.nav{
+  max-width:1200px;
+  margin:auto;
+  min-height:70px;
+  padding:0 20px;
+  display:flex;
+  align-items:center;
+  gap:25px;
+}
 
-    nav {
-      display: flex;
-      gap: 25px;
-    }
+.logo{
+  font-size:26px;
+  font-weight:900;
+  letter-spacing:4px;
+  margin-right:auto;
+}
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-size: 15px;
-    }
+nav{
+  display:flex;
+  gap:22px;
+}
 
-    .cart {
-      background: white;
-      color: #111;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 8px;
-      font-weight: bold;
-    }
+nav a{
+  color:#ddd;
+  font-size:14px;
+}
 
-    .hero {
-      min-height: 520px;
-      padding: 80px 7%;
-      display: flex;
-      align-items: center;
-      background: linear-gradient(135deg, #111, #333);
-      color: white;
-    }
+nav a:hover{color:white}
 
-    .hero-content {
-      max-width: 650px;
-    }
+.cart{
+  background:white;
+  color:#111;
+  border:0;
+  padding:11px 17px;
+  border-radius:30px;
+  font-weight:bold;
+}
 
-    .hero h1 {
-      font-size: clamp(40px, 7vw, 72px);
-      line-height: 1.05;
-      margin-bottom: 25px;
-    }
+.hero{
+  background:linear-gradient(135deg,#111,#292929);
+  color:white;
+  padding:100px 20px;
+}
 
-    .hero p {
-      font-size: 20px;
-      color: #ddd;
-      margin-bottom: 35px;
-      line-height: 1.6;
-    }
+.hero-content{
+  max-width:1200px;
+  margin:auto;
+}
 
-    .btn {
-      display: inline-block;
-      background: white;
-      color: #111;
-      padding: 15px 25px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-    }
+.hero small{
+  color:#aaa;
+  letter-spacing:4px;
+  text-transform:uppercase;
+}
 
-    section {
-      padding: 70px 6%;
-    }
+.hero h1{
+  font-size:clamp(42px,7vw,78px);
+  max-width:800px;
+  line-height:1;
+  margin:20px 0;
+}
 
-    .section-title {
-      text-align: center;
-      font-size: 34px;
-      margin-bottom: 40px;
-    }
+.hero p{
+  max-width:600px;
+  color:#ccc;
+  font-size:18px;
+  line-height:1.6;
+}
 
-    .categories,
-    .products,
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-    }
+.hero-button{
+  display:inline-block;
+  margin-top:30px;
+  background:white;
+  color:#111;
+  padding:15px 25px;
+  border-radius:30px;
+  font-weight:bold;
+}
 
-    .card {
-      background: white;
-      border-radius: 18px;
-      padding: 30px;
-      box-shadow: 0 5px 20px rgba(0,0,0,.06);
-    }
+section{
+  max-width:1200px;
+  margin:auto;
+  padding:75px 20px;
+}
 
-    .category {
-      min-height: 180px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      background: #e9e9e9;
-    }
+.title{
+  font-size:34px;
+  margin-bottom:12px;
+}
 
-    .category h3 {
-      font-size: 23px;
-      margin-bottom: 8px;
-    }
+.subtitle{
+  color:#777;
+  margin-bottom:35px;
+}
 
-    .product {
-      padding: 0;
-      overflow: hidden;
-    }
+.features{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
 
-    .product-image {
-      height: 230px;
-      background: linear-gradient(135deg, #ddd, #aaa);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 55px;
-    }
+.card{
+  background:white;
+  padding:28px;
+  border-radius:18px;
+  border:1px solid #e8e8e8;
+}
 
-    .product-info {
-      padding: 22px;
-    }
+.card h3{
+  margin:12px 0;
+}
 
-    .product-info h3 {
-      margin-bottom: 10px;
-    }
+.card p{
+  color:#777;
+  line-height:1.5;
+}
 
-    .price {
-      font-size: 22px;
-      font-weight: bold;
-      margin: 15px 0;
-    }
+.categories{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
 
-    .buy {
-      width: 100%;
-      border: none;
-      background: #111;
-      color: white;
-      padding: 13px;
-      border-radius: 9px;
-      font-weight: bold;
-    }
+.category{
+  min-height:180px;
+  border-radius:20px;
+  padding:25px;
+  display:flex;
+  align-items:flex-end;
+  background:linear-gradient(135deg,#fff,#ddd);
+  font-size:25px;
+  font-weight:bold;
+}
 
-    .feature {
-      text-align: center;
-    }
+.products{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
 
-    .feature-icon {
-      font-size: 40px;
-      margin-bottom: 15px;
-    }
+.product{
+  background:white;
+  border-radius:20px;
+  overflow:hidden;
+  border:1px solid #e5e5e5;
+}
 
-    .newsletter {
-      background: #111;
-      color: white;
-      text-align: center;
-      border-radius: 25px;
-      padding: 55px 20px;
-      margin: 30px 6%;
-    }
+.product-img{
+  height:210px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#eee;
+  font-size:60px;
+}
 
-    .newsletter p {
-      color: #ccc;
-      margin: 15px 0 25px;
-    }
+.product-info{
+  padding:22px;
+}
 
-    .newsletter input {
-      padding: 14px;
-      width: min(350px, 80%);
-      border: none;
-      border-radius: 8px;
-      margin-right: 5px;
-    }
+.product-info h3{
+  margin-bottom:8px;
+}
 
-    .newsletter button {
-      padding: 14px 20px;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-    }
+.product-info p{
+  color:#777;
+  margin-bottom:15px;
+}
 
-    footer {
-      background: #111;
-      color: #aaa;
-      text-align: center;
-      padding: 30px;
-      margin-top: 60px;
-    }
+.price{
+  font-size:22px;
+  font-weight:bold;
+  margin-bottom:15px;
+}
 
-    @media (max-width: 800px) {
-      nav {
-        display: none;
-      }
+.buy{
+  width:100%;
+  padding:13px;
+  border:0;
+  background:#111;
+  color:white;
+  border-radius:10px;
+  font-weight:bold;
+}
 
-      .categories,
-      .products,
-      .features {
-        grid-template-columns: 1fr;
-      }
+.club{
+  background:#111;
+  color:white;
+  border-radius:25px;
+  padding:50px;
+}
 
-      .hero {
-        min-height: 500px;
-        padding: 60px 7%;
-      }
+.club p{
+  color:#bbb;
+  margin:15px 0 25px;
+}
 
-      .hero h1 {
-        font-size: 46px;
-      }
+.club input{
+  padding:14px;
+  width:60%;
+  border:0;
+  border-radius:10px;
+}
 
-      .newsletter input {
-        width: 100%;
-        margin: 0 0 10px;
-      }
+.club button{
+  padding:14px 22px;
+  border:0;
+  border-radius:10px;
+  font-weight:bold;
+}
 
-      .newsletter button {
-        width: 100%;
-      }
-    }
-  </style></head><body><header>
-  <div class="logo">ECOMAX</div>  <nav>
-    <a href="#">მთავარი</a>
-    <a href="#categories">კატეგორიები</a>
-    <a href="#products">პროდუქტები</a>
-    <a href="#contact">კონტაქტი</a>
-  </nav><button class="cart">🛒 კალათა</button>
+footer{
+  background:#111;
+  color:white;
+  padding:35px 20px;
+}
 
-</header><section class="hero">
+.footer{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+}
+
+.footer p{
+  color:#999;
+}
+
+@media(max-width:750px){
+  nav{display:none}
+
+  .nav{
+    min-height:62px;
+  }
+
+  .hero{
+    padding:75px 20px;
+  }
+
+  .hero h1{
+    font-size:48px;
+  }
+
+  .features,
+  .categories,
+  .products{
+    grid-template-columns:1fr;
+  }
+
+  section{
+    padding:55px 20px;
+  }
+
+  .club{
+    padding:30px 22px;
+  }
+
+  .club input{
+    width:100%;
+    margin-bottom:10px;
+  }
+
+  .footer{
+    flex-direction:column;
+    gap:12px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">ECOMAX</div>
+
+    <nav>
+      <a href="#home">მთავარი</a>
+      <a href="#categories">კატეგორიები</a>
+      <a href="#products">პროდუქტები</a>
+      <a href="#contact">კონტაქტი</a>
+    </nav>
+
+    <button class="cart">🛒 კალათა <span id="cartCount">0</span></button>
+  </div>
+</header>
+
+<div class="hero" id="home">
   <div class="hero-content">
+    <small>ECOMAX ONLINE STORE</small>
+
     <h1>შეარჩიე შენი საუკეთესო არჩევანი.</h1>
+
     <p>
-      Ecomax — თანამედროვე ონლაინ მაღაზია,
-      სადაც ხარისხი, კომფორტი და კარგი ფასი ერთ სივრცეში ხვდება.
+      თანამედროვე პროდუქტები, კარგი ხარისხი და მარტივი ონლაინ
+      შოპინგი — ყველაფერი ერთ სივრცეში.
     </p>
-    <a class="btn" href="#products">შეიძინე ახლა →</a>
+
+    <a class="hero-button" href="#products">
+      პროდუქტების ნახვა →
+    </a>
   </div>
-</section><section>
-  <h2 class="section-title">რატომ Ecomax?</h2>  <div class="features">
-    <div class="card feature">
-      <div class="feature-icon">🚚</div>
+</div>
+
+<section>
+  <h2 class="title">რატომ ECOMAX?</h2>
+  <p class="subtitle">ყველაფერი, რაც კარგ ონლაინ მაღაზიას სჭირდება.</p>
+
+  <div class="features">
+
+    <div class="card">
+      <div style="font-size:35px">🚚</div>
       <h3>სწრაფი მიწოდება</h3>
-      <p>მიიღე შენი შეკვეთა სწრაფად და უსაფრთხოდ.</p>
-    </div><div class="card feature">
-  <div class="feature-icon">🔒</div>
-  <h3>უსაფრთხო გადახდა</h3>
-  <p>შენი მონაცემები დაცულია.</p>
-</div>
+      <p>შეუკვეთე მარტივად და მიიღე პროდუქტი სწრაფად.</p>
+    </div>
 
-<div class="card feature">
-  <div class="feature-icon">⭐</div>
-  <h3>ხარისხიანი პროდუქტები</h3>
-  <p>ჩვენ ვარჩევთ მხოლოდ საინტერესო პროდუქტებს.</p>
-</div>
+    <div class="card">
+      <div style="font-size:35px">⭐</div>
+      <h3>ხარისხიანი პროდუქტები</h3>
+      <p>ჩვენ ვარჩევთ პროდუქტებს ხარისხისა და სანდოობის მიხედვით.</p>
+    </div>
 
-  </div>
-</section><section id="categories">
-  <h2 class="section-title">კატეგორიები</h2>  <div class="categories">
-    <div class="card category">
-      <h3>ტექნიკა</h3>
-      <p>თანამედროვე ტექნოლოგიები</p>
-    </div><div class="card category">
-  <h3>სახლი</h3>
-  <p>პროდუქტები კომფორტული ცხოვრებისთვის</p>
-</div>
-
-<div class="card category">
-  <h3>სილამაზე</h3>
-  <p>ყოველდღიური მოვლის პროდუქტები</p>
-</div>
+    <div class="card">
+      <div style="font-size:35px">🔒</div>
+      <h3>უსაფრთხო შოპინგი</h3>
+      <p>შენი შეკვეთა და მონაცემები დაცულია.</p>
+    </div>
 
   </div>
-</section><section id="products">
-  <h2 class="section-title">რჩეული პროდუქტები</h2>  <div class="products"><div class="card product">
-  <div class="product-image">📱</div>
-  <div class="product-info">
-    <h3>Smart Device</h3>
-    <p>თანამედროვე მოწყობილობა ყოველდღიური გამოყენებისთვის.</p>
-    <div class="price">99 ₾</div>
-    <button class="buy">კალათაში დამატება</button>
-  </div>
-</div>
+</section>
 
-<div class="card product">
-  <div class="product-image">🎧</div>
-  <div class="product-info">
-    <h3>Wireless Headphones</h3>
-    <p>სუფთა ხმა და თანამედროვე დიზაინი.</p>
-    <div class="price">79 ₾</div>
-    <button class="buy">კალათაში დამატება</button>
-  </div>
-</div>
+<section id="categories">
+  <h2 class="title">კატეგორიები</h2>
+  <p class="subtitle">აირჩიე სასურველი მიმართულება.</p>
 
-<div class="card product">
-  <div class="product-image">⌚</div>
-  <div class="product-info">
-    <h3>Smart Watch</h3>
-    <p>სტილი და ფუნქციონალურობა ერთ მოწყობილობაში.</p>
-    <div class="price">129 ₾</div>
-    <button class="buy">კალათაში დამატება</button>
-  </div>
-</div>
+  <div class="categories">
+
+    <a class="category" href="#products">
+      📱 ტექნიკა
+    </a>
+
+    <a class="category" href="#products">
+      🏠 სახლი
+    </a>
+
+    <a class="category" href="#products">
+      ✨ სილამაზე
+    </a>
 
   </div>
-</section><div class="newsletter" id="contact">
-  <h2>შემოგვიერთდი Ecomax Club-ში</h2>
-  <p>მიიღე ინფორმაცია ახალი პროდუქტებისა და შეთავაზებების შესახებ.</p>  <input type="email" placeholder="შენი ელფოსტა">
-  <button>გამოწერა</button>
-</div><footer>
-  <p>© 2026 ECOMAX — ყველა უფლება დაცულია.</p>
-</footer></body>
+</section>
+
+<section id="products">
+
+  <h2 class="title">პოპულარული პროდუქტები</h2>
+  <p class="subtitle">ჩვენი შერჩეული პროდუქტები.</p>
+
+  <div class="products">
+
+    <div class="product">
+      <div class="product-img">📱</div>
+
+      <div class="product-info">
+        <h3>Smart Device</h3>
+        <p>თანამედროვე ჭკვიანი მოწყობილობა.</p>
+        <div class="price">99 ₾</div>
+        <button class="buy" onclick="addToCart()">
+          კალათაში დამატება
+        </button>
+      </div>
+    </div>
+
+    <div class="product">
+      <div class="product-img">🎧</div>
+
+      <div class="product-info">
+        <h3>Wireless Headphones</h3>
+        <p>უსადენო ყურსასმენები ყოველდღიური გამოყენებისთვის.</p>
+        <div class="price">79 ₾</div>
+        <button class="buy" onclick="addToCart()">
+          კალათაში დამატება
+        </button>
+      </div>
+    </div>
+
+    <div class="product">
+      <div class="product-img">⌚</div>
+
+      <div class="product-info">
+        <h3>Smart Watch</h3>
+        <p>ელეგანტური და პრაქტიკული Smart Watch.</p>
+        <div class="price">129 ₾</div>
+        <button class="buy" onclick="addToCart()">
+          კალათაში დამატება
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="contact">
+
+  <div class="club">
+    <h2>შეუერთდი ECOMAX CLUB-ს</h2>
+
+    <p>
+      მიიღე ახალი პროდუქტებისა და შეთავაზებების შესახებ ინფორმაცია.
+    </p>
+
+    <input type="email" placeholder="შეიყვანე ელფოსტა">
+
+    <button>გამოწერა</button>
+  </div>
+
+</section>
+
+<footer>
+
+  <div class="footer">
+    <strong>ECOMAX</strong>
+
+    <p>© 2026 Ecomax. ყველა უფლება დაცულია.</p>
+  </div>
+
+</footer>
+
+<script>
+let cartCount = 0;
+
+function addToCart(){
+  cartCount++;
+  document.getElementById("cartCount").textContent = cartCount;
+  alert("პროდუქტი დაემატა კალათაში 🛒");
+}
+</script>
+
+</body>
 </html>
