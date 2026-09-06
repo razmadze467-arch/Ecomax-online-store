@@ -1,19 +1,93 @@
 <!doctype html>
 <html lang="ka">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="ECOMAX — თანამედროვე ავტოქიმია და ავტომობილის მოვლის პროდუქტები.">
+<meta name="theme-color" content="#02070c">
 <title>ECOMAX — Auto Care</title>
 <style>
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#02070c;color:#f4fbff;font-family:Arial,sans-serif;overflow-x:hidden}body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:linear-gradient(#00eaff22 1px,transparent 1px),linear-gradient(90deg,#00eaff22 1px,transparent 1px);background-size:44px 44px;z-index:-2}body:after{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 20% 20%,#00445666,transparent 28%),radial-gradient(circle at 80% 70%,#39006455,transparent 30%);z-index:-3}header{height:68px;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:0 6%;border-bottom:1px solid #00eaff33;background:#02070cdd;backdrop-filter:blur(16px)}.logo{font-size:25px;font-weight:900;letter-spacing:5px;color:#00eaff;text-shadow:0 0 12px #00eaff}.nav{display:flex;gap:25px}.nav a{color:#cfeaf0;text-decoration:none;font-size:14px}.nav a:hover{color:#00eaff}.hero{max-width:1200px;min-height:650px;margin:auto;padding:65px 6%;display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:30px}.tag{color:#00eaff;letter-spacing:4px;font-size:12px;font-weight:bold;margin-bottom:18px}.hero h1{font-size:clamp(48px,7vw,86px);line-height:.9;margin:0}.hero h1 span{color:#00eaff;text-shadow:0 0 30px #00eaff}.hero p{max-width:650px;color:#a8bcc4;font-size:18px;line-height:1.7}.cta{display:inline-block;margin-top:18px;padding:14px 22px;border:1px solid #00eaff;border-radius:10px;color:#00eaff;text-decoration:none;background:#00eaff10;box-shadow:0 0 25px #00eaff33}.cta:hover{background:#00eaff;color:#001017}.robot-zone{height:380px;display:grid;place-items:center}.robot{width:235px;height:235px;border:2px solid #00eaff;border-radius:45%;position:relative;background:radial-gradient(circle at 50% 30%,#123e4c,#03090e 65%);box-shadow:0 0 25px #00eaff,0 0 80px #00eaff55,inset 0 0 45px #00eaff22;animation:float 3s ease-in-out infinite}.robot:before{content:"";position:absolute;left:50%;top:-36px;width:2px;height:36px;background:#00eaff;box-shadow:0 0 14px #00eaff}.robot:after{content:"";position:absolute;left:calc(50% - 5px);top:-44px;width:10px;height:10px;border-radius:50%;background:#9d5cff;box-shadow:0 0 22px #9d5cff}.eyes{display:flex;justify-content:center;gap:36px;margin-top:76px}.eye{width:29px;height:18px;border-radius:50%;background:#00eaff;box-shadow:0 0 20px #00eaff;animation:blink 4s infinite}.eye:last-child{background:#9d5cff;box-shadow:0 0 20px #9d5cff}.mouth{position:absolute;left:calc(50% - 38px);top:130px;width:76px;height:22px;border-bottom:2px solid #00eaff}.section{max-width:1200px;margin:auto;padding:70px 6%}.title{text-align:center;margin-bottom:35px}.title h2{font-size:40px;margin:0 0 8px}.title p{color:#7f99a3}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card{min-height:190px;padding:19px;border:1px solid #00eaff33;border-radius:15px;background:#061018dd;transition:.25s}.card:hover{transform:translateY(-5px);border-color:#00eaff;box-shadow:0 0 25px #00eaff22}.card h3{color:#00eaff;font-size:16px;margin:0 0 10px}.card p{color:#9fb2b9;font-size:13px;line-height:1.5;min-height:42px}.price{font-weight:bold;margin:13px 0;color:#fff}.select{display:inline-block;border:1px solid #00eaff55;border-radius:8px;padding:8px 10px;color:#bdf5ff;text-decoration:none;font-size:12px}.select:hover{background:#00eaff;color:#001017}footer{text-align:center;padding:45px 20px;color:#5f7780;border-top:1px solid #00eaff22}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}@keyframes pulse{50%{box-shadow:0 0 30px #00eaff,0 0 65px #00eaff88}}@keyframes blink{0%,45%,50%,100%{transform:scaleY(1)}47%{transform:scaleY(.1)}}@media(max-width:900px){.hero{grid-template-columns:1fr;text-align:center}.hero p{margin-left:auto;margin-right:auto}.robot-zone{height:300px}.grid{grid-template-columns:repeat(2,1fr)}.nav{display:none}}@media(max-width:600px){header{padding:0 15px}.hero{padding:45px 15px;min-height:570px}.hero h1{font-size:52px}.hero p{font-size:15px}.section{padding:55px 15px}.grid{grid-template-columns:1fr}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#02070c;color:#f4fbff;font-family:Arial,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.13;background-image:linear-gradient(#00eaff22 1px,transparent 1px),linear-gradient(90deg,#00eaff22 1px,transparent 1px);background-size:44px 44px;z-index:-2}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 20% 20%,#00445666,transparent 28%),radial-gradient(circle at 80% 70%,#39006455,transparent 30%);z-index:-3}
+header{height:68px;position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:0 6%;border-bottom:1px solid #00eaff33;background:#02070ce8;backdrop-filter:blur(16px)}
+.logo{font-size:25px;font-weight:900;letter-spacing:5px;color:#00eaff;text-shadow:0 0 12px #00eaff}.nav{display:flex;align-items:center;gap:22px}.nav a,.iconbtn{color:#cfeaf0;text-decoration:none;font-size:14px}.nav a:hover,.iconbtn:hover{color:#00eaff}.iconbtn{border:1px solid #00eaff44;background:#061018;border-radius:9px;padding:9px 12px;cursor:pointer}
+.hero{max-width:1200px;min-height:620px;margin:auto;padding:65px 6%;display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:30px}.tag{color:#00eaff;letter-spacing:4px;font-size:12px;font-weight:bold;margin-bottom:18px}.hero h1{font-size:clamp(48px,7vw,86px);line-height:.9;margin:0}.hero h1 span{color:#00eaff;text-shadow:0 0 30px #00eaff}.hero p{max-width:650px;color:#a8bcc4;font-size:18px;line-height:1.7}.actions{display:flex;gap:12px;flex-wrap:wrap}.cta{display:inline-block;margin-top:18px;padding:14px 22px;border:1px solid #00eaff;border-radius:10px;color:#00eaff;text-decoration:none;background:#00eaff10;box-shadow:0 0 25px #00eaff33}.cta:hover{background:#00eaff;color:#001017}
+.robot-zone{height:350px;display:grid;place-items:center}.robot{width:235px;height:235px;border:2px solid #00eaff;border-radius:45%;position:relative;background:radial-gradient(circle at 50% 30%,#123e4c,#03090e 65%);box-shadow:0 0 25px #00eaff,0 0 80px #00eaff55,inset 0 0 45px #00eaff22;animation:float 3s ease-in-out infinite}.robot:before{content:"";position:absolute;left:50%;top:-36px;width:2px;height:36px;background:#00eaff;box-shadow:0 0 14px #00eaff}.robot:after{content:"";position:absolute;left:calc(50% - 5px);top:-44px;width:10px;height:10px;border-radius:50%;background:#9d5cff;box-shadow:0 0 22px #9d5cff}.eyes{display:flex;justify-content:center;gap:36px;margin-top:76px}.eye{width:29px;height:18px;border-radius:50%;background:#00eaff;box-shadow:0 0 20px #00eaff;animation:blink 4s infinite}.eye:last-child{background:#9d5cff;box-shadow:0 0 20px #9d5cff}.mouth{position:absolute;left:calc(50% - 38px);top:130px;width:76px;height:22px;border-bottom:2px solid #00eaff}
+.section{max-width:1200px;margin:auto;padding:70px 6%}.title{text-align:center;margin-bottom:28px}.title h2{font-size:40px;margin:0 0 8px}.title p{color:#7f99a3}.tools{display:grid;grid-template-columns:1fr 190px;gap:10px;margin-bottom:24px}.input,.selectbox{width:100%;padding:14px;border:1px solid #00eaff33;border-radius:10px;background:#061018;color:#fff;outline:none}.input:focus{border-color:#00eaff}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card{padding:19px;border:1px solid #00eaff33;border-radius:15px;background:#061018dd;transition:.25s;display:flex;flex-direction:column}.card:hover{transform:translateY(-5px);border-color:#00eaff;box-shadow:0 0 25px #00eaff22}.card h3{color:#00eaff;font-size:16px;margin:0 0 10px}.card p{color:#9fb2b9;font-size:13px;line-height:1.5;min-height:42px}.price{font-weight:bold;margin:13px 0;color:#fff}.card-actions{display:flex;gap:8px;margin-top:auto}.btn{border:1px solid #00eaff55;border-radius:8px;padding:9px 10px;color:#bdf5ff;background:#07141b;cursor:pointer;font-size:12px;flex:1}.btn.primary{border-color:#00eaff;background:#00eaff;color:#001017}.btn:hover{filter:brightness(1.15)}.empty{text-align:center;color:#8199a2;padding:35px;grid-column:1/-1}
+.info{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.info .card{min-height:140px}.info h3{color:#00eaff}
+.overlay{position:fixed;inset:0;background:#000b;z-index:40;display:none;padding:20px;align-items:center;justify-content:center}.overlay.show{display:flex}.panel{width:min(560px,100%);max-height:90vh;overflow:auto;background:#061018;border:1px solid #00eaff66;border-radius:18px;padding:22px;box-shadow:0 0 60px #00eaff22}.panel h2{margin-top:0}.close{float:right;background:none;border:0;color:#fff;font-size:25px;cursor:pointer}.cart-row{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid #ffffff12}.qty{display:flex;align-items:center;gap:7px}.qty button{width:28px;height:28px;background:#0b2028;color:#fff;border:1px solid #00eaff44;border-radius:6px}.total{display:flex;justify-content:space-between;font-size:20px;font-weight:bold;margin:20px 0}.checkout{width:100%;padding:14px;border:0;border-radius:10px;background:#00eaff;color:#001017;font-weight:bold;cursor:pointer}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);z-index:60;background:#0b2028;border:1px solid #00eaff;color:#fff;padding:12px 18px;border-radius:10px;transition:.25s}.toast.show{transform:translateX(-50%) translateY(0)}
+footer{text-align:center;padding:45px 20px;color:#5f7780;border-top:1px solid #00eaff22}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}@keyframes blink{0%,45%,50%,100%{transform:scaleY(1)}47%{transform:scaleY(.1)}}
+@media(max-width:900px){.hero{grid-template-columns:1fr;text-align:center}.hero p{margin-left:auto;margin-right:auto}.actions{justify-content:center}.robot-zone{height:300px}.grid{grid-template-columns:repeat(2,1fr)}.nav a{display:none}.info{grid-template-columns:1fr}}
+@media(max-width:600px){header{padding:0 15px}.hero{padding:45px 15px;min-height:570px}.hero h1{font-size:52px}.hero p{font-size:15px}.section{padding:55px 15px}.grid{grid-template-columns:1fr}.tools{grid-template-columns:1fr}.logo{font-size:21px}}
 </style>
 </head>
 <body>
-<header><div class="logo">ECOMAX</div><nav class="nav"><a href="#home">მთავარი</a><a href="#products">პროდუქტები</a></nav></header>
-<section class="hero" id="home"><div><div class="tag">AUTO CARE SYSTEM</div><h1>DRIVE<br>THE <span>FUTURE.</span></h1><p>ECOMAX — თანამედროვე ავტოქიმია მანქანის სისუფთავისა და მოვლისთვის.</p><a class="cta" href="#products">პროდუქტების ნახვა</a></div><div class="robot-zone"><div class="robot"><div class="eyes"><i class="eye"></i><i class="eye"></i></div><div class="mouth"></div></div></div></section>
-<section class="section" id="products"><div class="title"><h2>ECOMAX PRODUCTS</h2><p>სისუფთავე. ძალა. ბრწყინვალება.</p></div><div class="grid" id="grid"></div></section>
+<header><div class="logo">ECOMAX</div><nav class="nav"><a href="#home">მთავარი</a><a href="#products">პროდუქტები</a><a href="#about">ჩვენ შესახებ</a><button class="iconbtn" onclick="openCart()">🛒 კალათა (<span id="cartCount">0</span>)</button></nav></header>
+
+<section class="hero" id="home"><div><div class="tag">AUTO CARE SYSTEM</div><h1>DRIVE<br>THE <span>FUTURE.</span></h1><p>ECOMAX — თანამედროვე ავტოქიმია მანქანის სისუფთავისა და მოვლისთვის. აირჩიე პროდუქტი, დაამატე კალათაში და მოამზადე შეკვეთა.</p><div class="actions"><a class="cta" href="#products">პროდუქტების ნახვა</a><button class="cta" onclick="openCart()">კალათის გახსნა</button></div></div><div class="robot-zone"><div class="robot"><div class="eyes"><i class="eye"></i><i class="eye"></i></div><div class="mouth"></div></div></div></section>
+
+<section class="section" id="products"><div class="title"><h2>ECOMAX PRODUCTS</h2><p>სისუფთავე · ძალა · ბრწყინვალება · მოვლა</p></div>
+<div class="tools"><input id="search" class="input" placeholder="🔎 მოძებნე პროდუქტი..." oninput="renderProducts()"><select id="filter" class="selectbox" onchange="renderProducts()"><option value="all">ყველა პროდუქტი</option><option value="clean">წმენდა</option><option value="care">მოვლა</option><option value="special">სპეციალური</option></select></div>
+<div class="grid" id="grid"></div></section>
+
+<section class="section" id="about"><div class="title"><h2>რატომ ECOMAX?</h2><p>მარტივი, სწრაფი და მოსახერხებელი ონლაინ არჩევა.</p></div><div class="info"><div class="card"><h3>🚗 ავტო მოვლა</h3><p>პროდუქტები ყოველდღიური და პროფესიონალური ავტომოვლისთვის.</p></div><div class="card"><h3>📦 მარტივი შეკვეთა</h3><p>აირჩიე რაოდენობა, ნახე ჯამური ფასი და მოამზადე შეკვეთა.</p></div><div class="card"><h3>⚡ სწრაფი არჩევა</h3><p>ძიება და კატეგორიები გეხმარება სასურველი პროდუქტის სწრაფად პოვნაში.</p></div></div></section>
+
 <footer>ECOMAX FUTURE GRID · CLEAN / POWER / SHINE / CARE · DRIVE THE FUTURE.</footer>
+
+<div class="overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()"><div class="panel"><button class="close" onclick="closeCart()">×</button><h2>🛒 შენი კალათა</h2><div id="cartItems"></div><div class="total"><span>ჯამი</span><span id="cartTotal">0₾</span></div><button class="checkout" onclick="prepareOrder()">შეკვეთის მომზადება</button></div></div>
+<div class="overlay" id="productOverlay" onclick="if(event.target===this)closeProduct()"><div class="panel"><button class="close" onclick="closeProduct()">×</button><div id="productDetail"></div></div></div>
+<div class="toast" id="toast"></div>
+
 <script>
-const products=[['ძრავის ქიმწმენდა','ძრავის ზედაპირზე დაგროვილი ჭუჭყის გასაწმენდად'],['დისკების საწმენდი','მუხრუჭის მტვრისა და ჭუჭყის მოსაშორებლად'],['ჟანგის მოსაშორებელი','ჟანგიანი ზედაპირების დასამუშავებლად'],['რადიატორის სარეცხი','რადიატორის სისტემის გასაწმენდად'],['ტორპედოს საპრიალებელი','ტორპედოს სისუფთავისა და ბზინვარებისთვის'],['ტყავის ქიმწმენდა','ტყავის ზედაპირის ნაზი წმენდისთვის'],['ტყავის მკვებავი','გამომშრალი ტყავის მოსავლელად'],['საბურავის საპრიალებელი','საბურავისთვის სუფთა და მოვლილი იერისთვის'],['პლასტმასების საშავებელი','გარე პლასტმასების ფერის გასაახლებლად'],['წებოს/სკოჩის მოსაშორებელი','წებოსა და სკოჩის კვალის მოსაშორებლად'],['ძლიერი ჩამჯდარი ჭუჭყის მოსაშორებელი','ძლიერი ჩამჯდარი ჭუჭყის გასაწმენდად'],['მანქანის სუნამო','სასიამოვნო სურნელისთვის მანქანის სალონში']];
-document.getElementById('grid').innerHTML=products.map(p=>`<article class="card"><h3>${p[0]}</h3><p>${p[1]}</p><div class="price">500 მლ — 5₾ · 1 ლ — 10₾ · 5 ლ — 40₾</div><a class="select" href="javascript:quick('მინდა ${p[0]}')">არჩევა</a></article>`).join('');
+const products=[
+{id:1,name:'ძრავის ქიმწმენდა',desc:'ძრავის ზედაპირზე დაგროვილი ჭუჭყის გასაწმენდად',cat:'clean'},
+{id:2,name:'დისკების საწმენდი',desc:'მუხრუჭის მტვრისა და ჭუჭყის მოსაშორებლად',cat:'clean'},
+{id:3,name:'ჟანგის მოსაშორებელი',desc:'ჟანგიანი ზედაპირების დასამუშავებლად',cat:'special'},
+{id:4,name:'რადიატორის სარეცხი',desc:'რადიატორის სისტემის გასაწმენდად',cat:'clean'},
+{id:5,name:'ტორპედოს საპრიალებელი',desc:'ტორპედოს სისუფთავისა და ბზინვარებისთვის',cat:'care'},
+{id:6,name:'ტყავის ქიმწმენდა',desc:'ტყავის ზედაპირის ნაზი წმენდისთვის',cat:'clean'},
+{id:7,name:'ტყავის მკვებავი',desc:'გამომშრალი ტყავის მოსავლელად',cat:'care'},
+{id:8,name:'საბურავის საპრიალებელი',desc:'საბურავისთვის სუფთა და მოვლილი იერისთვის',cat:'care'},
+{id:9,name:'პლასტმასების საშავებელი',desc:'გარე პლასტმასების ფერის გასაახლებლად',cat:'care'},
+{id:10,name:'წებოს/სკოჩის მოსაშორებელი',desc:'წებოსა და სკოჩის კვალის მოსაშორებლად',cat:'special'},
+{id:11,name:'ძლიერი ჩამჯდარი ჭუჭყის მოსაშორებელი',desc:'ძლიერი ჩამჯდარი ჭუჭყის გასაწმენდად',cat:'special'},
+{id:12,name:'მანქანის სუნამო',desc:'სასიამოვნო სურნელისთვის მანქანის სალონში',cat:'care'}
+];
+const priceText='500 მლ — 5₾ · 1 ლ — 10₾ · 5 ლ — 40₾';
+let cart=JSON.parse(localStorage.getItem('ecomax_cart')||'{}');
+
+function renderProducts(){
+ const q=document.getElementById('search').value.toLowerCase().trim(), f=document.getElementById('filter').value;
+ const list=products.filter(p=>(f==='all'||p.cat===f)&&(!q||(p.name+' '+p.desc).toLowerCase().includes(q)));
+ document.getElementById('grid').innerHTML=list.length?list.map(p=>'<article class="card"><h3>'+p.name+'</h3><p>'+p.desc+'</p><div class="price">'+priceText+'</div><div class="card-actions"><button class="btn" onclick="openProduct('+p.id+')">დეტალურად</button><button class="btn primary" onclick="addToCart('+p.id+')">კალათაში +</button></div></article>').join(''):'<div class="empty">პროდუქტი ვერ მოიძებნა.</div>';
+}
+function addToCart(id){cart[id]=(cart[id]||0)+1;saveCart();showToast('პროდუქტი დაემატა კალათაში');}
+function changeQty(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];saveCart();openCart();}
+function saveCart(){localStorage.setItem('ecomax_cart',JSON.stringify(cart));updateCount();}
+function updateCount(){document.getElementById('cartCount').textContent=Object.values(cart).reduce((a,b)=>a+b,0);}
+function openCart(){renderCart();document.getElementById('cartOverlay').classList.add('show')}
+function closeCart(){document.getElementById('cartOverlay').classList.remove('show')}
+function renderCart(){
+ const ids=Object.keys(cart), box=document.getElementById('cartItems'); let total=0;
+ if(!ids.length){box.innerHTML='<p style="color:#8199a2">კალათა ცარიელია.</p>';document.getElementById('cartTotal').textContent='0₾';return;}
+ box.innerHTML=ids.map(id=>{const p=products.find(x=>x.id==id),q=cart[id],subtotal=q*5;total+=subtotal;return '<div class="cart-row"><div><b>'+p.name+'</b><br><small style="color:#8199a2">500 მლ · '+q+' ც.</small></div><div class="qty"><button onclick="changeQty('+id+',-1)">−</button><span>'+q+'</span><button onclick="changeQty('+id+',1)">+</button></div><b>'+subtotal+'₾</b></div>'}).join('');
+ document.getElementById('cartTotal').textContent=total+'₾';
+}
+function prepareOrder(){
+ if(!Object.keys(cart).length){showToast('ჯერ დაამატე პროდუქტი კალათაში');return;}
+ const lines=Object.keys(cart).map(id=>{const p=products.find(x=>x.id==id);return p.name+' — '+cart[id]+' ც. (500 მლ)';});
+ const total=Object.values(cart).reduce((a,b)=>a+b,0)*5;
+ const text='ECOMAX შეკვეთის მონახაზი%0A%0A'+lines.join('%0A')+'%0A%0Aჯამი: '+total+'₾';
+ navigator.clipboard?.writeText(decodeURIComponent(text.replace(/%0A/g,'\n'))).catch(()=>{});
+ showToast('შეკვეთის ტექსტი დაკოპირდა — ჩასვი მესენჯერში ან ელფოსტაში');
+}
+function openProduct(id){const p=products.find(x=>x.id===id);document.getElementById('productDetail').innerHTML='<h2>'+p.name+'</h2><p style="color:#a8bcc4;line-height:1.7">'+p.desc+'</p><div class="price">'+priceText+'</div><button class="checkout" onclick="addToCart('+p.id+');closeProduct()">კალათაში დამატება</button>';document.getElementById('productOverlay').classList.add('show')}
+function closeProduct(){document.getElementById('productOverlay').classList.remove('show')}
+function showToast(t){const x=document.getElementById('toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),2600)}
+renderProducts();updateCount();
 </script>
-</body></html>
+</body>
+</html>
