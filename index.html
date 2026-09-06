@@ -26,7 +26,7 @@ footer{text-align:center;padding:45px 20px;color:#5f7780;border-top:1px solid #0
 </style>
 </head>
 <body>
-<header><div class="logo">ECOMAX</div><nav class="nav"><a href="#home">მთავარი</a><a href="#products">პროდუქტები</a><a href="#about">ჩვენ შესახებ</a><button class="iconbtn" onclick="openCart()">🛒 კალათა (<span id="cartCount">0</span>)</button></nav></header>
+<header><div class="logo">ECOMAX</div><nav class="nav"><a href="#home">მთავარი</a><a href="#products">პროდუქტები</a><a href="#about">ჩვენ შესახებ</a><a href="#orders">ჩემი შეკვეთები</a><button class="iconbtn" onclick="openCart()">🛒 კალათა (<span id="cartCount">0</span>)</button></nav></header>
 
 <section class="hero" id="home"><div><div class="tag">AUTO CARE SYSTEM</div><h1>DRIVE<br>THE <span>FUTURE.</span></h1><p>ECOMAX — თანამედროვე ავტოქიმია მანქანის სისუფთავისა და მოვლისთვის. აირჩიე პროდუქტი, დაამატე კალათაში და მოამზადე შეკვეთა.</p><div class="actions"><a class="cta" href="#products">პროდუქტების ნახვა</a><button class="cta" onclick="openCart()">კალათის გახსნა</button></div></div><div class="robot-zone"><div class="robot"><div class="eyes"><i class="eye"></i><i class="eye"></i></div><div class="mouth"></div></div></div></section>
 
@@ -36,10 +36,11 @@ footer{text-align:center;padding:45px 20px;color:#5f7780;border-top:1px solid #0
 
 <section class="section" id="about"><div class="title"><h2>რატომ ECOMAX?</h2><p>მარტივი, სწრაფი და მოსახერხებელი ონლაინ არჩევა.</p></div><div class="info"><div class="card"><h3>🚗 ავტო მოვლა</h3><p>პროდუქტები ყოველდღიური და პროფესიონალური ავტომოვლისთვის.</p></div><div class="card"><h3>📦 მარტივი შეკვეთა</h3><p>აირჩიე რაოდენობა, ნახე ჯამური ფასი და მოამზადე შეკვეთა.</p></div><div class="card"><h3>⚡ სწრაფი არჩევა</h3><p>ძიება და კატეგორიები გეხმარება სასურველი პროდუქტის სწრაფად პოვნაში.</p></div></div></section>
 
+<section class="section" id="orders"><div class="title"><h2>ჩემი შეკვეთები</h2><p>ამ მოწყობილობაზე შენახული ბოლო შეკვეთები.</p></div><div class="grid" id="orderHistory"></div></section>
 <footer>ECOMAX FUTURE GRID · CLEAN / POWER / SHINE / CARE · DRIVE THE FUTURE.</footer>
 
 <div class="overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()"><div class="panel"><button class="close" onclick="closeCart()">×</button><h2>🛒 შენი კალათა</h2><div id="cartItems"></div><div class="total"><span>ჯამი</span><span id="cartTotal">0₾</span></div><button class="checkout" onclick="openCheckout()">შეკვეთის გაგრძელება</button></div></div>
-<div class="overlay" id="checkoutOverlay" onclick="if(event.target===this)closeCheckout()"><div class="panel"><button class="close" onclick="closeCheckout()">×</button><h2>📦 შეკვეთის გაფორმება</h2><p class="order-note">შეავსე საკონტაქტო ინფორმაცია.</p><form id="orderForm" onsubmit="submitOrder(event)"><div class="form-grid"><input class="input" id="customerName" required placeholder="სახელი და გვარი"><input class="input" id="customerPhone" required type="tel" placeholder="ტელეფონი"><input class="input full" id="customerAddress" required placeholder="მისამართი"><textarea class="input full" id="customerNote" rows="3" placeholder="დამატებითი კომენტარი (არასავალდებულო)"></textarea></div><div id="orderSummary" style="margin:16px 0"></div><button class="checkout" type="submit">შეკვეთის დადასტურება</button></form><div id="orderSuccess"></div></div></div><div class="overlay" id="productOverlay" onclick="if(event.target===this)closeProduct()"><div class="panel"><button class="close" onclick="closeProduct()">×</button><div id="productDetail"></div></div></div>
+<div class="overlay" id="checkoutOverlay" onclick="if(event.target===this)closeCheckout()"><div class="panel"><button class="close" onclick="closeCheckout()">×</button><h2>📦 შეკვეთის გაფორმება</h2><p class="order-note">შეავსე საკონტაქტო ინფორმაცია.</p><form id="orderForm" onsubmit="submitOrder(event)"><div class="form-grid"><input class="input" id="customerName" required placeholder="სახელი და გვარი"><input class="input" id="customerPhone" required type="tel" placeholder="ტელეფონი"><input class="input full" id="customerAddress" required placeholder="მისამართი"><textarea class="input full" id="customerNote" rows="3" placeholder="დამატებითი კომენტარი (არასავალდებულო)"></textarea></div><div id="orderSummary" style="margin:16px 0"></div><div class="form-grid"><select class="selectbox" id="delivery"><option value="delivery">🚚 მიწოდება</option><option value="pickup">🏪 თვითგატანა</option></select><select class="selectbox" id="payment"><option value="cash">ნაღდი/ადგილზე</option><option value="transfer">გადარიცხვა</option></select></div><div class="total"><span>ჯამი</span><span id="checkoutTotal"></span></div><button class="checkout" type="submit">შეკვეთის დადასტურება</button></form><div id="orderSuccess"></div></div></div><div class="overlay" id="productOverlay" onclick="if(event.target===this)closeProduct()"><div class="panel"><button class="close" onclick="closeProduct()">×</button><div id="productDetail"></div></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -83,6 +84,7 @@ function orderLines(){
 function cartTotal(){return Object.values(cart).reduce((a,b)=>a+b,0)*5;}
 function openCheckout(){
  if(!Object.keys(cart).length){showToast('ჯერ დაამატე პროდუქტი კალათაში');return;}
+ document.getElementById('checkoutTotal').textContent=cartTotal()+'₾';
  document.getElementById('orderSummary').innerHTML='<b>შეკვეთის შემადგენლობა</b><p style="color:#9fb2b9;line-height:1.7">'+orderLines().join('<br>')+'</p><div class="total"><span>ჯამი</span><span>'+cartTotal()+'₾</span></div>';
  document.getElementById('cartOverlay').classList.remove('show');
  document.getElementById('orderSuccess').innerHTML='';
@@ -92,10 +94,10 @@ function openCheckout(){
 function closeCheckout(){document.getElementById('checkoutOverlay').classList.remove('show');}
 function submitOrder(e){
  e.preventDefault();
- const order={id:'EC-'+Date.now().toString().slice(-8),name:document.getElementById('customerName').value.trim(),phone:document.getElementById('customerPhone').value.trim(),address:document.getElementById('customerAddress').value.trim(),note:document.getElementById('customerNote').value.trim(),items:orderLines(),total:cartTotal(),created:new Date().toISOString()};
+ const order={id:'EC-'+Date.now().toString().slice(-8),name:document.getElementById('customerName').value.trim(),phone:document.getElementById('customerPhone').value.trim(),address:document.getElementById('customerAddress').value.trim(),note:document.getElementById('customerNote').value.trim(),delivery:document.getElementById('delivery').value,payment:document.getElementById('payment').value,items:orderLines(),total:cartTotal(),created:new Date().toISOString()};
  localStorage.setItem('ecomax_last_order',JSON.stringify(order));
  const message='ECOMAX შეკვეთა\\n№ '+order.id+'\\n\\n'+order.items.join('\\n')+'\\n\\nჯამი: '+order.total+'₾\\nსახელი: '+order.name+'\\nტელ: '+order.phone+'\\nმისამართი: '+order.address+(order.note?'\\nკომენტარი: '+order.note:'');
- navigator.clipboard?.writeText(message).catch(()=>{});
+ navigator.clipboard?.writeText(message).catch(()=>{}); localStorage.setItem('ecomax_orders',JSON.stringify([order,...JSON.parse(localStorage.getItem('ecomax_orders')||'[]')].slice(0,20)));
  document.getElementById('orderForm').style.display='none';
  document.getElementById('orderSuccess').innerHTML='<div class="success"><h3>✅ შეკვეთა მომზადებულია</h3><p>შეკვეთის ნომერი: <b>'+order.id+'</b></p><p style="color:#9fb2b9">შეკვეთის ტექსტი დაკოპირდა. გაუგზავნე ECOMAX-ს მესენჯერში.</p><button class="checkout" onclick="finishOrder()">დასრულება</button></div>';
 }
@@ -103,7 +105,16 @@ function finishOrder(){cart={};saveCart();closeCheckout();showToast('შეკ�
 function openProduct(id){const p=products.find(x=>x.id===id);document.getElementById('productDetail').innerHTML='<h2>'+p.name+'</h2><p style="color:#a8bcc4;line-height:1.7">'+p.desc+'</p><div class="price">'+priceText+'</div><button class="checkout" onclick="addToCart('+p.id+');closeProduct()">კალათაში დამატება</button>';document.getElementById('productOverlay').classList.add('show')}
 function closeProduct(){document.getElementById('productOverlay').classList.remove('show')}
 function showToast(t){const x=document.getElementById('toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),2600)}
-renderProducts();updateCount();
+function renderOrders(){
+ const box=document.getElementById('orderHistory'), orders=JSON.parse(localStorage.getItem('ecomax_orders')||'[]');
+ box.innerHTML=orders.length?orders.map(o=>'<article class="card"><h3>'+o.id+'</h3><p>'+new Date(o.created).toLocaleString('ka-GE')+'<br>'+o.items.join('<br>')+'</p><div class="price">'+o.total+'₾ · '+(o.delivery==='pickup'?'თვითგატანა':'მიწოდება')+'</div><button class="btn" onclick="shareOrder('+JSON.stringify(o).replace(/"/g,'&quot;')+')">შეკვეთის გაზიარება</button></article>').join(''):'<div class="empty">შეკვეთები ჯერ არ გაქვს.</div>';
+}
+async function shareOrder(o){
+ const msg='ECOMAX შეკვეთა № '+o.id+'\\n'+o.items.join('\\n')+'\\nჯამი: '+o.total+'₾\\nსახელი: '+o.name+'\\nტელ: '+o.phone+'\\nმისამართი: '+o.address;
+ if(navigator.share){try{await navigator.share({title:'ECOMAX შეკვეთა '+o.id,text:msg});return;}catch(e){}}
+ navigator.clipboard?.writeText(msg).catch(()=>{});showToast('შეკვეთის ტექსტი დაკოპირდა');
+}
+renderProducts();updateCount();renderOrders();
 </script>
 </body>
 </html>
