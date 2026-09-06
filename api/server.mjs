@@ -14,10 +14,21 @@ if (!API_KEY) {
 
 const openai = new OpenAI({ apiKey: API_KEY });
 
+const allowedOrigins = new Set([
+  "https://ecomax.com.ge",
+  "https://www.ecomax.com.ge"
+]);
+
 app.use(cors({
-  origin: "https://ecomax.com.ge",
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"]
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.has(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error("CORS origin not allowed"));
+  },
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
+  maxAge: 86400
 }));
 
 app.use(express.json({ limit: "20kb" }));
@@ -25,8 +36,11 @@ app.use(express.json({ limit: "20kb" }));
 const limiter = rateLimit({
   windowMs: 60 * 1000,
   limit: 20,
-  standardHeaders: true,
-  legacyHeaders: false
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: {
+    error: "ძალიან ბევრი მოთხოვნაა. გთხოვ ცოტა ხანში სცადო."
+  }
 });
 
 app.get("/health", (_req, res) => {
@@ -50,7 +64,9 @@ app.post("/api/chat", limiter, async (req, res) => {
       store: false,
       instructions: `
 შენ ხარ ECOMAX AI — ავტოქიმიის ჭკვიანი ასისტენტი.
-ყოველთვის უპასუხე ქართულად, მოკლედ, მეგობრულად და პროფესიონალურად.
+
+უპასუხე ყოველთვის ქართულად, მოკლედ, მეგობრულად და პროფესიონალურად.
+მომხმარებელს დაეხმარე პროდუქტის შერჩევაში და გამოყენების ზოგად წესებში.
 
 ECOMAX პროდუქტები:
 1. ძრავის ქიმწმენდა
@@ -71,21 +87,23 @@ ECOMAX პროდუქტები:
 1 ლიტრი — 10₾
 5 ლიტრი — 40₾
 
-მომხმარებლის პრობლემის მიხედვით ურჩიე შესაბამისი პროდუქტი.
-თუ ინფორმაცია არ არის საკმარისი, დაუსვი ერთი მოკლე დამაზუსტებელი კითხვა.
-არ მოიგონო სხვა პროდუქტი ან ფასი.
-ქიმიური პროდუქტის გამოყენებისას შეახსენე ეტიკეტის ინსტრუქციის დაცვა და საჭიროების შემთხვევაში მცირე შეუმჩნეველ ადგილზე გამოცდა.
-შეკვეთის შემთხვევაში უთხარი, რომ შემდეგ საჭიროა შეკვეთის მონაცემების დაზუსტება.
+წესები:
+- მომხმარებლის პრობლემის მიხედვით ურჩიე მხოლოდ ზემოთ ჩამოთვლილი შესაბამისი პროდუქტი.
+- არ მოიგონო სხვა პროდუქტი, ფასი, მარაგი ან მიწოდების პირობა.
+- თუ პრობლემა ან ზედაპირი გაურკვეველია, დაუსვი ერთი მოკლე დამაზუსტებელი კითხვა.
+- ქიმიური პროდუქტის გამოყენებისას შეახსენე ეტიკეტის ინსტრუქციის დაცვა და საჭიროების შემთხვევაში მცირე შეუმჩნეველ ადგილზე გამოცდა.
+- შეკვეთის სურვილის შემთხვევაში უთხარი, რომ შეკვეთის გასაფორმებლად საჭიროა მომხმარებლის საკონტაქტო და მიწოდების მონაცემების დაზუსტება.
+- თუ მომხმარებელი სხვა თემაზე გკითხავს, მოკლედ აუხსენი, რომ შენი მთავარი ფუნქცია ECOMAX ავტოქიმიის კონსულტაციაა.
 `,
       input: message
     });
 
-    res.json({
+    return res.json({
       reply: response.output_text || "სამწუხაროდ, პასუხი ვერ მივიღე."
     });
   } catch (error) {
     console.error("ECOMAX AI ERROR:", error);
-    res.status(500).json({
+    return res.status(500).json({
       error: "ECOMAX AI დროებით მიუწვდომელია. გთხოვ მოგვიანებით სცადო."
     });
   }
