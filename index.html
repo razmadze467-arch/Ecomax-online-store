@@ -1,462 +1,980 @@
 <!DOCTYPE html>
 <html lang="ka">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ECOMAX — ონლაინ მაღაზია</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f5f5f5;
-  color:#111;
-}
-a{text-decoration:none;color:inherit}
+    <title>ECOMAX — AI Auto Care</title>
 
-header{
-  background:#111;
-  color:white;
-  position:sticky;
-  top:0;
-  z-index:100;
-}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-.nav{
-  max-width:1200px;
-  margin:auto;
-  min-height:70px;
-  padding:0 20px;
-  display:flex;
-  align-items:center;
-  gap:25px;
-}
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background:
+                radial-gradient(circle at 20% 20%, #003b4a 0%, transparent 30%),
+                radial-gradient(circle at 80% 80%, #26004d 0%, transparent 30%),
+                #02070c;
+            color: white;
+            min-height: 100vh;
+        }
 
-.logo{
-  font-size:26px;
-  font-weight:900;
-  letter-spacing:4px;
-  margin-right:auto;
-}
+        /* GRID */
 
-nav{
-  display:flex;
-  gap:22px;
-}
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: .18;
+            background-image:
+                linear-gradient(#00eaff22 1px, transparent 1px),
+                linear-gradient(90deg, #00eaff22 1px, transparent 1px);
+            background-size: 45px 45px;
+            z-index: -1;
+        }
 
-nav a{
-  color:#ddd;
-  font-size:14px;
-}
+        /* HEADER */
 
-nav a:hover{color:white}
+        header {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            border-bottom: 1px solid #00eaff33;
+            background: #02080dcc;
+            backdrop-filter: blur(15px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-.cart{
-  background:white;
-  color:#111;
-  border:0;
-  padding:11px 17px;
-  border-radius:30px;
-  font-weight:bold;
-}
+        .logo {
+            font-size: 25px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            color: #00eaff;
+            text-shadow:
+                0 0 8px #00eaff,
+                0 0 25px #00eaff;
+        }
 
-.hero{
-  background:linear-gradient(135deg,#111,#292929);
-  color:white;
-  padding:100px 20px;
-}
+        nav {
+            display: flex;
+            gap: 25px;
+        }
 
-.hero-content{
-  max-width:1200px;
-  margin:auto;
-}
+        nav a {
+            color: #d9faff;
+            text-decoration: none;
+            font-size: 14px;
+        }
 
-.hero small{
-  color:#aaa;
-  letter-spacing:4px;
-  text-transform:uppercase;
-}
+        nav a:hover {
+            color: #00eaff;
+        }
 
-.hero h1{
-  font-size:clamp(42px,7vw,78px);
-  max-width:800px;
-  line-height:1;
-  margin:20px 0;
-}
+        /* HERO */
 
-.hero p{
-  max-width:600px;
-  color:#ccc;
-  font-size:18px;
-  line-height:1.6;
-}
+        .hero {
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: auto;
+            padding: 60px 25px;
+            gap: 50px;
+        }
 
-.hero-button{
-  display:inline-block;
-  margin-top:30px;
-  background:white;
-  color:#111;
-  padding:15px 25px;
-  border-radius:30px;
-  font-weight:bold;
-}
+        .hero-text {
+            flex: 1;
+        }
 
-section{
-  max-width:1200px;
-  margin:auto;
-  padding:75px 20px;
-}
+        .tag {
+            color: #00eaff;
+            letter-spacing: 4px;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
 
-.title{
-  font-size:34px;
-  margin-bottom:12px;
-}
+        h1 {
+            font-size: clamp(42px, 7vw, 80px);
+            margin: 0;
+            line-height: .95;
+        }
 
-.subtitle{
-  color:#777;
-  margin-bottom:35px;
-}
+        h1 span {
+            color: #00eaff;
+            text-shadow: 0 0 25px #00eaff;
+        }
 
-.features{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:20px;
-}
+        .hero p {
+            color: #a9bdc5;
+            max-width: 650px;
+            font-size: 18px;
+            line-height: 1.7;
+        }
 
-.card{
-  background:white;
-  padding:28px;
-  border-radius:18px;
-  border:1px solid #e8e8e8;
-}
+        .hero-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 25px;
+            border: 1px solid #00eaff;
+            border-radius: 10px;
+            background: #00eaff12;
+            color: #00eaff;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 0 20px #00eaff44;
+        }
 
-.card h3{
-  margin:12px 0;
-}
+        .hero-button:hover {
+            background: #00eaff;
+            color: #001017;
+        }
 
-.card p{
-  color:#777;
-  line-height:1.5;
-}
+        /* ROBOT */
 
-.categories{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:20px;
-}
+        .robot-zone {
+            width: 360px;
+            height: 360px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.category{
-  min-height:180px;
-  border-radius:20px;
-  padding:25px;
-  display:flex;
-  align-items:flex-end;
-  background:linear-gradient(135deg,#fff,#ddd);
-  font-size:25px;
-  font-weight:bold;
-}
+        .robot {
+            width: 230px;
+            height: 230px;
+            border: 2px solid #00eaff;
+            border-radius: 45%;
+            background:
+                radial-gradient(circle at 50% 30%, #103746, #03090e 65%);
+            box-shadow:
+                0 0 20px #00eaff,
+                0 0 70px #00eaff66,
+                inset 0 0 50px #00eaff22;
+            position: relative;
+            animation: float 3s infinite ease-in-out;
+        }
 
-.products{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:20px;
-}
+        .robot::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: -35px;
+            width: 2px;
+            height: 35px;
+            background: #00eaff;
+            box-shadow: 0 0 12px #00eaff;
+        }
 
-.product{
-  background:white;
-  border-radius:20px;
-  overflow:hidden;
-  border:1px solid #e5e5e5;
-}
+        .robot::after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #9d5cff;
+            left: calc(50% - 5px);
+            top: -42px;
+            box-shadow: 0 0 20px #9d5cff;
+        }
 
-.product-img{
-  height:210px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#eee;
-  font-size:60px;
-}
+        .eyes {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            margin-top: 75px;
+        }
 
-.product-info{
-  padding:22px;
-}
+        .eye {
+            width: 28px;
+            height: 18px;
+            background: #00eaff;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #00eaff;
+            animation: blink 4s infinite;
+        }
 
-.product-info h3{
-  margin-bottom:8px;
-}
+        .eye:last-child {
+            background: #9d5cff;
+            box-shadow: 0 0 20px #9d5cff;
+        }
 
-.product-info p{
-  color:#777;
-  margin-bottom:15px;
-}
+        .robot-mouth {
+            position: absolute;
+            width: 75px;
+            height: 25px;
+            border-bottom: 2px solid #00eaff;
+            left: calc(50% - 37px);
+            top: 125px;
+        }
 
-.price{
-  font-size:22px;
-  font-weight:bold;
-  margin-bottom:15px;
-}
+        /* PRODUCTS */
 
-.buy{
-  width:100%;
-  padding:13px;
-  border:0;
-  background:#111;
-  color:white;
-  border-radius:10px;
-  font-weight:bold;
-}
+        .products {
+            max-width: 1200px;
+            margin: auto;
+            padding: 60px 25px;
+        }
 
-.club{
-  background:#111;
-  color:white;
-  border-radius:25px;
-  padding:50px;
-}
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
 
-.club p{
-  color:#bbb;
-  margin:15px 0 25px;
-}
+        .section-title h2 {
+            font-size: 40px;
+            margin: 0 0 10px;
+        }
 
-.club input{
-  padding:14px;
-  width:60%;
-  border:0;
-  border-radius:10px;
-}
+        .section-title p {
+            color: #8099a2;
+        }
 
-.club button{
-  padding:14px 22px;
-  border:0;
-  border-radius:10px;
-  font-weight:bold;
-}
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
 
-footer{
-  background:#111;
-  color:white;
-  padding:35px 20px;
-}
+        .product {
+            padding: 20px;
+            min-height: 190px;
+            border: 1px solid #00eaff33;
+            border-radius: 15px;
+            background: #061018cc;
+            transition: .25s;
+        }
 
-.footer{
-  max-width:1200px;
-  margin:auto;
-  display:flex;
-  justify-content:space-between;
-}
+        .product:hover {
+            transform: translateY(-5px);
+            border-color: #00eaff;
+            box-shadow: 0 0 25px #00eaff22;
+        }
 
-.footer p{
-  color:#999;
-}
+        .product h3 {
+            color: #00eaff;
+            font-size: 17px;
+        }
 
-@media(max-width:750px){
-  nav{display:none}
+        .product p {
+            color: #a5b7bd;
+            font-size: 13px;
+            line-height: 1.5;
+        }
 
-  .nav{
-    min-height:62px;
-  }
+        .price {
+            font-weight: bold;
+            margin-top: 15px;
+        }
 
-  .hero{
-    padding:75px 20px;
-  }
+        /* CHAT BUTTON */
 
-  .hero h1{
-    font-size:48px;
-  }
+        #chatButton {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 2px solid #00eaff;
+            background: #030b12;
+            cursor: pointer;
+            z-index: 9998;
+            box-shadow:
+                0 0 15px #00eaff,
+                0 0 40px #00eaff66;
+            animation: pulse 2s infinite;
+        }
 
-  .features,
-  .categories,
-  .products{
-    grid-template-columns:1fr;
-  }
+        .mini-face {
+            width: 40px;
+            height: 32px;
+            border: 2px solid #00eaff;
+            border-radius: 10px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+        }
 
-  section{
-    padding:55px 20px;
-  }
+        .mini-eye {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #00eaff;
+            box-shadow: 0 0 10px #00eaff;
+        }
 
-  .club{
-    padding:30px 22px;
-  }
+        .mini-eye:last-child {
+            background: #9d5cff;
+        }
 
-  .club input{
-    width:100%;
-    margin-bottom:10px;
-  }
+        /* CHAT */
 
-  .footer{
-    flex-direction:column;
-    gap:12px;
-  }
-}
-</style>
+        #chat {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            width: 400px;
+            height: 600px;
+            max-width: calc(100vw - 20px);
+            background: rgba(2, 9, 15, .98);
+            border: 1px solid #00eaff;
+            border-radius: 20px;
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow:
+                0 0 20px #00eaff,
+                0 0 70px #00eaff33;
+        }
+
+        #chat.active {
+            display: flex;
+        }
+
+        .chat-header {
+            height: 70px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #00eaff33;
+        }
+
+        .chat-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1px solid #00eaff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            box-shadow: 0 0 15px #00eaff66;
+        }
+
+        .chat-title {
+            flex: 1;
+        }
+
+        .chat-title strong {
+            display: block;
+        }
+
+        .online {
+            color: #00eaff;
+            font-size: 11px;
+        }
+
+        .close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        #messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 11px 13px;
+            border-radius: 13px;
+            margin-bottom: 10px;
+            line-height: 1.5;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+
+        .ai {
+            background: #00eaff0d;
+            border: 1px solid #00eaff33;
+            margin-right: auto;
+        }
+
+        .user {
+            background: #9d5cff1b;
+            border: 1px solid #9d5cff55;
+            margin-left: auto;
+        }
+
+        .quick {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 8px 12px;
+            border-top: 1px solid #00eaff22;
+        }
+
+        .quick button {
+            border: 1px solid #00eaff55;
+            background: #00eaff08;
+            color: #bcefff;
+            border-radius: 15px;
+            padding: 7px 9px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .quick button:hover {
+            background: #00eaff;
+            color: #001017;
+        }
+
+        .chat-form {
+            display: flex;
+            padding: 12px;
+            gap: 7px;
+            border-top: 1px solid #00eaff33;
+        }
+
+        #input {
+            flex: 1;
+            min-width: 0;
+            border: 1px solid #31434b;
+            border-radius: 12px;
+            background: #071219;
+            color: white;
+            padding: 12px;
+            outline: none;
+        }
+
+        #input:focus {
+            border-color: #00eaff;
+            box-shadow: 0 0 10px #00eaff33;
+        }
+
+        .send {
+            width: 50px;
+            border: 1px solid #00eaff;
+            background: #00eaff;
+            color: #001017;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid #00eaff22;
+            color: #66808a;
+        }
+
+        @keyframes float {
+            0%,100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        @keyframes pulse {
+            0%,100% {
+                box-shadow:
+                    0 0 15px #00eaff,
+                    0 0 35px #00eaff66;
+            }
+            50% {
+                box-shadow:
+                    0 0 25px #00eaff,
+                    0 0 65px #00eaff99;
+            }
+        }
+
+        @keyframes blink {
+            0%,45%,50%,100% {
+                transform: scaleY(1);
+            }
+            47% {
+                transform: scaleY(.1);
+            }
+        }
+
+        @media(max-width:900px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .robot-zone {
+                width: 280px;
+                height: 280px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            nav {
+                display: none;
+            }
+        }
+
+        @media(max-width:600px) {
+            header {
+                padding: 0 15px;
+            }
+
+            .hero {
+                padding: 45px 15px;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #chat {
+                right: 8px;
+                bottom: 8px;
+                width: calc(100vw - 16px);
+                height: calc(100vh - 16px);
+                border-radius: 16px;
+            }
+
+            #chatButton {
+                right: 15px;
+                bottom: 15px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
-  <div class="nav">
     <div class="logo">ECOMAX</div>
 
     <nav>
-      <a href="#home">მთავარი</a>
-      <a href="#categories">კატეგორიები</a>
-      <a href="#products">პროდუქტები</a>
-      <a href="#contact">კონტაქტი</a>
+        <a href="#home">მთავარი</a>
+        <a href="#products">პროდუქტები</a>
+        <a href="#ai">AI ASSISTANT</a>
     </nav>
-
-    <button class="cart">🛒 კალათა <span id="cartCount">0</span></button>
-  </div>
 </header>
 
-<div class="hero" id="home">
-  <div class="hero-content">
-    <small>ECOMAX ONLINE STORE</small>
 
-    <h1>შეარჩიე შენი საუკეთესო არჩევანი.</h1>
+<section class="hero" id="home">
 
-    <p>
-      თანამედროვე პროდუქტები, კარგი ხარისხი და მარტივი ონლაინ
-      შოპინგი — ყველაფერი ერთ სივრცეში.
-    </p>
+    <div class="hero-text">
 
-    <a class="hero-button" href="#products">
-      პროდუქტების ნახვა →
-    </a>
-  </div>
-</div>
+        <div class="tag">AI AUTO CARE SYSTEM</div>
 
-<section>
-  <h2 class="title">რატომ ECOMAX?</h2>
-  <p class="subtitle">ყველაფერი, რაც კარგ ონლაინ მაღაზიას სჭირდება.</p>
+        <h1>
+            DRIVE<br>
+            THE <span>FUTURE.</span>
+        </h1>
 
-  <div class="features">
+        <p>
+            ECOMAX — თანამედროვე ავტოქიმია,
+            სადაც AI გეხმარება სწორი პროდუქტის
+            არჩევიდან გამოყენებამდე.
+        </p>
 
-    <div class="card">
-      <div style="font-size:35px">🚚</div>
-      <h3>სწრაფი მიწოდება</h3>
-      <p>შეუკვეთე მარტივად და მიიღე პროდუქტი სწრაფად.</p>
+        <a
+            href="#products"
+            class="hero-button"
+        >
+            პროდუქტების ნახვა
+        </a>
+
     </div>
 
-    <div class="card">
-      <div style="font-size:35px">⭐</div>
-      <h3>ხარისხიანი პროდუქტები</h3>
-      <p>ჩვენ ვარჩევთ პროდუქტებს ხარისხისა და სანდოობის მიხედვით.</p>
+
+    <div class="robot-zone">
+
+        <div class="robot">
+
+            <div class="eyes">
+                <div class="eye"></div>
+                <div class="eye"></div>
+            </div>
+
+            <div class="robot-mouth"></div>
+
+        </div>
+
     </div>
 
-    <div class="card">
-      <div style="font-size:35px">🔒</div>
-      <h3>უსაფრთხო შოპინგი</h3>
-      <p>შენი შეკვეთა და მონაცემები დაცულია.</p>
-    </div>
-
-  </div>
 </section>
 
-<section id="categories">
-  <h2 class="title">კატეგორიები</h2>
-  <p class="subtitle">აირჩიე სასურველი მიმართულება.</p>
 
-  <div class="categories">
+<section class="products" id="products">
 
-    <a class="category" href="#products">
-      📱 ტექნიკა
-    </a>
+    <div class="section-title">
 
-    <a class="category" href="#products">
-      🏠 სახლი
-    </a>
+        <h2>ECOMAX PRODUCTS</h2>
 
-    <a class="category" href="#products">
-      ✨ სილამაზე
-    </a>
+        <p>
+            აირჩიე პროდუქტი ან ჰკითხე ECOMAX AI-ს.
+        </p>
 
-  </div>
-</section>
-
-<section id="products">
-
-  <h2 class="title">პოპულარული პროდუქტები</h2>
-  <p class="subtitle">ჩვენი შერჩეული პროდუქტები.</p>
-
-  <div class="products">
-
-    <div class="product">
-      <div class="product-img">📱</div>
-
-      <div class="product-info">
-        <h3>Smart Device</h3>
-        <p>თანამედროვე ჭკვიანი მოწყობილობა.</p>
-        <div class="price">99 ₾</div>
-        <button class="buy" onclick="addToCart()">
-          კალათაში დამატება
-        </button>
-      </div>
     </div>
 
-    <div class="product">
-      <div class="product-img">🎧</div>
 
-      <div class="product-info">
-        <h3>Wireless Headphones</h3>
-        <p>უსადენო ყურსასმენები ყოველდღიური გამოყენებისთვის.</p>
-        <div class="price">79 ₾</div>
-        <button class="buy" onclick="addToCart()">
-          კალათაში დამატება
-        </button>
-      </div>
+    <div class="product-grid">
+
+        <div class="product">
+            <h3>ძრავის ქიმწმენდა</h3>
+            <p>ძრავის ზედაპირზე დაგროვილი ზეთისა და ჭუჭყის მოსაშორებლად.</p>
+            <div class="price">500 მლ — 5₾</div>
+        </div>
+
+        <div class="product">
+            <h3>დისკების საწმენდი</h3>
+            <p>დისკებიდან მტვრისა და ძლიერი ჭუჭყის მოსაშორებლად.</p>
+            <div class="price">500 მლ — 5₾</div>
+        </div>
+
+        <div class="product">
+            <h3>ჟანგის მოსაშორებელი</h3>
+            <p>ჟანგის კვალის მოსაშორებლად.</p>
+            <div class="price">500 მლ — 5₾</div>
+        </div>
+
+        <div class="product">
+            <h3>რადიატორის სარეცხი</h3>
+            <p>რადიატორის სისტემის გასაწმენდად.</p>
+            <div class="price">500 მლ — 5₾</div>
+        </div>
+
+        <div class="product">
+            <h3>ტორპედოს საპრიალებელი</h3>
+            <p>ტორპედოსა და ინტერიერის პლასტმასებისთვის.</p>
+            <div class="price">500 მლ — 5₾</div>
+        </div>
+
+        <div class="product">
+            <h3>ტყავის ქიმწმენდა</h3>
+            <p>ტყავის ზედაპირებიდან ჭუჭყის მოსაშორებლად.</p>
+            <div class="price">500 მლ — 5₾</div>
+        </div>
+
+        <div class="product">
+            <h3>ტყავის მკვებავი</h3>
+            <p>ტყავის მოვლისა და დაცვისთვის.</p>
+            <div class="price">500 მლ — 5₾</div>
+        </div>
+
+        <div class="product">
+            <h3>საბურავის საპრიალებელი</h3>
+            <p>საბურავს აძლევს სუფთა და მოვლილ იერს.</p>
+            <div class="price">500 მლ — 5₾</div>
+        </div>
+
+        <div class="product">
+            <h3>პლასტმასების საშავებელი</h3>
+            <p>გარე პლასტმასებისთვის მუქი და მოვლილი ეფექტი.</p>
+            <div class="price">500 მლ — 5₾</div>
+        </div>
+
+        <div class="product">
+            <h3>წებოს / სკოჩის მოსაშორებელი</h3>
+            <p>წებოსა და სკოჩის ნარჩენების მოსაშორებლად.</p>
+            <div class="price">500 მლ — 5₾</div>
+        </div>
+
+        <div class="product">
+            <h3>ძლიერი ჭუჭყის მოსაშორებელი</h3>
+            <p>ჩამჯდარი და ძლიერი ჭუჭყის გასაწმენდად.</p>
+            <div class="price">500 მლ — 5₾</div>
+        </div>
+
+        <div class="product">
+            <h3>მანქანის სუნამო</h3>
+            <p>სასიამოვნო არომატისთვის მანქანის სალონში.</p>
+            <div class="price">500 მლ — 5₾</div>
+        </div>
+
     </div>
 
-    <div class="product">
-      <div class="product-img">⌚</div>
-
-      <div class="product-info">
-        <h3>Smart Watch</h3>
-        <p>ელეგანტური და პრაქტიკული Smart Watch.</p>
-        <div class="price">129 ₾</div>
-        <button class="buy" onclick="addToCart()">
-          კალათაში დამატება
-        </button>
-      </div>
-    </div>
-
-  </div>
 </section>
 
-<section id="contact">
-
-  <div class="club">
-    <h2>შეუერთდი ECOMAX CLUB-ს</h2>
-
-    <p>
-      მიიღე ახალი პროდუქტებისა და შეთავაზებების შესახებ ინფორმაცია.
-    </p>
-
-    <input type="email" placeholder="შეიყვანე ელფოსტა">
-
-    <button>გამოწერა</button>
-  </div>
-
-</section>
 
 <footer>
-
-  <div class="footer">
-    <strong>ECOMAX</strong>
-
-    <p>© 2026 Ecomax. ყველა უფლება დაცულია.</p>
-  </div>
-
+    ECOMAX © 2026 — DRIVE THE FUTURE
 </footer>
 
-<script>
-let cartCount = 0;
 
-function addToCart(){
-  cartCount++;
-  document.getElementById("cartCount").textContent = cartCount;
-  alert("პროდუქტი დაემატა კალათაში 🛒");
+<!-- =========================== -->
+<!-- CHAT BUTTON -->
+<!-- =========================== -->
+
+<button
+    id="chatButton"
+    onclick="openChat()"
+>
+
+    <div class="mini-face">
+
+        <div class="mini-eye"></div>
+        <div class="mini-eye"></div>
+
+    </div>
+
+</button>
+
+
+<!-- =========================== -->
+<!-- CHAT -->
+<!-- =========================== -->
+
+<div id="chat">
+
+    <div class="chat-header">
+
+        <div class="chat-avatar">
+            🤖
+        </div>
+
+        <div class="chat-title">
+            <strong>ECOMAX AI</strong>
+            <span class="online">● ონლაინ</span>
+        </div>
+
+        <button
+            class="close"
+            onclick="closeChat()"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div id="messages">
+
+        <div class="message ai">
+            გამარჯობა 👋
+
+            მე ვარ ECOMAX AI 🤖
+
+            მითხარი რა გინდა გაწმინდო ან მოაწესრიგო და დაგეხმარები სწორი პროდუქტის არჩევაში.
+        </div>
+
+    </div>
+
+
+    <div class="quick">
+
+        <button onclick="quick('ძრავის გაწმენდა მინდა')">
+            🚗 ძრავი
+        </button>
+
+        <button onclick="quick('დისკების გაწმენდა მინდა')">
+            ⚙️ დისკები
+        </button>
+
+        <button onclick="quick('ტყავის გაწმენდა მინდა')">
+            🪑 ტყავი
+        </button>
+
+        <button onclick="quick('საბურავის გაპრიალება მინდა')">
+            🛞 საბურავი
+        </button>
+
+        <button onclick="quick('ჟანგის მოშორება მინდა')">
+            🧲 ჟანგი
+        </button>
+
+        <button onclick="quick('წებოს მოშორება მინდა')">
+            🧽 წებო
+        </button>
+
+    </div>
+
+
+    <form
+        class="chat-form"
+        onsubmit="sendMessage(event)"
+    >
+
+        <input
+            id="input"
+            type="text"
+            maxlength="1200"
+            placeholder="დამიწერე ქართულად..."
+            autocomplete="off"
+        >
+
+        <button
+            class="send"
+            type="submit"
+        >
+            ➤
+        </button>
+
+    </form>
+
+</div>
+
+
+<script>
+
+const API_URL =
+    "https://YOUR-BACKEND-DOMAIN/api/chat";
+
+
+function openChat() {
+
+    document
+        .getElementById("chat")
+        .classList.add("active");
+
+    document
+        .getElementById("chatButton")
+        .style.display = "none";
+
+    document
+        .getElementById("input")
+        .focus();
 }
+
+
+function closeChat() {
+
+    document
+        .getElementById("chat")
+        .classList.remove("active");
+
+    document
+        .getElementById("chatButton")
+        .style.display = "block";
+}
+
+
+function addMessage(type, text) {
+
+    const messages =
+        document.getElementById("messages");
+
+    const div =
+        document.createElement("div");
+
+    div.className =
+        "message " + type;
+
+    div.textContent = text;
+
+    messages.appendChild(div);
+
+    messages.scrollTop =
+        messages.scrollHeight;
+}
+
+
+function quick(text) {
+
+    openChat();
+
+    document.getElementById("input").value =
+        text;
+
+    sendMessage(new Event("submit"));
+}
+
+
+async function sendMessage(event) {
+
+    event.preventDefault();
+
+    const input =
+        document.getElementById("input");
+
+    const text =
+        input.value.trim();
+
+    if (!text) return;
+
+    addMessage("user", text);
+
+    input.value = "";
+
+    addMessage("ai", "🤖 ვფიქრობ...");
+
+    const messages =
+        document.getElementById("messages");
+
+    const loading =
+        messages.lastElementChild;
+
+    try {
+
+        const response =
+            await fetch(
+                API_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        message: text
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        loading.remove();
+
+
+        if (!response.ok) {
+
+            addMessage(
+                "ai",
+                data.error ||
+                "AI დროებით მიუწვდომელია."
+            );
+
+            return;
+        }
+
+
+        addMessage(
+            "ai",
+            data.reply ||
+            "პასუხი ვერ მივიღე."
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        loading.remove();
+
+        addMessage(
+            "ai",
+            "⚠️ AI სერვერთან დაკავშირება ვერ მოხერხდა."
+        );
+    }
+}
+
 </script>
 
 </body>
