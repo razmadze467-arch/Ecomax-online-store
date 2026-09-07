@@ -65,7 +65,7 @@ footer{border-top:1px solid #102d36;color:#6f858e;text-align:center;padding:30px
 <script>
 const SUPABASE_URL="https://mkxkqdvtmfbxmldnvsef.supabase.co";
 const SUPABASE_KEY="sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
-const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const db=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
 const fallback=[
 {name:"ძრავის სარეცხი",category:"ძრავის მოვლა",description:"პროფესიონალური ძრავის საწმენდი საშუალება ცხიმისა და ძლიერი ჭუჭყის მოსაშორებლად.",usage:"გამოიყენე დაბინძურების ხარისხის მიხედვით.",dilution:"1:1 ან 1:3 — დაბინძურების მიხედვით",price:10,unit:"ლიტრი",badge:"PRO",icon:"🔧"},
 {name:"დისკების სარეცხი",category:"დისკების მოვლა",description:"დისკებისთვის განკუთვნილი ძლიერი გამწმენდი.",usage:"ზედაპირზე დატანე და ჩამორეცხე.",dilution:"1:1 ან 1:3 — დაბინძურების მიხედვით",price:10,unit:"ლიტრი",badge:"PRO",icon:"⭕"},
@@ -92,12 +92,13 @@ function openCart(){const modal=document.getElementById("cartModal"),box=documen
 function setQty(id,q){const x=cart.find(x=>x.id===id);if(x){x.qty=Math.max(1,Math.floor(Number(q)||1));saveCart();openCart()}}
 function changeQty(id,d){const x=cart.find(x=>x.id===id);if(!x)return;x.qty+=d;if(x.qty<=0)cart=cart.filter(x=>x.id!==id);saveCart();openCart()}
 function closeModal(id){document.getElementById(id)?.classList.remove("open")}
-async function accountAction(){const r=await db.auth.getSession();location.href=r.data.session?"account.html":"login.html"}
-async function openCheckout(){if(!cart.length)return;const r=await db.auth.getSession();if(!r.data.session){location.href="login.html";return}closeModal("cartModal");const p=await db.from("profiles").select("*").eq("id",r.data.session.user.id).maybeSingle();if(p.data){document.getElementById("coName").value=p.data.full_name||"";document.getElementById("coPhone").value=p.data.phone||"";document.getElementById("coAddress").value=p.data.address||"";document.getElementById("coCity").value=p.data.city||"ქუთაისი"}checkoutSummary();document.getElementById("checkoutModal")?.classList.add("open")}
+async function accountAction(){if(!db){location.href="login.html";return}const r=await db.auth.getSession();location.href=r.data.session?"account.html":"login.html"}
+async function openCheckout(){if(!cart.length)return;if(!db){location.href="login.html";return}const r=await db.auth.getSession();if(!r.data.session){location.href="login.html";return}closeModal("cartModal");const p=await db.from("profiles").select("*").eq("id",r.data.session.user.id).maybeSingle();if(p.data){document.getElementById("coName").value=p.data.full_name||"";document.getElementById("coPhone").value=p.data.phone||"";document.getElementById("coAddress").value=p.data.address||"";document.getElementById("coCity").value=p.data.city||"ქუთაისი"}checkoutSummary();document.getElementById("checkoutModal")?.classList.add("open")}
 function checkoutSummary(){let total=0;const box=document.getElementById("checkoutSummary");if(!box)return;box.innerHTML=cart.map(x=>{const p=products.find(p=>p.id===x.id);if(!p)return"";const t=Number(p.price)*x.qty;total+=t;return "<div>"+esc(p.name)+" • "+x.qty+" ლ — "+t.toFixed(2)+"₾</div>"}).join("")+"<hr><b>სულ: "+total.toFixed(2)+"₾</b>"}
 function toggleAI(){document.getElementById("aiPanel")?.classList.toggle("open")}
 function aiFindProduct(q){const s=q.toLowerCase();const map=[["მედიუმ","ქაფი მედიუმი"],["medium","ქაფი მედიუმი"],["ჰარდი","ქაფი ჰარდი"],["hard","ქაფი ჰარდი"],["ძრავ","ძრავის სარეცხი"],["დისკ","დისკების სარეცხი"],["ნაჭ","ნაჭრის ქიმწმენდა"],["ტყავ","ტყავის ქიმწმენდა"],["რადიატ","რადიატორის სარეცხი"],["სანთ","სანთელი"],["მანქანის სარეცხი ქაფ","მანქანის სარეცხი ქაფი 2 ლიტრი"]];for(const [a,n] of map)if(s.includes(a))return products.find(p=>p.name===n)||null;return null}
 function aiQty(q){const m=q.match(/(\d+(?:[.,]\d+)?)\s*(?:ლიტრი|ლ|ცალი|ცალ)/i);return m?Number(m[1].replace(",",".")):null}
+window.accountAction=accountAction;window.openCart=openCart;window.renderProducts=renderProducts;window.addToCart=addToCart;window.closeModal=closeModal;window.openCheckout=openCheckout;window.toggleAI=toggleAI;
 document.addEventListener("DOMContentLoaded",()=>{
 loadProducts();
 document.getElementById("search")?.addEventListener("input",renderProducts);
