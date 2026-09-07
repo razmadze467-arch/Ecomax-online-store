@@ -67,92 +67,42 @@ const SUPABASE_URL="https://mkxkqdvtmfbxmldnvsef.supabase.co";
 const SUPABASE_KEY="sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const fallback=[
-["ძრავის სარეცხი","ძრავის მოვლა","პროფესიონალური ძრავის საწმენდი საშუალება ცხიმისა და ძლიერი ჭუჭყის მოსაშორებლად.","გამოიყენე დაბინძურების ხარისხის მიხედვით.","1:1 ან 1:3 — დაბინძურების მიხედვით",10,"ლიტრი","PRO","🔧"],
-["დისკების სარეცხი","დისკების მოვლა","დისკებისთვის განკუთვნილი ძლიერი გამწმენდი.","ზედაპირზე დატანე და ჩამორეცხე.","1:1 ან 1:3 — დაბინძურების მიხედვით",10,"ლიტრი","PRO","⭕"],
-["ნაჭრის ქიმწმენდა","სალონის მოვლა","ტექსტილისა და ნაჭრის ზედაპირების პროფესიონალური ქიმწმენდის საშუალება.","გამოიყენე აპარატში.","1:1 აპარატში ან 1:10 — დაბინძურების მიხედვით",10,"ლიტრი","DETAIL","🧽"],
-["ტყავის ქიმწმენდა","სალონის მოვლა","ტყავის ზედაპირებისთვის განკუთვნილი ქიმწმენდის საშუალება.","გამოიყენე ზედაპირის მდგომარეობის მიხედვით.","1:1 ან 1:3 — დაბინძურების მიხედვით",10,"ლიტრი","DETAIL","🪑"],
-["რადიატორის სარეცხი","ძრავის მოვლა","რადიატორის პროფესიონალური გამწმენდი.","გამოიყენე დაბინძურების ხარისხის მიხედვით.","1:1 ან 1:3 — დაბინძურების მიხედვით",10,"ლიტრი","PRO","♨"],
-["მანქანის სარეცხი ქაფი 2 ლიტრი","ავტოსამრეცხაო","კონცენტრირებული აქტიური ქაფი.","2 ლიტრი პროდუქტი 100 ლიტრ წყალში.","2 ლიტრი / 100 ლიტრი წყალი",10,"2 ლიტრი","BEST","🫧"],
-["ქაფი","ავტოსამრეცხაო","პროფესიონალური ქაფი.","გამოიყენე სამუშაო პირობების მიხედვით.","სტანდარტული დოზირება",10,"1 ლიტრი","","🫧"],
-["ქაფი მედიუმი","ავტოსამრეცხაო","საშუალო ინტენსივობის პროფესიონალური ქაფი.","გამოიყენე ავტოსამრეცხაოს პროცესით.","სტანდარტული დოზირება",10,"1 ლიტრი","MEDIUM","🫧"],
-["ქაფი ჰარდი","ავტოსამრეცხაო","ძლიერი წმენდისთვის განკუთვნილი ქაფი.","გამოიყენე ძლიერი დაბინძურებისას.","სტანდარტული დოზირება",15,"1 ლიტრი","HARD","🫧"],
-["სანთელი","აქსესუარები","სანთელი პროფესიონალური გამოყენებისთვის.","რაოდენობა სურვილისამებრ.","1:10",10,"ცალი","","🔩"]
-];
-let products=[],cart=JSON.parse(localStorage.getItem("ecomax_cart")||"[]"),activeCat="ყველა",profile=null;
-function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
-async function loadProducts(){const {data,error}=await db.from("products").select("*").eq("active",true).order("id");products=error||!data?.length?fallback.map((x,i)=>({id:i+1,name:x[0],category:x[1],description:x[2],usage:x[3],dilution:x[4],price:x[5],unit:x[6],badge:x[7],icon:x[8]})):data.map(x=>({...x,icon:({ "ძრავის მოვლა":"🔧","დისკების მოვლა":"⭕","სალონის მოვლა":"🧽","ავტოსამრეცხაო":"🫧","აქსესუარები":"🔩"})[x.category]||"✦"}));renderFilters();renderProducts();updateCart()}
-function renderFilters(){const cats=["ყველა",...new Set(products.map(p=>p.category))];document.getElementById("filters").innerHTML=cats.map(c=>'<button class="filter '+(c===activeCat?"active":"")+'" onclick="setCat('+JSON.stringify(c)+')">'+esc(c)+'</button>').join("")}
-function setCat(c){activeCat=c;renderFilters();renderProducts()}
-function renderProducts(){const q=document.getElementById("search").value.toLowerCase();let list=products.filter(p=>(activeCat==="ყველა"||p.category===activeCat)&&(p.name+" "+p.description+" "+p.category).toLowerCase().includes(q));document.getElementById("productGrid").innerHTML=list.map(p=>'<article class="card"><span class="badge">'+esc(p.badge||"ECOMAX")+'</span><div class="product-icon">'+(p.icon||"✦")+'</div><div class="category">'+esc(p.category)+'</div><h3>'+esc(p.name)+'</h3><div class="desc">'+esc(p.description)+'</div><div class="meta"><b>გამოყენება:</b> '+esc(p.usage)+'<br><b>გაზავება:</b> '+esc(p.dilution)+'</div><div style="margin:14px 0 8px"><label style="font-size:12px;color:#91aab4">რაოდენობა</label><select id="qty-'+p.id+'" style="width:100%;padding:9px;margin-top:5px;border-radius:8px;background:#07161c;color:#fff;border:1px solid #20434e" onchange="previewQty('+p.id+')">'+Array.from({length:20},(_,i)=>'<option value="'+(i+1)+'">'+(i+1)+' ლიტრი</option>').join('')+'<option value="21">21+ ლიტრი</option></select></div><div class="price-row"><div class="price" id="price-'+p.id+'">'+Number(p.price).toFixed(2)+'₾ <small>/ '+esc(p.unit)+'</small></div><button class="add" onclick="addSelected('+p.id+')">+ კალათაში</button></div></article>').join("")||'<p style="color:#91aab4">პროდუქტი ვერ მოიძებნა.</p>'}
-function previewQty(id){const p=products.find(x=>x.id===id),q=Number(document.getElementById("qty-"+id)?.value||1),el=document.getElementById("price-"+id);if(!p||!el)return;el.innerHTML=(Number(p.price)*q).toFixed(2)+'₾ <small>/ '+esc(p.unit)+' • '+q+' ლ</small>'}
-function addSelected(id){const q=Number(document.getElementById("qty-"+id)?.value||1);addToCart(id,q)}
+{name:"ძრავის სარეცხი",category:"ძრავის მოვლა",description:"პროფესიონალური ძრავის საწმენდი საშუალება ცხიმისა და ძლიერი ჭუჭყის მოსაშორებლად.",usage:"გამოიყენე დაბინძურების ხარისხის მიხედვით.",dilution:"1:1 ან 1:3 — დაბინძურების მიხედვით",price:10,unit:"ლიტრი",badge:"PRO",icon:"🔧"},
+{name:"დისკების სარეცხი",category:"დისკების მოვლა",description:"დისკებისთვის განკუთვნილი ძლიერი გამწმენდი.",usage:"ზედაპირზე დატანე და ჩამორეცხე.",dilution:"1:1 ან 1:3 — დაბინძურების მიხედვით",price:10,unit:"ლიტრი",badge:"PRO",icon:"⭕"},
+{name:"ნაჭრის ქიმწმენდა",category:"სალონის მოვლა",description:"ტექსტილისა და ნაჭრის ზედაპირების პროფესიონალური ქიმწმენდის საშუალება.",usage:"გამოიყენე აპარატში.",dilution:"1:1 აპარატში ან 1:10 — დაბინძურების მიხედვით",price:10,unit:"ლიტრი",badge:"DETAIL",icon:"🧽"},
+{name:"ტყავის ქიმწმენდა",category:"სალონის მოვლა",description:"ტყავის ზედაპირებისთვის განკუთვნილი ქიმწმენდის საშუალება.",usage:"გამოიყენე ზედაპირის მდგომარეობის მიხედვით.",dilution:"1:1 ან 1:3 — დაბინძურების მიხედვით",price:10,unit:"ლიტრი",badge:"DETAIL",icon:"🪑"},
+{name:"რადიატორის სარეცხი",category:"ძრავის მოვლა",description:"რადიატორის პროფესიონალური გამწმენდი.",usage:"გამოიყენე დაბინძურების ხარისხის მიხედვით.",dilution:"1:1 ან 1:3 — დაბინძურების მიხედვით",price:10,unit:"ლიტრი",badge:"PRO",icon:"♨"},
+{name:"მანქანის სარეცხი ქაფი 2 ლიტრი",category:"ავტოსამრეცხაო",description:"კონცენტრირებული აქტიური ქაფი.",usage:"2 ლიტრი პროდუქტი 100 ლიტრ წყალში.",dilution:"2 ლიტრი / 100 ლიტრი წყალი",price:10,unit:"2 ლიტრი",badge:"BEST",icon:"🫧"},
+{name:"ქაფი",category:"ავტოსამრეცხაო",description:"პროფესიონალური ქაფი.",usage:"გამოიყენე სამუშაო პირობების მიხედვით.",dilution:"სტანდარტული დოზირება",price:10,unit:"1 ლიტრი",badge:"",icon:"🫧"},
+{name:"ქაფი მედიუმი",category:"ავტოსამრეცხაო",description:"საშუალო ინტენსივობის პროფესიონალური ქაფი.",usage:"გამოიყენე ავტოსამრეცხაოს პროცესით.",dilution:"სტანდარტული დოზირება",price:10,unit:"1 ლიტრი",badge:"MEDIUM",icon:"🫧"},
+{name:"ქაფი ჰარდი",category:"ავტოსამრეცხაო",description:"ძლიერი წმენდისთვის განკუთვნილი ქაფი.",usage:"გამოიყენე ძლიერი დაბინძურებისას.",dilution:"სტანდარტული დოზირება",price:15,unit:"1 ლიტრი",badge:"HARD",icon:"🫧"},
+{name:"სანთელი",category:"აქსესუარები",description:"სანთელი პროფესიონალური გამოყენებისთვის.",usage:"რაოდენობა სურვილისამებრ.",dilution:"1:10",price:10,unit:"ცალი",badge:"",icon:"🔩"}];
+let products=[],cart=JSON.parse(localStorage.getItem("ecomax_cart")||"[]"),activeCat="ყველა";
+function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function saveCart(){localStorage.setItem("ecomax_cart",JSON.stringify(cart));updateCart()}
-function addToCart(id,qty=1,open=true){const p=products.find(x=>x.id===id);if(!p)return;qty=Math.max(1,Math.floor(Number(qty)||1));let x=cart.find(x=>x.id===id);x?x.qty+=qty:cart.push({id:p.id,qty});saveCart();if(open)openCart()}
-function updateCart(){document.getElementById("cartCount").textContent=cart.reduce((a,x)=>a+x.qty,0)}
-function openCart(){document.getElementById("cartModal").classList.add("open");const box=document.getElementById("cartItems");if(!cart.length){box.innerHTML='<p style="color:#91aab4">კალათა ცარიელია.</p>';document.getElementById("cartTotal").textContent="";return}let total=0;box.innerHTML=cart.map(x=>{const p=products.find(p=>p.id===x.id);if(!p)return"";total+=p.price*x.qty;return '<div class="cart-item"><div><b>'+esc(p.name)+'</b><div style="color:#8da4ad;font-size:12px">'+p.price+'₾ / ლიტრი</div></div><div class="qty"><button onclick="changeQty('+x.id+',-1)">−</button><select aria-label="ლიტრები" onchange="setQty('+x.id+',this.value)" style="min-width:80px;padding:7px;border-radius:7px;background:#07161c;color:#fff;border:1px solid #20434e">'+Array.from({length:20},(_,i)=>'<option value="'+(i+1)+'" '+(x.qty===i+1?'selected':'')+'>'+(i+1)+' ლ</option>').join('')+'<option value="21" '+(x.qty>20?'selected':'')+'>21+ ლ</option></select><button onclick="changeQty('+x.id+',1)">+</button></div></div>'}).join("");document.getElementById("cartTotal").textContent="ჯამი: "+total.toFixed(2)+"₾"}
-function setQty(id,q){q=Math.max(1,Math.floor(Number(q)||1));let x=cart.find(x=>x.id===id);if(!x)return;x.qty=q;saveCart();openCart()}
-function changeQty(id,d){let x=cart.find(x=>x.id===id);if(!x)return;x.qty+=d;if(x.qty<=0)cart=cart.filter(x=>x.id!==id);saveCart();openCart()}
-function closeModal(id){document.getElementById(id).classList.remove("open")}
-async function accountAction(){const {data:{session}}=await db.auth.getSession();location.href=session?"#account":"login.html";if(session)alert("ანგარიშის დეტალები მალე გაიხსნება.");}
-async function checkoutSummary(){let total=0;const rows=cart.map(x=>{const p=products.find(p=>p.id===x.id);if(!p)return"";const line=Number(p.price)*x.qty;total+=line;return '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #123039"><span>'+esc(p.name)+' • '+x.qty+' ლ</span><b>'+line.toFixed(2)+'₾</b></div>'}).join("");document.getElementById("checkoutSummary").innerHTML=rows+'<div style="display:flex;justify-content:space-between;padding-top:10px;font-size:19px"><b>სულ</b><b>'+total.toFixed(2)+'₾</b></div>'}
-async function openCheckout(){if(!cart.length)return;const {data:{session}}=await db.auth.getSession();if(!session){location.href="login.html";return}closeModal("cartModal");const p=await db.from("profiles").select("*").eq("id",session.user.id).maybeSingle();if(p.data){document.getElementById("coName").value=p.data.full_name||"";document.getElementById("coPhone").value=p.data.phone||"";document.getElementById("coAddress").value=p.data.address||"";document.getElementById("coCity").value=p.data.city||"ქუთაისი"}checkoutSummary();document.getElementById("checkoutModal").classList.add("open")}
-
-document.getElementById("checkoutForm").addEventListener("submit",async e=>{e.preventDefault();const {data:{session}}=await db.auth.getSession();if(!session){location.href="login.html";return}let total=0;const items=cart.map(x=>{const p=products.find(p=>p.id===x.id);const line=Number(p.price)*x.qty;total+=line;return{product_id:p.id,product_name:p.name,quantity:x.qty,unit_price:Number(p.price),unit:p.unit}});const delivery=document.getElementById("coDelivery").value,payment=document.getElementById("coPayment").value;const {data,error}=await db.from("orders").insert({user_id:session.user.id,status:"new",customer_name:document.getElementById("coName").value.trim(),phone:document.getElementById("coPhone").value.trim(),address:document.getElementById("coAddress").value.trim(),city:document.getElementById("coCity").value.trim(),delivery_method:delivery,payment_method:payment,items,total});const m=document.getElementById("checkoutMsg");if(error){m.innerHTML='<p class="error">შეკვეთა ვერ გაიგზავნა: '+esc(error.message)+'</p>';return}cart=[];saveCart();m.innerHTML='<p class="success">შეკვეთა მიღებულია. ECOMAX გუნდი დაგიკავშირდება.</p>';setTimeout(()=>{closeModal("checkoutModal");location.href="account.html"},900)});
-
-function toggleAI(){document.getElementById("aiPanel").classList.toggle("open")}
-function normalizeAI(s){return s.toLowerCase().replace(/\s+/g," ").trim()}
-function aiNumber(s){const m=s.match(/(?:^|\s)(\d+(?:[.,]\d+)?)(?=\s*(?:ლიტრი|ლ|ცალი|ც))?/);return m?Number(m[1].replace(",",".")):null}
-function aiFindProduct(s){const aliases=[[[ "ძრავ","ძრავის"],"ძრავის სარეცხი"],[[ "დისკ","დისკების"],"დისკების სარეცხი"],[[ "ნაჭ","ქსოვ","ტექსტ"],"ნაჭრის ქიმწმენდა"],[[ "ტყავ"],"ტყავის ქიმწმენდა"],[[ "რადიატ"],"რადიატორის სარეცხი"],[[ "მედიუმ","medium"],"ქაფი მედიუმი"],[[ "ჰარდი","hard"],"ქაფი ჰარდი"],[[ "2 ლიტრი ქაფ","2ლ ქაფ","მანქანის ქაფ"],"მანქანის სარეცხი ქაფი 2 ლიტრი"],[[ "სანთ"],"სანთელი"]];for(const [words,name] of aliases)if(words.some(w=>s.includes(w)))return products.find(p=>p.name===name)||null;return null}
-function aiExtractRequests(q){
- const s=normalizeAI(q), found=[];
- const names=[["მედიუმ","ქაფი მედიუმი"],["medium","ქაფი მედიუმი"],["ჰარდი","ქაფი ჰარდი"],["hard","ქაფი ჰარდი"],["ძრავის სარეცხი","ძრავის სარეცხი"],["ძრავის","ძრავის სარეცხი"],["დისკების სარეცხი","დისკების სარეცხი"],["დისკების","დისკების სარეცხი"],["ნაჭრის ქიმწმენდა","ნაჭრის ქიმწმენდა"],["ნაჭრის","ნაჭრის ქიმწმენდა"],["ტყავის ქიმწმენდა","ტყავის ქიმწმენდა"],["ტყავის","ტყავის ქიმწმენდა"],["რადიატორის სარეცხი","რადიატორის სარეცხი"],["რადიატორის","რადიატორის სარეცხი"],["2 ლიტრიანი ქაფი","მანქანის სარეცხი ქაფი 2 ლიტრი"]];
- const unitRe='(\\d+(?:[.,]\\d+)?)\\s*(?:ლიტრი|ლ|ლიტრს|ცალი|ცალ)';
- for(const [word,name] of names){
-   const p=products.find(x=>x.name===name); if(!p)continue;
-   const re=new RegExp('(\\d+(?:[.,]\\d+)?)\\s*(?:ლიტრი|ლ|ლიტრს|ცალი|ცალ)?\\s*'+word.replace(/[.*+?^{}()|[\\]\\\\]/g,'\\\\$&'),'i');
-   const m=s.match(re);
-   if(m){let qty=Number(m[1].replace(',','.'));if(!Number.isFinite(qty)||qty<=0)continue;if(!found.some(x=>x.p.id===p.id))found.push({p,qty});}
- }
- return found;
-}
-function aiAddRequest(q){
- const multi=aiExtractRequests(q);
- if(multi.length)return{multi};
- const s=normalizeAI(q);
- if(!/(მინდა|დამიმატე|დამამატე|დამიდე|ვიყიდი|ვიყიდო|მომეცი|მჭირდება|აიღე|დაამატე)/.test(s))return null;
- const p=aiFindProduct(s);if(!p)return null;
- const qty=aiNumber(s);if(!qty)return{needQty:true,p};
- return{p,qty,added:true};
-}
-// ECOMAX FRONTEND INITIALIZATION
+function updateCart(){const el=document.getElementById("cartCount");if(el)el.textContent=cart.reduce((a,x)=>a+Number(x.qty||0),0)}
+async function loadProducts(){try{const r=await db.from("products").select("*").eq("active",true).order("id");products=r.error||!r.data?.length?fallback.map((x,i)=>({...x,id:i+1})):r.data.map(x=>({...x,icon:x.icon||"✦"}))}catch(e){products=fallback.map((x,i)=>({...x,id:i+1}))}renderFilters();renderProducts();updateCart()}
+function renderFilters(){const el=document.getElementById("filters");if(!el)return;const cats=["ყველა",...new Set(products.map(p=>p.category))];el.innerHTML=cats.map(c=>'<button class="filter '+(c===activeCat?"active":"")+'" onclick="setCat('+JSON.stringify(c)+')">'+esc(c)+'</button>').join("")}
+function setCat(c){activeCat=c;renderFilters();renderProducts()}
+function renderProducts(){const search=document.getElementById("search"),grid=document.getElementById("productGrid");if(!grid)return;const q=(search?.value||"").toLowerCase();const list=products.filter(p=>(activeCat==="ყველა"||p.category===activeCat)&&(p.name+" "+(p.description||"")+" "+p.category).toLowerCase().includes(q));grid.innerHTML=list.map(p=>'<article class="card"><span class="badge">'+esc(p.badge||"ECOMAX")+'</span><div class="product-icon">'+(p.icon||"✦")+'</div><div class="category">'+esc(p.category)+'</div><h3>'+esc(p.name)+'</h3><div class="desc">'+esc(p.description)+'</div><div class="meta"><b>გამოყენება:</b> '+esc(p.usage)+'<br><b>გაზავება:</b> '+esc(p.dilution)+'</div><div style="margin:14px 0 8px"><label style="font-size:12px;color:#91aab4">რაოდენობა</label><select id="qty-'+p.id+'" style="width:100%;padding:9px;margin-top:5px;border-radius:8px;background:#07161c;color:#fff;border:1px solid #20434e" onchange="previewQty('+p.id+')">'+Array.from({length:20},(_,i)=>'<option value="'+(i+1)+'">'+(i+1)+' ლიტრი</option>').join("")+'<option value="21">21+ ლიტრი</option></select></div><div class="price-row"><div class="price" id="price-'+p.id+'">'+Number(p.price||0).toFixed(2)+'₾ <small>/ '+esc(p.unit||"ლიტრი")+'</small></div><button class="add" onclick="addSelected('+p.id+')">+ კალათაში</button></div></article>').join("")||'<p style="color:#91aab4">პროდუქტი ვერ მოიძებნა.</p>'}
+function previewQty(id){const p=products.find(x=>x.id===id),q=Number(document.getElementById("qty-"+id)?.value||1),el=document.getElementById("price-"+id);if(p&&el)el.innerHTML=(Number(p.price)*q).toFixed(2)+'₾ <small>/ '+esc(p.unit||"ლიტრი")+' • '+q+' ლ</small>'}
+function addSelected(id){addToCart(id,Number(document.getElementById("qty-"+id)?.value||1))}
+function addToCart(id,qty=1,show=true){const p=products.find(x=>x.id===id);if(!p)return;qty=Math.max(1,Math.floor(Number(qty)||1));const x=cart.find(x=>x.id===id);if(x)x.qty+=qty;else cart.push({id:p.id,qty});saveCart();if(show)openCart()}
+function openCart(){const modal=document.getElementById("cartModal"),box=document.getElementById("cartItems");if(!modal||!box)return;modal.classList.add("open");if(!cart.length){box.innerHTML='<p style="color:#91aab4">კალათა ცარიელია.</p>';document.getElementById("cartTotal").textContent="";return}let total=0;box.innerHTML=cart.map(x=>{const p=products.find(p=>p.id===x.id);if(!p)return"";const line=Number(p.price)*x.qty;total+=line;return '<div class="cart-item"><div><b>'+esc(p.name)+'</b><div style="color:#8da4ad;font-size:12px">'+Number(p.price).toFixed(2)+'₾ / '+esc(p.unit||"ლიტრი")+'</div></div><div class="qty"><button onclick="changeQty('+x.id+',-1)">−</button><select onchange="setQty('+x.id+',this.value)" style="min-width:80px;padding:7px;border-radius:7px;background:#07161c;color:#fff;border:1px solid #20434e">'+Array.from({length:20},(_,i)=>'<option value="'+(i+1)+'" '+(x.qty===i+1?"selected":"")+'>'+(i+1)+' ლ</option>').join("")+'<option value="21" '+(x.qty>20?"selected":"")+'>21+ ლ</option></select><button onclick="changeQty('+x.id+',1)">+</button></div></div>'}).join("");document.getElementById("cartTotal").textContent="ჯამი: "+total.toFixed(2)+"₾"}
+function setQty(id,q){const x=cart.find(x=>x.id===id);if(x){x.qty=Math.max(1,Math.floor(Number(q)||1));saveCart();openCart()}}
+function changeQty(id,d){const x=cart.find(x=>x.id===id);if(!x)return;x.qty+=d;if(x.qty<=0)cart=cart.filter(x=>x.id!==id);saveCart();openCart()}
+function closeModal(id){document.getElementById(id)?.classList.remove("open")}
+async function accountAction(){const r=await db.auth.getSession();location.href=r.data.session?"account.html":"login.html"}
+async function openCheckout(){if(!cart.length)return;const r=await db.auth.getSession();if(!r.data.session){location.href="login.html";return}closeModal("cartModal");const p=await db.from("profiles").select("*").eq("id",r.data.session.user.id).maybeSingle();if(p.data){document.getElementById("coName").value=p.data.full_name||"";document.getElementById("coPhone").value=p.data.phone||"";document.getElementById("coAddress").value=p.data.address||"";document.getElementById("coCity").value=p.data.city||"ქუთაისი"}checkoutSummary();document.getElementById("checkoutModal")?.classList.add("open")}
+function checkoutSummary(){let total=0;const box=document.getElementById("checkoutSummary");if(!box)return;box.innerHTML=cart.map(x=>{const p=products.find(p=>p.id===x.id);if(!p)return"";const t=Number(p.price)*x.qty;total+=t;return "<div>"+esc(p.name)+" • "+x.qty+" ლ — "+t.toFixed(2)+"₾</div>"}).join("")+"<hr><b>სულ: "+total.toFixed(2)+"₾</b>"}
+function toggleAI(){document.getElementById("aiPanel")?.classList.toggle("open")}
+function aiFindProduct(q){const s=q.toLowerCase();const map=[["მედიუმ","ქაფი მედიუმი"],["medium","ქაფი მედიუმი"],["ჰარდი","ქაფი ჰარდი"],["hard","ქაფი ჰარდი"],["ძრავ","ძრავის სარეცხი"],["დისკ","დისკების სარეცხი"],["ნაჭ","ნაჭრის ქიმწმენდა"],["ტყავ","ტყავის ქიმწმენდა"],["რადიატ","რადიატორის სარეცხი"],["სანთ","სანთელი"],["მანქანის სარეცხი ქაფ","მანქანის სარეცხი ქაფი 2 ლიტრი"]];for(const [a,n] of map)if(s.includes(a))return products.find(p=>p.name===n)||null;return null}
+function aiQty(q){const m=q.match(/(\d+(?:[.,]\d+)?)\s*(?:ლიტრი|ლ|ცალი|ცალ)/i);return m?Number(m[1].replace(",",".")):null}
 document.addEventListener("DOMContentLoaded",()=>{
-  loadProducts();
-  document.getElementById("search")?.addEventListener("input",renderProducts);
-  document.getElementById("aiForm")?.addEventListener("submit",async e=>{
-    e.preventDefault();
-    const input=document.getElementById("aiInput"), q=input.value.trim();
-    if(!q)return;
-    const chat=document.getElementById("chat");
-    chat.insertAdjacentHTML("beforeend",'<div class="msg user">'+esc(q)+'</div>');
-    input.value="";
-    const req=aiAddRequest(q);
-    let reply="";
-    if(req?.multi){
-      let total=0;
-      req.multi.forEach(x=>{addToCart(x.p.id,x.qty,false);total+=Number(x.p.price)*x.qty});
-      saveCart(); reply=req.multi.map(x=>esc(x.p.name)+" — "+x.qty+" ლ").join("<br>")+"<br><b>ჯამი: "+total.toFixed(2)+"₾</b><br>დავამატე კალათაში.";
-    }else if(req?.needQty){
-      reply="რამდენი ლიტრი გინდა "+esc(req.p.name)+"? მაგალითად: 2 ლიტრი.";
-    }else if(req?.added){
-      addToCart(req.p.id,req.qty,false); reply="დავამატე "+req.qty+" ლიტრი — "+esc(req.p.name)+".<br><b>"+(Number(req.p.price)*req.qty).toFixed(2)+"₾</b>";
-    }else{
-      const s=normalizeAI(q), p=aiFindProduct(s);
-      if(p) reply="<b>"+esc(p.name)+"</b><br>"+esc(p.description)+"<br>გაზავება: "+esc(p.dilution)+"<br>ფასი: "+Number(p.price).toFixed(2)+"₾ / "+esc(p.unit);
-      else reply="მითხარი პროდუქტის სახელი და რაოდენობა, მაგალითად: „მინდა 5 ლიტრი ძრავის სარეცხი“.";
-    }
-    chat.insertAdjacentHTML("beforeend",'<div class="msg bot">'+reply+'</div>');
-    chat.scrollTop=chat.scrollHeight;
-  });
+loadProducts();
+document.getElementById("search")?.addEventListener("input",renderProducts);
+document.getElementById("aiForm")?.addEventListener("submit",e=>{e.preventDefault();const input=document.getElementById("aiInput"),q=input?.value.trim();if(!q)return;const chat=document.getElementById("chat");chat.insertAdjacentHTML("beforeend",'<div class="msg user">'+esc(q)+'</div>');input.value="";const p=aiFindProduct(q),qty=aiQty(q);let reply;if(p&&qty){addToCart(p.id,qty,false);reply="დავამატე "+qty+" ლიტრი — "+esc(p.name)+". ჯამი: <b>"+(Number(p.price)*qty).toFixed(2)+"₾</b>";}else if(p){reply="რამდენი ლიტრი გინდა "+esc(p.name)+"?";}else{reply="მითხარი პროდუქტი და რაოდენობა, მაგალითად: „მინდა 5 ლიტრი ძრავის სარეცხი“."}chat.insertAdjacentHTML("beforeend",'<div class="msg bot">'+reply+'</div>');chat.scrollTop=chat.scrollHeight});
+document.getElementById("checkoutForm")?.addEventListener("submit",async e=>{e.preventDefault();const r=await db.auth.getSession();if(!r.data.session){location.href="login.html";return}let total=0;const items=cart.map(x=>{const p=products.find(p=>p.id===x.id),line=Number(p.price)*x.qty;total+=line;return{product_id:p.id,product_name:p.name,quantity:x.qty,unit_price:Number(p.price),unit:p.unit}});const {error}=await db.from("orders").insert({user_id:r.data.session.user.id,status:"new",customer_name:document.getElementById("coName").value.trim(),phone:document.getElementById("coPhone").value.trim(),address:document.getElementById("coAddress").value.trim(),city:document.getElementById("coCity").value.trim(),delivery_method:document.getElementById("coDelivery").value,payment_method:document.getElementById("coPayment").value,items,total});const m=document.getElementById("checkoutMsg");if(error){m.innerHTML='<p class="error">შეკვეთა ვერ გაიგზავნა: '+esc(error.message)+'</p>';return}cart=[];saveCart();m.innerHTML='<p class="success">შეკვეთა მიღებულია.</p>';setTimeout(()=>location.href="account.html",800)});
 });
 </script>
 </body>
