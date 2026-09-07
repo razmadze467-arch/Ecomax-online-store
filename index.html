@@ -117,7 +117,7 @@ function aiAsk(q){
 <button class="close-auth" onclick="closeAuth()">×</button><div class="tag">✦ ECOMAX AI IDENTITY</div><h2 style="margin:0">მომხმარებლის სივრცე</h2><p style="color:#8199a2;font-size:12px;line-height:1.6">შექმენი ანგარიში შეკვეთების, კალათისა და პერსონალური გამოცდილებისთვის.</p>
 <div class="auth-tabs"><button id="loginTab" class="active" onclick="authMode('login')">ავტორიზაცია</button><button id="regTab" onclick="authMode('register')">რეგისტრაცია</button></div>
 <form class="auth-form" id="authForm" onsubmit="submitAuth(event)"><label>ელფოსტა</label><input id="authEmail" type="email" required placeholder="you@example.com"><label>პაროლი</label><input id="authPass" type="password" minlength="6" required placeholder="••••••••"><div id="nameWrap" style="display:none"><label>სახელი და გვარი</label><input id="authName" placeholder="თქვენი სახელი"></div><button type="button" class="auth-link" onclick="forgotPassword()">დაგავიწყდა პაროლი?</button><button class="cta" type="submit" style="margin:4px 0 0;cursor:pointer">გაგრძელება →</button><div class="auth-status" id="authStatus"></div></form>
-</div></div>const SUPABASE_URL='YOUR_SUPABASE_URL';
+</div></div><script>const SUPABASE_URL='YOUR_SUPABASE_URL';
 const SUPABASE_ANON_KEY='YOUR_SUPABASE_ANON_KEY';
 const supabaseClient=(SUPABASE_URL.startsWith('https://')&&SUPABASE_ANON_KEY!=='YOUR_SUPABASE_ANON_KEY')?supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
 let currentAuthMode='login';
