@@ -322,7 +322,7 @@ footer{border-top:1px solid #172832;background:#05090e;padding:35px 24px;color:#
  <button onclick="renderProducts()">⌕</button>
 </div>
 
-<button class="header-btn" onclick="openAuth()">
+<button class="header-btn" onclick="openAccount()">
  👤 <span id="accountText">შესვლა</span>
 </button>
 
@@ -527,6 +527,28 @@ ECOMAX — პროფესიონალური ავტოქიმი�
 
 <div class="user-box" id="loggedUser"></div>
 
+</div>
+</div>
+
+<!-- ACCOUNT -->
+<div class="modal-bg" id="accountModal">
+<div class="modal">
+<button class="close" onclick="closeModal('accountModal')">×</button>
+<h2>✦ ჩემი ანგარიში</h2>
+<p style="color:#8fa4ae;margin-top:7px">პროფილი და შეკვეთების ისტორია</p>
+
+<div id="accountProfile" style="margin-top:20px"></div>
+
+<div style="margin-top:28px">
+<h3 style="margin-bottom:12px">📦 ჩემი შეკვეთები</h3>
+<div id="myOrders">
+<p style="color:#8fa4ae">იტვირთება...</p>
+</div>
+</div>
+
+<button class="btn btn-danger" style="width:100%;margin-top:24px" onclick="logoutFromAccount()">
+ანგარიშიდან გამოსვლა
+</button>
 </div>
 </div>
 
@@ -1704,6 +1726,91 @@ async function refreshAuthModal(){
 
 
 /* =========================================
+   ACCOUNT PAGE
+========================================= */
+
+async function openAccount(){
+
+ const {data:{session}} = await db.auth.getSession();
+
+ if(!session){
+  window.location.href="login.html";
+  return;
+ }
+
+ openModal("accountModal");
+
+ const profile = await getProfile(session.user.id);
+ const profileBox = document.getElementById("accountProfile");
+
+ profileBox.innerHTML = `
+ <div class="user-box" style="display:block">
+  <b>${profile?.full_name || "ECOMAX მომხმარებელი"}</b><br><br>
+  <span style="color:#a9bbc2">${session.user.email}</span>
+  ${profile?.phone ? "<br><br>📞 "+profile.phone : ""}
+  ${profile?.address ? "<br><br>📍 "+profile.address : ""}
+  ${profile?.city ? "<br><br>🏙️ "+profile.city : ""}
+ </div>`;
+
+ await loadMyOrders(session.user.id);
+}
+
+async function loadMyOrders(userId){
+
+ const box=document.getElementById("myOrders");
+
+ const {data,error}=await db
+  .from("orders")
+  .select("id,status,customer_name,phone,address,city,items,total,created_at")
+  .eq("user_id",userId)
+  .order("created_at",{ascending:false});
+
+ if(error){
+  console.error(error);
+  box.innerHTML='<p style="color:#ff9da7">შეკვეთების ჩატვირთვა ვერ მოხერხდა.</p>';
+  return;
+ }
+
+ if(!data || !data.length){
+  box.innerHTML='<div class="user-box" style="display:block;color:#8fa4ae">შეკვეთები ჯერ არ გაქვს.</div>';
+  return;
+ }
+
+ const labels={
+  new:"ახალი",
+  confirmed:"დადასტურებული",
+  processing:"მუშავდება",
+  shipped:"გაგზავნილია",
+  delivered:"მიტანილია",
+  cancelled:"გაუქმებული"
+ };
+
+ box.innerHTML=data.map(order=>{
+  const code="ECOMAX-"+order.id.substring(0,8).toUpperCase();
+  const status=labels[order.status] || order.status || "ახალი";
+  const date=new Date(order.created_at).toLocaleString("ka-GE",{dateStyle:"medium",timeStyle:"short"});
+  const items=Array.isArray(order.items)?order.items.filter(x=>x && x.product_name).map(x=>x.product_name+" × "+x.quantity).join(", "):"პროდუქტები";
+  return `
+   <div class="user-box" style="display:block;margin-bottom:10px">
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+     <b>${code}</b>
+     <span style="color:var(--cyan)">${status}</span>
+    </div>
+    <div style="color:#8fa4ae;margin-top:8px">${date}</div>
+    <div style="margin-top:8px">${items}</div>
+    <div style="margin-top:8px;font-size:18px;font-weight:bold">${Number(order.total||0).toFixed(2)}₾</div>
+   </div>`;
+ }).join("");
+}
+
+async function logoutFromAccount(){
+ await db.auth.signOut();
+ closeModal("accountModal");
+ await updateAccountUI();
+ alert("ანგარიშიდან გამოხვედი.");
+}
+
+/* =========================================
    MODALS
 ========================================= */
 
@@ -1735,9 +1842,11 @@ updateCount();
 updateAccountUI();
 refreshAuthModal();
 
-db.auth.onAuthStateChange(async()=>{
- await updateAccountUI();
- await refreshAuthModal();
+db.auth.onAuthStateChange(()=>{
+ setTimeout(()=>{
+  updateAccountUI();
+  refreshAuthModal();
+ },0);
 });
 
 </script>
