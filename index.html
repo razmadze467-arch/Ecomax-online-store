@@ -123,6 +123,37 @@ function aiAddRequest(q){
  const p=aiFindProduct(s);if(!p)return null;
  const qty=aiNumber(s);if(!qty)return{needQty:true,p};
  return{p,qty,added:true};
-}</script>
+}
+// ECOMAX FRONTEND INITIALIZATION
+document.addEventListener("DOMContentLoaded",()=>{
+  loadProducts();
+  document.getElementById("search")?.addEventListener("input",renderProducts);
+  document.getElementById("aiForm")?.addEventListener("submit",async e=>{
+    e.preventDefault();
+    const input=document.getElementById("aiInput"), q=input.value.trim();
+    if(!q)return;
+    const chat=document.getElementById("chat");
+    chat.insertAdjacentHTML("beforeend",'<div class="msg user">'+esc(q)+'</div>');
+    input.value="";
+    const req=aiAddRequest(q);
+    let reply="";
+    if(req?.multi){
+      let total=0;
+      req.multi.forEach(x=>{addToCart(x.p.id,x.qty,false);total+=Number(x.p.price)*x.qty});
+      saveCart(); reply=req.multi.map(x=>esc(x.p.name)+" — "+x.qty+" ლ").join("<br>")+"<br><b>ჯამი: "+total.toFixed(2)+"₾</b><br>დავამატე კალათაში.";
+    }else if(req?.needQty){
+      reply="რამდენი ლიტრი გინდა "+esc(req.p.name)+"? მაგალითად: 2 ლიტრი.";
+    }else if(req?.added){
+      addToCart(req.p.id,req.qty,false); reply="დავამატე "+req.qty+" ლიტრი — "+esc(req.p.name)+".<br><b>"+(Number(req.p.price)*req.qty).toFixed(2)+"₾</b>";
+    }else{
+      const s=normalizeAI(q), p=aiFindProduct(s);
+      if(p) reply="<b>"+esc(p.name)+"</b><br>"+esc(p.description)+"<br>გაზავება: "+esc(p.dilution)+"<br>ფასი: "+Number(p.price).toFixed(2)+"₾ / "+esc(p.unit);
+      else reply="მითხარი პროდუქტის სახელი და რაოდენობა, მაგალითად: „მინდა 5 ლიტრი ძრავის სარეცხი“.";
+    }
+    chat.insertAdjacentHTML("beforeend",'<div class="msg bot">'+reply+'</div>');
+    chat.scrollTop=chat.scrollHeight;
+  });
+});
+</script>
 </body>
 </html>
