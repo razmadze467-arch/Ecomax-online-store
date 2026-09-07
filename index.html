@@ -122,7 +122,8 @@ function toggleWishlist(id){wishlist=wishlist.includes(id)?wishlist.filter(x=>x!
 async function loadReviews(id){const b=document.getElementById('reviewList');if(!b||!supabaseClient)return;const {data}=await supabaseClient.from('product_reviews').select('rating,review,created_at').eq('product_id',id).order('created_at',{ascending:false});b.innerHTML=data?.length?data.map(r=>'<div class="review-item"><div class="stars">'+('★'.repeat(r.rating))+'☆'.repeat(5-r.rating)+'</div><div>'+r.review.replace(/[<>]/g,'')+'</div></div>').join(''):'<small>ჯერ შეფასებები არ არის.</small>'}
 async function submitReview(id){const user=(await supabaseClient.auth.getUser()).data.user;if(!user){showToast('შეფასებისთვის გაიარე ავტორიზაცია');return}const rating=Number(document.getElementById('reviewRating').value),review=document.getElementById('reviewText').value.trim();if(!review)return showToast('დაწერე შეფასება');const {error}=await supabaseClient.from('product_reviews').upsert({product_id:id,user_id:user.id,rating,review},{onConflict:'product_id,user_id'});if(error)return showToast('შეფასების შენახვა ვერ მოხერხდა');document.getElementById('reviewText').value='';showToast('⭐ შეფასება დაემატა');loadReviews(id)}
 function closeProduct(){document.getElementById('productOverlay')?.classList.remove('show')}
-function addVariantToCart(id,i){const p=products.find(x=>x.id===id);if(!p)return;cart[id]=(cart[id]||0)+1;saveCart();closeProduct();showToast(p.name+' — '+p.prices[i][0]+' დაემატა კალათაში')}
+let cartVariants=JSON.parse(localStorage.getItem('ecomax_cart_variants')||'{}');
+function addVariantToCart(id,i){const p=products.find(x=>x.id===id);if(!p)return;cart[id]=(cart[id]||0)+1;cartVariants[id]=i;localStorage.setItem('ecomax_cart_variants',JSON.stringify(cartVariants));saveCart();closeProduct();renderCart();showToast(p.name+' — '+p.prices[i][0]+' დაემატა კალათაში')}
 function openCheckout(){if(!Object.keys(cart).length){showToast('ჯერ დაამატე პროდუქტი კალათაში');return}renderCheckout();document.getElementById('checkoutOverlay').classList.add('show')}
 function closeCheckout(){document.getElementById('checkoutOverlay').classList.remove('show')}
 function renderCheckout(){let total=0;const s=Object.keys(cart).map(id=>{const p=products.find(x=>x.id==id),q=cart[id];const sub=q*p.prices[0][1];total+=sub;return '<div>'+p.name+' × '+q+' — '+sub+'₾</div>'}).join('');document.getElementById('orderSummary').innerHTML=s;document.getElementById('checkoutTotal').textContent=total+'₾'}
@@ -134,9 +135,9 @@ function updateCount(){document.getElementById('cartCount').textContent=Object.v
 function openCart(){renderCart();document.getElementById('cartOverlay').classList.add('show')}
 function closeCart(){document.getElementById('cartOverlay').classList.remove('show')}
 function renderCart(){
- const ids=Object.keys(cart), box=document.getElementById('cartItems'); let total=0;
+ const ids=Object.keys(cart),box=document.getElementById('cartItems');let total=0;
  if(!ids.length){box.innerHTML='<p style="color:#8199a2">კალათა ცარიელია.</p>';document.getElementById('cartTotal').textContent='0₾';return;}
- box.innerHTML=ids.map(id=>{const p=products.find(x=>x.id==id),q=cart[id],subtotal=q*5;total+=subtotal;return '<div class="cart-row"><div><b>'+p.name+'</b><br><small style="color:#8199a2">500 მლ · '+q+' ც.</small></div><div class="qty"><button onclick="changeQty('+id+',-1)">−</button><span>'+q+'</span><button onclick="changeQty('+id+',1)">+</button></div><b>'+subtotal+'₾</b></div>'}).join('');
+ box.innerHTML=ids.map(id=>{const p=products.find(x=>x.id==id),q=cart[id],vi=Number(cartVariants[id]||0),v=p.prices[vi]||p.prices[0],subtotal=q*v[1];total+=subtotal;return '<div class="cart-row"><div><b>'+p.name+'</b><br><small style="color:#8199a2">'+v[0]+' · '+q+' ც.</small></div><div class="qty"><button onclick="changeQty('+id+',-1)">−</button><span>'+q+'</span><button onclick="changeQty('+id+',1)">+</button></div><b>'+subtotal+'₾</b></div>'}).join('');
  document.getElementById('cartTotal').textContent=total+'₾';
 }
 function aiAsk(q){
