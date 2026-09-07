@@ -97,10 +97,24 @@ function toggleAI(){document.getElementById("aiPanel").classList.toggle("open")}
 function normalizeAI(s){return s.toLowerCase().replace(/\s+/g," ").trim()}
 function aiNumber(s){const m=s.match(/(?:^|\s)(\d+(?:[.,]\d+)?)(?=\s*(?:ლიტრი|ლ|ცალი|ც))?/);return m?Number(m[1].replace(",",".")):null}
 function aiFindProduct(s){const aliases=[[[ "ძრავ","ძრავის"],"ძრავის სარეცხი"],[[ "დისკ","დისკების"],"დისკების სარეცხი"],[[ "ნაჭ","ქსოვ","ტექსტ"],"ნაჭრის ქიმწმენდა"],[[ "ტყავ"],"ტყავის ქიმწმენდა"],[[ "რადიატ"],"რადიატორის სარეცხი"],[[ "მედიუმ","medium"],"ქაფი მედიუმი"],[[ "ჰარდი","hard"],"ქაფი ჰარდი"],[[ "2 ლიტრი ქაფ","2ლ ქაფ","მანქანის ქაფ"],"მანქანის სარეცხი ქაფი 2 ლიტრი"],[[ "სანთ"],"სანთელი"]];for(const [words,name] of aliases)if(words.some(w=>s.includes(w)))return products.find(p=>p.name===name)||null;return null}
-function aiAddRequest(q){const s=normalizeAI(q);if(!/(მინდა|დამიმატე|დამამატე|დამიდე|ვიყიდი|ვიყიდო|მომეცი|მჭირდება|აიღე|დაამატე)/.test(s))return null;const qty=aiNumber(s),p=aiFindProduct(s);if(!p)return null;if(!qty)return{needQty:true,p};let actualQty=qty;if(p.name==="მანქანის სარეცხი ქაფი 2 ლიტრი")actualQty=Math.max(1,Math.round(qty/2));addToCart(p.id,actualQty,false);return{p,qty,actualQty,added:true}}
-async function aiAnswer(q){const s=normalizeAI(q);if(s.includes("ჩემი შეკვეთ")||s.includes("შეკვეთის სტატუს")||s.includes("სად არის ჩემი")){const {data:{user}}=await db.auth.getUser();if(!user)return"შეკვეთის სტატუსისთვის ჯერ შედი ანგარიშში.";const {data}=await db.from("orders").select("id,status,total").eq("user_id",user.id).order("created_at",{ascending:false}).limit(1);if(!data?.length)return"შეკვეთები ჯერ არ გაქვს.";const o=data[0],L={new:"ახალი",confirmed:"დადასტურებული",processing:"მუშავდება",shipped:"გაგზავნილია",delivered:"მიტანილი",cancelled:"გაუქმებული"};return"ბოლო შეკვეთა <b>ECOMAX-"+o.id.slice(0,8).toUpperCase()+"</b>: "+(L[o.status]||o.status)+", თანხა "+Number(o.total).toFixed(2)+"₾."}const add=aiAddRequest(s);if(add?.needQty)return"<b>"+esc(add.p.name)+"</b> არჩეულია. რამდენი ლიტრი გინდა? მაგალითად: <b>2 ლიტრი</b>.";if(add?.added){const shown=add.p.name==="მანქანის სარეცხი ქაფი 2 ლიტრი"?add.actualQty*2:add.qty;updateCart();openCart();return"დამატებულია კალათაში: <b>"+esc(add.p.name)+"</b> — <b>"+shown+" ლიტრი</b>. კალათა გახსნილია. სურვილის შემთხვევაში დააჭირე <b>შეკვეთის გაფორმებას</b>."}if(s.includes("დისკ")||s.includes("დისკის"))return"დისკებისთვის გირჩევ <b>დისკების სარეცხს</b>. გაზავება: 1:1 ან 1:3 — დაბინძურების მიხედვით. თუ გინდა, მომწერე რამდენი ლიტრი დავამატო.";if(s.includes("ძრავ"))return"ძრავისთვის არის <b>ძრავის სარეცხი</b>. გაზავება: 1:1 ან 1:3 — დაბინძურების მიხედვით. მომწერე რამდენი ლიტრი გინდა.";if(s.includes("ნაჭ")||s.includes("ქსოვ"))return"<b>ნაჭრის ქიმწმენდა</b> — აპარატში 1:1, ხოლო სხვა შემთხვევაში 1:10, დაბინძურების მიხედვით. მითხარი რამდენი ლიტრი დავამატო.";if(s.includes("ტყავ"))return"<b>ტყავის ქიმწმენდა</b> — 1:1 ან 1:3, დაბინძურების მიხედვით. მითხარი რამდენი ლიტრი გინდა.";if(s.includes("რადიატ"))return"<b>რადიატორის სარეცხი</b> — 1:1 ან 1:3, დაბინძურების მიხედვით. მითხარი რამდენი ლიტრი დავამატო.";if(s.includes("ქაფ"))return"ქაფი: <b>მედიუმი — 10₾/1 ლ</b>, <b>ჰარდი — 15₾/1 ლ</b>. ასევე გვაქვს <b>2 ლიტრიანი ქაფი — 10₾</b>, რომელიც გამოიყენება 100 ლიტრ წყალში. მითხარი რომელი გინდა და რამდენი ლიტრი.";if(s.includes("სანთ"))return"<b>სანთელი</b> — 1:10. რაოდენობა სურვილისამებრ.";const hits=products.filter(p=>(p.name+" "+p.category).toLowerCase().includes(s)).slice(0,3);return hits.length?"შესაძლო პროდუქტებია: "+hits.map(p=>"<b>"+esc(p.name)+"</b>").join(", ")+".":"შემიძლია დაგეხმარო პროდუქტის არჩევაში და კალათაში დამატებაში. მაგალითად დაწერე: <b>მინდა 2 ლიტრი მედიუმი</b> ან <b>დამიმატე 3 ლიტრი ძრავის სარეცხი</b>."}
-document.getElementById("aiForm").addEventListener("submit",e=>{e.preventDefault();const input=document.getElementById("aiInput"),q=input.value.trim();if(!q)return;const chat=document.getElementById("chat");chat.innerHTML+='<div class="msg user">'+esc(q)+'</div><div class="msg bot">'+aiAnswer(q)+'</div>';input.value="";chat.scrollTop=chat.scrollHeight})
-db.auth.onAuthStateChange((_event,session)=>{document.getElementById("accountText").textContent=session?"ჩემი ანგარიში":"შესვლა"});
-loadProducts();
-</script>
-</body></html>
+function aiExtractRequests(q){
+ const s=normalizeAI(q), found=[];
+ const names=[["მედიუმ","ქაფი მედიუმი"],["medium","ქაფი მედიუმი"],["ჰარდი","ქაფი ჰარდი"],["hard","ქაფი ჰარდი"],["ძრავის სარეცხი","ძრავის სარეცხი"],["ძრავის","ძრავის სარეცხი"],["დისკების სარეცხი","დისკების სარეცხი"],["დისკების","დისკების სარეცხი"],["ნაჭრის ქიმწმენდა","ნაჭრის ქიმწმენდა"],["ნაჭრის","ნაჭრის ქიმწმენდა"],["ტყავის ქიმწმენდა","ტყავის ქიმწმენდა"],["ტყავის","ტყავის ქიმწმენდა"],["რადიატორის სარეცხი","რადიატორის სარეცხი"],["რადიატორის","რადიატორის სარეცხი"],["2 ლიტრიანი ქაფი","მანქანის სარეცხი ქაფი 2 ლიტრი"]];
+ const unitRe='(\\d+(?:[.,]\\d+)?)\\s*(?:ლიტრი|ლ|ლიტრს|ცალი|ცალ)';
+ for(const [word,name] of names){
+   const p=products.find(x=>x.name===name); if(!p)continue;
+   const re=new RegExp('(\\d+(?:[.,]\\d+)?)\\s*(?:ლიტრი|ლ|ლიტრს|ცალი|ცალ)?\\s*'+word.replace(/[.*+?^{}()|[\\]\\\\]/g,'\\\\$&'),'i');
+   const m=s.match(re);
+   if(m){let qty=Number(m[1].replace(',','.'));if(!Number.isFinite(qty)||qty<=0)continue;if(!found.some(x=>x.p.id===p.id))found.push({p,qty});}
+ }
+ return found;
+}
+function aiAddRequest(q){
+ const multi=aiExtractRequests(q);
+ if(multi.length)return{multi};
+ const s=normalizeAI(q);
+ if(!/(მინდა|დამიმატე|დამამატე|დამიდე|ვიყიდი|ვიყიდო|მომეცი|მჭირდება|აიღე|დაამატე)/.test(s))return null;
+ const p=aiFindProduct(s);if(!p)return null;
+ const qty=aiNumber(s);if(!qty)return{needQty:true,p};
+ return{p,qty,added:true};
+}>
