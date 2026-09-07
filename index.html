@@ -1,1087 +1,1065 @@
 <!DOCTYPE html>
 <html lang="ka">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>ECOMAX | პროფესიონალური ავტოქიმია</title>
-
-  <meta
-    name="description"
-    content="ECOMAX — პროფესიონალური ავტოქიმიის ონლაინ მაღაზია"
-  >
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --dark: #131921;
-      --dark2: #232f3e;
-      --blue: #00b8c8;
-      --orange: #ff9900;
-      --light: #eaeded;
-      --white: #ffffff;
-      --text: #17212b;
-      --muted: #65727e;
-      --border: #d9dee3;
-    }
-
-    body {
-      font-family: Arial, "Noto Sans Georgian", sans-serif;
-      background: var(--light);
-      color: var(--text);
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    /* HEADER */
-
-    .header {
-      background: var(--dark);
-      color: white;
-    }
-
-    .header-main {
-      max-width: 1500px;
-      margin: auto;
-      padding: 12px 25px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .logo {
-      font-size: 28px;
-      font-weight: 900;
-      letter-spacing: 4px;
-      white-space: nowrap;
-    }
-
-    .search {
-      flex: 1;
-      display: flex;
-      max-width: 850px;
-    }
-
-    .search input {
-      width: 100%;
-      border: none;
-      padding: 13px;
-      outline: none;
-      border-radius: 6px 0 0 6px;
-    }
-
-    .search button {
-      border: none;
-      background: var(--orange);
-      padding: 0 20px;
-      border-radius: 0 6px 6px 0;
-    }
-
-    .header-button {
-      border: none;
-      background: transparent;
-      color: white;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-
-    .nav {
-      background: var(--dark2);
-      color: white;
-    }
-
-    .nav-inner {
-      max-width: 1500px;
-      margin: auto;
-      padding: 11px 25px;
-      display: flex;
-      gap: 30px;
-      overflow-x: auto;
-    }
-
-    .nav-inner a {
-      white-space: nowrap;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    /* MAIN */
-
-    .container {
-      max-width: 1500px;
-      margin: auto;
-      padding: 22px;
-    }
-
-    /* HERO */
-
-    .hero {
-      background:
-        linear-gradient(
-          110deg,
-          #06131c,
-          #123943
-        );
-
-      border-radius: 10px;
-      color: white;
-
-      padding: 55px;
-
-      display: grid;
-      grid-template-columns: 1.5fr .5fr;
-
-      align-items: center;
-
-      margin-bottom: 25px;
-    }
-
-    .hero-label {
-      color: #46e7ef;
-      font-weight: bold;
-      letter-spacing: 3px;
-      margin-bottom: 12px;
-    }
-
-    .hero h1 {
-      font-size: clamp(40px, 6vw, 72px);
-      line-height: 1;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 span {
-      color: #42e4ef;
-    }
-
-    .hero p {
-      max-width: 750px;
-      line-height: 1.7;
-      color: #d6e4e8;
-      font-size: 17px;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 12px;
-      margin-top: 28px;
-      flex-wrap: wrap;
-    }
-
-    .hero-art {
-      text-align: center;
-      font-size: 110px;
-    }
-
-    .hero-badges {
-      display: flex;
-      gap: 12px;
-      margin-top: 25px;
-      flex-wrap: wrap;
-    }
-
-    .badge {
-      padding: 10px 15px;
-      border-radius: 30px;
-      background: #ffffff12;
-      border: 1px solid #ffffff30;
-    }
-
-    /* BUTTONS */
-
-    .btn {
-      border: 1px solid var(--border);
-      background: white;
-      padding: 11px 16px;
-      border-radius: 7px;
-      font-weight: bold;
-    }
-
-    .btn-primary {
-      background: var(--orange);
-      border-color: #e28b00;
-    }
-
-    .btn-dark {
-      background: #07151d;
-      color: white;
-      border-color: #4c626c;
-    }
-
-    /* PRODUCTS */
-
-    .products-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 20px 0;
-      gap: 15px;
-    }
-
-    .products-header h2 {
-      font-size: 30px;
-    }
-
-    .category {
-      padding: 10px;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      background: white;
-    }
-
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 17px;
-    }
-
-    .product-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 16px;
-
-      display: flex;
-      flex-direction: column;
-
-      min-height: 440px;
-
-      box-shadow: 0 2px 8px rgba(0,0,0,.05);
-    }
-
-    .product-image {
-      height: 175px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background:
-        linear-gradient(
-          145deg,
-          #edf9fa,
-          #dceff1
-        );
-
-      border-radius: 8px;
-
-      font-size: 70px;
-
-      margin-bottom: 15px;
-    }
-
-    .product-card h3 {
-      font-size: 19px;
-      margin-bottom: 8px;
-    }
-
-    .description {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
-      min-height: 45px;
-    }
-
-    .product-info {
-      background: #f6f9fa;
-      border-radius: 7px;
-
-      padding: 11px;
-
-      margin: 12px 0;
-
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .product-info strong {
-      color: #175d66;
-    }
-
-    .prices {
-      margin-top: auto;
-    }
-
-    .price-line {
-      display: flex;
-      justify-content: space-between;
-      padding: 4px 0;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .product-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 13px;
-    }
-
-    .product-actions button {
-      flex: 1;
-      font-size: 13px;
-    }
-
-    /* SECTIONS */
-
-    .section {
-      background: white;
-      padding: 30px;
-      border-radius: 9px;
-      margin-top: 25px;
-    }
-
-    .section h2 {
-      margin-bottom: 20px;
-    }
-
-    .business-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 17px;
-    }
-
-    .business-card {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 22px;
-    }
-
-    .business-card h3 {
-      margin-bottom: 10px;
-    }
-
-    .business-card p {
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    /* MODALS */
-
-    .overlay {
-      display: none;
-
-      position: fixed;
-      inset: 0;
-
-      background: rgba(0,0,0,.65);
-
-      z-index: 100;
-
-      padding: 25px;
-
-      overflow-y: auto;
-    }
-
-    .modal {
-      position: relative;
-
-      background: white;
-
-      max-width: 950px;
-
-      margin: 25px auto;
-
-      padding: 30px;
-
-      border-radius: 10px;
-    }
-
-    .close {
-      position: absolute;
-
-      top: 8px;
-      right: 12px;
-
-      border: none;
-      background: none;
-
-      font-size: 32px;
-    }
-
-    .product-detail {
-      display: grid;
-      grid-template-columns: .8fr 1.2fr;
-      gap: 30px;
-    }
-
-    .big-image {
-      min-height: 300px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background: #edf7f8;
-
-      border-radius: 10px;
-
-      font-size: 110px;
-    }
-
-    .variant {
-      padding: 13px;
-
-      border: 1px solid var(--border);
-
-      border-radius: 7px;
-
-      margin: 8px 0;
-    }
-
-    .variant:hover {
-      border-color: var(--orange);
-    }
-
-    /* CART */
-
-    .cart-row {
-      display: grid;
-
-      grid-template-columns: 1fr auto auto;
-
-      gap: 20px;
-
-      padding: 14px 0;
-
-      border-bottom: 1px solid #eee;
-
-      align-items: center;
-    }
-
-    .quantity button {
-      width: 30px;
-      height: 30px;
-
-      border: 1px solid #ccc;
-
-      background: white;
-    }
-
-    /* FORM */
-
-    .form {
-      display: grid;
-      gap: 12px;
-    }
-
-    .form input,
-    .form textarea,
-    .form select {
-      width: 100%;
-
-      padding: 13px;
-
-      border: 1px solid #ccd3d8;
-
-      border-radius: 7px;
-    }
-
-    /* FOOTER */
-
-    footer {
-      background: var(--dark);
-
-      color: white;
-
-      margin-top: 30px;
-
-      padding: 35px 22px;
-    }
-
-    .footer-inner {
-      max-width: 1500px;
-      margin: auto;
-
-      display: flex;
-
-      justify-content: space-between;
-
-      gap: 20px;
-
-      flex-wrap: wrap;
-
-      color: #cbd3d9;
-    }
-
-    /* RESPONSIVE */
-
-    @media(max-width:1100px) {
-
-      .products-grid {
-        grid-template-columns: repeat(2,1fr);
-      }
-
-      .hero {
-        grid-template-columns: 1fr;
-      }
-
-      .business-grid {
-        grid-template-columns: 1fr;
-      }
-
-    }
-
-    @media(max-width:650px) {
-
-      .header-main {
-        padding: 10px 12px;
-        flex-wrap: wrap;
-      }
-
-      .search {
-        order: 3;
-        flex-basis: 100%;
-      }
-
-      .account {
-        display: none;
-      }
-
-      .container {
-        padding: 12px;
-      }
-
-      .hero {
-        padding: 30px 20px;
-      }
-
-      .hero-art {
-        font-size: 70px;
-      }
-
-      .products-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .products-header {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .product-detail {
-        grid-template-columns: 1fr;
-      }
-
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECOMAX — Professional Auto Care</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+ --bg:#05080d;
+ --panel:#0b1119;
+ --panel2:#101925;
+ --line:#1d3340;
+ --cyan:#20e7ff;
+ --cyan2:#00aeca;
+ --gold:#ffb52e;
+ --white:#f4fbff;
+ --muted:#8da1ad;
+ --green:#35e39b;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+ font-family:Arial,"Noto Sans Georgian",sans-serif;
+ background:
+ radial-gradient(circle at 15% 5%,rgba(0,210,255,.10),transparent 30%),
+ radial-gradient(circle at 85% 20%,rgba(0,255,200,.07),transparent 25%),
+ var(--bg);
+ color:var(--white);
+ min-height:100vh;
+}
+
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+
+/* HEADER */
+
+header{
+ position:sticky;
+ top:0;
+ z-index:50;
+ background:rgba(5,8,13,.82);
+ backdrop-filter:blur(20px);
+ border-bottom:1px solid rgba(32,231,255,.12);
+}
+
+.top{
+ max-width:1500px;
+ margin:auto;
+ padding:14px 24px;
+ display:flex;
+ align-items:center;
+ gap:22px;
+}
+
+.logo{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ font-weight:900;
+ font-size:25px;
+ letter-spacing:4px;
+}
+
+.logo-core{
+ width:38px;
+ height:38px;
+ border-radius:50%;
+ background:
+ radial-gradient(circle,#fff 0 5%,var(--cyan) 6% 28%,transparent 29%),
+ conic-gradient(var(--cyan),transparent,var(--cyan),transparent,var(--cyan));
+ box-shadow:0 0 20px var(--cyan);
+ animation:spin 7s linear infinite;
+}
+
+@keyframes spin{
+ to{transform:rotate(360deg)}
+}
+
+.search{
+ flex:1;
+ display:flex;
+ max-width:760px;
+}
+
+.search input{
+ flex:1;
+ background:#0b131c;
+ border:1px solid #243a47;
+ color:white;
+ padding:13px 16px;
+ outline:none;
+ border-radius:9px 0 0 9px;
+}
+
+.search button{
+ width:55px;
+ border:0;
+ background:var(--cyan);
+ border-radius:0 9px 9px 0;
+}
+
+.header-btn{
+ background:transparent;
+ color:white;
+ border:1px solid #243a47;
+ border-radius:8px;
+ padding:11px 14px;
+}
+
+.cart-count{
+ color:var(--cyan);
+ font-weight:bold;
+}
+
+/* NAV */
+
+nav{
+ border-bottom:1px solid rgba(255,255,255,.05);
+ background:#080e15;
+}
+
+.nav{
+ max-width:1500px;
+ margin:auto;
+ padding:10px 24px;
+ display:flex;
+ gap:28px;
+ overflow:auto;
+}
+
+.nav a{
+ white-space:nowrap;
+ color:#b7c8d0;
+ font-size:14px;
+}
+
+.nav a:hover{color:var(--cyan)}
+
+/* HERO */
+
+.hero{
+ max-width:1500px;
+ margin:25px auto;
+ padding:0 24px;
+}
+
+.hero-box{
+ min-height:540px;
+ position:relative;
+ overflow:hidden;
+ border:1px solid rgba(32,231,255,.18);
+ border-radius:25px;
+ background:
+ linear-gradient(120deg,rgba(10,26,35,.98),rgba(5,11,18,.94));
+ display:grid;
+ grid-template-columns:1.25fr .75fr;
+ align-items:center;
+ padding:70px;
+ box-shadow:
+ 0 0 80px rgba(0,200,255,.08),
+ inset 0 0 60px rgba(0,255,255,.025);
+}
+
+.hero-box:before{
+ content:"";
+ position:absolute;
+ width:500px;
+ height:500px;
+ right:-160px;
+ top:-160px;
+ border-radius:50%;
+ border:1px solid rgba(32,231,255,.15);
+ box-shadow:
+ 0 0 50px rgba(32,231,255,.08),
+ inset 0 0 50px rgba(32,231,255,.05);
+}
+
+.eyebrow{
+ color:var(--cyan);
+ letter-spacing:4px;
+ font-weight:bold;
+ margin-bottom:18px;
+}
+
+h1{
+ font-size:clamp(42px,6vw,78px);
+ line-height:.98;
+ margin-bottom:24px;
+}
+
+h1 span{
+ color:var(--cyan);
+ text-shadow:0 0 30px rgba(32,231,255,.35);
+}
+
+.hero-text{
+ max-width:700px;
+ color:#afc1ca;
+ line-height:1.75;
+ font-size:17px;
+}
+
+.hero-actions{
+ display:flex;
+ flex-wrap:wrap;
+ gap:12px;
+ margin-top:30px;
+}
+
+.btn{
+ border:1px solid #29404d;
+ background:#0c151e;
+ color:white;
+ padding:13px 20px;
+ border-radius:9px;
+ font-weight:bold;
+ transition:.2s;
+}
+
+.btn:hover{
+ transform:translateY(-2px);
+ border-color:var(--cyan);
+}
+
+.btn-main{
+ background:var(--cyan);
+ color:#001017;
+ border-color:var(--cyan);
+ box-shadow:0 0 25px rgba(32,231,255,.2);
+}
+
+.btn-gold{
+ background:var(--gold);
+ color:#111;
+ border-color:var(--gold);
+}
+
+/* AI CORE */
+
+.ai-stage{
+ height:400px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ position:relative;
+}
+
+.ai-ring{
+ position:absolute;
+ width:280px;
+ height:280px;
+ border-radius:50%;
+ border:1px solid rgba(32,231,255,.2);
+ box-shadow:0 0 50px rgba(32,231,255,.12);
+ animation:pulse 3s ease-in-out infinite;
+}
+
+.ai-ring:before,
+.ai-ring:after{
+ content:"";
+ position:absolute;
+ inset:20px;
+ border-radius:50%;
+ border:1px dashed rgba(32,231,255,.35);
+ animation:spin 12s linear infinite;
+}
+
+.ai-ring:after{
+ inset:45px;
+ animation-direction:reverse;
+ animation-duration:8s;
+}
+
+@keyframes pulse{
+ 50%{transform:scale(1.08);box-shadow:0 0 90px rgba(32,231,255,.25)}
+}
+
+.ai-core{
+ width:145px;
+ height:145px;
+ border-radius:50%;
+ position:relative;
+ z-index:2;
+ background:
+ radial-gradient(circle at 35% 30%,#fff, #6df5ff 6%,#00b9d6 25%,#061923 62%);
+ box-shadow:
+ 0 0 25px var(--cyan),
+ 0 0 80px rgba(32,231,255,.45);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:48px;
+}
+
+.ai-label{
+ position:absolute;
+ bottom:20px;
+ text-align:center;
+ color:var(--cyan);
+ font-weight:bold;
+ letter-spacing:2px;
+}
+
+/* SECTION */
+
+.container{
+ max-width:1500px;
+ margin:auto;
+ padding:0 24px 40px;
+}
+
+.section-title{
+ display:flex;
+ justify-content:space-between;
+ align-items:end;
+ gap:15px;
+ margin:35px 0 18px;
+}
+
+.section-title h2{
+ font-size:30px;
+}
+
+.section-title p{
+ color:var(--muted);
+}
+
+/* PRODUCTS */
+
+.products{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:17px;
+}
+
+.card{
+ background:
+ linear-gradient(145deg,rgba(15,26,37,.96),rgba(8,14,21,.96));
+ border:1px solid #1b303d;
+ border-radius:15px;
+ overflow:hidden;
+ transition:.25s;
+}
+
+.card:hover{
+ transform:translateY(-5px);
+ border-color:rgba(32,231,255,.55);
+ box-shadow:0 12px 45px rgba(0,0,0,.35);
+}
+
+.card-img{
+ height:190px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:
+ radial-gradient(circle,rgba(32,231,255,.15),transparent 55%),
+ #071019;
+ font-size:72px;
+}
+
+.card-body{padding:18px}
+
+.tag{
+ display:inline-block;
+ color:var(--cyan);
+ font-size:11px;
+ font-weight:bold;
+ letter-spacing:1px;
+ margin-bottom:9px;
+}
+
+.card h3{
+ font-size:19px;
+ margin-bottom:8px;
+}
+
+.desc{
+ color:#8da1ad;
+ font-size:14px;
+ line-height:1.5;
+ min-height:43px;
+}
+
+.info{
+ margin-top:13px;
+ padding:12px;
+ background:#09131c;
+ border:1px solid #182a35;
+ border-radius:9px;
+ color:#b6c8d0;
+ font-size:13px;
+ line-height:1.65;
+}
+
+.info strong{color:var(--cyan)}
+
+.prices{
+ margin-top:15px;
+}
+
+.price{
+ display:flex;
+ justify-content:space-between;
+ padding:5px 0;
+ color:#c9d5da;
+ font-size:14px;
+}
+
+.price b{color:white}
+
+.card-actions{
+ display:flex;
+ gap:8px;
+ margin-top:14px;
+}
+
+.card-actions button{flex:1}
+
+/* FEATURES */
+
+.features{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:16px;
+}
+
+.feature{
+ background:#0a1119;
+ border:1px solid #1a2c37;
+ border-radius:13px;
+ padding:25px;
+}
+
+.feature-icon{
+ font-size:30px;
+ margin-bottom:12px;
+}
+
+.feature h3{margin-bottom:9px}
+
+.feature p{
+ color:var(--muted);
+ line-height:1.6;
+}
+
+/* AI FLOAT */
+
+.ai-button{
+ position:fixed;
+ right:25px;
+ bottom:25px;
+ width:76px;
+ height:76px;
+ border:1px solid var(--cyan);
+ border-radius:50%;
+ background:
+ radial-gradient(circle,#72f7ff,#008da8 35%,#071923 68%);
+ box-shadow:
+ 0 0 25px rgba(32,231,255,.45),
+ 0 0 70px rgba(32,231,255,.18);
+ color:white;
+ font-size:27px;
+ z-index:90;
+ animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+ 50%{transform:translateY(-7px)}
+}
+
+/* AI PANEL */
+
+.ai-panel{
+ display:none;
+ position:fixed;
+ right:25px;
+ bottom:115px;
+ width:min(430px,calc(100vw - 30px));
+ height:650px;
+ background:rgba(7,13,20,.96);
+ backdrop-filter:blur(25px);
+ border:1px solid rgba(32,231,255,.3);
+ border-radius:20px;
+ z-index:89;
+ box-shadow:0 25px 100px rgba(0,0,0,.6);
+ overflow:hidden;
+}
+
+.ai-head{
+ padding:17px;
+ border-bottom:1px solid #1b303d;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+}
+
+.ai-head-left{
+ display:flex;
+ gap:10px;
+ align-items:center;
+}
+
+.mini-core{
+ width:35px;
+ height:35px;
+ border-radius:50%;
+ background:radial-gradient(circle,#fff,var(--cyan) 12%,#006f82 45%,#06121a 70%);
+ box-shadow:0 0 15px var(--cyan);
+}
+
+.status{
+ font-size:11px;
+ color:var(--green);
+}
+
+.close-ai{
+ border:0;
+ background:none;
+ color:#b7c7ce;
+ font-size:25px;
+}
+
+.chat{
+ height:calc(100% - 122px);
+ overflow:auto;
+ padding:17px;
+ display:flex;
+ flex-direction:column;
+ gap:12px;
+}
+
+.msg{
+ max-width:85%;
+ padding:12px 14px;
+ border-radius:14px;
+ line-height:1.55;
+ font-size:14px;
+}
+
+.bot{
+ background:#0d1b25;
+ border:1px solid #1b3644;
+ align-self:flex-start;
+}
+
+.user{
+ background:#083d49;
+ border:1px solid #126a7b;
+ align-self:flex-end;
+}
+
+.quick{
+ padding:10px 17px;
+ border-top:1px solid #1a2b36;
+ display:flex;
+ gap:7px;
+ overflow:auto;
+}
+
+.quick button{
+ white-space:nowrap;
+ border:1px solid #25414e;
+ background:#0b151e;
+ color:#cce5ea;
+ padding:7px 10px;
+ border-radius:20px;
+ font-size:12px;
+}
+
+.ai-input{
+ padding:10px;
+ display:flex;
+ gap:7px;
+ border-top:1px solid #1a2b36;
+}
+
+.ai-input input{
+ flex:1;
+ background:#08111a;
+ color:white;
+ border:1px solid #243a47;
+ padding:11px;
+ border-radius:9px;
+ outline:none;
+}
+
+.ai-input button{
+ width:45px;
+ border:0;
+ border-radius:9px;
+ background:var(--cyan);
+}
+
+/* MODAL */
+
+.modal-bg{
+ display:none;
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.78);
+ backdrop-filter:blur(8px);
+ z-index:100;
+ padding:20px;
+ overflow:auto;
+}
+
+.modal{
+ position:relative;
+ max-width:850px;
+ margin:30px auto;
+ background:#0a1119;
+ border:1px solid #23404d;
+ border-radius:18px;
+ padding:28px;
+ box-shadow:0 25px 100px #000;
+}
+
+.close{
+ position:absolute;
+ right:15px;
+ top:10px;
+ background:none;
+ border:0;
+ color:white;
+ font-size:30px;
+}
+
+.form{
+ display:grid;
+ gap:12px;
+ margin-top:20px;
+}
+
+.form input,
+.form textarea,
+.form select{
+ background:#071019;
+ border:1px solid #263d49;
+ color:white;
+ padding:13px;
+ border-radius:8px;
+ outline:none;
+}
+
+.form input:focus{
+ border-color:var(--cyan);
+}
+
+/* FOOTER */
+
+footer{
+ border-top:1px solid #172832;
+ background:#05090e;
+ padding:35px 24px;
+ color:#8799a2;
+}
+
+.footer-inner{
+ max-width:1500px;
+ margin:auto;
+ display:flex;
+ justify-content:space-between;
+ gap:20px;
+ flex-wrap:wrap;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+ .products{grid-template-columns:repeat(2,1fr)}
+ .hero-box{grid-template-columns:1fr;padding:50px}
+ .ai-stage{height:300px}
+}
+
+@media(max-width:650px){
+ .top{flex-wrap:wrap;padding:11px}
+ .logo{font-size:20px}
+ .search{order:3;flex-basis:100%}
+ .header-btn{display:none}
+ .hero{padding:0 12px}
+ .hero-box{padding:35px 22px}
+ .container{padding:0 12px 30px}
+ .products{grid-template-columns:1fr}
+ .features{grid-template-columns:1fr}
+ .ai-panel{right:15px;bottom:105px;height:600px}
+ .ai-button{right:15px;bottom:15px}
+}
+</style>
 </head>
 
 <body>
 
-<header class="header">
+<header>
+ <div class="top">
 
-  <div class="header-main">
+  <a class="logo" href="#">
+   <span class="logo-core"></span>
+   ECOMAX
+  </a>
 
-    <a href="#home" class="logo">
-      ECOMAX
-    </a>
-
-    <div class="search">
-
-      <input
-        id="searchInput"
-        type="text"
-        placeholder="მოძებნე პროდუქტი..."
-        oninput="renderProducts()"
-      >
-
-      <button onclick="renderProducts()">
-        🔎
-      </button>
-
-    </div>
-
-    <button
-      class="header-button account"
-      onclick="openModal('authModal')"
-    >
-      👤 შესვლა / რეგისტრაცია
-    </button>
-
-    <button
-      class="header-button"
-      onclick="openCart()"
-    >
-      🛒 კალათა
-      (<span id="cartCount">0</span>)
-    </button>
-
+  <div class="search">
+   <input id="search" placeholder="მოძებნე პროდუქტი..." oninput="renderProducts()">
+   <button onclick="renderProducts()">⌕</button>
   </div>
 
+  <button class="header-btn" onclick="openModal('auth')">
+   👤 შესვლა
+  </button>
+
+  <button class="header-btn" onclick="openCart()">
+   🛒 კალათა <span class="cart-count" id="count">0</span>
+  </button>
+
+ </div>
 </header>
 
-<nav class="nav">
-
-  <div class="nav-inner">
-
-    <a href="#home">მთავარი</a>
-
-    <a href="#products">პროდუქცია</a>
-
-    <a href="#about">ჩვენ შესახებ</a>
-
-    <a href="#advantages">რატომ ECOMAX</a>
-
-    <a href="#contact">კონტაქტი</a>
-
-  </div>
-
+<nav>
+ <div class="nav">
+  <a href="#home">მთავარი</a>
+  <a href="#products">პროდუქცია</a>
+  <a href="#advantages">რატომ ECOMAX</a>
+  <a href="#about">ჩვენ შესახებ</a>
+  <a href="#contact">კონტაქტი</a>
+ </div>
 </nav>
-
-
-<main class="container">
 
 <section class="hero" id="home">
 
+ <div class="hero-box">
+
   <div>
 
-    <div class="hero-label">
-      PROFESSIONAL AUTO CARE
-    </div>
+   <div class="eyebrow">
+    ECOMAX • PROFESSIONAL AUTO CARE
+   </div>
 
-    <h1>
-      პროფესიონალური
-      <br>
-      <span>ავტოქიმია</span>
-    </h1>
+   <h1>
+    პროფესიონალური
+    <br>
+    <span>ავტოქიმია.</span>
+   </h1>
 
-    <p>
-      ECOMAX-ის პროფესიონალური პროდუქცია
-      ავტომობილის მოვლისთვის.
-      პროდუქტის სრული ინფორმაცია,
-      გაზავება, გამოყენება,
-      უსაფრთხოება, შეფუთვა და ფასი
-      ერთ სივრცეში.
-    </p>
+   <p class="hero-text">
+    ავტომობილის პროფესიონალური მოვლის პროდუქტები,
+    ზუსტი გაზავებები, შეფუთვები და ფასები —
+    ყველაფერი ერთ თანამედროვე პლატფორმაზე.
+   </p>
 
-    <div class="hero-buttons">
+   <div class="hero-actions">
+    <a class="btn btn-main" href="#products">
+     პროდუქციის ნახვა
+    </a>
 
-      <a
-        href="#products"
-        class="btn btn-primary"
-      >
-        პროდუქციის ნახვა
-      </a>
-
-      <button
-        class="btn btn-dark"
-        onclick="openCart()"
-      >
-        კალათის ნახვა
-      </button>
-
-    </div>
-
-    <div class="hero-badges">
-
-      <span class="badge">
-        12+ წელი გამოცდილება
-      </span>
-
-      <span class="badge">
-        პროფესიონალური პროდუქცია
-      </span>
-
-      <span class="badge">
-        ონლაინ შეკვეთა
-      </span>
-
-    </div>
+    <button class="btn" onclick="toggleAI()">
+     ✦ ესაუბრე ECOMAX AI-ს
+    </button>
+   </div>
 
   </div>
 
-  <div class="hero-art">
-    ⚗️🚘
-  </div>
+  <div class="ai-stage">
 
-</section>
+   <div class="ai-ring"></div>
 
+   <div class="ai-core">
+    ✦
+   </div>
 
-<section id="products">
-
-  <div class="products-header">
-
-    <h2>
-      ECOMAX პროდუქცია
-    </h2>
-
-    <select
-      id="categoryFilter"
-      class="category"
-      onchange="renderProducts()"
-    >
-
-      <option value="all">
-        ყველა პროდუქტი
-      </option>
-
-      <option value="clean">
-        სარეცხი / ქიმწმენდა
-      </option>
-
-      <option value="care">
-        მოვლა
-      </option>
-
-      <option value="special">
-        სპეციალური
-      </option>
-
-    </select>
+   <div class="ai-label">
+    ECOMAX AI COMPANION
+   </div>
 
   </div>
 
-  <div
-    class="products-grid"
-    id="productsGrid"
-  ></div>
+ </div>
 
 </section>
 
+<main class="container">
 
-<section
-  class="section"
-  id="advantages"
->
+ <div class="section-title" id="products">
+  <div>
+   <h2>პროდუქცია</h2>
+   <p>პროფესიონალური გადაწყვეტილებები ავტომობილის მოვლისთვის</p>
+  </div>
+ </div>
 
-  <h2>
-    რატომ ECOMAX
-  </h2>
+ <div class="products" id="productsGrid"></div>
 
-  <div class="business-grid">
+ <div class="section-title" id="advantages">
+  <div>
+   <h2>რატომ ECOMAX</h2>
+  </div>
+ </div>
 
-    <div class="business-card">
+ <div class="features">
 
-      <h3>
-        12+ წლიანი გამოცდილება
-      </h3>
-
-      <p>
-        პროფესიონალური ავტო მოვლის
-        მიმართულებით მრავალწლიანი გამოცდილება.
-      </p>
-
-    </div>
-
-    <div class="business-card">
-
-      <h3>
-        სრული ინფორმაცია
-      </h3>
-
-      <p>
-        თითოეულ პროდუქტზე ხელმისაწვდომია
-        გაზავება, გამოყენება,
-        უსაფრთხოება, შეფუთვა და ფასი.
-      </p>
-
-    </div>
-
-    <div class="business-card">
-
-      <h3>
-        მარტივი შეკვეთა
-      </h3>
-
-      <p>
-        აირჩიე პროდუქტი,
-        შეფუთვა და რაოდენობა,
-        შემდეგ დაამატე კალათაში.
-      </p>
-
-    </div>
-
+  <div class="feature">
+   <div class="feature-icon">✦</div>
+   <h3>AI კონსულტანტი</h3>
+   <p>
+    მომხმარებელს შეუძლია პროდუქტის შერჩევა
+    ბუნებრივი საუბრის საშუალებით.
+   </p>
   </div>
 
-</section>
+  <div class="feature">
+   <div class="feature-icon">🧪</div>
+   <h3>ზუსტი გაზავება</h3>
+   <p>
+    თითოეულ პროდუქტს აქვს შესაბამისი
+    გაზავებისა და გამოყენების ინფორმაცია.
+   </p>
+  </div>
 
+  <div class="feature">
+   <div class="feature-icon">🛒</div>
+   <h3>მარტივი შეკვეთა</h3>
+   <p>
+    პროდუქტის არჩევიდან შეკვეთის გაფორმებამდე
+    ყველაფერი ერთ სივრცეში.
+   </p>
+  </div>
 
-<section
-  class="section"
-  id="about"
->
+ </div>
 
-  <h2>
-    ჩვენ შესახებ
-  </h2>
+ <section id="about" style="margin-top:50px">
+  <div class="section-title">
+   <h2>ECOMAX</h2>
+  </div>
 
-  <p>
-    ECOMAX არის პროფესიონალური
-    ავტოქიმიის ონლაინ მაღაზია.
-    ჩვენი მიზანია ხარისხიანი
-    პროდუქცია და მარტივი შეკვეთის პროცესი
-    ერთ სივრცეში.
-  </p>
+  <div class="feature">
+   <p>
+    ECOMAX — პროფესიონალური ავტოქიმიის
+    თანამედროვე ონლაინ პლატფორმა.
+    ჩვენი მიზანია ხარისხიანი პროდუქცია,
+    გასაგები ინფორმაცია და მარტივი შეკვეთის პროცესი.
+   </p>
+  </div>
+ </section>
 
-</section>
+ <section id="contact" style="margin-top:25px">
+  <div class="section-title">
+   <h2>კონტაქტი</h2>
+  </div>
 
-
-<section
-  class="section"
-  id="contact"
->
-
-  <h2>
-    კონტაქტი
-  </h2>
-
-  <p>
-    📍 ქ. ქუთაისი,
-    ზვიად გამსახურდიას №33
-  </p>
-
-  <p style="margin-top:8px">
-    📞 599 88 16 81
-  </p>
-
-  <p style="margin-top:8px">
-    ✉️ datogringo@gmail.com
-  </p>
-
-</section>
+  <div class="feature">
+   📍 ქუთაისი, ზვიად გამსახურდიას №33
+   <br><br>
+   📞 599 88 16 81
+   <br><br>
+   ✉️ datogringo@gmail.com
+  </div>
+ </section>
 
 </main>
 
+<!-- AI BUTTON -->
 
-<!-- PRODUCT MODAL -->
+<button class="ai-button" onclick="toggleAI()">
+ ✦
+</button>
 
-<div
-  class="overlay"
-  id="productModal"
->
+<!-- AI PANEL -->
 
-  <div
-    class="modal"
-    id="productModalContent"
-  ></div>
+<div class="ai-panel" id="aiPanel">
 
-</div>
+ <div class="ai-head">
 
+  <div class="ai-head-left">
+   <div class="mini-core"></div>
 
-<!-- CART -->
-
-<div
-  class="overlay"
-  id="cartModal"
->
-
-  <div class="modal">
-
-    <button
-      class="close"
-      onclick="closeModal('cartModal')"
-    >
-      ×
-    </button>
-
-    <h2>
-      🛒 თქვენი კალათა
-    </h2>
-
-    <div
-      id="cartItems"
-      style="margin-top:20px"
-    ></div>
-
-    <h2 style="margin-top:20px">
-      სულ:
-      <span id="cartTotal">
-        0₾
-      </span>
-    </h2>
-
-    <button
-      class="btn btn-primary"
-      style="margin-top:20px"
-      onclick="checkout()"
-    >
-      შეკვეთის გაფორმება
-    </button>
-
+   <div>
+    <b>ECOMAX AI</b>
+    <div class="status">● ONLINE</div>
+   </div>
   </div>
+
+  <button class="close-ai" onclick="toggleAI()">×</button>
+
+ </div>
+
+ <div class="chat" id="chat">
+
+  <div class="msg bot">
+   გამარჯობა 👋
+   <br><br>
+   მე ვარ <b>ECOMAX AI Companion</b>.
+   დამიწერე რა გჭირდება და დაგეხმარები
+   შესაბამისი პროდუქტის შერჩევაში.
+  </div>
+
+ </div>
+
+ <div class="quick">
+
+  <button onclick="quick('რომელი პროდუქტი მირჩიე ძრავისთვის?')">
+   ძრავის სარეცხი
+  </button>
+
+  <button onclick="quick('მაჩვენე მანქანის ქაფი')">
+   მანქანის ქაფი
+  </button>
+
+  <button onclick="quick('როგორ გავაზავო პროდუქტი?')">
+   გაზავება
+  </button>
+
+  <button onclick="quick('კალათის ნახვა')">
+   კალათა
+  </button>
+
+ </div>
+
+ <div class="ai-input">
+
+  <input
+   id="aiInput"
+   placeholder="დამიწერე მოთხოვნა..."
+   onkeydown="if(event.key==='Enter')sendAI()"
+  >
+
+  <button onclick="sendAI()">➤</button>
+
+ </div>
 
 </div>
 
 
 <!-- AUTH -->
 
-<div
-  class="overlay"
-  id="authModal"
->
+<div class="modal-bg" id="auth">
 
-  <div class="modal">
+ <div class="modal">
 
-    <button
-      class="close"
-      onclick="closeModal('authModal')"
-    >
-      ×
-    </button>
+  <button class="close" onclick="closeModal('auth')">×</button>
 
-    <h2>
-      👤 ECOMAX ანგარიში
-    </h2>
+  <h2>✦ ECOMAX ანგარიში</h2>
 
-    <form
-      class="form"
-      style="margin-top:20px"
-      onsubmit="fakeLogin(event)"
-    >
+  <p style="color:#8da1ad;margin-top:8px">
+   შედი ან შექმენი ახალი ანგარიში
+  </p>
 
-      <input
-        type="text"
-        placeholder="სახელი"
-        required
-      >
+  <form class="form" onsubmit="login(event)">
 
-      <input
-        type="email"
-        placeholder="ელფოსტა"
-        required
-      >
+   <input placeholder="სახელი და გვარი">
 
-      <input
-        type="password"
-        placeholder="პაროლი"
-        required
-      >
+   <input type="email" placeholder="ელფოსტა" required>
 
-      <button class="btn btn-primary">
-        შესვლა / რეგისტრაცია
-      </button>
+   <input type="password" placeholder="პაროლი" required>
 
-      <button
-        type="button"
-        class="btn"
-        onclick="forgotPassword()"
-      >
-        დაგავიწყდა პაროლი?
-      </button>
+   <button class="btn btn-main">
+    შესვლა / რეგისტრაცია
+   </button>
 
-    </form>
+   <button
+    type="button"
+    class="btn"
+    onclick="alert('პაროლის აღდგენის ფუნქციას Supabase Auth-ს დავუკავშირებთ.')"
+   >
+    დაგავიწყდა პაროლი?
+   </button>
 
-  </div>
+  </form>
+
+ </div>
+
+</div>
+
+
+<!-- CART -->
+
+<div class="modal-bg" id="cart">
+
+ <div class="modal">
+
+  <button class="close" onclick="closeModal('cart')">×</button>
+
+  <h2>🛒 კალათა</h2>
+
+  <div id="cartItems" style="margin-top:20px"></div>
+
+  <div
+   id="cartTotal"
+   style="font-size:22px;font-weight:bold;margin-top:20px"
+  ></div>
+
+  <button
+   class="btn btn-gold"
+   style="margin-top:20px"
+   onclick="checkout()"
+  >
+   შეკვეთის გაფორმება
+  </button>
+
+ </div>
 
 </div>
 
 
 <!-- CHECKOUT -->
 
-<div
-  class="overlay"
-  id="checkoutModal"
->
+<div class="modal-bg" id="checkout">
 
-  <div class="modal">
+ <div class="modal">
 
-    <button
-      class="close"
-      onclick="closeModal('checkoutModal')"
-    >
-      ×
-    </button>
+  <button class="close" onclick="closeModal('checkout')">×</button>
 
-    <h2>
-      შეკვეთის გაფორმება
-    </h2>
+  <h2>📦 შეკვეთის გაფორმება</h2>
 
-    <form
-      class="form"
-      style="margin-top:20px"
-      onsubmit="placeOrder(event)"
-    >
+  <form class="form" onsubmit="placeOrder(event)">
 
-      <input
-        id="customerName"
-        placeholder="სახელი და გვარი"
-        required
-      >
+   <input id="name" placeholder="სახელი და გვარი" required>
 
-      <input
-        id="customerPhone"
-        placeholder="ტელეფონი"
-        required
-      >
+   <input id="phone" placeholder="ტელეფონი" required>
 
-      <input
-        id="customerAddress"
-        placeholder="მისამართი"
-        required
-      >
+   <input id="address" placeholder="მისამართი" required>
 
-      <select id="paymentMethod">
+   <textarea
+    id="note"
+    rows="4"
+    placeholder="დამატებითი ინფორმაცია"
+   ></textarea>
 
-        <option>
-          ნაღდი ანგარიშსწორება
-        </option>
+   <button class="btn btn-main">
+    შეკვეთის დადასტურება
+   </button>
 
-        <option>
-          ბარათით გადახდა
-        </option>
+  </form>
 
-      </select>
-
-      <textarea
-        id="customerNote"
-        placeholder="დამატებითი კომენტარი"
-        rows="4"
-      ></textarea>
-
-      <div id="checkoutSummary"></div>
-
-      <button class="btn btn-primary">
-        შეკვეთის დადასტურება
-      </button>
-
-    </form>
-
-  </div>
+ </div>
 
 </div>
 
 
 <footer>
 
-  <div class="footer-inner">
+ <div class="footer-inner">
 
-    <div>
-      <b style="font-size:22px">
-        ECOMAX
-      </b>
-
-      <br>
-
-      Professional Auto Care
-    </div>
-
-    <div>
-      ქუთაისი · ზვიად გამსახურდიას №33
-      <br>
-      599 88 16 81
-      <br>
-      datogringo@gmail.com
-    </div>
-
+  <div>
+   <b style="color:white;font-size:21px">
+    ECOMAX
+   </b>
+   <br>
+   Professional Auto Care
   </div>
+
+  <div>
+   ქუთაისი · ზვიად გამსახურდიას №33
+   <br>
+   599 88 16 81
+   <br>
+   datogringo@gmail.com
+  </div>
+
+ </div>
 
 </footer>
 
@@ -1089,992 +1067,521 @@
 <script>
 
 /* =========================
-   PRODUCTS
+ PRODUCTS
 ========================= */
 
 const products = [
 
-  {
-    id: 1,
-    name: "ძრავის სარეცხი",
-    category: "clean",
-    icon: "⚙️",
-
-    description:
-      "ძრავისა და ძრავის განყოფილების პროფესიონალური დასუფთავებისთვის.",
-
-    dilution:
-      "1x1 – 1x3, დასვრილიანობის მიხედვით",
-
-    usage:
-      "გაზავე დასვრილიანობის მიხედვით და გამოიყენე პროდუქტის დანიშნულების შესაბამისად.",
-
-    safety:
-      "გამოიყენე ხელთათმანი და თვალის დაცვა. არ გამოიყენო ცხელ ზედაპირზე.",
-
-    prices: [
-      ["500 გრამი", 5],
-      ["1 ლიტრი", 10],
-      ["5 ლიტრი", 40]
-    ]
-  },
-
-  {
-    id: 2,
-    name: "დისკების სარეცხი",
-    category: "clean",
-    icon: "⭕",
-
-    description:
-      "ავტომობილის დისკების პროფესიონალური წმენდისთვის.",
-
-    dilution:
-      "1x1 – 1x3, გაზავება დასვრილიანობის მიხედვით",
-
-    usage:
-      "გაზავე დასვრილიანობის მიხედვით და გამოიყენე დისკის ზედაპირზე.",
-
-    safety:
-      "არ გამოიყენო ცხელ დისკზე. გამოიყენე დამცავი საშუალებები.",
-
-    prices: [
-      ["500 გრამი", 5],
-      ["1 ლიტრი", 10],
-      ["5 ლიტრი", 40]
-    ]
-  },
-
-  {
-    id: 3,
-    name: "რადიატორის სარეცხი",
-    category: "clean",
-    icon: "♨️",
-
-    description:
-      "რადიატორის პროფესიონალური დასუფთავებისთვის.",
-
-    dilution:
-      "1x1 – 1x3, დასვრილიანობის მიხედვით",
-
-    usage:
-      "გაზავე დასვრილიანობის მიხედვით და გამოიყენე შესაბამისი პროცედურის მიხედვით.",
-
-    safety:
-      "გამოყენებამდე შეამოწმე სისტემასთან თავსებადობა.",
-
-    prices: [
-      ["500 გრამი", 5],
-      ["1 ლიტრი", 10],
-      ["5 ლიტრი", 40]
-    ]
-  },
-
-  {
-    id: 4,
-    name: "ნაჭრის ქიმწმენდა",
-    category: "clean",
-    icon: "🧽",
-
-    description:
-      "ავტომობილის ნაჭრისა და ტექსტილის ზედაპირების ქიმწმენდისთვის.",
-
-    dilution:
-      "აპარატში 1x1; 1x10, დასვრილიანობის მიხედვით",
-
-    usage:
-      "აპარატში გამოიყენე 1x1 ან საჭიროების მიხედვით 1x10 გაზავება.",
-
-    safety:
-      "წინასწარ გამოცადე შეუმჩნეველ ადგილზე.",
-
-    prices: [
-      ["500 გრამი", 5],
-      ["1 ლიტრი", 10],
-      ["5 ლიტრი", 40]
-    ]
-  },
-
-  {
-    id: 5,
-    name: "ტყავის ქიმწმენდა",
-    category: "clean",
-    icon: "🪑",
-
-    description:
-      "ტყავის სალონის ზედაპირების პროფესიონალური ქიმწმენდისთვის.",
-
-    dilution:
-      "1x1 – 1x3, დასვრილიანობის მიხედვით",
-
-    usage:
-      "გაზავე დასვრილიანობის მიხედვით და წინასწარ გამოცადე მცირე მონაკვეთზე.",
-
-    safety:
-      "შეამოწმე ფერის მდგრადობა და გამოიყენე დამცავი საშუალებები.",
-
-    prices: [
-      ["500 გრამი", 5],
-      ["1 ლიტრი", 10],
-      ["5 ლიტრი", 40]
-    ]
-  },
-
-  {
-    id: 6,
-    name: "მანქანის სარეცხი ქაფი",
-    category: "clean",
-    icon: "🫧",
-
-    description:
-      "ავტომობილის გარე პროფესიონალური რეცხვისთვის.",
-
-    dilution:
-      "2 ლიტრი 100 ლიტრ წყალში",
-
-    usage:
-      "2 ლიტრი ქაფი გააზავე 100 ლიტრ წყალში.",
-
-    safety:
-      "არ გამოიყენო ცხელ ზედაპირზე.",
-
-    prices: [
-      ["ქაფი 2 ლიტრი", 10],
-      ["ქაფი Medium 1 ლიტრი", 10],
-      ["ქაფი Hard 1 ლიტრი", 15]
-    ]
-  },
-
-  {
-    id: 7,
-    name: "სანთელი",
-    category: "special",
-    icon: "✨",
-
-    description:
-      "კონცენტრირებული პროდუქტი შესაბამისი დანიშნულებისთვის.",
-
-    dilution:
-      "1x10, სურვილისამებრ",
-
-    usage:
-      "გაზავე 1x10 პროპორციით; გამოყენების ინტენსივობა აირჩიე საჭიროების მიხედვით.",
-
-    safety:
-      "გამოყენებამდე წაიკითხე ეტიკეტი.",
-
-    prices: [
-      ["500 გრამი", 5],
-      ["1 ლიტრი", 10],
-      ["5 ლიტრი", 40]
-    ]
-  },
-
-  {
-    id: 8,
-    name: "სუნამო",
-    category: "care",
-    icon: "🌿",
-
-    description:
-      "ავტომობილის სალონის არომატიზაციისთვის.",
-
-    dilution:
-      "სურვილისამებრ",
-
-    usage:
-      "გამოიყენე პროდუქტის დანიშნულების შესაბამისად.",
-
-    safety:
-      "არ შეასხურო პირდაპირ მგრძნობიარე ზედაპირზე.",
-
-    prices: [
-      ["500 გრამი", 5],
-      ["1 ლიტრი", 10],
-      ["5 ლიტრი", 40]
-    ]
-  },
-
-  {
-    id: 9,
-    name: "ტყავის მკვებავი",
-    category: "care",
-    icon: "🧴",
-
-    description:
-      "ტყავის ზედაპირების მოვლისა და კვებისთვის.",
-
-    dilution:
-      "არ საჭიროებს გაზავებას",
-
-    usage:
-      "წაისვი მცირე რაოდენობით სუფთა ზედაპირზე.",
-
-    safety:
-      "წინასწარ გამოცადე შეუმჩნეველ ადგილზე.",
-
-    prices: [
-      ["500 გრამი", 5],
-      ["1 ლიტრი", 10],
-      ["5 ლიტრი", 40]
-    ]
-  },
-
-  {
-    id: 10,
-    name: "პლასმასების საშავებელი",
-    category: "care",
-    icon: "⬛",
-
-    description:
-      "პლასტმასის ზედაპირების ვიზუალური მოვლისთვის.",
-
-    dilution:
-      "არ საჭიროებს გაზავებას",
-
-    usage:
-      "წაისვი სუფთა ზედაპირზე და თანაბრად გადაანაწილე.",
-
-    safety:
-      "არ გამოიყენო საჭეზე ან პედლებზე.",
-
-    prices: [
-      ["500 გრამი", 5],
-      ["1 ლიტრი", 10],
-      ["5 ლიტრი", 40]
-    ]
-  },
-
-  {
-    id: 11,
-    name: "საბურავის საპრიალებელი",
-    category: "care",
-    icon: "🛞",
-
-    description:
-      "საბურავის გვერდითი ზედაპირის მოვლისთვის.",
-
-    dilution:
-      "არ საჭიროებს გაზავებას",
-
-    usage:
-      "გამოიყენე მხოლოდ საბურავის გვერდითა ზედაპირზე.",
-
-    safety:
-      "არ წაისვა პროტექტორზე ან სამუხრუჭე ნაწილებზე.",
-
-    prices: [
-      ["500 გრამი", 5],
-      ["1 ლიტრი", 10],
-      ["5 ლიტრი", 40]
-    ]
-  },
-
-  {
-    id: 12,
-    name: "ტორპედოს საპრიალებელი",
-    category: "care",
-    icon: "✨",
-
-    description:
-      "ტორპედოსა და შესაბამისი პლასტმასის ზედაპირების მოვლისთვის.",
-
-    dilution:
-      "არ საჭიროებს გაზავებას",
-
-    usage:
-      "წაისვი მცირე რაოდენობით და თანაბრად გადაანაწილე.",
-
-    safety:
-      "არ გამოიყენო საჭეზე ან პედლებზე.",
-
-    prices: [
-      ["500 გრამი", 5],
-      ["1 ლიტრი", 10],
-      ["5 ლიტრი", 40]
-    ]
-  },
-
-  {
-    id: 13,
-    name: "ფოსფორი",
-    category: "special",
-    icon: "🧪",
-
-    description:
-      "მეტალის ზედაპირების სპეციალური დამუშავებისთვის.",
-
-    dilution:
-      "ეტიკეტის მიხედვით",
-
-    usage:
-      "გამოიყენე პროდუქტის ეტიკეტზე მითითებული წესით.",
-
-    safety:
-      "გამოიყენე ხელთათმანი, თვალის დაცვა და ვენტილაცია.",
-
-    prices: [
-      ["500 გრამი", 5],
-      ["1 ლიტრი", 10],
-      ["5 ლიტრი", 40]
-    ]
-  },
-
-  {
-    id: 14,
-    name: "ჟანგის მოსაშორებელი",
-    category: "special",
-    icon: "🔧",
-
-    description:
-      "მეტალის ზედაპირებზე ჟანგის კვალის მოსაშორებლად.",
-
-    dilution:
-      "ეტიკეტის მიხედვით",
-
-    usage:
-      "წინასწარ გამოცადე მცირე მონაკვეთზე.",
-
-    safety:
-      "მოარიდე კანსა და თვალებს.",
-
-    prices: [
-      ["500 გრამი", 5],
-      ["1 ლიტრი", 10],
-      ["5 ლიტრი", 40]
-    ]
-  },
-
-  {
-    id: 15,
-    name: "ცემენტის მოსაშორებელი",
-    category: "special",
-    icon: "🏗️",
-
-    description:
-      "ცემენტის ნარჩენების მოსაშორებლად.",
-
-    dilution:
-      "ეტიკეტის მიხედვით",
-
-    usage:
-      "შეამოწმე ზედაპირის თავსებადობა და მიჰყევი ეტიკეტს.",
-
-    safety:
-      "გამოიყენე დამცავი საშუალებები და უზრუნველყავი ვენტილაცია.",
-
-    prices: [
-      ["500 გრამი", 5],
-      ["1 ლიტრი", 10],
-      ["5 ლიტრი", 40]
-    ]
-  },
-
-  {
-    id: 16,
-    name: "გუდრონის მოსაშორებელი",
-    category: "special",
-    icon: "🛢️",
-
-    description:
-      "გუდრონის, ბიტუმისა და წებოვანი ნარჩენების მოსაშორებლად.",
-
-    dilution:
-      "ეტიკეტის მიხედვით",
-
-    usage:
-      "წინასწარ გამოცადე მცირე მონაკვეთზე და გამოიყენე ეტიკეტის მიხედვით.",
-
-    safety:
-      "მოარიდე ცეცხლს და უზრუნველყავი ვენტილაცია.",
-
-    prices: [
-      ["500 გრამი", 5],
-      ["1 ლიტრი", 10],
-      ["5 ლიტრი", 40]
-    ]
-  }
+ {
+  id:1,
+  name:"ძრავის სარეცხი",
+  icon:"⚙️",
+  dilution:"1x1 – 1x3, დასვრილიანობის მიხედვით",
+  desc:"ძრავისა და ძრავის განყოფილების პროფესიონალური დასუფთავებისთვის.",
+  prices:[
+   ["500 გრამი",5],
+   ["1 ლიტრი",10],
+   ["5 ლიტრი",40]
+  ]
+ },
+
+ {
+  id:2,
+  name:"დისკების სარეცხი",
+  icon:"⭕",
+  dilution:"1x1 – 1x3, დასვრილიანობის მიხედვით",
+  desc:"ავტომობილის დისკების პროფესიონალური წმენდისთვის.",
+  prices:[
+   ["500 გრამი",5],
+   ["1 ლიტრი",10],
+   ["5 ლიტრი",40]
+  ]
+ },
+
+ {
+  id:3,
+  name:"ნაჭრის ქიმწმენდა",
+  icon:"🧽",
+  dilution:"აპარატში 1x1, 1x10 დასვრილიანობის მიხედვით",
+  desc:"ტექსტილისა და ნაჭრის სალონის ქიმწმენდისთვის.",
+  prices:[
+   ["500 გრამი",5],
+   ["1 ლიტრი",10],
+   ["5 ლიტრი",40]
+  ]
+ },
+
+ {
+  id:4,
+  name:"ტყავის ქიმწმენდა",
+  icon:"🪑",
+  dilution:"1x1 – 1x3, დასვრილიანობის მიხედვით",
+  desc:"ტყავის სალონის პროფესიონალური ქიმწმენდისთვის.",
+  prices:[
+   ["500 გრამი",5],
+   ["1 ლიტრი",10],
+   ["5 ლიტრი",40]
+  ]
+ },
+
+ {
+  id:5,
+  name:"რადიატორის სარეცხი",
+  icon:"♨️",
+  dilution:"1x1 – 1x3, დასვრილიანობის მიხედვით",
+  desc:"რადიატორის პროფესიონალური დასუფთავებისთვის.",
+  prices:[
+   ["500 გრამი",5],
+   ["1 ლიტრი",10],
+   ["5 ლიტრი",40]
+  ]
+ },
+
+ {
+  id:6,
+  name:"მანქანის სარეცხი ქაფი",
+  icon:"🫧",
+  dilution:"2 ლიტრი 100 ლიტრ წყალში",
+  desc:"ავტომობილის გარე პროფესიონალური რეცხვისთვის.",
+  prices:[
+   ["ქაფი 2 ლიტრი",10],
+   ["ქაფი Medium 1 ლიტრი",10],
+   ["ქაფი Hard 1 ლიტრი",15]
+  ]
+ },
+
+ {
+  id:7,
+  name:"სანთელი",
+  icon:"✨",
+  dilution:"1x10, სურვილისამებრ",
+  desc:"კონცენტრირებული პროდუქტი შესაბამისი დანიშნულებისთვის.",
+  prices:[
+   ["500 გრამი",5],
+   ["1 ლიტრი",10],
+   ["5 ლიტრი",40]
+  ]
+ }
 
 ];
 
 
 /* =========================
-   CART
+ CART
 ========================= */
 
 let cart =
-  JSON.parse(
-    localStorage.getItem("ecomax_cart") || "[]"
-  );
+ JSON.parse(localStorage.getItem("ecomaxCart") || "[]");
 
-
-function saveCart() {
-
-  localStorage.setItem(
-    "ecomax_cart",
-    JSON.stringify(cart)
-  );
-
-  updateCartCount();
+function saveCart(){
+ localStorage.setItem(
+  "ecomaxCart",
+  JSON.stringify(cart)
+ );
+ updateCount();
 }
 
-
-function updateCartCount() {
-
-  const count =
-    cart.reduce(
-      (sum, item) => sum + item.quantity,
-      0
-    );
-
-  document.getElementById(
-    "cartCount"
-  ).textContent = count;
+function updateCount(){
+ document.getElementById("count").textContent =
+  cart.reduce((a,b)=>a+b.qty,0);
 }
 
-
-/* =========================
-   PRODUCTS
-========================= */
-
-function renderProducts() {
-
-  const query =
-    document
-      .getElementById("searchInput")
-      .value
-      .toLowerCase();
-
-  const category =
-    document
-      .getElementById("categoryFilter")
-      .value;
-
-  const filtered =
-    products.filter(product => {
-
-      const matchesText =
-        product.name
-          .toLowerCase()
-          .includes(query);
-
-      const matchesCategory =
-        category === "all" ||
-        product.category === category;
-
-      return matchesText && matchesCategory;
-
-    });
-
-
-  document.getElementById(
-    "productsGrid"
-  ).innerHTML = filtered.map(product => `
-
-    <article class="product-card">
-
-      <div class="product-image">
-        ${product.icon}
-      </div>
-
-      <h3>
-        ${product.name}
-      </h3>
-
-      <div class="description">
-        ${product.description}
-      </div>
-
-      <div class="product-info">
-
-        <strong>
-          🧪 გაზავება:
-        </strong>
-
-        ${product.dilution}
-
-        <br><br>
-
-        <strong>
-          🛡️ უსაფრთხოება:
-        </strong>
-
-        ${product.safety}
-
-      </div>
-
-      <div class="prices">
-
-        ${product.prices.map(price => `
-
-          <div class="price-line">
-
-            <span>
-              ${price[0]}
-            </span>
-
-            <span>
-              ${price[1]}₾
-            </span>
-
-          </div>
-
-        `).join("")}
-
-      </div>
-
-      <div class="product-actions">
-
-        <button
-          class="btn"
-          onclick="openProduct(${product.id})"
-        >
-          დეტალურად
-        </button>
-
-        <button
-          class="btn btn-primary"
-          onclick="addToCart(${product.id},0)"
-        >
-          კალათაში
-        </button>
-
-      </div>
-
-    </article>
-
-  `).join("");
-
-}
-
-
-/* =========================
-   PRODUCT DETAIL
-========================= */
-
-function openProduct(id) {
-
-  const product =
-    products.find(
-      p => p.id === id
-    );
-
-  document.getElementById(
-    "productModalContent"
-  ).innerHTML = `
-
-    <button
-      class="close"
-      onclick="closeModal('productModal')"
-    >
-      ×
-    </button>
-
-    <div class="product-detail">
-
-      <div class="big-image">
-        ${product.icon}
-      </div>
-
-      <div>
-
-        <h2>
-          ${product.name}
-        </h2>
-
-        <p style="margin-top:10px;line-height:1.6;color:#65727e">
-          ${product.description}
-        </p>
-
-        <div class="product-info">
-
-          <strong>
-            🧪 ზუსტი გაზავება
-          </strong>
-
-          <br>
-
-          ${product.dilution}
-
-        </div>
-
-        <h3>
-          გამოყენება
-        </h3>
-
-        <p style="margin:8px 0 18px;line-height:1.6">
-          ${product.usage}
-        </p>
-
-        <h3>
-          უსაფრთხოება
-        </h3>
-
-        <p style="margin:8px 0 18px;line-height:1.6">
-          ${product.safety}
-        </p>
-
-        <h3>
-          შეფუთვა და ფასი
-        </h3>
-
-        ${product.prices.map(
-          (price, index) => `
-
-            <div
-              class="variant"
-              onclick="addToCart(${product.id},${index});closeModal('productModal')"
-            >
-
-              ${price[0]}
-
-              —
-
-              <b>
-                ${price[1]}₾
-              </b>
-
-            </div>
-
-        `).join("")}
-
-      </div>
-
-    </div>
-
-  `;
-
-  openModal("productModal");
-
-}
-
-
-/* =========================
-   ADD CART
-========================= */
-
-function addToCart(
-  productId,
-  priceIndex
-) {
-
-  const existing =
-    cart.find(
-      item =>
-        item.productId === productId &&
-        item.priceIndex === priceIndex
-    );
-
-  if (existing) {
-
-    existing.quantity++;
-
-  } else {
-
-    cart.push({
-
-      productId,
-      priceIndex,
-      quantity: 1
-
-    });
-
-  }
-
-  saveCart();
-
-}
-
-
-/* =========================
-   CART
-========================= */
-
-function openCart() {
-
-  renderCart();
-
-  openModal("cartModal");
-
-}
-
-
-function renderCart() {
-
-  const container =
-    document.getElementById(
-      "cartItems"
-    );
-
-  if (!cart.length) {
-
-    container.innerHTML =
-      "<p>კალათა ცარიელია.</p>";
-
-    document.getElementById(
-      "cartTotal"
-    ).textContent = "0₾";
-
-    return;
-
-  }
-
-
-  let total = 0;
-
-
-  container.innerHTML =
-    cart.map(
-      (item, index) => {
-
-        const product =
-          products.find(
-            p =>
-              p.id ===
-              item.productId
-          );
-
-        const price =
-          product.prices[
-            item.priceIndex
-          ];
-
-        const subtotal =
-          price[1] *
-          item.quantity;
-
-        total += subtotal;
-
-
-        return `
-
-          <div class="cart-row">
-
-            <div>
-
-              <b>
-                ${product.name}
-              </b>
-
-              <br>
-
-              <small>
-                ${price[0]} · ${price[1]}₾
-              </small>
-
-            </div>
-
-            <div class="quantity">
-
-              <button
-                onclick="changeQuantity(${index},-1)"
-              >
-                −
-              </button>
-
-              ${item.quantity}
-
-              <button
-                onclick="changeQuantity(${index},1)"
-              >
-                +
-              </button>
-
-            </div>
-
-            <b>
-              ${subtotal}₾
-            </b>
-
-          </div>
-
-        `;
-
-      }
-    ).join("");
-
-
-  document.getElementById(
-    "cartTotal"
-  ).textContent =
-    total + "₾";
-
-}
-
-
-function changeQuantity(
-  index,
-  amount
-) {
-
-  cart[index].quantity += amount;
-
-  if (
-    cart[index].quantity <= 0
-  ) {
-
-    cart.splice(index,1);
-
-  }
-
-  saveCart();
-
-  renderCart();
-
-}
-
-
-/* =========================
-   CHECKOUT
-========================= */
-
-function checkout() {
-
-  if (!cart.length) {
-
-    alert(
-      "კალათა ცარიელია."
-    );
-
-    return;
-
-  }
-
-
-  closeModal("cartModal");
-
-
-  let total = 0;
-
-
-  cart.forEach(item => {
-
-    const product =
-      products.find(
-        p =>
-          p.id ===
-          item.productId
-      );
-
-    total +=
-      product.prices[
-        item.priceIndex
-      ][1] *
-      item.quantity;
-
+function addToCart(id,index){
+
+ const found=cart.find(
+  x=>x.id===id && x.index===index
+ );
+
+ if(found){
+  found.qty++;
+ }else{
+  cart.push({
+   id,
+   index,
+   qty:1
   });
+ }
+
+ saveCart();
+
+ const product=products.find(p=>p.id===id);
+
+ addMessage(
+  `დამატებულია კალათაში: <b>${product.name}</b>`,
+  "bot"
+ );
+}
 
 
-  document.getElementById(
-    "checkoutSummary"
-  ).innerHTML = `
+/* =========================
+ PRODUCTS RENDER
+========================= */
 
-    <div class="product-info">
+function renderProducts(){
 
-      <b>
-        შეკვეთის ჯამი:
-      </b>
+ const q=
+  document.getElementById("search").value.toLowerCase();
 
-      ${total}₾
+ const list=
+  products.filter(p=>
+   p.name.toLowerCase().includes(q)
+  );
+
+ document.getElementById("productsGrid").innerHTML=
+ list.map(p=>`
+
+  <article class="card">
+
+   <div class="card-img">
+    ${p.icon}
+   </div>
+
+   <div class="card-body">
+
+    <div class="tag">
+     ECOMAX PROFESSIONAL
+    </div>
+
+    <h3>${p.name}</h3>
+
+    <div class="desc">
+     ${p.desc}
+    </div>
+
+    <div class="info">
+
+     <strong>🧪 გაზავება:</strong>
+     <br>
+     ${p.dilution}
 
     </div>
 
-  `;
+    <div class="prices">
 
+     ${p.prices.map((x,i)=>`
 
-  openModal(
-    "checkoutModal"
-  );
+      <div class="price">
+       <span>${x[0]}</span>
+       <b>${x[1]}₾</b>
+      </div>
 
+     `).join("")}
+
+    </div>
+
+    <div class="card-actions">
+
+     <button
+      class="btn"
+      onclick="addToCart(${p.id},0)"
+     >
+      🛒 დამატება
+     </button>
+
+     <button
+      class="btn btn-main"
+      onclick="aiProduct(${p.id})"
+     >
+      ✦ AI
+     </button>
+
+    </div>
+
+   </div>
+
+  </article>
+
+ `).join("");
 }
 
 
 /* =========================
-   ORDER
+ AI
 ========================= */
 
-function placeOrder(event) {
+function toggleAI(){
 
-  event.preventDefault();
+ const panel=
+  document.getElementById("aiPanel");
 
+ panel.style.display =
+  panel.style.display==="block"
+  ?"none"
+  :"block";
 
-  const orderNumber =
-    "ECX-" +
-    Date.now()
-      .toString()
-      .slice(-8);
+}
 
+function addMessage(text,type){
 
-  alert(
-    "შეკვეთა მიღებულია!\n\n" +
-    "შეკვეთის ნომერი: " +
-    orderNumber
+ const chat=
+  document.getElementById("chat");
+
+ const div=
+  document.createElement("div");
+
+ div.className="msg "+type;
+ div.innerHTML=text;
+
+ chat.appendChild(div);
+
+ chat.scrollTop=chat.scrollHeight;
+}
+
+function quick(text){
+
+ document.getElementById("aiInput").value=text;
+
+ sendAI();
+}
+
+function aiProduct(id){
+
+ const p=products.find(x=>x.id===id);
+
+ toggleAI();
+
+ addMessage(
+  `მაინტერესებს <b>${p.name}</b>`,
+  "user"
+ );
+
+ setTimeout(()=>{
+
+  addMessage(
+   `<b>${p.name}</b><br><br>
+   ${p.desc}<br><br>
+   🧪 ${p.dilution}<br><br>
+   რომელი შეფუთვა გინდა?`,
+   "bot"
   );
 
+ },500);
+}
 
-  cart = [];
 
-  saveCart();
+function sendAI(){
 
-  closeModal(
-    "checkoutModal"
-  );
+ const input=
+  document.getElementById("aiInput");
 
+ const text=input.value.trim();
+
+ if(!text)return;
+
+ addMessage(text,"user");
+
+ input.value="";
+
+ setTimeout(()=>{
+
+  const t=text.toLowerCase();
+
+  if(
+   t.includes("ძრავ")
+  ){
+
+   addMessage(
+    "ძრავის დასუფთავებისთვის გირჩევ <b>ძრავის სარეცხს</b>. გაზავება არის <b>1x1 – 1x3</b>, დასვრილიანობის მიხედვით. თუ გინდა, შემიძლია კალათაში დაგამატებინო.",
+    "bot"
+   );
+
+  }else if(
+   t.includes("ქაფ")
+  ){
+
+   addMessage(
+    "<b>მანქანის სარეცხი ქაფი</b> — 2 ლიტრი 100 ლიტრ წყალში. Medium 1 ლიტრი — 10₾, Hard 1 ლიტრი — 15₾. რომელი გინდა?",
+    "bot"
+   );
+
+  }else if(
+   t.includes("კალათ")
+  ){
+
+   openCart();
+
+  }else if(
+   t.includes("გაზავ")
+  ){
+
+   addMessage(
+    "მითხარი რომელი პროდუქტის გაზავება გაინტერესებს და ზუსტ ინფორმაციას მოგცემ.",
+    "bot"
+   );
+
+  }else{
+
+   addMessage(
+    "რა თქმა უნდა. მითხარი რა გჭირდება — მაგალითად: <b>ძრავის სარეცხი</b>, <b>დისკების სარეცხი</b>, <b>ქაფი</b> ან სხვა პროდუქტი.",
+    "bot"
+   );
+
+  }
+
+ },650);
 }
 
 
 /* =========================
-   AUTH
+ CART WINDOW
 ========================= */
 
-function fakeLogin(event) {
+function openCart(){
 
-  event.preventDefault();
+ const box=
+  document.getElementById("cartItems");
 
-  alert(
-    "ანგარიში წარმატებით გაიგზავნა დასამუშავებლად."
-  );
+ if(!cart.length){
+
+  box.innerHTML=
+   "<p style='color:#8da1ad'>კალათა ცარიელია.</p>";
+
+  document.getElementById("cartTotal")
+   .textContent="სულ: 0₾";
+
+ }else{
+
+  let total=0;
+
+  box.innerHTML=
+   cart.map((item,i)=>{
+
+    const p=products.find(x=>x.id===item.id);
+    const price=p.prices[item.index];
+
+    const subtotal=
+     price[1]*item.qty;
+
+    total+=subtotal;
+
+    return `
+
+     <div style="
+      padding:15px 0;
+      border-bottom:1px solid #1c303a;
+     ">
+
+      <b>${p.name}</b>
+
+      <br>
+
+      <span style="color:#8da1ad">
+       ${price[0]} · ${price[1]}₾
+      </span>
+
+      <br><br>
+
+      <button
+       class="btn"
+       onclick="changeQty(${i},-1)"
+      >−</button>
+
+      ${item.qty}
+
+      <button
+       class="btn"
+       onclick="changeQty(${i},1)"
+      >+</button>
+
+     </div>
+
+    `;
+
+   }).join("");
+
+  document.getElementById("cartTotal")
+   .textContent="სულ: "+total+"₾";
+ }
+
+ openModal("cart");
 
 }
 
+function changeQty(i,n){
 
-function forgotPassword() {
+ cart[i].qty+=n;
 
-  alert(
-    "პაროლის აღდგენის ბმული გაიგზავნება თქვენს ელფოსტაზე."
-  );
+ if(cart[i].qty<=0)
+  cart.splice(i,1);
 
+ saveCart();
+
+ openCart();
 }
 
 
 /* =========================
-   MODALS
+ CHECKOUT
 ========================= */
 
-function openModal(id) {
+function checkout(){
 
-  document.getElementById(
-    id
-  ).style.display = "block";
+ if(!cart.length){
 
+  alert("კალათა ცარიელია.");
+
+  return;
+ }
+
+ closeModal("cart");
+
+ openModal("checkout");
+}
+
+function placeOrder(e){
+
+ e.preventDefault();
+
+ const order=
+  "ECX-"+Date.now().toString().slice(-8);
+
+ alert(
+  "შეკვეთა მიღებულია!\\n\\n"+
+  "შეკვეთის ნომერი: "+order
+ );
+
+ cart=[];
+
+ saveCart();
+
+ closeModal("checkout");
 }
 
 
-function closeModal(id) {
+/* =========================
+ AUTH
+========================= */
 
-  document.getElementById(
-    id
-  ).style.display = "none";
+function login(e){
+
+ e.preventDefault();
+
+ alert(
+  "შემდეგ ეტაპზე ამ ფორმას რეალურ Supabase Auth-ს დავუკავშირებთ."
+ );
 
 }
 
 
 /* =========================
-   INIT
+ MODALS
+========================= */
+
+function openModal(id){
+ document.getElementById(id).style.display="block";
+}
+
+function closeModal(id){
+ document.getElementById(id).style.display="none";
+}
+
+
+/* =========================
+ START
 ========================= */
 
 renderProducts();
-
-updateCartCount();
+updateCount();
 
 </script>
 
