@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: ecomax-online-store
-    runtime: node
-    plan: free
-    buildCommand: ""
-    startCommand: node server.js
-    envVars: []
