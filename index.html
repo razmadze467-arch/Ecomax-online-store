@@ -66,7 +66,7 @@ footer{border-top:1px solid #102d36;color:#6f858e;text-align:center;padding:30px
 @media(max-width:1050px){.business-strip{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.hero-copy{padding:55px 25px}.reactor{width:230px;height:230px}.hero-art:after{right:50%;transform:translateX(50%);bottom:22px}.business-strip{grid-template-columns:1fr 1fr}}
 @media(max-width:460px){.business-strip{grid-template-columns:1fr}.hero h1{letter-spacing:-1px}}
-</style>
+.ai-add{display:inline-block;margin-top:10px;padding:8px 12px;border:1px solid var(--cyan);background:rgba(25,230,255,.08);color:var(--cyan);border-radius:8px;cursor:pointer;font-family:inherit;font-weight:800}.ai-add:hover{background:var(--cyan);color:#001015}</style>
 </head>
 <body>
 <header>
@@ -150,13 +150,116 @@ async function accountAction(){if(!db){location.href="login.html";return}const r
 async function openCheckout(){if(!cart.length)return;if(!db){location.href="login.html";return}const r=await db.auth.getSession();if(!r.data.session){location.href="login.html";return}closeModal("cartModal");const p=await db.from("profiles").select("*").eq("id",r.data.session.user.id).maybeSingle();if(p.data){document.getElementById("coName").value=p.data.full_name||"";document.getElementById("coPhone").value=p.data.phone||"";document.getElementById("coAddress").value=p.data.address||"";document.getElementById("coCity").value=p.data.city||"ქუთაისი"}checkoutSummary();document.getElementById("checkoutModal")?.classList.add("open")}
 function checkoutSummary(){let total=0;const box=document.getElementById("checkoutSummary");if(!box)return;box.innerHTML=cart.map(x=>{const p=products.find(p=>p.id===x.id);if(!p)return"";const t=Number(p.price)*x.qty;total+=t;return "<div>"+esc(p.name)+" • "+x.qty+" ლ — "+t.toFixed(2)+"₾</div>"}).join("")+"<hr><b>სულ: "+total.toFixed(2)+"₾</b>"}
 function toggleAI(){document.getElementById("aiPanel")?.classList.toggle("open")}
-function aiFindProduct(q){const s=q.toLowerCase();const map=[["მედიუმ","ქაფი მედიუმი"],["medium","ქაფი მედიუმი"],["ჰარდი","ქაფი ჰარდი"],["hard","ქაფი ჰარდი"],["ძრავ","ძრავის სარეცხი"],["დისკ","დისკების სარეცხი"],["ნაჭ","ნაჭრის ქიმწმენდა"],["ტყავ","ტყავის ქიმწმენდა"],["რადიატ","რადიატორის სარეცხი"],["სანთ","სანთელი"],["მანქანის სარეცხი ქაფ","მანქანის სარეცხი ქაფი 2 ლიტრი"]];for(const [a,n] of map)if(s.includes(a))return products.find(p=>p.name===n)||null;return null}
-function aiQty(q){const m=q.match(/(\d+(?:[.,]\d+)?)\s*(?:ლიტრი|ლ|ცალი|ცალ)/i);return m?Number(m[1].replace(",",".")):null}
+/* ================= ECOMAX AI COMPANION 2.0 ================= */
+const ECOMAX_KB={
+  "ძრავის სარეცხი":{
+    aliases:["ძრავის სარეცხი","ძრავის-სარეცხი","ძრავა","ძრავ","engine cleaner","engine"],
+    category:"ძრავის მოვლა",
+    pricing:{0.5:5,1:10,2:20,3:30,4:40,5:50,6:60,7:70,8:80,9:90,10:100,20:200},
+    minLiters:1,maxLiters:Infinity,
+    usage:"ფშიკალკით რეცხვა, აპარატით რეცხვა და შესაბამისი პროფესიონალური რეცხვის მეთოდი.",
+    dilution:"1×1, 1×2 ან 1×3 — გაზავება აირჩევა დასვრილი ზედაპირის მიხედვით.",
+    usedFor:"ძრავის ბლოკი: ძრავის მთავარი კორპუსი, ცილინდრები და სხვა ძირითადი მექანიზმები; მიმცხვარი ზეთი, ძლიერი ჩამჯდარი ჭუჭყი და ნაგარი.",
+    notFor:"მწარმოებლის მონაცემებში კონკრეტული აკრძალული ზედაპირები მითითებული არ არის; ამიტომ AI აკრძალვას თვითნებურად არ მოიგონებს.",
+    safety:"მოარიდეთ თვალებს, ხელებსა და კანს. გამოიყენეთ დამცავი საფარები და პირბადე ხსნარის დასხმის ან გადასხმის დროს. მოხვედრის შემთხვევაში ჩამოირეცხეთ წყლის უხვი რაოდენობით.",
+    storage:"შეინახეთ მშრალ და ბავშვებისთვის მიუწვდომელ ადგილზე.",
+    warning:"მოარიდეთ თვალებს, ხელებსა და კანს. შეინახეთ ბავშვებისთვის მიუწვდომელ ადგილზე."
+  }
+};
+function kbProduct(q){
+ const s=String(q||"").toLowerCase();
+ for(const [name,k] of Object.entries(ECOMAX_KB)){
+   if(k.aliases.some(a=>s.includes(a.toLowerCase()))) return {name,k};
+ }
+ return null;
+}
+function aiFindProduct(q){
+ const kb=kbProduct(q);
+ if(kb)return products.find(p=>p.name===kb.name)||products.find(p=>String(p.name).toLowerCase().includes("ძრავის"))||null;
+ const s=String(q||"").toLowerCase();
+ const map=[["მედიუმ","ქაფი მედიუმი"],["medium","ქაფი მედიუმი"],["ჰარდი","ქაფი ჰარდი"],["hard","ქაფი ჰარდი"],["დისკ","დისკების სარეცხი"],["ნაჭ","ნაჭრის ქიმწმენდა"],["ტყავ","ტყავის ქიმწმენდა"],["რადიატ","რადიატორის სარეცხი"],["სანთ","სანთელი"],["მანქანის სარეცხი ქაფ","მანქანის სარეცხი ქაფი 2 ლიტრი"]];
+ for(const [a,n] of map)if(s.includes(a))return products.find(p=>p.name===n)||null;
+ return null;
+}
+function aiQty(q){
+ const s=String(q||"");
+ const m=s.match(/(\d+(?:[.,]\d+)?)\s*(ლიტრი|ლ|ლიტრს|ლიტრის|გრამი|გრ|გ|ცალი|ცალ)/i);
+ if(!m)return null;
+ let n=Number(m[1].replace(",",".")); const u=m[2].toLowerCase();
+ if(["გრამი","გრ","გ"].includes(u)) n=n/1000;
+ return Number.isFinite(n)?n:null;
+}
+function enginePrice(q){
+ if(q===0.5)return 5;
+ if(q>=1)return q*10;
+ return null;
+}
+function formatMoney(n){return Number(n||0).toFixed(2)+"₾"}
+function aiHasAny(q,words){const s=String(q||"").toLowerCase();return words.some(w=>s.includes(w))}
+function aiReply(q){
+ const kb=kbProduct(q), p=aiFindProduct(q), qty=aiQty(q), s=String(q||"").toLowerCase();
+ if(kb){
+   const k=kb.k;
+   if(aiHasAny(s,["უსაფრთხ","თვალ","კანი","ხელი","პირბად","დაცვა","დამცავი"]))
+     return "🔐 <b>უსაფრთხოება — "+esc(kb.name)+"</b><br>"+esc(k.safety)+"<br><br>⚠️ "+esc(k.warning);
+   if(aiHasAny(s,["შენახ","სად შევინახ","ბავშვ"]))
+     return "📦 <b>შენახვა</b><br>"+esc(k.storage);
+   if(aiHasAny(s,["გაზავ","განზავ","პროპორც","1x1","1x2","1x3"]))
+     return "🧪 <b>განზავება</b><br>"+esc(k.dilution);
+   if(aiHasAny(s,["როგორ გამოვიყენ","მოხმარ","გამოვიყენ","ფშიკ","აპარატ"]))
+     return "🧽 <b>მოხმარების წესი</b><br>"+esc(k.usage)+"<br><br>გაზავება: "+esc(k.dilution);
+   if(aiHasAny(s,["სად გამოიყენ","რისთვის","რა წმენდ","რას წმენდ","ზეთი","ნაგარ","ჭუჭყ"]))
+     return "🔧 <b>გამოყენება</b><br>"+esc(k.usedFor);
+   if(aiHasAny(s,["სად არ","არ შეიძლება","აკრძალ","რომელ ზედაპირზე არ"]))
+     return "ℹ️ "+esc(k.notFor);
+   if(aiHasAny(s,["ფასი","ღირს","რამდენი ღირს","ღირებულ"]))
+     return "💰 500 გრამი — <b>5₾</b>. 1 ლიტრი — <b>10₾</b>. 2L — 20₾, 3L — 30₾, 4L — 40₾, 5L — 50₾, 6L — 60₾, 7L — 70₾, 8L — 80₾, 9L — 90₾, 10L — 100₾, 20L — 200₾.<br>შეკვეთის მინიმალური რაოდენობა: 1 ლიტრი.";
+   if(qty!==null){
+     if(qty<1)return "⚠️ შეკვეთის მინიმალური რაოდენობა არის <b>1 ლიტრი</b>. 500 გრამი ღირს 5₾, მაგრამ შეკვეთის მინიმუმი 1 ლიტრია.";
+     const price=enginePrice(qty);
+     return "🛒 <b>"+qty+" ლიტრი "+esc(kb.name)+"</b> — "+formatMoney(price)+".<br><button class='ai-add' onclick='aiAddEngine("+qty+")'>+ კალათაში დამატება</button>";
+   }
+   return "🔧 <b>"+esc(kb.name)+"</b><br>"+esc(k.usedFor)+"<br><br>მითხარი რა გინდა გაიგო — <b>მოხმარება, განზავება, უსაფრთხოება, ფასი</b> ან რაოდენობა.";
+ }
+ if(p){
+   if(qty!==null)return "🛒 "+qty+" ერთეული/ლიტრი <b>"+esc(p.name)+"</b>-ის დამატება შემიძლია, მაგრამ ამ პროდუქტის ზუსტი მოცულობითი ფასების ცხრილი AI-ის ცოდნის ბაზაში ჯერ არ არის განსაზღვრული.";
+   return "🔎 <b>"+esc(p.name)+"</b><br>"+esc(p.description||"პროდუქტის დეტალური მონაცემები ხელმისაწვდომია კატალოგში.")+"<br><br>თუ გინდა, მკითხე კონკრეტულად მოხმარების წესი, გაზავება ან ფასი.";
+ }
+ if(aiHasAny(s,["გამარჯობა","სალამ","hello","hi","ჰეი"]))
+   return "გამარჯობა 👋 მე ვარ <b>ECOMAX AI Companion</b>. შემიძლია დაგეხმარო პროდუქტის შერჩევაში, მოხმარებაში, განზავებაში, უსაფრთხოებაში, ფასში და შეკვეთაში.";
+ if(aiHasAny(s,["კალათა","შეკვეთა","დამიმატ","დამატება"])){
+   const total=cart.reduce((sum,x)=>{const pp=products.find(z=>z.id===x.id);return sum+(pp?Number(pp.price)*Number(x.qty||0):0)},0);
+   return "🛒 შენს კალათაში არის <b>"+cart.reduce((a,x)=>a+Number(x.qty||0),0)+"</b> ერთეული/ლიტრი. მიმდინარე ჯამი: <b>"+formatMoney(total)+"</b>. კალათის სანახავად დააჭირე 🛒 ღილაკს.";
+ }
+ if(aiHasAny(s,["ვინ ხარ","რა შეგიძლია","დახმარება","help"]))
+   return "✦ შემიძლია: პროდუქტის პოვნა, გამოყენების წესის ახსნა, განზავების მითითება, უსაფრთხოების წესები, ფასის დათვლა, რაოდენობის არჩევა და კალათაში დამატება. პროდუქტის შესახებ უცნობ ინფორმაციას არ მოვიგონებ.";
+ return "🤖 ამ კითხვაზე ზუსტი ECOMAX მონაცემი ჯერ არ მაქვს. შეგიძლია მკითხო კონკრეტული პროდუქტის შესახებ — მაგალითად: <b>„ძრავის სარეცხი როგორ გამოვიყენო?“</b>, <b>„1x3 რას ნიშნავს?“</b>, <b>„5 ლიტრი რამდენი ღირს?“</b> ან <b>„უსაფრთხოების წესები მითხარი“</b>.";
+}
+window.aiAddEngine=function(qty){
+ const p=products.find(x=>x.name==="ძრავის სარეცხი")||products.find(x=>String(x.name).toLowerCase().includes("ძრავის"));
+ if(!p)return toastAI("ძრავის სარეცხი პროდუქტებში ვერ მოიძებნა.");
+ addToCart(p.id,qty,false); openCart(); toastAI(qty+" ლიტრი დაემატა კალათაში.");
+}
+function toastAI(msg){
+ const chat=document.getElementById("chat");
+ if(chat)chat.insertAdjacentHTML("beforeend",'<div class="msg bot">'+esc(msg)+'</div>');
+}
 
-document.addEventListener("DOMContentLoaded",()=>{
-loadProducts();
-document.getElementById("search")?.addEventListener("input",renderProducts);
-document.getElementById("aiForm")?.addEventListener("submit",e=>{e.preventDefault();const input=document.getElementById("aiInput"),q=input?.value.trim();if(!q)return;const chat=document.getElementById("chat");chat.insertAdjacentHTML("beforeend",'<div class="msg user">'+esc(q)+'</div>');input.value="";const p=aiFindProduct(q),qty=aiQty(q);let reply;if(p&&qty){addToCart(p.id,qty,false);reply="დავამატე "+qty+" ლიტრი — "+esc(p.name)+". ჯამი: <b>"+(Number(p.price)*qty).toFixed(2)+"₾</b>";}else if(p){reply="რამდენი ლიტრი გინდა "+esc(p.name)+"?";}else{reply="მითხარი პროდუქტი და რაოდენობა, მაგალითად: „მინდა 5 ლიტრი ძრავის სარეცხი“."}chat.insertAdjacentHTML("beforeend",'<div class="msg bot">'+reply+'</div>');chat.scrollTop=chat.scrollHeight});
+document.getElementById("checkoutForm")?.addEventListener("submit",async e=>{e.preventDefault();const r=await db.auth.getSession();if(!r.data.session){location.href="login.html";return}let total=0;const items=cart.map(x=>{const p=products.find(p=>p.id===x.id),line=Number(p.price)*x.qty;total+=line;return{product_id:p.id,product_name:p.name,quantity:x.qty,unit_price:Number(p.price),unit:p.unit}});const {error}=await db.from("orders").insert({user_id:r.data.session.user.id,status:"new",customer_name:document.getElementById("coName").value.trim(),phone:document.getElementById("coPhone").value.trim(),address:document.getElementById("coAddress").value.trim(),city:document.getElementById("coCity").value.trim(),delivery_method:document.getElementById("coDelivery").value,payment_method:document.getElementById("coPayment").value,items,total});const m=document.getElementById("checkoutMsg");if(error){m.innerHTML='<p class="error">შეკვეთა ვერ გაიგზავნა: '+esc(error.message)+'</p>';return}cart=[];saveCart();m.innerHTML='<p class="success">შეკვეთა მიღებულია.</p>';setTimeout(()=>location.href="account.html",800)});
+});
+</script>
+</body>
+</html>document.getElementById("aiForm")?.addEventListener("submit",e=>{
+ e.preventDefault();
+ const input=document.getElementById("aiInput"),q=input?.value.trim(); if(!q)return;
+ const chat=document.getElementById("chat");
+ chat.insertAdjacentHTML("beforeend",'<div class="msg user">'+esc(q)+'</div>');
+ input.value="";
+ const reply=aiReply(q);
+ chat.insertAdjacentHTML("beforeend",'<div class="msg bot">'+reply+'</div>');
+ chat.scrollTop=chat.scrollHeight;
+});
+
 document.getElementById("checkoutForm")?.addEventListener("submit",async e=>{e.preventDefault();const r=await db.auth.getSession();if(!r.data.session){location.href="login.html";return}let total=0;const items=cart.map(x=>{const p=products.find(p=>p.id===x.id),line=Number(p.price)*x.qty;total+=line;return{product_id:p.id,product_name:p.name,quantity:x.qty,unit_price:Number(p.price),unit:p.unit}});const {error}=await db.from("orders").insert({user_id:r.data.session.user.id,status:"new",customer_name:document.getElementById("coName").value.trim(),phone:document.getElementById("coPhone").value.trim(),address:document.getElementById("coAddress").value.trim(),city:document.getElementById("coCity").value.trim(),delivery_method:document.getElementById("coDelivery").value,payment_method:document.getElementById("coPayment").value,items,total});const m=document.getElementById("checkoutMsg");if(error){m.innerHTML='<p class="error">შეკვეთა ვერ გაიგზავნა: '+esc(error.message)+'</p>';return}cart=[];saveCart();m.innerHTML='<p class="success">შეკვეთა მიღებულია.</p>';setTimeout(()=>location.href="account.html",800)});
 });
 </script>
