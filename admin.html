@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ka">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ECOMAX ADMIN</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#03070b;color:#eefaff;font-family:Arial,"Noto Sans Georgian",sans-serif}
+:root{--c:#19e6ff;--p:#0a121a;--l:#1b3440;--m:#8fa5af;--g:#35e49b;--r:#ff6675;--y:#ffb52d}
+header{position:sticky;top:0;z-index:10;background:rgba(3,7,11,.9);backdrop-filter:blur(18px);border-bottom:1px solid #18303b}
+.top{max-width:1450px;margin:auto;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.logo{font-size:24px;font-weight:900;letter-spacing:4px}.logo span{color:var(--c);text-shadow:0 0 20px var(--c)}
+button{cursor:pointer}.btn{border:1px solid #29424e;background:#0b151e;color:#fff;padding:10px 14px;border-radius:8px}.main{background:var(--c);color:#001015;border-color:var(--c)}
+.wrap{max-width:1450px;margin:auto;padding:25px 22px 60px}
+h1{font-size:40px;margin:10px 0 5px}.muted{color:var(--m)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:25px 0}
+.stat{background:linear-gradient(145deg,#0d1821,#080e14);border:1px solid var(--l);border-radius:14px;padding:20px}.stat b{display:block;font-size:28px;margin-top:8px;color:var(--c)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}.toolbar input,.toolbar select{background:#08111a;color:#fff;border:1px solid #29424e;padding:11px;border-radius:8px;outline:0}
+.orders{display:grid;gap:13px}.order{background:var(--p);border:1px solid var(--l);border-radius:14px;padding:18px}.order-top{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}.id{color:var(--c);font-family:monospace}.customer{font-size:20px;font-weight:bold;margin-top:12px}.meta{color:var(--m);line-height:1.7;margin-top:6px}.items{margin-top:14px;border-top:1px solid #1a2c35;padding-top:10px}.item{display:flex;justify-content:space-between;padding:6px 0;gap:15px}.total{font-size:22px;font-weight:bold;color:var(--y);margin-top:12px}.status{padding:7px 10px;border-radius:20px;border:1px solid #2b4651;background:#08131b;color:var(--c)}
+.empty{padding:40px;text-align:center;border:1px dashed #29424e;border-radius:14px;color:var(--m)}
+.notice{padding:16px;border:1px solid #6b252e;background:#210d12;border-radius:10px;color:#ffb1b9;margin-top:20px}
+@media(max-width:800px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.stats{grid-template-columns:1fr}.wrap{padding:18px 12px}}
+</style>
+</head>
+<body>
+<header><div class="top"><div class="logo"><span>✦</span> ECOMAX ADMIN</div><div><button class="btn" onclick="location.href='index.html'">საიტზე დაბრუნება</button> <button class="btn" onclick="logout()">გასვლა</button></div></div></header>
+
+<main class="wrap">
+<h1>შეკვეთების მართვა</h1>
+<div class="muted">რეალური Supabase შეკვეთები — მხოლოდ ადმინისტრატორისთვის</div>
+<div id="notice"></div>
+
+<section class="stats">
+<div class="stat">ყველა შეკვეთა<b id="sAll">0</b></div>
+<div class="stat">ახალი<b id="sNew">0</b></div>
+<div class="stat">დასრულებული<b id="sDone">0</b></div>
+<div class="stat">გაყიდვები<b id="sSales">0₾</b></div>
+</section>
+
+<div class="toolbar">
+<input id="search" placeholder="მომხმარებელი, ტელეფონი, შეკვეთის ID..." oninput="render()">
+<select id="filter" onchange="render()">
+<option value="">ყველა სტატუსი</option>
+<option value="new">ახალი</option>
+<option value="confirmed">დადასტურებული</option>
+<option value="preparing">მზადდება</option>
+<option value="shipped">გზაში</option>
+<option value="completed">დასრულებული</option>
+<option value="cancelled">გაუქმებული</option>
+</select>
+<button class="btn main" onclick="loadOrders()">↻ განახლება</button>
+</div>
+
+<div id="orders" class="orders"></div>
+</main>
+
+<script>
+const SUPABASE_URL="https://mkxkqdvtmfbxmldnvsef.supabase.co";
+const SUPABASE_KEY="sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let orders=[];
+
+const labels={new:"ახალი",confirmed:"დადასტურებული",preparing:"მზადდება",shipped:"გზაში",completed:"დასრულებული",cancelled:"გაუქმებული"};
+
+async function boot(){
+ const {data:{session}}=await db.auth.getSession();
+ if(!session){location.href="index.html";return}
+ const {data,isAdmin,error}=await db.rpc("is_admin");
+ if(error || data!==true){
+   document.getElementById("notice").innerHTML='<div class="notice">ამ ანგარიშს ადმინისტრატორის წვდომა არ აქვს.</div>';
+   return;
+ }
+ await loadOrders();
+}
+async function loadOrders(){
+ const {data,error}=await db.rpc("admin_list_orders");
+ if(error){document.getElementById("notice").innerHTML='<div class="notice">'+escapeHtml(error.message)+'</div>';return}
+ orders=data||[]; stats(); render();
+}
+function stats(){
+ sAll.textContent=orders.length;
+ sNew.textContent=orders.filter(x=>x.status==="new").length;
+ sDone.textContent=orders.filter(x=>x.status==="completed").length;
+ sSales.textContent=orders.reduce((a,x)=>a+Number(x.total||0),0).toFixed(2)+"₾";
+}
+function render(){
+ const q=(search.value||"").toLowerCase().trim(), f=filter.value;
+ const list=orders.filter(o=>{
+  const hay=[o.id,o.customer_name,o.phone,o.address,o.city].join(" ").toLowerCase();
+  return (!q||hay.includes(q))&&(!f||o.status===f);
+ });
+ if(!list.length){ordersEl().innerHTML='<div class="empty">შეკვეთები ვერ მოიძებნა.</div>';return}
+ ordersEl().innerHTML=list.map(o=>{
+  const items=Array.isArray(o.items)?o.items:[];
+  return '<article class="order">'+
+   '<div class="order-top"><div><div class="id">#'+escapeHtml(o.id)+'</div><div class="muted">'+new Date(o.created_at).toLocaleString("ka-GE")+'</div></div>'+
+   '<select class="status" onchange="changeStatus(\''+o.id+'\',this.value)">'+Object.keys(labels).map(s=>'<option value="'+s+'" '+(o.status===s?'selected':'')+'>'+labels[s]+'</option>').join("")+'</select></div>'+
+   '<div class="customer">'+escapeHtml(o.customer_name)+'</div>'+
+   '<div class="meta">📞 '+escapeHtml(o.phone)+'<br>📍 '+escapeHtml((o.city?o.city+", ":"")+ (o.address||""))+'</div>'+
+   '<div class="items">'+items.filter(x=>x.product_name).map(x=>'<div class="item"><span>'+escapeHtml(x.product_name)+' · '+escapeHtml(x.variant||"")+' × '+Number(x.quantity||0)+'</span><b>'+Number(x.subtotal||0).toFixed(2)+'₾</b></div>').join("")+'</div>'+
+   (items.find(x=>x.note)?'<div class="meta">📝 '+escapeHtml(items.find(x=>x.note).note)+'</div>':"")+
+   '<div class="total">'+Number(o.total||0).toFixed(2)+'₾</div>'+
+   '</article>';
+ }).join("");
+}
+function ordersEl(){return document.getElementById("orders")}
+async function changeStatus(id,status){
+ const {error}=await db.rpc("admin_update_order_status",{p_order_id:id,p_status:status});
+ if(error){alert(error.message);await loadOrders();return}
+ await loadOrders();
+}
+async function logout(){await db.auth.signOut();location.href="index.html"}
+function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+boot();
+</script>
+</body>
+</html>
