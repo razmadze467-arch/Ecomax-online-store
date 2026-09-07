@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ECOMAX — რეგისტრაცია</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:25px;font-family:Arial,sans-serif;color:#fff;background:radial-gradient(circle at top,#12333d 0%,#050a0e 45%,#020406 100%)}.box{width:100%;max-width:500px;padding:38px;border-radius:22px;background:rgba(9,17,23,.97);border:1px solid #1c3d49;box-shadow:0 25px 80px rgba(0,0,0,.6)}.logo{text-align:center;font-size:31px;font-weight:900;letter-spacing:5px}.logo span{color:#19e6ff;text-shadow:0 0 20px #19e6ff}.title{text-align:center;font-size:22px;margin-top:20px}.sub{text-align:center;color:#8fa5af;margin-bottom:28px}.field{margin-bottom:16px}label{display:block;color:#b9c8ce;font-size:14px;margin-bottom:7px}input{width:100%;padding:14px;border-radius:10px;border:1px solid #29434e;background:#071017;color:#fff;font-size:15px;outline:none}input:focus{border-color:#19e6ff;box-shadow:0 0 0 2px rgba(25,230,255,.1)}.register{width:100%;margin-top:8px;padding:15px;border:0;border-radius:10px;background:#19e6ff;color:#001015;font-size:16px;font-weight:800;cursor:pointer}.register:disabled{opacity:.55;cursor:wait}.message{display:none;margin-top:18px;padding:14px;border-radius:10px;line-height:1.5;font-size:14px}.success{display:block;color:#7ff0c3;background:rgba(35,190,130,.1);border:1px solid #238e68}.error{display:block;color:#ff9ba6;background:rgba(255,70,90,.1);border:1px solid #9b3341}.links{text-align:center;margin-top:22px;color:#8fa5af}.links a{color:#19e6ff;text-decoration:none;font-weight:bold}.home{display:block;text-align:center;margin-top:16px;color:#7f929a;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="box">
+<div class="logo"><span>✦</span> ECOMAX</div>
+<div class="title">ანგარიშის შექმნა</div>
+<div class="sub">შექმენი ECOMAX-ის მომხმარებლის ანგარიში</div>
+<form id="registerForm">
+<div class="field"><label>სახელი და გვარი</label><input id="name" type="text" required></div>
+<div class="field"><label>ტელეფონი</label><input id="phone" type="tel" required></div>
+<div class="field"><label>მისამართი</label><input id="address" type="text" required></div>
+<div class="field"><label>ელფოსტა</label><input id="email" type="email" required></div>
+<div class="field"><label>პაროლი</label><input id="password" type="password" minlength="6" required></div>
+<div class="field"><label>გაიმეორე პაროლი</label><input id="password2" type="password" minlength="6" required></div>
+<button id="registerButton" class="register" type="submit">ანგარიშის შექმნა</button>
+</form>
+<div id="message" class="message"></div>
+<div class="links">უკვე გაქვს ანგარიში? <a href="login.html">ავტორიზაცია</a></div>
+<a href="index.html" class="home">← მთავარ გვერდზე დაბრუნება</a>
+</div>
+<script>
+const SUPABASE_URL="https://mkxkqdvtmfbxmldnvsef.supabase.co";
+const SUPABASE_KEY="sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
+const client=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+function show(text,type){const el=document.getElementById("message");el.textContent=text;el.className="message "+type}
+document.getElementById("registerForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const button=document.getElementById("registerButton");
+ const name=document.getElementById("name").value.trim(),phone=document.getElementById("phone").value.trim(),address=document.getElementById("address").value.trim(),email=document.getElementById("email").value.trim(),password=document.getElementById("password").value,password2=document.getElementById("password2").value;
+ if(password!==password2){show("პაროლები ერთმანეთს არ ემთხვევა.","error");return}
+ if(password.length<6){show("პაროლი უნდა შეიცავდეს მინიმუმ 6 სიმბოლოს.","error");return}
+ button.disabled=true;button.textContent="ანგარიში იქმნება...";
+ try{
+  const {data,error}=await client.auth.signUp({email,password,options:{data:{full_name:name,phone,address},emailRedirectTo:window.location.origin+"/"}});
+  if(error)throw error;
+  if(!data.user)throw new Error("მომხმარებელი ვერ შეიქმნა.");
+  if(data.session){
+   const {error:pe}=await client.from("profiles").upsert({id:data.user.id,full_name:name,phone,address,city:"ქუთაისი",updated_at:new Date().toISOString()});
+   if(pe)console.error(pe);
+   show("რეგისტრაცია წარმატებით დასრულდა! გადამისამართება...","success");
+   setTimeout(()=>location.href="index.html",900);
+  }else{
+   show("ანგარიში შეიქმნა! 📧 შეამოწმე ელფოსტა და დაადასტურე ანგარიში.","success");
+   button.disabled=false;button.textContent="ანგარიშის შექმნა";
+  }
+ }catch(err){
+  console.error(err);
+  let msg=err.message||"რეგისტრაცია ვერ შესრულდა.";
+  if(/already registered/i.test(msg))msg="ეს ელფოსტა უკვე რეგისტრირებულია.";
+  else if(/password/i.test(msg))msg="პაროლი უნდა შეიცავდეს მინიმუმ 6 სიმბოლოს.";
+  show(msg,"error");button.disabled=false;button.textContent="ანგარიშის შექმნა";
+ }
+});
+</script>
+</body>
+</html>
