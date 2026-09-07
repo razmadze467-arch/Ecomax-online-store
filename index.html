@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ECOMAX — Professional Auto Care</title>
+<link rel="canonical" href="https://ecomax.com.ge/">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 window.accountAction=window.accountAction||function(){location.href="login.html"};
@@ -377,6 +378,9 @@ function toastAI(msg){
 
 document.getElementById("checkoutForm")?.addEventListener("submit",async e=>{e.preventDefault();const r=await db.auth.getSession();if(!r.data.session){location.href="login.html";return}let total=0;const items=cart.map(x=>{const p=products.find(p=>p.id===x.id),line=Number(p.price)*x.qty;total+=line;return{product_id:p.id,product_name:p.name,quantity:x.qty,unit_price:Number(p.price),unit:p.unit}});const {error}=await db.from("orders").insert({user_id:r.data.session.user.id,status:"new",customer_name:document.getElementById("coName").value.trim(),phone:document.getElementById("coPhone").value.trim(),address:document.getElementById("coAddress").value.trim(),city:document.getElementById("coCity").value.trim(),delivery_method:document.getElementById("coDelivery").value,payment_method:document.getElementById("coPayment").value,items,total});const m=document.getElementById("checkoutMsg");if(error){m.innerHTML='<p class="error">შეკვეთა ვერ გაიგზავნა: '+esc(error.message)+'</p>';return}cart=[];saveCart();m.innerHTML='<p class="success">შეკვეთა მიღებულია.</p>';setTimeout(()=>location.href="account.html",800)});
 });
+</script>
+<script>
+if (location.pathname === "/index.html") { history.replaceState(null, "", "/" + location.hash); }
 </script>
 </body>
 </html>
