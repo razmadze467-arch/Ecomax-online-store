@@ -1491,7 +1491,8 @@ async function handleAuth(e){
     email,
     password,
     options:{
-     data:{full_name:name,phone:phone,address:address}
+     data:{full_name:name,phone:phone,address:address},
+     emailRedirectTo: window.location.origin + "/"
     }
    });
 
