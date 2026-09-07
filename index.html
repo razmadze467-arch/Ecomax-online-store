@@ -1462,86 +1462,79 @@ function toggleAuthMode(){
 }
 
 async function handleAuth(e){
-
  e.preventDefault();
 
- const email =
-  document.getElementById("authEmail").value.trim();
+ const email=document.getElementById("authEmail").value.trim();
+ const password=document.getElementById("authPassword").value;
 
- const password =
-  document.getElementById("authPassword").value;
+ if(!email || !password){
+  alert("გთხოვ შეავსო ელფოსტა და პაროლი.");
+  return;
+ }
 
- if(authMode==="register"){
+ const submit=document.getElementById("authSubmit");
+ submit.disabled=true;
+ submit.textContent=authMode==="register" ? "იქმნება..." : "მიმდინარეობს...";
 
-  const name =
-   document.getElementById("authName").value.trim();
+ try{
+  if(authMode==="register"){
+   const name=document.getElementById("authName").value.trim();
+   const phone=document.getElementById("authPhone").value.trim();
+   const address=document.getElementById("authAddress").value.trim();
 
-  const phone =
-   document.getElementById("authPhone").value.trim();
+   if(!name || !phone || !address){
+    alert("გთხოვ შეავსო სახელი, ტელეფონი და მისამართი.");
+    return;
+   }
 
-  const address =
-   document.getElementById("authAddress").value.trim();
-
-  const {data,error} =
-   await db.auth.signUp({
+   const {data,error}=await db.auth.signUp({
     email,
     password,
     options:{
-     data:{
-      full_name:name,
-      phone:phone,
-      address:address
-     }
+     data:{full_name:name,phone:phone,address:address}
     }
    });
 
-  if(error){
-
-   alert(error.message);
-   return;
-  }
-
-  if(data.user){
+   if(error) throw error;
 
    if(data.session){
-
-    await saveProfile(
-     data.user.id,
-     name,
-     phone,
-     address
-    );
-
-    alert("ანგარიში წარმატებით შეიქმნა!");
+    await saveProfile(data.user.id,name,phone,address);
     closeModal("authModal");
-
+    document.getElementById("authForm").reset();
+    await updateAccountUI();
+    alert("რეგისტრაცია წარმატებით დასრულდა! 👋");
    }else{
-
-    alert(
-     "ანგარიში შეიქმნა. თუ Email Confirmation ჩართულია Supabase-ში, შეამოწმე ელფოსტა და დაადასტურე ანგარიში."
-    );
+    alert("რეგისტრაცია წარმატებით დასრულდა. 📧 ელფოსტაზე გამოგზავნილ ბმულზე დაჭერის შემდეგ შეძლებ შესვლას.");
    }
+
+  }else{
+   const {data,error}=await db.auth.signInWithPassword({email,password});
+
+   if(error) throw error;
+
+   closeModal("authModal");
+   document.getElementById("authForm").reset();
+   await updateAccountUI();
+   alert("ავტორიზაცია წარმატებით დასრულდა! 👋");
   }
+ }catch(error){
+  console.error("AUTH ERROR:",error);
 
- }else{
+  let msg=error.message || "უცნობი შეცდომა.";
 
-  const {error} =
-   await db.auth.signInWithPassword({
-    email,
-    password
-   });
+  if(msg.toLowerCase().includes("invalid login credentials"))
+   msg="ელფოსტა ან პაროლი არასწორია.";
+  else if(msg.toLowerCase().includes("email not confirmed"))
+   msg="ელფოსტა ჯერ არ დაგიდასტურებია. შეამოწმე ელფოსტა და დააჭირე დადასტურების ბმულს.";
+  else if(msg.toLowerCase().includes("user already registered"))
+   msg="ეს ელფოსტა უკვე რეგისტრირებულია. გამოიყენე ავტორიზაცია.";
+  else if(msg.toLowerCase().includes("password"))
+   msg="პაროლი უნდა იყოს მინიმუმ 6 სიმბოლო.";
 
-  if(error){
-
-   alert(error.message);
-   return;
-  }
-
-  alert("წარმატებით შეხვედი ანგარიშზე. 👋");
-
-  closeModal("authModal");
-
-  await updateAccountUI();
+  alert("ვერ შესრულდა:\n\n"+msg);
+ }finally{
+  submit.disabled=false;
+  submit.textContent=authMode==="register" ? "ანგარიშის შექმნა" : "შესვლა";
  }
 }
 
