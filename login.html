@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ECOMAX — ავტორიზაცია</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;font-family:Arial,sans-serif;color:#fff;background:radial-gradient(circle at top,#12333d,#050a0e 48%,#020406)}.box{width:100%;max-width:460px;padding:38px;border-radius:22px;background:rgba(9,17,23,.97);border:1px solid #1c3d49;box-shadow:0 25px 80px rgba(0,0,0,.6)}.logo{text-align:center;font-size:31px;font-weight:900;letter-spacing:5px}.logo span{color:#19e6ff;text-shadow:0 0 20px #19e6ff}.title{text-align:center;font-size:23px;margin-top:24px}.sub{text-align:center;color:#8fa5af;margin:9px 0 28px}.field{margin-bottom:17px}label{display:block;color:#b9c8ce;font-size:14px;margin-bottom:7px}input{width:100%;padding:14px;border-radius:10px;border:1px solid #29434e;background:#071017;color:#fff;font-size:15px;outline:none}input:focus{border-color:#19e6ff;box-shadow:0 0 0 2px rgba(25,230,255,.1)}button{width:100%;padding:15px;border:0;border-radius:10px;background:#19e6ff;color:#001015;font-size:16px;font-weight:800;cursor:pointer}button:disabled{opacity:.55;cursor:wait}.forgot{text-align:right;margin:10px 0 2px}.forgot a,.links a{color:#19e6ff;text-decoration:none}.message{display:none;margin-top:18px;padding:14px;border-radius:10px;line-height:1.5;font-size:14px}.success{display:block;color:#7ff0c3;background:rgba(35,190,130,.1);border:1px solid #238e68}.error{display:block;color:#ff9ba6;background:rgba(255,70,90,.1);border:1px solid #9b3341}.links{text-align:center;margin-top:23px;color:#8fa5af}.home{display:block;text-align:center;margin-top:16px;color:#7f929a;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="box">
+<div class="logo"><span>✦</span> ECOMAX</div>
+<div class="title">ავტორიზაცია</div>
+<div class="sub">შედი შენს ECOMAX ანგარიშში</div>
+<form id="loginForm">
+<div class="field"><label>ელფოსტა</label><input id="email" type="email" autocomplete="email" placeholder="example@gmail.com" required></div>
+<div class="field"><label>პაროლი</label><input id="password" type="password" autocomplete="current-password" placeholder="შეიყვანე პაროლი" required></div>
+<div class="forgot"><a href="#" id="forgot">დაგავიწყდა პაროლი?</a></div>
+<button id="loginButton" type="submit">შესვლა</button>
+</form>
+<div id="message" class="message"></div>
+<div class="links">არ გაქვს ანგარიში? <a href="register.html">რეგისტრაცია</a></div>
+<a href="index.html" class="home">← მთავარ გვერდზე დაბრუნება</a>
+</div>
+<script>
+const SUPABASE_URL="https://mkxkqdvtmfbxmldnvsef.supabase.co";
+const SUPABASE_KEY="sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
+const client=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+function show(text,type){const el=document.getElementById("message");el.textContent=text;el.className="message "+type}
+document.getElementById("loginForm").addEventListener("submit",async e=>{
+ e.preventDefault();const btn=document.getElementById("loginButton"),email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;
+ btn.disabled=true;btn.textContent="მიმდინარეობს...";
+ try{
+  const {data,error}=await client.auth.signInWithPassword({email,password});
+  if(error)throw error;
+  if(!data.session)throw new Error("სესია ვერ შეიქმნა.");
+  show("ავტორიზაცია წარმატებით დასრულდა! გადამისამართება...","success");
+  setTimeout(()=>location.href="index.html",700);
+ }catch(err){
+  console.error(err);let msg=err.message||"ავტორიზაცია ვერ შესრულდა.";
+  if(/invalid login credentials/i.test(msg))msg="ელფოსტა ან პაროლი არასწორია.";
+  else if(/email not confirmed/i.test(msg))msg="ელფოსტა ჯერ არ არის დადასტურებული. შეამოწმე ელფოსტა.";
+  show(msg,"error");btn.disabled=false;btn.textContent="შესვლა";
+ }
+});
+document.getElementById("forgot").addEventListener("click",async e=>{
+ e.preventDefault();const email=document.getElementById("email").value.trim();
+ if(!email){show("ჯერ შეიყვანე ელფოსტა.","error");return}
+ try{
+  const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+"/login.html"});
+  if(error)throw error;show("პაროლის აღდგენის ბმული გამოგზავნილია ელფოსტაზე.","success");
+ }catch(err){show(err.message||"პაროლის აღდგენა ვერ შესრულდა.","error")}
+});
+</script>
+</body>
+</html>
