@@ -1,7 +1,1330 @@
-<!doctype html><html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ECOMAX — ჩემი ანგარიში</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;600;700;800;900&display=swap');:root{--bg:#02070b;--p:#071219;--line:#173b47;--c:#19e6ff;--m:#8ea6af;--g:#52e5ad;--r:#ff6477;--y:#ffd66b}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,rgba(25,230,255,.1),transparent 32%),var(--bg);color:#fff;font-family:"Noto Sans Georgian",Arial}header{border-bottom:1px solid #12343f;background:rgba(2,8,12,.8);backdrop-filter:blur(15px);position:sticky;top:0;z-index:2}.nav{max-width:1200px;margin:auto;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}.logo{font:bold 24px Arial;letter-spacing:5px}.logo span{color:var(--c)}.btn{padding:10px 14px;border-radius:9px;border:1px solid #20434e;background:#07161c;color:#fff;cursor:pointer;font:700 13px inherit}.primary{background:var(--c);color:#001116;border-color:var(--c)}main{max-width:1200px;margin:auto;padding:35px 20px 70px}.hero{padding:28px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#08171e,#040b10);margin-bottom:18px}.hero h1{margin:0 0 7px;font-size:30px}.muted{color:var(--m);font-size:13px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}.stat{padding:16px;border:1px solid #153640;border-radius:12px;background:#061017}.stat b{display:block;color:var(--c);font:800 23px Arial;margin-top:5px}.order{border:1px solid var(--line);border-radius:15px;background:#061017;margin:12px 0;overflow:hidden}.orderHead{padding:16px;display:flex;justify-content:space-between;gap:15px;align-items:center}.code{color:var(--c);font:800 14px monospace}.status{font-weight:800}.new{color:var(--c)}.confirmed{color:#7dd8ff}.processing{color:var(--y)}.shipped{color:#c0a6ff}.delivered{color:var(--g)}.cancelled{color:var(--r)}.items{padding:0 16px 16px}.item{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #123039;font-size:13px}.empty{text-align:center;padding:50px;color:var(--m)}.timeline{display:flex;justify-content:space-between;gap:6px;padding:18px 16px 8px;border-top:1px solid #123039}.step{flex:1;text-align:center;color:#5e747c;font-size:11px}.step:before{content:"";display:block;width:13px;height:13px;border-radius:50%;border:2px solid #29434c;background:#061017;margin:0 auto 7px}.step.active{color:#fff}.step.active:before{border-color:var(--c);background:var(--c);box-shadow:0 0 12px rgba(25,230,255,.5)}.step.current{font-weight:800;color:var(--c)}@media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.orderHead{align-items:flex-start;flex-direction:column}}
-</style></head><body><header><div class="nav"><div class="logo"><span>✦</span> ECOMAX</div><div><button class="btn" onclick="location.href='index.html'">მთავარი</button> <button class="btn" onclick="logout()">გამოსვლა</button></div></div></header><main><div id="loading" class="hero">ანგარიშის ჩატვირთვა...</div><div id="app" style="display:none"><section class="hero"><h1>ჩემი ანგარიში</h1><div id="user" class="muted"></div><div class="stats"><div class="stat">შეკვეთები<b id="n">0</b></div><div class="stat">მუშავდება<b id="work">0</b></div><div class="stat">მიტანილი<b id="done">0</b></div><div class="stat">შეკვეთილი თანხა<b id="sum">0₾</b></div></div></section><h2>ჩემი შეკვეთები</h2><div id="orders"></div></div></main><script>
-const db=supabase.createClient("https://mkxkqdvtmfbxmldnvsef.supabase.co","sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd");const L={new:"ახალი",confirmed:"დადასტურებული",processing:"მუშავდება",shipped:"გაგზავნილია",delivered:"მიტანილია",cancelled:"გაუქმებული"};const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));const code=o=>"ECOMAX-"+o.id.slice(0,8).toUpperCase();
-let lastStatuses={};function notify(t){if("Notification" in window&&Notification.permission==="granted")new Notification("ECOMAX",{body:t});const n=document.createElement("div");n.textContent=t;n.style.cssText="position:fixed;right:18px;bottom:18px;background:#071820;color:#fff;border:1px solid #19e6ff;padding:13px 16px;border-radius:10px;z-index:9999;box-shadow:0 10px 40px #000";document.body.appendChild(n);setTimeout(()=>n.remove(),4500)}async function requestNotifications(){if("Notification" in window&&Notification.permission==="default")try{await Notification.requestPermission()}catch(e){}}async function init(){const {data:{user}}=await db.auth.getUser();if(!user){location.href="login.html";return}const [p,o]=await Promise.all([db.from("profiles").select("full_name,phone").eq("id",user.id).maybeSingle(),db.from("orders").select("*").eq("user_id",user.id).order("created_at",{ascending:false})]);document.getElementById("loading").style.display="none";document.getElementById("app").style.display="block";document.getElementById("user").textContent=(p.data?.full_name||user.email)+" • "+(p.data?.phone||user.email);const orders=o.data||[];for(const x of orders){if(lastStatuses[x.id]&&lastStatuses[x.id]!==x.status)notify("შეკვეთა "+code(x)+" — "+(L[x.status]||x.status));lastStatuses[x.id]=x.status}document.getElementById("n").textContent=orders.length;document.getElementById("work").textContent=orders.filter(x=>["new","confirmed","processing","shipped"].includes(x.status)).length;document.getElementById("done").textContent=orders.filter(x=>x.status==="delivered").length;document.getElementById("sum").textContent=orders.filter(x=>x.status!=="cancelled").reduce((a,x)=>a+Number(x.total||0),0).toFixed(2)+"₾";document.getElementById("orders").innerHTML=orders.length?orders.map(o=>{const items=Array.isArray(o.items)?o.items:[];const flow=["new","confirmed","processing","shipped","delivered"];const idx=flow.indexOf(o.status);const timeline=flow.map((s,k)=>"<div class=\"step "+(k<=idx?"active ":"")+(k===idx?"current":"")+"\">"+esc(L[s])+"</div>").join("");return '<div class="order"><div class="orderHead"><div><div class="code">'+code(o)+'</div><div class="muted">'+new Date(o.created_at).toLocaleString("ka-GE")+'</div></div><div class="status '+(o.status||"new")+'">'+esc(L[o.status]||o.status)+'</div><div><b>'+Number(o.total||0).toFixed(2)+'₾</b></div></div><div class="timeline">'+timeline+'</div><div class="items">'+items.map(x=>'<div class="item"><span>'+esc(x.product_name||x.name)+' × '+esc(x.quantity)+'</span><b>'+((Number(x.unit_price||x.price||0)*Number(x.quantity||1)).toFixed(2))+'₾</b></div>').join("")+'</div></div>'}).join(""):'<div class="empty">შეკვეთები ჯერ არ გაქვს.</div>'}
-async function logout(){await db.auth.signOut();location.href="login.html"}requestNotifications();init();setInterval(()=>{if(document.visibilityState==="visible")init()},15000);
-</script></body></html>
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ECOMAX — ჩემი ანგარიში</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800;900&display=swap');
+
+:root{
+    --bg:#02070b;
+    --panel:#07131a;
+    --panel2:#0a1b23;
+    --line:#123744;
+    --cyan:#19e6ff;
+    --cyan2:#00a8c6;
+    --text:#f4fbfd;
+    --muted:#8fa8b2;
+    --green:#50e3a4;
+    --yellow:#ffd66b;
+    --red:#ff6477;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    color:var(--text);
+    font-family:"Noto Sans Georgian",Arial,sans-serif;
+    background:
+        radial-gradient(circle at 85% 5%,rgba(25,230,255,.12),transparent 30%),
+        radial-gradient(circle at 10% 90%,rgba(0,168,198,.08),transparent 30%),
+        var(--bg);
+}
+
+body:before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.15;
+    background-image:
+        linear-gradient(rgba(25,230,255,.08) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(25,230,255,.08) 1px,transparent 1px);
+    background-size:55px 55px;
+    mask-image:linear-gradient(to bottom,#000,transparent);
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button{
+    font-family:inherit;
+}
+
+.header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(2,7,11,.84);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(25,230,255,.13);
+}
+
+.nav{
+    max-width:1400px;
+    margin:auto;
+    padding:14px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:24px;
+    font-weight:900;
+    letter-spacing:5px;
+}
+
+.orb{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:
+        radial-gradient(circle at 40% 35%,#fff 0 4%,var(--cyan) 8%,#087f99 35%,#02151c 70%);
+    box-shadow:
+        0 0 25px rgba(25,230,255,.75),
+        0 0 60px rgba(25,230,255,.18);
+}
+
+.nav-actions{
+    display:flex;
+    gap:10px;
+}
+
+.nav-btn{
+    border:1px solid #1b3d49;
+    background:#071219;
+    color:white;
+    padding:11px 15px;
+    border-radius:11px;
+    cursor:pointer;
+    font-weight:700;
+    transition:.2s;
+}
+
+.nav-btn:hover{
+    border-color:var(--cyan);
+    box-shadow:0 0 20px rgba(25,230,255,.12);
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+    padding:35px 24px 80px;
+}
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(25,230,255,.2);
+    border-radius:26px;
+    padding:38px;
+    background:
+        linear-gradient(135deg,rgba(8,24,32,.96),rgba(3,10,14,.96));
+    box-shadow:0 30px 100px rgba(0,0,0,.4);
+}
+
+.hero:after{
+    content:"";
+    position:absolute;
+    width:360px;
+    height:360px;
+    right:-140px;
+    top:-170px;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(25,230,255,.2),transparent 70%);
+    pointer-events:none;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+}
+
+.eyebrow{
+    color:var(--cyan);
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:4px;
+}
+
+.hero h1{
+    margin:12px 0 8px;
+    font-size:clamp(32px,5vw,58px);
+}
+
+.hero p{
+    color:var(--muted);
+    margin:0;
+}
+
+.layout{
+    display:grid;
+    grid-template-columns:330px 1fr;
+    gap:24px;
+    margin-top:25px;
+}
+
+.card{
+    border:1px solid var(--line);
+    border-radius:20px;
+    background:linear-gradient(145deg,#081820,#061118);
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+
+.profile{
+    padding:25px;
+    height:max-content;
+    position:sticky;
+    top:100px;
+}
+
+.avatar{
+    width:82px;
+    height:82px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    margin-bottom:18px;
+    font-size:30px;
+    font-weight:900;
+    color:#001015;
+    background:var(--cyan);
+    box-shadow:0 0 35px rgba(25,230,255,.35);
+}
+
+.profile h2{
+    margin:0 0 5px;
+    font-size:22px;
+}
+
+.email{
+    color:var(--muted);
+    font-size:13px;
+    word-break:break-word;
+}
+
+.profile-line{
+    height:1px;
+    background:var(--line);
+    margin:22px 0;
+}
+
+.info{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:10px 0;
+    font-size:13px;
+}
+
+.info span:first-child{
+    color:var(--muted);
+}
+
+.logout{
+    width:100%;
+    margin-top:18px;
+    padding:13px;
+    border-radius:11px;
+    border:1px solid rgba(255,100,119,.35);
+    background:rgba(255,100,119,.07);
+    color:#ff8796;
+    cursor:pointer;
+    font-weight:800;
+}
+
+.logout:hover{
+    background:rgba(255,100,119,.13);
+}
+
+.orders{
+    padding:25px;
+}
+
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.section-title h2{
+    margin:0;
+    font-size:25px;
+}
+
+.count{
+    color:var(--cyan);
+    font-weight:900;
+}
+
+.order{
+    border:1px solid var(--line);
+    background:#061118;
+    border-radius:17px;
+    margin-bottom:15px;
+    overflow:hidden;
+    transition:.2s;
+}
+
+.order:hover{
+    border-color:rgba(25,230,255,.35);
+    transform:translateY(-1px);
+}
+
+.order-head{
+    padding:17px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    cursor:pointer;
+}
+
+.order-code{
+    color:var(--cyan);
+    font-weight:900;
+}
+
+.order-date{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:5px;
+}
+
+.status{
+    padding:7px 11px;
+    border-radius:30px;
+    font-size:11px;
+    font-weight:900;
+    white-space:nowrap;
+}
+
+.status-new{
+    color:#6fefff;
+    background:rgba(25,230,255,.1);
+    border:1px solid rgba(25,230,255,.25);
+}
+
+.status-confirmed{
+    color:#ffd66b;
+    background:rgba(255,214,107,.09);
+    border:1px solid rgba(255,214,107,.22);
+}
+
+.status-processing{
+    color:#c39cff;
+    background:rgba(195,156,255,.09);
+    border:1px solid rgba(195,156,255,.22);
+}
+
+.status-shipped{
+    color:#70c8ff;
+    background:rgba(112,200,255,.09);
+    border:1px solid rgba(112,200,255,.22);
+}
+
+.status-delivered{
+    color:#50e3a4;
+    background:rgba(80,227,164,.09);
+    border:1px solid rgba(80,227,164,.22);
+}
+
+.status-cancelled{
+    color:#ff6477;
+    background:rgba(255,100,119,.09);
+    border:1px solid rgba(255,100,119,.22);
+}
+
+.order-body{
+    display:none;
+    padding:0 18px 20px;
+    border-top:1px solid var(--line);
+}
+
+.order.open .order-body{
+    display:block;
+}
+
+.timeline{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:5px;
+    margin:22px 0;
+}
+
+.step{
+    text-align:center;
+    color:#506973;
+    font-size:10px;
+}
+
+.step-dot{
+    width:25px;
+    height:25px;
+    margin:0 auto 7px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    border:1px solid #25434d;
+    background:#08151b;
+}
+
+.step.active{
+    color:var(--cyan);
+}
+
+.step.active .step-dot{
+    color:#001015;
+    background:var(--cyan);
+    border-color:var(--cyan);
+    box-shadow:0 0 15px rgba(25,230,255,.3);
+}
+
+.items{
+    margin-top:20px;
+}
+
+.item{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:13px 0;
+    border-bottom:1px solid rgba(18,55,68,.6);
+}
+
+.item-name{
+    font-weight:700;
+}
+
+.item-meta{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:4px;
+}
+
+.item-price{
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.order-total{
+    display:flex;
+    justify-content:space-between;
+    padding-top:17px;
+    font-size:19px;
+    font-weight:900;
+}
+
+.order-total span:last-child{
+    color:var(--cyan);
+}
+
+.delivery{
+    margin-top:20px;
+    padding:15px;
+    border-radius:12px;
+    background:#08171e;
+    border:1px solid #123744;
+    color:#a7bbc2;
+    font-size:13px;
+    line-height:1.8;
+}
+
+.empty{
+    text-align:center;
+    padding:70px 20px;
+    color:var(--muted);
+}
+
+.empty-icon{
+    font-size:55px;
+    margin-bottom:15px;
+}
+
+.shop-btn{
+    display:inline-block;
+    margin-top:18px;
+    padding:13px 20px;
+    background:var(--cyan);
+    color:#001015;
+    border-radius:11px;
+    font-weight:900;
+}
+
+.loading{
+    text-align:center;
+    padding:50px;
+    color:var(--muted);
+}
+
+.spinner{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:3px solid #173640;
+    border-top-color:var(--cyan);
+    margin:0 auto 15px;
+    animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg)}
+}
+
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    z-index:100;
+    background:#091b23;
+    border:1px solid var(--cyan);
+    border-radius:12px;
+    padding:14px 18px;
+    box-shadow:0 15px 50px rgba(0,0,0,.5);
+    display:none;
+}
+
+@media(max-width:900px){
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+    .profile{
+        position:static;
+    }
+}
+
+@media(max-width:650px){
+    .nav{
+        padding:12px 14px;
+    }
+
+    .brand{
+        font-size:19px;
+        letter-spacing:3px;
+    }
+
+    .nav-actions .nav-btn:first-child{
+        display:none;
+    }
+
+    .container{
+        padding:18px 14px 60px;
+    }
+
+    .hero{
+        padding:25px;
+    }
+
+    .orders,
+    .profile{
+        padding:18px;
+    }
+
+    .order-head{
+        align-items:flex-start;
+    }
+
+    .timeline{
+        gap:1px;
+    }
+
+    .step{
+        font-size:8px;
+    }
+
+    .step-dot{
+        width:21px;
+        height:21px;
+        font-size:9px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="nav">
+
+        <a href="index.html" class="brand">
+            <span class="orb"></span>
+            ECOMAX
+        </a>
+
+        <div class="nav-actions">
+            <a href="index.html" class="nav-btn">🏠 მთავარი</a>
+            <button class="nav-btn" onclick="logout()">🚪 გამოსვლა</button>
+        </div>
+
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="eyebrow">
+                ECOMAX • CUSTOMER CENTER
+            </div>
+
+            <h1>
+                ჩემი ანგარიში
+            </h1>
+
+            <p>
+                მართე შენი პროფილი, ნახე შეკვეთები და აკონტროლე მათი სტატუსი.
+            </p>
+
+        </div>
+
+    </section>
+
+    <section class="layout">
+
+        <aside class="card profile">
+
+            <div class="avatar" id="avatar">
+                E
+            </div>
+
+            <h2 id="customerName">
+                იტვირთება...
+            </h2>
+
+            <div class="email" id="customerEmail">
+                ...
+            </div>
+
+            <div class="profile-line"></div>
+
+            <div class="info">
+                <span>ტელეფონი</span>
+                <strong id="customerPhone">—</strong>
+            </div>
+
+            <div class="info">
+                <span>ქალაქი</span>
+                <strong id="customerCity">—</strong>
+            </div>
+
+            <div class="info">
+                <span>შეკვეთები</span>
+                <strong id="orderCount">0</strong>
+            </div>
+
+            <button class="logout" onclick="logout()">
+                🚪 ანგარიშიდან გამოსვლა
+            </button>
+
+        </aside>
+
+        <section class="card orders">
+
+            <div class="section-title">
+
+                <div>
+                    <h2>📦 ჩემი შეკვეთები</h2>
+                </div>
+
+                <div class="count" id="ordersCount">
+                    0 შეკვეთა
+                </div>
+
+            </div>
+
+            <div id="ordersList">
+
+                <div class="loading">
+                    <div class="spinner"></div>
+                    შეკვეთები იტვირთება...
+                </div>
+
+            </div>
+
+        </section>
+
+    </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+const SUPABASE_URL =
+"https://mkxkqdvtmfbxmldnvsef.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
+
+const db =
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function esc(value){
+
+    return String(value ?? "")
+        .replace(/[&<>"']/g,function(m){
+
+            return {
+                "&":"&amp;",
+                "<":"&lt;",
+                ">":"&gt;",
+                '"':"&quot;",
+                "'":"&#39;"
+            }[m];
+
+        });
+
+}
+
+
+function money(value){
+
+    return Number(value || 0).toFixed(2) + "₾";
+
+}
+
+
+function showToast(message){
+
+    const el =
+        document.getElementById("toast");
+
+    el.textContent = message;
+    el.style.display = "block";
+
+    setTimeout(function(){
+
+        el.style.display = "none";
+
+    },3000);
+
+}
+
+
+function statusLabel(status){
+
+    const labels = {
+
+        new:"ახალი",
+        confirmed:"დადასტურებული",
+        processing:"მუშავდება",
+        shipped:"გაგზავნილია",
+        delivered:"ჩაბარებულია",
+        cancelled:"გაუქმებული"
+
+    };
+
+    return labels[status] || status || "ახალი";
+
+}
+
+
+function statusClass(status){
+
+    return "status-" + (
+        status || "new"
+    );
+
+}
+
+
+/* =========================
+   AUTH
+========================= */
+
+async function checkAuth(){
+
+    const {
+        data,
+        error
+    } = await db.auth.getSession();
+
+    if(error || !data.session){
+
+        window.location.href =
+            "login.html";
+
+        return null;
+
+    }
+
+    return data.session;
+
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+async function loadProfile(user){
+
+    document.getElementById(
+        "customerEmail"
+    ).textContent =
+        user.email || "—";
+
+    const {
+        data,
+        error
+    } = await db
+        .from("profiles")
+        .select("*")
+        .eq("id",user.id)
+        .maybeSingle();
+
+    if(error){
+
+        console.warn(
+            "Profile error:",
+            error.message
+        );
+
+        document.getElementById(
+            "customerName"
+        ).textContent =
+            user.email?.split("@")[0] ||
+            "ECOMAX მომხმარებელი";
+
+        return;
+
+    }
+
+    if(!data){
+
+        document.getElementById(
+            "customerName"
+        ).textContent =
+            user.email?.split("@")[0] ||
+            "ECOMAX მომხმარებელი";
+
+        return;
+
+    }
+
+    const name =
+        data.full_name ||
+        user.email?.split("@")[0] ||
+        "ECOMAX მომხმარებელი";
+
+    document.getElementById(
+        "customerName"
+    ).textContent = name;
+
+    document.getElementById(
+        "customerPhone"
+    ).textContent =
+        data.phone || "—";
+
+    document.getElementById(
+        "customerCity"
+    ).textContent =
+        data.city || "—";
+
+    document.getElementById(
+        "avatar"
+    ).textContent =
+        name.charAt(0).toUpperCase();
+
+}
+
+
+/* =========================
+   ORDERS
+========================= */
+
+async function loadOrders(user){
+
+    const list =
+        document.getElementById(
+            "ordersList"
+        );
+
+    const {
+        data,
+        error
+    } = await db
+        .from("orders")
+        .select("*")
+        .eq("user_id",user.id)
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        );
+
+    if(error){
+
+        console.error(error);
+
+        list.innerHTML = `
+            <div class="empty">
+                <div class="empty-icon">⚠️</div>
+                <h3>შეკვეთების ჩატვირთვა ვერ მოხერხდა</h3>
+                <p>${esc(error.message)}</p>
+            </div>
+        `;
+
+        return;
+
+    }
+
+    const orders =
+        data || [];
+
+    document.getElementById(
+        "orderCount"
+    ).textContent =
+        orders.length;
+
+    document.getElementById(
+        "ordersCount"
+    ).textContent =
+        orders.length +
+        " შეკვეთა";
+
+    if(!orders.length){
+
+        list.innerHTML = `
+            <div class="empty">
+
+                <div class="empty-icon">
+                    📦
+                </div>
+
+                <h3>
+                    შეკვეთები ჯერ არ გაქვს
+                </h3>
+
+                <p>
+                    აირჩიე ECOMAX-ის პროდუქცია
+                    და გააკეთე პირველი შეკვეთა.
+                </p>
+
+                <a
+                    href="index.html#products"
+                    class="shop-btn"
+                >
+                    🛍️ პროდუქციის ნახვა
+                </a>
+
+            </div>
+        `;
+
+        return;
+
+    }
+
+    list.innerHTML =
+        orders
+        .map(renderOrder)
+        .join("");
+
+}
+
+
+/* =========================
+   ORDER RENDER
+========================= */
+
+function renderOrder(order){
+
+    const status =
+        order.status || "new";
+
+    const items =
+        Array.isArray(order.items)
+        ? order.items
+        : [];
+
+    const date =
+        order.created_at
+        ? new Date(
+            order.created_at
+          ).toLocaleString(
+            "ka-GE",
+            {
+                dateStyle:"medium",
+                timeStyle:"short"
+            }
+          )
+        : "—";
+
+    const steps = [
+        ["new","შეკვეთა"],
+        ["confirmed","დადასტურება"],
+        ["processing","მუშავდება"],
+        ["shipped","გაგზავნა"],
+        ["delivered","ჩაბარება"]
+    ];
+
+    const orderStatusIndex =
+        steps.findIndex(
+            x => x[0] === status
+        );
+
+    const activeIndex =
+        status === "cancelled"
+        ? -1
+        : orderStatusIndex;
+
+    const itemsHtml =
+        items.length
+        ? items.map(item => {
+
+            const name =
+                item.product_name ||
+                item.name ||
+                "პროდუქტი";
+
+            const qty =
+                Number(
+                    item.quantity || 1
+                );
+
+            const unitPrice =
+                Number(
+                    item.unit_price ||
+                    item.price ||
+                    0
+                );
+
+            return `
+                <div class="item">
+
+                    <div>
+
+                        <div class="item-name">
+                            ${esc(name)}
+                        </div>
+
+                        <div class="item-meta">
+                            ${qty} × ${money(unitPrice)}
+                        </div>
+
+                    </div>
+
+                    <div class="item-price">
+                        ${money(
+                            qty * unitPrice
+                        )}
+                    </div>
+
+                </div>
+            `;
+
+        }).join("")
+        : `
+            <div class="item">
+                <div class="item-name">
+                    შეკვეთის დეტალები
+                </div>
+            </div>
+        `;
+
+
+    const timeline =
+        steps.map(
+            (step,index) => {
+
+                const active =
+                    index <= activeIndex;
+
+                return `
+                    <div class="step ${
+                        active
+                        ? "active"
+                        : ""
+                    }">
+
+                        <div class="step-dot">
+                            ${
+                                active
+                                ? "✓"
+                                : index + 1
+                            }
+                        </div>
+
+                        ${step[1]}
+
+                    </div>
+                `;
+
+            }
+        ).join("");
+
+
+    const delivery =
+        order.city ||
+        order.address ||
+        order.phone
+        ? `
+            <div class="delivery">
+
+                <b>🚚 მიწოდების ინფორმაცია</b>
+
+                <br>
+
+                ${order.city
+                    ? "ქალაქი: " +
+                      esc(order.city)
+                    : ""}
+
+                ${order.address
+                    ? "<br>მისამართი: " +
+                      esc(order.address)
+                    : ""}
+
+                ${order.phone
+                    ? "<br>ტელეფონი: " +
+                      esc(order.phone)
+                    : ""}
+
+                ${
+                    order.delivery_method
+                    ? "<br>მიწოდება: " +
+                      esc(order.delivery_method)
+                    : ""
+                }
+
+            </div>
+        `
+        : "";
+
+
+    return `
+        <article
+            class="order"
+            id="order-${esc(order.id)}"
+        >
+
+            <div
+                class="order-head"
+                onclick="toggleOrder('${esc(order.id)}')"
+            >
+
+                <div>
+
+                    <div class="order-code">
+                        ECOMAX-${String(
+                            order.id
+                        ).slice(0,8).toUpperCase()}
+                    </div>
+
+                    <div class="order-date">
+                        ${date}
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <span class="
+                        status
+                        ${statusClass(status)}
+                    ">
+                        ${statusLabel(status)}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="order-body">
+
+                ${
+                    status === "cancelled"
+                    ? `
+                        <div class="delivery">
+                            ❌ ეს შეკვეთა გაუქმებულია.
+                        </div>
+                    `
+                    : `
+                        <div class="timeline">
+                            ${timeline}
+                        </div>
+                    `
+                }
+
+
+                <div class="items">
+
+                    ${itemsHtml}
+
+                </div>
+
+
+                <div class="order-total">
+
+                    <span>
+                        სრული თანხა
+                    </span>
+
+                    <span>
+                        ${money(order.total)}
+                    </span>
+
+                </div>
+
+
+                ${delivery}
+
+            </div>
+
+        </article>
+    `;
+
+}
+
+
+/* =========================
+   TOGGLE ORDER
+========================= */
+
+function toggleOrder(id){
+
+    const order =
+        document.getElementById(
+            "order-" + id
+        );
+
+    if(order){
+
+        order.classList.toggle(
+            "open"
+        );
+
+    }
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logout(){
+
+    await db.auth.signOut();
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+/* =========================
+   INIT
+========================= */
+
+async function init(){
+
+    const user =
+        await checkAuth();
+
+    if(!user)return;
+
+    await Promise.all([
+
+        loadProfile(user),
+
+        loadOrders(user)
+
+    ]);
+
+}
+
+
+/* =========================
+   REALTIME ORDERS
+========================= */
+
+async function startRealtime(user){
+
+    db.channel(
+        "customer-orders-" +
+        user.id
+    )
+    .on(
+        "postgres_changes",
+        {
+            event:"*",
+            schema:"public",
+            table:"orders",
+            filter:
+                "user_id=eq." +
+                user.id
+        },
+        function(){
+
+            showToast(
+                "🔔 შეკვეთის ინფორმაცია განახლდა"
+            );
+
+            loadOrders(user);
+
+        }
+    )
+    .subscribe();
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function(){
+
+        const user =
+            await checkAuth();
+
+        if(!user)return;
+
+        await loadProfile(user);
+
+        await loadOrders(user);
+
+        startRealtime(user);
+
+    }
+);
+
+</script>
+
+</body>
+</html>
