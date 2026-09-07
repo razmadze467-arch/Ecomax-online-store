@@ -1607,11 +1607,7 @@ ${rows}
 სულ: ${money(o.total)}
 </div>
 
-<script>
-window.onload=function(){
-window.print();
-};
-<\/script>
+
 
 </body>
 
@@ -1620,6 +1616,7 @@ window.print();
 `);
 
 w.document.close();
+setTimeout(()=>{try{w.focus();w.print();}catch(e){}},250);
 
 }
 
