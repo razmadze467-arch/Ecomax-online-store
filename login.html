@@ -1,8 +1,2024 @@
-<!doctype html><html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ECOMAX — შესვლა</title><link rel="stylesheet" href="css/style.css"><style>
-.authPage{min-height:calc(100vh - 38px);display:grid;place-items:center;padding:55px 16px;position:relative;overflow:hidden}.authPage:before,.authPage:after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;filter:blur(90px);opacity:.16;pointer-events:none}.authPage:before{background:#28e7ff;left:-180px;top:10%}.authPage:after{background:#8b5cf6;right:-180px;bottom:0}.authCard{width:min(450px,100%);position:relative;z-index:1;background:#091119ed;backdrop-filter:blur(22px);border:1px solid #28e7ff33;border-radius:28px;padding:34px;box-shadow:0 30px 100px #0008}.back{display:inline-block;color:var(--muted);font-size:13px;margin-bottom:30px}.back:hover{color:var(--accent)}.authLogo{text-align:center;font:700 31px 'Space Grotesk';letter-spacing:7px;color:var(--accent);text-shadow:0 0 28px #28e7ff55}.authTitle{text-align:center;font:700 30px 'Space Grotesk';margin:16px 0 8px}.authSub{text-align:center;color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 28px}.field{margin:14px 0}.field label{display:block;color:#c5d0d7;font-size:12px;font-weight:700;margin-bottom:8px}.field input{width:100%;padding:14px 15px;border:1px solid var(--line);border-radius:13px;background:#050a0f;color:var(--text);outline:none;transition:.2s}.field input:focus{border-color:#28e7ff88;box-shadow:0 0 0 4px #28e7ff10}.submit{width:100%;padding:14px;margin-top:8px}.authRow{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:15px;font-size:12px}.authRow a,.authLink{color:var(--accent)}.msg{min-height:20px;text-align:center;font-size:13px;margin-top:14px;color:var(--muted)}.divider{display:flex;align-items:center;gap:12px;color:#52616b;font-size:11px;margin:25px 0}.divider:before,.divider:after{content:"";height:1px;background:var(--line);flex:1}.secure{text-align:center;color:#667681;font-size:11px;margin-top:25px}
-</style></head><body><div class="topbar">ECOMAX • SECURE ACCESS</div><main class="authPage"><section class="authCard"><a class="back" href="index.html">← მთავარ გვერდზე დაბრუნება</a><div class="authLogo">ECOMAX</div><h1 class="authTitle">კეთილი იყოს შენი დაბრუნება</h1><p class="authSub">შედი შენს ანგარიშში და გააგრძელე ECOMAX-ის გამოცდილება.</p><form id="loginForm" novalidate><div class="field"><label for="email">ელფოსტა</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com" required></div><div class="field"><label for="password">პაროლი</label><input id="password" type="password" autocomplete="current-password" placeholder="••••••••" required></div><div class="authRow"><label><input id="remember" type="checkbox"> დამამახსოვრე</label><a href="#" id="forgot">პაროლი დამავიწყდა?</a></div><button class="primary submit" type="submit">შესვლა →</button><div id="msg" class="msg"></div></form><div class="divider">ან</div><p style="text-align:center;color:var(--muted);font-size:13px;margin:0">ჯერ არ გაქვს ანგარიში? <a class="authLink" href="register.html">რეგისტრაცია</a></p><div class="secure">🔒 დაცული ავტორიზაცია • ECOMAX</div></section></main>
-<script src="js/supabase.js"></script><script>
-const cfg=window.ECOMAX_SUPABASE,form=document.getElementById('loginForm'),msg=document.getElementById('msg');
-form.addEventListener('submit',async e=>{e.preventDefault();msg.textContent='';const email=document.getElementById('email').value.trim(),password=document.getElementById('password').value;if(!email||!password){msg.textContent='გთხოვ, ელფოსტა და პაროლი შეავსე.';return}const b=form.querySelector('button[type=submit');b.disabled=true;b.textContent='მოწმდება…';try{if(!cfg?.url||!cfg?.key)throw new Error('ავტორიზაციის კონფიგურაცია ვერ ჩაიტვირთა.');const r=await fetch(cfg.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'Content-Type':'application/json',apikey:cfg.key,Authorization:'Bearer '+cfg.key},body:JSON.stringify({email,password})});const d=await r.json();if(!r.ok)throw new Error(d.error_description||d.msg||d.message||'ელფოსტა ან პაროლი არასწორია.');localStorage.setItem('ecomax_session',JSON.stringify(d));msg.textContent='✓ წარმატებით შეხვედი. გადამისამართება…';setTimeout(()=>location.href='account.html',500)}catch(err){msg.textContent='⚠️ '+err.message}finally{b.disabled=false;b.textContent='შესვლა →'}});
-document.getElementById('forgot').addEventListener('click',async e=>{e.preventDefault();const email=document.getElementById('email').value.trim();if(!email){msg.textContent='ჯერ შეიყვანე ელფოსტა.';return}try{const r=await fetch(cfg.url+'/auth/v1/recover',{method:'POST',headers:{'Content-Type':'application/json',apikey:cfg.key},body:JSON.stringify({email})});if(!r.ok)throw new Error('პაროლის აღდგენის ელფოსტა ვერ გაიგზავნა.');msg.textContent='✓ ინსტრუქცია გაიგზავნა ელფოსტაზე.'}catch(err){msg.textContent='⚠️ '+err.message}});
-</script></body></html>
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ECOMAX • შესვლა</title>
+
+  <meta
+    name="description"
+    content="ECOMAX — უსაფრთხო ავტორიზაცია და მომხმარებლის ანგარიში."
+  >
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+    :root {
+      --bg: #04070b;
+      --bg2: #071018;
+      --card: rgba(10, 17, 25, .88);
+
+      --text: #f4f8fb;
+      --muted: #84929d;
+
+      --cyan: #28e7ff;
+      --cyan-light: #86f5ff;
+
+      --green: #43e6a3;
+      --red: #ff647d;
+      --yellow: #ffd166;
+
+      --border: rgba(255,255,255,.08);
+
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      min-height: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+
+      display: flex;
+      flex-direction: column;
+
+      color: var(--text);
+      background:
+        radial-gradient(
+          circle at 20% 10%,
+          rgba(40,231,255,.10),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 85% 20%,
+          rgba(97,67,210,.13),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 50% 100%,
+          rgba(40,231,255,.04),
+          transparent 35%
+        ),
+        var(--bg);
+
+      font-family: Inter, sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+
+      position: fixed;
+      inset: 0;
+
+      pointer-events: none;
+
+      opacity: .025;
+
+      background-image:
+        linear-gradient(
+          rgba(255,255,255,.5) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,.5) 1px,
+          transparent 1px
+        );
+
+      background-size: 45px 45px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    /* =====================================
+       TOP BAR
+    ===================================== */
+
+    .topbar {
+      height: 34px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-bottom: 1px solid var(--border);
+
+      color: #697780;
+
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+    }
+
+    /* =====================================
+       HEADER
+    ===================================== */
+
+    header {
+      position: relative;
+      z-index: 10;
+
+      border-bottom: 1px solid var(--border);
+
+      background: rgba(4,7,11,.72);
+
+      backdrop-filter: blur(20px);
+    }
+
+    .nav {
+      width: min(1180px, calc(100% - 32px));
+
+      height: 72px;
+
+      margin: auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: "Space Grotesk", sans-serif;
+
+      color: var(--cyan);
+
+      font-size: 25px;
+      font-weight: 700;
+
+      letter-spacing: 5px;
+
+      text-shadow:
+        0 0 25px rgba(40,231,255,.35);
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 10px 13px;
+
+      border: 1px solid var(--border);
+      border-radius: 11px;
+
+      background: rgba(255,255,255,.025);
+
+      color: #aebac1;
+
+      font-size: 11px;
+
+      transition: .2s;
+    }
+
+    .back:hover {
+      color: var(--cyan);
+
+      border-color:
+        rgba(40,231,255,.28);
+
+      transform: translateY(-2px);
+    }
+
+    /* =====================================
+       MAIN
+    ===================================== */
+
+    main {
+      flex: 1;
+
+      width: min(1180px, calc(100% - 32px));
+
+      margin: auto;
+
+      padding: 70px 0 90px;
+
+      display: grid;
+
+      grid-template-columns: 1fr 480px;
+
+      gap: 90px;
+
+      align-items: center;
+    }
+
+    /* =====================================
+       LEFT SIDE
+    ===================================== */
+
+    .intro {
+      max-width: 580px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 8px 12px;
+
+      border: 1px solid rgba(40,231,255,.15);
+      border-radius: 100px;
+
+      background: rgba(40,231,255,.035);
+
+      color: var(--cyan);
+
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1.7px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+
+      border-radius: 50%;
+
+      background: var(--cyan);
+
+      box-shadow:
+        0 0 15px var(--cyan);
+    }
+
+    .intro h1 {
+      margin-top: 23px;
+
+      font-family: "Space Grotesk", sans-serif;
+
+      font-size: clamp(42px, 6vw, 70px);
+
+      line-height: .98;
+
+      letter-spacing: -3px;
+    }
+
+    .gradient {
+      background:
+        linear-gradient(
+          100deg,
+          #fff,
+          var(--cyan-light)
+        );
+
+      color: transparent;
+
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .intro p {
+      max-width: 530px;
+
+      margin-top: 20px;
+
+      color: var(--muted);
+
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .features {
+      display: grid;
+
+      gap: 11px;
+
+      margin-top: 32px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      color: #9aa8b0;
+
+      font-size: 11px;
+    }
+
+    .feature-icon {
+      width: 31px;
+      height: 31px;
+
+      flex: 0 0 31px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 9px;
+
+      background: rgba(40,231,255,.055);
+
+      border: 1px solid rgba(40,231,255,.11);
+
+      color: var(--cyan);
+    }
+
+    /* =====================================
+       LOGIN CARD
+    ===================================== */
+
+    .login-card {
+      position: relative;
+
+      padding: 32px;
+
+      border: 1px solid rgba(255,255,255,.09);
+
+      border-radius: var(--radius);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(14,23,33,.95),
+          rgba(6,11,17,.96)
+        );
+
+      box-shadow:
+        0 35px 100px rgba(0,0,0,.52);
+
+      overflow: hidden;
+    }
+
+    .login-card::before {
+      content: "";
+
+      position: absolute;
+
+      width: 230px;
+      height: 230px;
+
+      top: -150px;
+      right: -100px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(40,231,255,.07);
+
+      filter: blur(30px);
+
+      pointer-events: none;
+    }
+
+    .card-header {
+      position: relative;
+      z-index: 1;
+
+      margin-bottom: 27px;
+    }
+
+    .card-label {
+      color: var(--cyan);
+
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .card-header h2 {
+      margin-top: 9px;
+
+      font-family: "Space Grotesk", sans-serif;
+
+      font-size: 27px;
+
+      letter-spacing: -.7px;
+    }
+
+    .card-header p {
+      margin-top: 7px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    /* =====================================
+       FORM
+    ===================================== */
+
+    form {
+      position: relative;
+      z-index: 1;
+    }
+
+    .field {
+      margin-bottom: 17px;
+    }
+
+    .field label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin-bottom: 8px;
+
+      color: #c5d0d6;
+
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+
+      left: 14px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      color: #64747d;
+
+      font-size: 13px;
+
+      pointer-events: none;
+    }
+
+    input {
+      width: 100%;
+
+      height: 49px;
+
+      padding:
+        0 44px 0 40px;
+
+      border: 1px solid rgba(255,255,255,.08);
+
+      border-radius: 12px;
+
+      outline: none;
+
+      background:
+        rgba(3,7,11,.76);
+
+      color: #edf8fb;
+
+      font-size: 12px;
+
+      transition: .2s;
+    }
+
+    input::placeholder {
+      color: #53616a;
+    }
+
+    input:hover {
+      border-color:
+        rgba(255,255,255,.13);
+    }
+
+    input:focus {
+      border-color:
+        rgba(40,231,255,.45);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(40,231,255,.055);
+    }
+
+    input.invalid {
+      border-color:
+        rgba(255,100,125,.6);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(255,100,125,.06);
+    }
+
+    .password-toggle {
+      position: absolute;
+
+      right: 9px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      width: 34px;
+      height: 34px;
+
+      border: none;
+      border-radius: 8px;
+
+      background: transparent;
+
+      color: #64747d;
+
+      transition: .2s;
+    }
+
+    .password-toggle:hover {
+      color: var(--cyan);
+
+      background:
+        rgba(40,231,255,.05);
+    }
+
+    /* =====================================
+       OPTIONS
+    ===================================== */
+
+    .options {
+      display: flex;
+
+      justify-content: space-between;
+      align-items: center;
+
+      margin: 4px 0 21px;
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      color: #829099;
+
+      font-size: 10px;
+
+      cursor: pointer;
+    }
+
+    .remember input {
+      width: 14px;
+      height: 14px;
+
+      accent-color: var(--cyan);
+
+      cursor: pointer;
+    }
+
+    .forgot {
+      color: var(--cyan);
+
+      font-size: 10px;
+
+      transition: .2s;
+    }
+
+    .forgot:hover {
+      color: white;
+    }
+
+    /* =====================================
+       BUTTON
+    ===================================== */
+
+    .login-button {
+      position: relative;
+
+      width: 100%;
+      height: 50px;
+
+      border: none;
+      border-radius: 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--cyan),
+          var(--cyan-light)
+        );
+
+      color: #001014;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      box-shadow:
+        0 15px 35px
+        rgba(40,231,255,.12);
+
+      transition: .2s;
+    }
+
+    .login-button:hover:not(:disabled) {
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 18px 45px
+        rgba(40,231,255,.20);
+    }
+
+    .login-button:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .login-button:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
+
+    .button-content {
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+
+      gap: 8px;
+    }
+
+    .spinner {
+      width: 15px;
+      height: 15px;
+
+      border: 2px solid
+        rgba(0,16,20,.25);
+
+      border-top-color:
+        #001014;
+
+      border-radius: 50%;
+
+      animation:
+        spin .7s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* =====================================
+       DIVIDER
+    ===================================== */
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      margin: 22px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+
+      height: 1px;
+
+      flex: 1;
+
+      background:
+        var(--border);
+    }
+
+    .divider span {
+      color: #53616a;
+
+      font-size: 9px;
+
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    /* =====================================
+       REGISTER
+    ===================================== */
+
+    .register {
+      text-align: center;
+
+      color: #687780;
+
+      font-size: 10px;
+    }
+
+    .register a {
+      color: var(--cyan);
+
+      font-weight: 700;
+
+      transition: .2s;
+    }
+
+    .register a:hover {
+      color: white;
+    }
+
+    /* =====================================
+       MESSAGE
+    ===================================== */
+
+    .message {
+      display: none;
+
+      margin-bottom: 17px;
+
+      padding: 12px 13px;
+
+      border-radius: 11px;
+
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      border: 1px solid
+        rgba(255,100,125,.18);
+
+      background:
+        rgba(255,100,125,.06);
+
+      color: #ffb4c0;
+    }
+
+    .message.success {
+      border: 1px solid
+        rgba(67,230,163,.18);
+
+      background:
+        rgba(67,230,163,.055);
+
+      color: #9df0c9;
+    }
+
+    .message.warning {
+      border: 1px solid
+        rgba(255,209,102,.18);
+
+      background:
+        rgba(255,209,102,.05);
+
+      color: #ffe29a;
+    }
+
+    /* =====================================
+       FOOTER
+    ===================================== */
+
+    footer {
+      border-top: 1px solid var(--border);
+
+      padding: 22px 15px;
+
+      text-align: center;
+
+      color: #52616a;
+
+      font-size: 9px;
+    }
+
+    footer strong {
+      color: #71818b;
+    }
+
+    /* =====================================
+       MOBILE
+    ===================================== */
+
+    @media (max-width: 900px) {
+
+      main {
+        grid-template-columns: 1fr;
+
+        gap: 45px;
+
+        max-width: 600px;
+      }
+
+      .intro {
+        max-width: none;
+        text-align: center;
+      }
+
+      .intro p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .features {
+        text-align: left;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .login-card {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 560px) {
+
+      .topbar {
+        font-size: 7px;
+        letter-spacing: 1.5px;
+      }
+
+      .nav {
+        width: calc(100% - 20px);
+        height: 65px;
+      }
+
+      .logo {
+        font-size: 20px;
+        letter-spacing: 4px;
+      }
+
+      .back {
+        padding: 9px 10px;
+        font-size: 9px;
+      }
+
+      main {
+        width: calc(100% - 20px);
+
+        padding:
+          45px 0 60px;
+      }
+
+      .intro h1 {
+        font-size: 45px;
+        letter-spacing: -2px;
+      }
+
+      .login-card {
+        padding: 23px 18px;
+        border-radius: 19px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================================
+       TOP BAR
+  ========================================== -->
+
+  <div class="topbar">
+    ECOMAX • SECURE ACCESS • SUPABASE AUTH
+  </div>
+
+
+  <!-- =========================================
+       HEADER
+  ========================================== -->
+
+  <header>
+
+    <nav class="nav">
+
+      <a
+        href="index.html"
+        class="logo"
+      >
+        ECOMAX
+      </a>
+
+      <a
+        href="index.html"
+        class="back"
+      >
+        ← მთავარ გვერდზე
+      </a>
+
+    </nav>
+
+  </header>
+
+
+  <!-- =========================================
+       MAIN
+  ========================================== -->
+
+  <main>
+
+    <!-- =====================================
+         INTRO
+    ====================================== -->
+
+    <section class="intro">
+
+      <div class="status">
+
+        <span class="status-dot"></span>
+
+        SECURE ACCESS
+
+      </div>
+
+
+      <h1>
+
+        კეთილი იყოს
+        <br>
+
+        შენი
+        <span class="gradient">
+          დაბრუნება.
+        </span>
+
+      </h1>
+
+
+      <p>
+
+        შედი შენს ECOMAX ანგარიშში და გააგრძელე
+        პროდუქტების, შეკვეთებისა და პირადი პროფილის
+        მართვა ერთ სივრცეში.
+
+      </p>
+
+
+      <div class="features">
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            🔐
+          </div>
+
+          <span>
+            დაცული Supabase ავტორიზაცია
+          </span>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            👤
+          </div>
+
+          <span>
+            პირადი მომხმარებლის ანგარიში
+          </span>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            🛒
+          </div>
+
+          <span>
+            შეკვეთებთან და კალათასთან დაკავშირება
+          </span>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            ⚡
+          </div>
+
+          <span>
+            სწრაფი და თანამედროვე ავტორიზაცია
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================
+         LOGIN
+    ====================================== -->
+
+    <section class="login-card">
+
+      <div class="card-header">
+
+        <div class="card-label">
+          ECOMAX ACCOUNT
+        </div>
+
+        <h2>
+          ანგარიშში შესვლა
+        </h2>
+
+        <p>
+          შეიყვანე შენი ელფოსტა და პაროლი.
+        </p>
+
+      </div>
+
+
+      <!-- MESSAGE -->
+
+      <div
+        id="message"
+        class="message"
+        role="alert"
+      ></div>
+
+
+      <!-- FORM -->
+
+      <form
+        id="loginForm"
+        novalidate
+      >
+
+        <!-- EMAIL -->
+
+        <div class="field">
+
+          <label for="email">
+            ელფოსტა
+          </label>
+
+          <div class="input-wrap">
+
+            <span class="input-icon">
+              ✉
+            </span>
+
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              placeholder="შეიყვანე ელფოსტა"
+              required
+            >
+
+          </div>
+
+        </div>
+
+
+        <!-- PASSWORD -->
+
+        <div class="field">
+
+          <label for="password">
+
+            <span>
+              პაროლი
+            </span>
+
+          </label>
+
+          <div class="input-wrap">
+
+            <span class="input-icon">
+              🔒
+            </span>
+
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              placeholder="შეიყვანე პაროლი"
+              required
+            >
+
+            <button
+              id="togglePassword"
+              class="password-toggle"
+              type="button"
+              aria-label="პაროლის ჩვენება"
+            >
+              ◉
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- OPTIONS -->
+
+        <div class="options">
+
+          <label class="remember">
+
+            <input
+              id="remember"
+              type="checkbox"
+            >
+
+            <span>
+              დამამახსოვრე
+            </span>
+
+          </label>
+
+
+          <a
+            href="#"
+            id="forgotPassword"
+            class="forgot"
+          >
+            პაროლი დამავიწყდა?
+          </a>
+
+        </div>
+
+
+        <!-- SUBMIT -->
+
+        <button
+          id="loginButton"
+          class="login-button"
+          type="submit"
+        >
+
+          <span
+            id="buttonContent"
+            class="button-content"
+          >
+            შესვლა →
+          </span>
+
+        </button>
+
+      </form>
+
+
+      <!-- DIVIDER -->
+
+      <div class="divider">
+
+        <span>
+          ან
+        </span>
+
+      </div>
+
+
+      <!-- REGISTER -->
+
+      <div class="register">
+
+        ჯერ არ გაქვს ანგარიში?
+
+        <a href="register.html">
+          რეგისტრაცია
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================
+       FOOTER
+  ========================================== -->
+
+  <footer>
+
+    🔒 დაცული ავტორიზაცია •
+    <strong>ECOMAX</strong>
+    • 2026
+
+  </footer>
+
+
+  <!-- =========================================
+       SUPABASE
+  ========================================== -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+  <script>
+
+    /*
+    ==================================================
+    ECOMAX SUPABASE CONFIGURATION
+    ==================================================
+    */
+
+    const SUPABASE_URL =
+      "https://mkxkqdvtmfbxmldnvsef.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
+
+
+    const {
+      createClient
+    } = window.supabase;
+
+
+    const supabaseClient =
+      createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+          auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true
+          }
+        }
+      );
+
+
+    /*
+    ==================================================
+    ELEMENTS
+    ==================================================
+    */
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const emailInput =
+      document.getElementById("email");
+
+    const passwordInput =
+      document.getElementById("password");
+
+    const loginButton =
+      document.getElementById("loginButton");
+
+    const buttonContent =
+      document.getElementById("buttonContent");
+
+    const message =
+      document.getElementById("message");
+
+    const togglePassword =
+      document.getElementById("togglePassword");
+
+    const forgotPassword =
+      document.getElementById("forgotPassword");
+
+    const remember =
+      document.getElementById("remember");
+
+
+    /*
+    ==================================================
+    HELPERS
+    ==================================================
+    */
+
+    function showMessage(
+      text,
+      type = "error"
+    ) {
+
+      message.textContent = text;
+
+      message.className =
+        "message show " + type;
+
+    }
+
+
+    function hideMessage() {
+
+      message.textContent = "";
+
+      message.className =
+        "message";
+
+    }
+
+
+    function setLoading(
+      loading
+    ) {
+
+      loginButton.disabled =
+        loading;
+
+
+      if (loading) {
+
+        buttonContent.innerHTML = `
+          <span class="spinner"></span>
+          მოწმდება...
+        `;
+
+      } else {
+
+        buttonContent.textContent =
+          "შესვლა →";
+
+      }
+
+    }
+
+
+    function normalizeEmail(
+      value
+    ) {
+
+      return value
+        .trim()
+        .toLowerCase();
+
+    }
+
+
+    /*
+    ==================================================
+    PASSWORD VISIBILITY
+    ==================================================
+    */
+
+    togglePassword.addEventListener(
+      "click",
+      () => {
+
+        const isPassword =
+          passwordInput.type === "password";
+
+
+        passwordInput.type =
+          isPassword
+            ? "text"
+            : "password";
+
+
+        togglePassword.textContent =
+          isPassword
+            ? "◉"
+            : "◌";
+
+      }
+    );
+
+
+    /*
+    ==================================================
+    REMEMBER EMAIL
+    ==================================================
+    */
+
+    const savedEmail =
+      localStorage.getItem(
+        "ecomax_login_email"
+      );
+
+
+    if (savedEmail) {
+
+      emailInput.value =
+        savedEmail;
+
+      remember.checked =
+        true;
+
+    }
+
+
+    /*
+    ==================================================
+    INPUT ERROR RESET
+    ==================================================
+    */
+
+    emailInput.addEventListener(
+      "input",
+      () => {
+
+        emailInput.classList.remove(
+          "invalid"
+        );
+
+        hideMessage();
+
+      }
+    );
+
+
+    passwordInput.addEventListener(
+      "input",
+      () => {
+
+        passwordInput.classList.remove(
+          "invalid"
+        );
+
+        hideMessage();
+
+      }
+    );
+
+
+    /*
+    ==================================================
+    LOGIN
+    ==================================================
+    */
+
+    loginForm.addEventListener(
+      "submit",
+      async (event) => {
+
+        event.preventDefault();
+
+        hideMessage();
+
+
+        const email =
+          normalizeEmail(
+            emailInput.value
+          );
+
+        const password =
+          passwordInput.value;
+
+
+        /*
+        ----------------------------------------------
+        VALIDATION
+        ----------------------------------------------
+        */
+
+        if (!email) {
+
+          emailInput.classList.add(
+            "invalid"
+          );
+
+          showMessage(
+            "გთხოვ, შეიყვანე ელფოსტა."
+          );
+
+          emailInput.focus();
+
+          return;
+
+        }
+
+
+        if (!email.includes("@")) {
+
+          emailInput.classList.add(
+            "invalid"
+          );
+
+          showMessage(
+            "შეიყვანე სწორი ელფოსტის მისამართი."
+          );
+
+          emailInput.focus();
+
+          return;
+
+        }
+
+
+        if (!password) {
+
+          passwordInput.classList.add(
+            "invalid"
+          );
+
+          showMessage(
+            "გთხოვ, შეიყვანე პაროლი."
+          );
+
+          passwordInput.focus();
+
+          return;
+
+        }
+
+
+        if (password.length < 6) {
+
+          passwordInput.classList.add(
+            "invalid"
+          );
+
+          showMessage(
+            "პაროლი უნდა შეიცავდეს მინიმუმ 6 სიმბოლოს."
+          );
+
+          passwordInput.focus();
+
+          return;
+
+        }
+
+
+        /*
+        ----------------------------------------------
+        SAVE / REMOVE REMEMBERED EMAIL
+        ----------------------------------------------
+        */
+
+        if (remember.checked) {
+
+          localStorage.setItem(
+            "ecomax_login_email",
+            email
+          );
+
+        } else {
+
+          localStorage.removeItem(
+            "ecomax_login_email"
+          );
+
+        }
+
+
+        /*
+        ----------------------------------------------
+        SUPABASE LOGIN
+        ----------------------------------------------
+        */
+
+        setLoading(true);
+
+
+        try {
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient.auth.signInWithPassword({
+              email,
+              password
+            });
+
+
+          if (error) {
+
+            console.error(
+              "Supabase login error:",
+              error
+            );
+
+
+            const errorMessage =
+              (error.message || "")
+                .toLowerCase();
+
+
+            /*
+            EMAIL NOT CONFIRMED
+            */
+
+            if (
+              errorMessage.includes(
+                "email not confirmed"
+              )
+            ) {
+
+              showMessage(
+                "ელფოსტა ჯერ არ არის დადასტურებული. შეამოწმე შენი Gmail და დაადასტურე რეგისტრაცია.",
+                "warning"
+              );
+
+              return;
+
+            }
+
+
+            /*
+            INVALID CREDENTIALS
+            */
+
+            if (
+              errorMessage.includes(
+                "invalid login credentials"
+              )
+            ) {
+
+              showMessage(
+                "ელფოსტა ან პაროლი არასწორია. გადაამოწმე მონაცემები.",
+                "error"
+              );
+
+              return;
+
+            }
+
+
+            /*
+            TOO MANY REQUESTS
+            */
+
+            if (
+              errorMessage.includes(
+                "too many requests"
+              )
+            ) {
+
+              showMessage(
+                "ძალიან ბევრი მცდელობაა. ცოტა ხანში თავიდან სცადე.",
+                "warning"
+              );
+
+              return;
+
+            }
+
+
+            /*
+            DEFAULT ERROR
+            */
+
+            showMessage(
+              error.message ||
+              "ავტორიზაცია ვერ შესრულდა. თავიდან სცადე.",
+              "error"
+            );
+
+            return;
+
+          }
+
+
+          /*
+          --------------------------------------------
+          SUCCESS
+          --------------------------------------------
+          */
+
+          if (!data.session) {
+
+            showMessage(
+              "სესია ვერ შეიქმნა. თავიდან სცადე.",
+              "error"
+            );
+
+            return;
+
+          }
+
+
+          showMessage(
+            "ავტორიზაცია წარმატებით დასრულდა ✓",
+            "success"
+          );
+
+
+          /*
+          --------------------------------------------
+          REDIRECT
+          --------------------------------------------
+          */
+
+          const params =
+            new URLSearchParams(
+              window.location.search
+            );
+
+
+          const redirect =
+            params.get("redirect");
+
+
+          /*
+            უსაფრთხოების მიზნით მხოლოდ
+            ჩვენი საიტის შიდა HTML გვერდზე
+            ვუშვებთ redirect-ს.
+          */
+
+          let target =
+            "account.html";
+
+
+          if (
+            redirect &&
+            redirect.endsWith(".html") &&
+            !redirect.includes("://") &&
+            !redirect.startsWith("//")
+          ) {
+
+            target =
+              redirect;
+
+          }
+
+
+          setTimeout(
+            () => {
+
+              window.location.replace(
+                target
+              );
+
+            },
+            650
+          );
+
+        } catch (error) {
+
+          console.error(
+            "Unexpected login error:",
+            error
+          );
+
+
+          showMessage(
+            "დაფიქსირდა ტექნიკური შეცდომა. შეამოწმე ინტერნეტი და თავიდან სცადე.",
+            "error"
+          );
+
+        } finally {
+
+          setLoading(false);
+
+        }
+
+      }
+    );
+
+
+    /*
+    ==================================================
+    FORGOT PASSWORD
+    ==================================================
+    */
+
+    forgotPassword.addEventListener(
+      "click",
+      async (event) => {
+
+        event.preventDefault();
+
+        hideMessage();
+
+
+        const email =
+          normalizeEmail(
+            emailInput.value
+          );
+
+
+        if (!email) {
+
+          emailInput.classList.add(
+            "invalid"
+          );
+
+          showMessage(
+            "პაროლის აღსადგენად ჯერ შეიყვანე ელფოსტა."
+          );
+
+          emailInput.focus();
+
+          return;
+
+        }
+
+
+        if (!email.includes("@")) {
+
+          emailInput.classList.add(
+            "invalid"
+          );
+
+          showMessage(
+            "შეიყვანე სწორი ელფოსტის მისამართი."
+          );
+
+          emailInput.focus();
+
+          return;
+
+        }
+
+
+        forgotPassword.style.pointerEvents =
+          "none";
+
+        forgotPassword.style.opacity =
+          ".6";
+
+
+        try {
+
+          /*
+          ------------------------------------------
+          Supabase password reset
+          ------------------------------------------
+          */
+
+          const {
+            error
+          } =
+            await supabaseClient.auth
+              .resetPasswordForEmail(
+                email,
+                {
+                  redirectTo:
+                    window.location.origin +
+                    "/account.html?reset=true"
+                }
+              );
+
+
+          if (error) {
+
+            console.error(
+              "Password reset error:",
+              error
+            );
+
+
+            showMessage(
+              error.message ||
+              "პაროლის აღდგენის ბმულის გაგზავნა ვერ მოხერხდა.",
+              "error"
+            );
+
+            return;
+
+          }
+
+
+          showMessage(
+            "პაროლის აღდგენის ბმული გაიგზავნა ელფოსტაზე ✓ შეამოწმე Gmail.",
+            "success"
+          );
+
+        } catch (error) {
+
+          console.error(
+            error
+          );
+
+
+          showMessage(
+            "პაროლის აღდგენისას მოხდა შეცდომა. თავიდან სცადე.",
+            "error"
+          );
+
+        } finally {
+
+          forgotPassword.style.pointerEvents =
+            "";
+
+          forgotPassword.style.opacity =
+            "";
+
+        }
+
+      }
+    );
+
+
+    /*
+    ==================================================
+    CHECK EXISTING SESSION
+    ==================================================
+    */
+
+    async function checkExistingSession() {
+
+      try {
+
+        const {
+          data
+        } =
+          await supabaseClient.auth.getSession();
+
+
+        if (
+          data &&
+          data.session
+        ) {
+
+          /*
+            უკვე შესული მომხმარებელია.
+            Login გვერდზე ტყუილად აღარ ვტოვებთ.
+          */
+
+          const params =
+            new URLSearchParams(
+              window.location.search
+            );
+
+
+          const redirect =
+            params.get("redirect");
+
+
+          let target =
+            "account.html";
+
+
+          if (
+            redirect &&
+            redirect.endsWith(".html") &&
+            !redirect.includes("://") &&
+            !redirect.startsWith("//")
+          ) {
+
+            target =
+              redirect;
+
+          }
+
+
+          /*
+            მხოლოდ მაშინ გადავიყვანოთ,
+            თუ Login გვერდზე პირდაპირ არის შესული.
+          */
+
+          if (
+            document.referrer === "" ||
+            document.referrer.includes(
+              "login.html"
+            )
+          ) {
+
+            window.location.replace(
+              target
+            );
+
+          }
+
+        }
+
+      } catch (error) {
+
+        console.warn(
+          "Session check failed:",
+          error
+        );
+
+      }
+
+    }
+
+
+    checkExistingSession();
+
+
+    /*
+    ==================================================
+    AUTH STATE LISTENER
+    ==================================================
+    */
+
+    supabaseClient.auth.onAuthStateChange(
+      (event, session) => {
+
+        if (
+          event === "SIGNED_OUT"
+        ) {
+
+          console.log(
+            "ECOMAX user signed out."
+          );
+
+        }
+
+
+        if (
+          event === "SIGNED_IN" &&
+          session
+        ) {
+
+          console.log(
+            "ECOMAX user signed in."
+          );
+
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
