@@ -1,10 +1,2973 @@
-<!doctype html><html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="ECOMAX — თანამედროვე სავაჭრო პლატფორმა"><title>ECOMAX — Future of Shopping</title><link rel="stylesheet" href="css/style.css"></head><body>
-<div class="topbar">ECOMAX • უსაფრთხო • სწრაფი • თანამედროვე</div>
-<header class="nav"><div class="container navin"><a class="brand" href="/">ECOMAX</a><nav class="links"><a href="#products">პროდუქტები</a><a href="#services">სერვისები</a><a href="#safety">უსაფრთხოება</a><a href="#about">ჩვენ შესახებ</a></nav><div class="actions"><a class="ghost" href="login.html">შესვლა</a><a class="primary" href="register.html">რეგისტრაცია</a><button class="iconbtn" type="button" aria-label="კალათა">🛒 <span>0</span></button></div></div></header>
-<main>
-<section class="container hero"><div><span class="eyebrow"><i class="dot"></i> ახალი თაობის ECOMAX</span><h1>შეიძინე <span class="gradient">ჭკვიანურად.</span><br>იცხოვრე უკეთ.</h1><p class="lead">სუფთა, სწრაფი და ფუტურისტული სავაჭრო გამოცდილება — პროდუქტი, ფასი და შეკვეთა ერთ სივრცეში.</p><div class="heroBtns"><a class="primary" href="#products">პროდუქტების ნახვა →</a><a class="ghost" href="#about">გაიგე მეტი</a></div></div><div class="heroVisual"><div class="scan"></div><div class="orb"></div></div></section>
-<section id="products" class="section container"><div class="sectionHead"><div><h2>რჩეული პროდუქტები</h2><p>სწრაფად იპოვე ის, რაც გჭირდება.</p></div><span class="eyebrow">COMING NEXT</span></div><div class="productGrid"><article class="product"><div class="productImg">🧴</div><h3>ECOMAX პროდუქტი</h3><div class="price">— ₾</div></article><article class="product"><div class="productImg">⚡</div><h3>პრემიუმ არჩევანი</h3><div class="price">— ₾</div></article><article class="product"><div class="productImg">🧪</div><h3>პროფესიონალური ხაზი</h3><div class="price">— ₾</div></article><article class="product"><div class="productImg">✦</div><h3>ახალი პროდუქტი</h3><div class="price">— ₾</div></article></div></section>
-<section id="services" class="section container"><div class="sectionHead"><div><h2>რატომ ECOMAX?</h2><p>ყველაფერი შექმნილია მარტივი და საიმედო გამოცდილებისთვის.</p></div></div><div class="grid"><article class="card"><div class="cardIcon">🚀</div><h3>სწრაფი შეკვეთა</h3><p>მარტივი პროდუქტის არჩევა, კალათა და შეკვეთა ზედმეტი ნაბიჯების გარეშე.</p></article><article class="card"><div class="cardIcon">🔐</div><h3>უსაფრთხოება</h3><p>ანგარიში და მომხმარებლის მონაცემები დაცულია თანამედროვე ავტორიზაციის სისტემით.</p></article><article class="card"><div class="cardIcon">💬</div><h3>ჭკვიანი დახმარება</h3><p>ECOMAX-ის ასისტენტი დაგეხმარება პროდუქტის შერჩევასა და კითხვებზე პასუხის მიღებაში.</p></article></div></section>
-<section id="safety" class="section container"><div class="card"><span class="eyebrow">SAFETY FIRST</span><h2>უსაფრთხოება ჩვენთვის პრიორიტეტია.</h2><p>აქ განთავსდება ECOMAX-ის სრული უსაფრთხოების წესები, მოხმარების ინსტრუქციები და პროდუქციის დეტალური ინფორმაცია.</p></div></section>
-<section id="about" class="section container"><div class="heroVisual" style="height:240px;padding:35px;display:flex;align-items:center"><div><span class="eyebrow">ECOMAX</span><h2 style="font:700 34px 'Space Grotesk';margin:12px 0">ერთი სივრცე. ყველაფერი რაც გჭირდება.</h2><p style="color:var(--muted)">ECOMAX-ის ახალი პლატფორმა ეტაპობრივად გაერთიანდება სრულ სავაჭრო ეკოსისტემად.</p></div></div></section>
-</main><footer class="footer"><div class="container">© 2026 ECOMAX • ყველა უფლება დაცულია</div></footer></body></html>
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ECOMAX — პროფესიონალური დასუფთავების პროდუქტები</title>
+  <meta
+    name="description"
+    content="ECOMAX — პროფესიონალური დასუფთავების პროდუქტები, ფასები, გაზავებები, უსაფრთხოების წესები და ონლაინ შეკვეთა."
+  >
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+    :root {
+      --bg: #05080d;
+      --bg2: #080e15;
+      --card: rgba(12, 19, 28, .82);
+      --card2: #0b131d;
+      --border: rgba(255,255,255,.08);
+
+      --text: #f4f8fb;
+      --muted: #84919d;
+
+      --cyan: #28e7ff;
+      --cyan2: #7cf2ff;
+      --purple: #8b5cf6;
+      --green: #43e6a3;
+      --red: #ff647d;
+      --yellow: #ffd166;
+
+      --radius: 22px;
+      --shadow: 0 25px 90px rgba(0,0,0,.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(
+          circle at 10% 5%,
+          rgba(40,231,255,.12),
+          transparent 27%
+        ),
+        radial-gradient(
+          circle at 90% 10%,
+          rgba(139,92,246,.13),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 50% 80%,
+          rgba(40,231,255,.035),
+          transparent 35%
+        ),
+        var(--bg);
+
+      color: var(--text);
+      font-family: Inter, sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .025;
+      background-image:
+        linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px);
+      background-size: 45px 45px;
+      z-index: -1;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
+    }
+
+    /* ==============================
+       TOP BAR
+    ============================== */
+
+    .topbar {
+      height: 34px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      border-bottom: 1px solid var(--border);
+
+      color: #71808b;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+    }
+
+    /* ==============================
+       HEADER
+    ============================== */
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+
+      background: rgba(5,8,13,.78);
+      backdrop-filter: blur(22px);
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      height: 74px;
+
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .logo {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 25px;
+      font-weight: 700;
+      letter-spacing: 5px;
+
+      color: var(--cyan);
+
+      text-shadow:
+        0 0 25px rgba(40,231,255,.35);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+
+      margin-left: auto;
+    }
+
+    .nav-links a {
+      color: #a6b2bc;
+      font-size: 12px;
+      transition: .2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--cyan);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.025);
+
+      color: #dbe4e9;
+
+      padding: 10px 13px;
+      border-radius: 11px;
+
+      font-size: 11px;
+      transition: .2s;
+    }
+
+    .nav-btn:hover {
+      border-color: rgba(40,231,255,.35);
+      transform: translateY(-2px);
+    }
+
+    .account-btn {
+      border: none;
+      color: #001115;
+      background: linear-gradient(
+        135deg,
+        var(--cyan),
+        var(--cyan2)
+      );
+      font-weight: 800;
+    }
+
+    .cart-btn {
+      position: relative;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -7px;
+      right: -7px;
+
+      min-width: 19px;
+      height: 19px;
+
+      padding: 0 5px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 50%;
+
+      background: var(--red);
+      color: white;
+
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    /* ==============================
+       HERO
+    ============================== */
+
+    .hero {
+      position: relative;
+      padding: 105px 0 85px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 65px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 8px 12px;
+
+      border: 1px solid rgba(40,231,255,.16);
+      border-radius: 100px;
+
+      background: rgba(40,231,255,.035);
+
+      color: var(--cyan);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+    }
+
+    .hero-badge span {
+      width: 6px;
+      height: 6px;
+
+      border-radius: 50%;
+
+      background: var(--cyan);
+
+      box-shadow: 0 0 14px var(--cyan);
+    }
+
+    .hero h1 {
+      margin: 22px 0 18px;
+
+      max-width: 750px;
+
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(48px, 7vw, 82px);
+      line-height: .94;
+      letter-spacing: -4px;
+    }
+
+    .gradient {
+      background:
+        linear-gradient(
+          100deg,
+          #ffffff 10%,
+          var(--cyan) 70%,
+          #a7f8ff
+        );
+
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-description {
+      max-width: 620px;
+
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      margin-top: 30px;
+    }
+
+    .primary {
+      border: none;
+
+      padding: 14px 20px;
+
+      border-radius: 13px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--cyan),
+          var(--cyan2)
+        );
+
+      color: #001115;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      box-shadow:
+        0 15px 40px rgba(40,231,255,.12);
+
+      transition: .2s;
+    }
+
+    .primary:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 18px 50px rgba(40,231,255,.2);
+    }
+
+    .secondary {
+      border: 1px solid var(--border);
+
+      padding: 13px 19px;
+
+      border-radius: 13px;
+
+      background: rgba(255,255,255,.025);
+
+      color: #d6e0e5;
+
+      font-size: 12px;
+      font-weight: 600;
+
+      transition: .2s;
+    }
+
+    .secondary:hover {
+      border-color: rgba(40,231,255,.3);
+      transform: translateY(-2px);
+    }
+
+    /* ==============================
+       HERO VISUAL
+    ============================== */
+
+    .hero-visual {
+      position: relative;
+
+      min-height: 440px;
+
+      display: grid;
+      place-items: center;
+    }
+
+    .orb {
+      position: absolute;
+
+      width: 330px;
+      height: 330px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle at 35% 30%,
+          rgba(124,242,255,.3),
+          rgba(40,231,255,.08) 35%,
+          rgba(139,92,246,.06) 60%,
+          transparent 72%
+        );
+
+      border: 1px solid rgba(40,231,255,.13);
+
+      box-shadow:
+        0 0 90px rgba(40,231,255,.08),
+        inset 0 0 80px rgba(40,231,255,.05);
+
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .orb::before,
+    .orb::after {
+      content: "";
+
+      position: absolute;
+      inset: 25px;
+
+      border-radius: 50%;
+
+      border: 1px solid rgba(40,231,255,.13);
+
+      transform: rotate(30deg);
+    }
+
+    .orb::after {
+      inset: 65px;
+      border-color: rgba(139,92,246,.18);
+      transform: rotate(-35deg);
+    }
+
+    .hero-product {
+      position: relative;
+      z-index: 2;
+
+      width: 210px;
+      min-height: 270px;
+
+      padding: 25px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 28px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(18,29,41,.94),
+          rgba(7,12,18,.96)
+        );
+
+      box-shadow:
+        0 35px 80px rgba(0,0,0,.55);
+
+      transform: rotate(-4deg);
+
+      animation: productFloat 5s ease-in-out infinite;
+    }
+
+    .hero-product-top {
+      color: var(--cyan);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .bottle {
+      width: 100px;
+      height: 150px;
+
+      margin: 10px auto;
+
+      border-radius: 22px 22px 15px 15px;
+
+      background:
+        linear-gradient(
+          100deg,
+          #0e1d26,
+          #172d38,
+          #091219
+        );
+
+      border: 1px solid rgba(40,231,255,.25);
+
+      box-shadow:
+        inset 8px 0 20px rgba(255,255,255,.025),
+        0 20px 50px rgba(0,0,0,.5);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bottle-label {
+      width: 78px;
+      padding: 16px 5px;
+
+      text-align: center;
+
+      background: rgba(40,231,255,.08);
+
+      border: 1px solid rgba(40,231,255,.2);
+
+      border-radius: 8px;
+
+      color: var(--cyan);
+
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    .hero-product-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hero-product-bottom strong {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 18px;
+    }
+
+    .hero-product-bottom span {
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    @keyframes float {
+      0%,100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    @keyframes productFloat {
+      0%,100% {
+        transform: translateY(0) rotate(-4deg);
+      }
+
+      50% {
+        transform: translateY(-10px) rotate(-2deg);
+      }
+    }
+
+    /* ==============================
+       TRUST BAR
+    ============================== */
+
+    .trust {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+
+      background: rgba(255,255,255,.015);
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .trust-item {
+      padding: 22px 15px;
+
+      text-align: center;
+
+      border-right: 1px solid var(--border);
+    }
+
+    .trust-item:last-child {
+      border-right: none;
+    }
+
+    .trust-item strong {
+      display: block;
+
+      color: #eaf5f8;
+
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 13px;
+    }
+
+    .trust-item span {
+      display: block;
+
+      margin-top: 5px;
+
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    /* ==============================
+       SECTIONS
+    ============================== */
+
+    section.content-section {
+      padding: 95px 0 0;
+    }
+
+    .section-heading {
+      margin-bottom: 30px;
+    }
+
+    .section-eyebrow {
+      color: var(--cyan);
+
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+    }
+
+    .section-heading h2 {
+      margin-top: 9px;
+
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(30px, 4vw, 46px);
+
+      letter-spacing: -1.5px;
+    }
+
+    .section-heading p {
+      max-width: 650px;
+
+      margin-top: 10px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* ==============================
+       PRODUCTS
+    ============================== */
+
+    .products-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 15px;
+    }
+
+    .product-card {
+      position: relative;
+
+      padding: 20px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(14,23,33,.9),
+          rgba(7,12,18,.9)
+        );
+
+      box-shadow: var(--shadow);
+
+      overflow: hidden;
+
+      transition: .25s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+
+      border-color:
+        rgba(40,231,255,.25);
+    }
+
+    .product-badge {
+      position: absolute;
+
+      top: 15px;
+      right: 15px;
+
+      padding: 5px 8px;
+
+      border-radius: 7px;
+
+      background: rgba(40,231,255,.07);
+
+      border: 1px solid rgba(40,231,255,.15);
+
+      color: var(--cyan);
+
+      font-size: 8px;
+      font-weight: 800;
+    }
+
+    .product-visual {
+      height: 230px;
+
+      display: grid;
+      place-items: center;
+
+      margin-bottom: 20px;
+
+      border-radius: 17px;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(40,231,255,.07),
+          transparent 65%
+        );
+    }
+
+    .product-bottle {
+      width: 92px;
+      height: 150px;
+
+      border-radius: 20px 20px 13px 13px;
+
+      display: grid;
+      place-items: center;
+
+      background:
+        linear-gradient(
+          100deg,
+          #0b1820,
+          #17313c,
+          #081017
+        );
+
+      border: 1px solid rgba(40,231,255,.25);
+
+      box-shadow:
+        0 25px 50px rgba(0,0,0,.45);
+    }
+
+    .product-bottle span {
+      padding: 12px 5px;
+
+      color: var(--cyan);
+
+      border: 1px solid rgba(40,231,255,.2);
+      border-radius: 7px;
+
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .product-info h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 18px;
+    }
+
+    .product-info p {
+      min-height: 42px;
+
+      margin-top: 7px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .product-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+
+      margin-top: 18px;
+
+      padding-top: 15px;
+
+      border-top: 1px solid var(--border);
+    }
+
+    .price strong {
+      display: block;
+
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 23px;
+
+      color: #fff;
+    }
+
+    .price span {
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    .add-cart {
+      border: 1px solid rgba(40,231,255,.18);
+
+      padding: 10px 12px;
+
+      border-radius: 10px;
+
+      background: rgba(40,231,255,.06);
+
+      color: var(--cyan);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      transition: .2s;
+    }
+
+    .add-cart:hover {
+      background: rgba(40,231,255,.13);
+      transform: translateY(-2px);
+    }
+
+    /* ==============================
+       DILUTION
+    ============================== */
+
+    .dilution-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      gap: 15px;
+    }
+
+    .dilution-card {
+      padding: 25px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(12,20,29,.9),
+          rgba(7,12,18,.9)
+        );
+    }
+
+    .dilution-icon {
+      width: 45px;
+      height: 45px;
+
+      display: grid;
+      place-items: center;
+
+      margin-bottom: 17px;
+
+      border-radius: 13px;
+
+      background: rgba(40,231,255,.06);
+
+      color: var(--cyan);
+
+      font-size: 20px;
+    }
+
+    .dilution-card h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 18px;
+    }
+
+    .dilution-card p {
+      margin-top: 7px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .ratio {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+
+      margin-top: 18px;
+    }
+
+    .ratio span {
+      padding: 9px 11px;
+
+      border-radius: 9px;
+
+      background: rgba(255,255,255,.03);
+
+      border: 1px solid var(--border);
+
+      color: #d7e2e8;
+
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 11px;
+    }
+
+    /* ==============================
+       SAFETY
+    ============================== */
+
+    .safety {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      gap: 15px;
+    }
+
+    .safety-card {
+      padding: 25px;
+
+      border-radius: var(--radius);
+
+      border: 1px solid rgba(255,209,102,.12);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(25,21,12,.72),
+          rgba(11,14,18,.9)
+        );
+    }
+
+    .safety-card h3 {
+      color: #ffe49a;
+
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 18px;
+
+      margin-bottom: 16px;
+    }
+
+    .safety-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .safety-list div {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+
+      color: #aeb9bf;
+
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .safety-list b {
+      color: var(--yellow);
+    }
+
+    /* ==============================
+       CHATBOT
+    ============================== */
+
+    .chat-section {
+      display: grid;
+
+      grid-template-columns: .8fr 1.2fr;
+
+      gap: 18px;
+    }
+
+    .chat-info,
+    .chat-window {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(12,20,29,.92),
+          rgba(6,11,16,.95)
+        );
+
+      box-shadow: var(--shadow);
+    }
+
+    .chat-info {
+      padding: 30px;
+    }
+
+    .chat-info h2 {
+      margin: 10px 0;
+
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 30px;
+    }
+
+    .chat-info p {
+      color: var(--muted);
+
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .chat-window {
+      min-height: 380px;
+
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      padding: 17px 20px;
+
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .bot-avatar {
+      width: 38px;
+      height: 38px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 12px;
+
+      background: rgba(40,231,255,.08);
+
+      color: var(--cyan);
+    }
+
+    .chat-header strong {
+      display: block;
+      font-size: 12px;
+    }
+
+    .chat-header span {
+      color: var(--green);
+      font-size: 9px;
+    }
+
+    .chat-messages {
+      flex: 1;
+
+      padding: 20px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      overflow-y: auto;
+    }
+
+    .message {
+      max-width: 82%;
+
+      padding: 11px 13px;
+
+      border-radius: 13px;
+
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .bot-message {
+      align-self: flex-start;
+
+      background: rgba(255,255,255,.04);
+
+      border: 1px solid var(--border);
+
+      color: #cbd5db;
+    }
+
+    .user-message {
+      align-self: flex-end;
+
+      background: rgba(40,231,255,.08);
+
+      border: 1px solid rgba(40,231,255,.15);
+
+      color: #c8f8ff;
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 8px;
+
+      padding: 12px;
+
+      border-top: 1px solid var(--border);
+    }
+
+    .chat-input input {
+      flex: 1;
+
+      min-width: 0;
+
+      padding: 12px;
+
+      border: 1px solid var(--border);
+      border-radius: 11px;
+
+      background: #05090e;
+
+      color: var(--text);
+
+      outline: none;
+    }
+
+    .chat-input input:focus {
+      border-color: rgba(40,231,255,.35);
+    }
+
+    .chat-send {
+      width: 45px;
+
+      border: none;
+      border-radius: 11px;
+
+      background: var(--cyan);
+
+      color: #001115;
+
+      font-weight: 800;
+    }
+
+    /* ==============================
+       CART DRAWER
+    ============================== */
+
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+
+      z-index: 2000;
+
+      display: none;
+
+      background: rgba(0,0,0,.65);
+
+      backdrop-filter: blur(7px);
+    }
+
+    .cart-overlay.open {
+      display: block;
+    }
+
+    .cart {
+      position: absolute;
+
+      top: 0;
+      right: 0;
+
+      width: min(420px, 100%);
+      height: 100%;
+
+      display: flex;
+      flex-direction: column;
+
+      background: #080e15;
+
+      border-left: 1px solid var(--border);
+
+      box-shadow: -30px 0 90px rgba(0,0,0,.5);
+
+      animation: slideIn .25s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+      }
+
+      to {
+        transform: translateX(0);
+      }
+    }
+
+    .cart-header {
+      padding: 22px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart-header h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 20px;
+    }
+
+    .close-cart {
+      width: 35px;
+      height: 35px;
+
+      border: 1px solid var(--border);
+      border-radius: 9px;
+
+      background: rgba(255,255,255,.03);
+
+      color: white;
+    }
+
+    .cart-items {
+      flex: 1;
+
+      padding: 18px;
+
+      overflow-y: auto;
+    }
+
+    .empty-cart {
+      height: 100%;
+
+      display: grid;
+      place-items: center;
+
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 12px;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 55px 1fr auto;
+      gap: 11px;
+      align-items: center;
+
+      padding: 12px;
+
+      margin-bottom: 8px;
+
+      border: 1px solid var(--border);
+      border-radius: 13px;
+
+      background: rgba(255,255,255,.025);
+    }
+
+    .cart-thumb {
+      width: 55px;
+      height: 55px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 11px;
+
+      background: rgba(40,231,255,.06);
+
+      color: var(--cyan);
+
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .cart-item strong {
+      display: block;
+
+      font-size: 11px;
+    }
+
+    .cart-item span {
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    .remove-item {
+      border: none;
+
+      background: transparent;
+
+      color: var(--red);
+
+      font-size: 14px;
+    }
+
+    .cart-footer {
+      padding: 20px;
+
+      border-top: 1px solid var(--border);
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+
+      margin-bottom: 15px;
+    }
+
+    .cart-total span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .cart-total strong {
+      color: var(--cyan);
+
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 21px;
+    }
+
+    .checkout {
+      width: 100%;
+    }
+
+    /* ==============================
+       FOOTER
+    ============================== */
+
+    footer {
+      margin-top: 100px;
+
+      padding: 45px 0 25px;
+
+      border-top: 1px solid var(--border);
+
+      background: rgba(255,255,255,.012);
+    }
+
+    .footer-grid {
+      display: grid;
+
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+
+      gap: 35px;
+    }
+
+    .footer-brand h2 {
+      font-family: "Space Grotesk", sans-serif;
+
+      color: var(--cyan);
+
+      letter-spacing: 4px;
+    }
+
+    .footer-brand p {
+      max-width: 300px;
+
+      margin-top: 10px;
+
+      color: var(--muted);
+
+      font-size: 10px;
+      line-height: 1.7;
+    }
+
+    .footer-col h4 {
+      margin-bottom: 13px;
+
+      color: #e4edf1;
+
+      font-size: 11px;
+    }
+
+    .footer-col a {
+      display: block;
+
+      margin: 8px 0;
+
+      color: #73818c;
+
+      font-size: 10px;
+
+      transition: .2s;
+    }
+
+    .footer-col a:hover {
+      color: var(--cyan);
+    }
+
+    .copyright {
+      padding-top: 25px;
+      margin-top: 35px;
+
+      border-top: 1px solid var(--border);
+
+      text-align: center;
+
+      color: #52606a;
+
+      font-size: 9px;
+    }
+
+    /* ==============================
+       TOAST
+    ============================== */
+
+    .toast {
+      position: fixed;
+
+      left: 50%;
+      bottom: 25px;
+
+      z-index: 3000;
+
+      transform:
+        translate(-50%, 120px);
+
+      padding: 12px 17px;
+
+      border: 1px solid rgba(40,231,255,.2);
+      border-radius: 12px;
+
+      background: #0b151e;
+
+      color: #dffaff;
+
+      font-size: 11px;
+
+      box-shadow: var(--shadow);
+
+      transition: .3s;
+    }
+
+    .toast.show {
+      transform:
+        translate(-50%, 0);
+    }
+
+    /* ==============================
+       RESPONSIVE
+    ============================== */
+
+    @media (max-width: 950px) {
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 70px;
+      }
+
+      .hero-visual {
+        min-height: 380px;
+      }
+
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .chat-section {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 650px) {
+
+      .container {
+        width: calc(100% - 20px);
+      }
+
+      .logo {
+        font-size: 20px;
+      }
+
+      .nav {
+        height: 64px;
+      }
+
+      .nav-btn.account-btn {
+        display: none;
+      }
+
+      .hero h1 {
+        letter-spacing: -2.5px;
+      }
+
+      .hero-description {
+        font-size: 13px;
+      }
+
+      .hero-visual {
+        min-height: 320px;
+      }
+
+      .orb {
+        width: 270px;
+        height: 270px;
+      }
+
+      .hero-product {
+        width: 175px;
+        min-height: 235px;
+      }
+
+      .trust-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .trust-item:nth-child(2) {
+        border-right: none;
+      }
+
+      .trust-item:nth-child(-n+2) {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dilution-grid,
+      .safety {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 25px 15px;
+      }
+    }
+
+    @media (max-width: 430px) {
+
+      .hero-actions {
+        display: grid;
+      }
+
+      .primary,
+      .secondary {
+        width: 100%;
+        text-align: center;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .chat-input {
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================================
+       TOP BAR
+  ========================================== -->
+
+  <div class="topbar">
+    ECOMAX • PROFESSIONAL CLEANING SYSTEM • ONLINE STORE
+  </div>
+
+
+  <!-- =========================================
+       HEADER
+  ========================================== -->
+
+  <header class="header">
+
+    <nav class="container nav">
+
+      <a href="index.html" class="logo">
+        ECOMAX
+      </a>
+
+      <div class="nav-links">
+
+        <a href="#products">
+          პროდუქტები
+        </a>
+
+        <a href="#dilution">
+          გაზავებები
+        </a>
+
+        <a href="#safety">
+          უსაფრთხოება
+        </a>
+
+        <a href="#assistant">
+          დახმარება
+        </a>
+
+      </div>
+
+      <div class="nav-actions">
+
+        <a
+          href="login.html"
+          class="nav-btn"
+        >
+          შესვლა
+        </a>
+
+        <a
+          href="register.html"
+          class="nav-btn"
+        >
+          რეგისტრაცია
+        </a>
+
+        <a
+          href="account.html"
+          class="nav-btn account-btn"
+        >
+          Account
+        </a>
+
+        <button
+          class="nav-btn cart-btn"
+          id="openCart"
+          type="button"
+        >
+          🛒 კალათა
+
+          <span
+            class="cart-count"
+            id="cartCount"
+          >
+            0
+          </span>
+        </button>
+
+      </div>
+
+    </nav>
+
+  </header>
+
+
+  <!-- =========================================
+       HERO
+  ========================================== -->
+
+  <main>
+
+    <section class="hero">
+
+      <div class="container hero-grid">
+
+        <div>
+
+          <div class="hero-badge">
+            <span></span>
+            ECOMAX PROFESSIONAL SYSTEM
+          </div>
+
+          <h1>
+            სისუფთავე
+            <span class="gradient">
+              ახალი დონით.
+            </span>
+          </h1>
+
+          <p class="hero-description">
+            პროფესიონალური დასუფთავების პროდუქტები,
+            ზუსტი გაზავებები, უსაფრთხოების წესები და
+            მარტივი ონლაინ შეკვეთა — ყველაფერი ერთ
+            ECOMAX პლატფორმაზე.
+          </p>
+
+          <div class="hero-actions">
+
+            <a
+              href="#products"
+              class="primary"
+            >
+              პროდუქტების ნახვა →
+            </a>
+
+            <a
+              href="#dilution"
+              class="secondary"
+            >
+              გაზავებების ნახვა
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div class="hero-visual">
+
+          <div class="orb"></div>
+
+          <div class="hero-product">
+
+            <div class="hero-product-top">
+              ECOMAX / PRO
+            </div>
+
+            <div class="bottle">
+
+              <div class="bottle-label">
+                ECOMAX
+              </div>
+
+            </div>
+
+            <div class="hero-product-bottom">
+
+              <div>
+                <strong>
+                  PRO CLEAN
+                </strong>
+
+                <span>
+                  Professional Formula
+                </span>
+              </div>
+
+              <span>
+                1L
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         TRUST
+    ========================================== -->
+
+    <section class="trust">
+
+      <div class="container trust-grid">
+
+        <div class="trust-item">
+
+          <strong>
+            პროფესიონალური
+          </strong>
+
+          <span>
+            ხარისხზე ორიენტირებული ფორმულები
+          </span>
+
+        </div>
+
+        <div class="trust-item">
+
+          <strong>
+            ზუსტი გაზავება
+          </strong>
+
+          <span>
+            გამოყენების მარტივი ინსტრუქციები
+          </span>
+
+        </div>
+
+        <div class="trust-item">
+
+          <strong>
+            უსაფრთხოება
+          </strong>
+
+          <span>
+            მნიშვნელოვანი წესები ერთ სივრცეში
+          </span>
+
+        </div>
+
+        <div class="trust-item">
+
+          <strong>
+            ონლაინ შეკვეთა
+          </strong>
+
+          <span>
+            სწრაფი და მარტივი პროცესი
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         PRODUCTS
+    ========================================== -->
+
+    <section
+      class="content-section"
+      id="products"
+    >
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div class="section-eyebrow">
+            ECOMAX PRODUCTS
+          </div>
+
+          <h2>
+            პროდუქტები
+          </h2>
+
+          <p>
+            აირჩიე საჭირო პროდუქტი, ნახე ფასი,
+            მოცულობა და დაამატე კალათაში.
+          </p>
+
+        </div>
+
+
+        <div class="products-grid">
+
+
+          <!-- PRODUCT 1 -->
+
+          <article
+            class="product-card"
+            data-name="ECOMAX PRO CLEAN"
+            data-price="25"
+          >
+
+            <div class="product-badge">
+              POPULAR
+            </div>
+
+            <div class="product-visual">
+
+              <div class="product-bottle">
+
+                <span>
+                  PRO<br>
+                  CLEAN
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="product-info">
+
+              <h3>
+                ECOMAX PRO CLEAN
+              </h3>
+
+              <p>
+                პროფესიონალური უნივერსალური
+                დასუფთავების ხსნარი.
+              </p>
+
+            </div>
+
+            <div class="product-meta">
+
+              <div class="price">
+
+                <strong>
+                  25 ₾
+                </strong>
+
+                <span>
+                  1 ლიტრი
+                </span>
+
+              </div>
+
+              <button
+                class="add-cart"
+                type="button"
+              >
+                + კალათაში
+              </button>
+
+            </div>
+
+          </article>
+
+
+          <!-- PRODUCT 2 -->
+
+          <article
+            class="product-card"
+            data-name="ECOMAX ULTRA"
+            data-price="35"
+          >
+
+            <div class="product-badge">
+              PRO
+            </div>
+
+            <div class="product-visual">
+
+              <div class="product-bottle">
+
+                <span>
+                  ULTRA
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="product-info">
+
+              <h3>
+                ECOMAX ULTRA
+              </h3>
+
+              <p>
+                ძლიერი პროფესიონალური ფორმულა
+                რთული დაბინძურებისთვის.
+              </p>
+
+            </div>
+
+            <div class="product-meta">
+
+              <div class="price">
+
+                <strong>
+                  35 ₾
+                </strong>
+
+                <span>
+                  1 ლიტრი
+                </span>
+
+              </div>
+
+              <button
+                class="add-cart"
+                type="button"
+              >
+                + კალათაში
+              </button>
+
+            </div>
+
+          </article>
+
+
+          <!-- PRODUCT 3 -->
+
+          <article
+            class="product-card"
+            data-name="ECOMAX SHINE"
+            data-price="30"
+          >
+
+            <div class="product-badge">
+              SHINE
+            </div>
+
+            <div class="product-visual">
+
+              <div class="product-bottle">
+
+                <span>
+                  SHINE
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="product-info">
+
+              <h3>
+                ECOMAX SHINE
+              </h3>
+
+              <p>
+                ზედაპირებისთვის განკუთვნილი
+                სპეციალური საწმენდი საშუალება.
+              </p>
+
+            </div>
+
+            <div class="product-meta">
+
+              <div class="price">
+
+                <strong>
+                  30 ₾
+                </strong>
+
+                <span>
+                  1 ლიტრი
+                </span>
+
+              </div>
+
+              <button
+                class="add-cart"
+                type="button"
+              >
+                + კალათაში
+              </button>
+
+            </div>
+
+          </article>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         DILUTION
+    ========================================== -->
+
+    <section
+      class="content-section"
+      id="dilution"
+    >
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div class="section-eyebrow">
+            MIXING SYSTEM
+          </div>
+
+          <h2>
+            გაზავებები
+          </h2>
+
+          <p>
+            გამოიყენე პროდუქტის ეტიკეტზე მითითებული
+            კონკრეტული ინსტრუქცია. ქვემოთ მოცემული
+            მაგალითები წარმოადგენს საინფორმაციო ბლოკს.
+          </p>
+
+        </div>
+
+
+        <div class="dilution-grid">
+
+
+          <article class="dilution-card">
+
+            <div class="dilution-icon">
+              🧪
+            </div>
+
+            <h3>
+              ყოველდღიური წმენდა
+            </h3>
+
+            <p>
+              მსუბუქი დაბინძურებისთვის გამოიყენე
+              პროდუქტის შესაბამისი მწარმოებლის მიერ
+              მითითებული კონცენტრაცია.
+            </p>
+
+            <div class="ratio">
+
+              <span>
+                კონცენტრატი
+              </span>
+
+              <span>
+                + წყალი
+              </span>
+
+            </div>
+
+          </article>
+
+
+          <article class="dilution-card">
+
+            <div class="dilution-icon">
+              ⚗️
+            </div>
+
+            <h3>
+              ძლიერი დაბინძურება
+            </h3>
+
+            <p>
+              ძლიერი დაბინძურების შემთხვევაში ყოველთვის
+              დაიცავი პროდუქტის ეტიკეტზე მითითებული
+              მაქსიმალური რეკომენდებული დოზირება.
+            </p>
+
+            <div class="ratio">
+
+              <span>
+                ინსტრუქცია
+              </span>
+
+              <span>
+                ზუსტი დოზირება
+              </span>
+
+            </div>
+
+          </article>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         SAFETY
+    ========================================== -->
+
+    <section
+      class="content-section"
+      id="safety"
+    >
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div class="section-eyebrow">
+            SAFETY FIRST
+          </div>
+
+          <h2>
+            უსაფრთხოების წესები
+          </h2>
+
+          <p>
+            ქიმიური პროდუქტების გამოყენებისას ყოველთვის
+            წაიკითხე კონკრეტული პროდუქტის ეტიკეტი და
+            უსაფრთხოების ინსტრუქცია.
+          </p>
+
+        </div>
+
+
+        <div class="safety">
+
+          <article class="safety-card">
+
+            <h3>
+              ⚠️ აუცილებელი წესები
+            </h3>
+
+            <div class="safety-list">
+
+              <div>
+                <b>01</b>
+                <span>
+                  გამოიყენე შესაბამისი დამცავი ხელთათმანები
+                  და საჭიროების შემთხვევაში თვალის დაცვა.
+                </span>
+              </div>
+
+              <div>
+                <b>02</b>
+                <span>
+                  არ აურიო სხვადასხვა ქიმიური პროდუქტი
+                  ერთმანეთში, თუ მწარმოებელი ამას პირდაპირ
+                  არ ითვალისწინებს.
+                </span>
+              </div>
+
+              <div>
+                <b>03</b>
+                <span>
+                  შეინახე ბავშვებისა და შინაური ცხოველებისგან
+                  მიუწვდომელ ადგილას.
+                </span>
+              </div>
+
+            </div>
+
+          </article>
+
+
+          <article class="safety-card">
+
+            <h3>
+              🛡️ გამოყენებისას
+            </h3>
+
+            <div class="safety-list">
+
+              <div>
+                <b>04</b>
+                <span>
+                  სამუშაო სივრცე უნდა იყოს სათანადოდ
+                  განიავებული.
+                </span>
+              </div>
+
+              <div>
+                <b>05</b>
+                <span>
+                  გამოიყენე მხოლოდ იმ ზედაპირზე,
+                  რომლისთვისაც პროდუქტი არის განკუთვნილი.
+                </span>
+              </div>
+
+              <div>
+                <b>06</b>
+                <span>
+                  შემთხვევითი კონტაქტისას მიჰყევი პროდუქტის
+                  ეტიკეტზე მითითებულ პირველადი დახმარების
+                  ინსტრუქციას.
+                </span>
+              </div>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         CHATBOT
+    ========================================== -->
+
+    <section
+      class="content-section"
+      id="assistant"
+    >
+
+      <div class="container chat-section">
+
+        <div class="chat-info">
+
+          <div class="section-eyebrow">
+            ECOMAX AI ASSISTANT
+          </div>
+
+          <h2>
+            გჭირდება დახმარება?
+          </h2>
+
+          <p>
+            დაუსვი კითხვა პროდუქტებზე, გაზავებებზე,
+            შეკვეთაზე ან საიტის გამოყენებაზე.
+            ეს არის ECOMAX-ის საინფორმაციო ასისტენტის
+            დემო ინტერფეისი.
+          </p>
+
+        </div>
+
+
+        <div class="chat-window">
+
+          <div class="chat-header">
+
+            <div class="bot-avatar">
+              ✦
+            </div>
+
+            <div>
+
+              <strong>
+                ECOMAX Assistant
+              </strong>
+
+              <span>
+                ● ონლაინ
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="chat-messages"
+            id="chatMessages"
+          >
+
+            <div class="message bot-message">
+              გამარჯობა 👋 მე ECOMAX-ის ასისტენტი ვარ.
+              რით შემიძლია დაგეხმარო?
+            </div>
+
+          </div>
+
+
+          <form
+            class="chat-input"
+            id="chatForm"
+          >
+
+            <input
+              id="chatInput"
+              type="text"
+              placeholder="დაწერე კითხვა..."
+              autocomplete="off"
+            >
+
+            <button
+              class="chat-send"
+              type="submit"
+            >
+              →
+            </button>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================
+       CART DRAWER
+  ========================================== -->
+
+  <div
+    class="cart-overlay"
+    id="cartOverlay"
+  >
+
+    <aside class="cart">
+
+      <div class="cart-header">
+
+        <h2>
+          შენი კალათა
+        </h2>
+
+        <button
+          class="close-cart"
+          id="closeCart"
+          type="button"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div
+        class="cart-items"
+        id="cartItems"
+      >
+
+        <div class="empty-cart">
+          კალათა ცარიელია 🛒
+        </div>
+
+      </div>
+
+
+      <div class="cart-footer">
+
+        <div class="cart-total">
+
+          <span>
+            სულ
+          </span>
+
+          <strong id="cartTotal">
+            0 ₾
+          </strong>
+
+        </div>
+
+        <button
+          class="primary checkout"
+          id="checkout"
+          type="button"
+        >
+          შეკვეთის გაგრძელება →
+        </button>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+
+  <!-- =========================================
+       FOOTER
+  ========================================== -->
+
+  <footer>
+
+    <div class="container">
+
+      <div class="footer-grid">
+
+
+        <div class="footer-brand">
+
+          <h2>
+            ECOMAX
+          </h2>
+
+          <p>
+            პროფესიონალური დასუფთავების პროდუქტები,
+            საინფორმაციო რესურსები და ონლაინ შეკვეთის
+            თანამედროვე პლატფორმა.
+          </p>
+
+        </div>
+
+
+        <div class="footer-col">
+
+          <h4>
+            ნავიგაცია
+          </h4>
+
+          <a href="#products">
+            პროდუქტები
+          </a>
+
+          <a href="#dilution">
+            გაზავებები
+          </a>
+
+          <a href="#safety">
+            უსაფრთხოება
+          </a>
+
+        </div>
+
+
+        <div class="footer-col">
+
+          <h4>
+            ანგარიში
+          </h4>
+
+          <a href="login.html">
+            შესვლა
+          </a>
+
+          <a href="register.html">
+            რეგისტრაცია
+          </a>
+
+          <a href="account.html">
+            ჩემი ანგარიში
+          </a>
+
+        </div>
+
+
+        <div class="footer-col">
+
+          <h4>
+            დახმარება
+          </h4>
+
+          <a href="#assistant">
+            AI Assistant
+          </a>
+
+          <a href="#safety">
+            უსაფრთხოების წესები
+          </a>
+
+          <a href="#dilution">
+            გამოყენების წესები
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <div class="copyright">
+
+        © 2026 ECOMAX • ყველა უფლება დაცულია
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =========================================
+       TOAST
+  ========================================== -->
+
+  <div
+    class="toast"
+    id="toast"
+  >
+    პროდუქტი დაემატა კალათაში ✓
+  </div>
+
+
+  <!-- =========================================
+       JAVASCRIPT
+  ========================================== -->
+
+  <script>
+
+    /*
+    ============================================
+    ECOMAX CART
+    ============================================
+    */
+
+    const cart = JSON.parse(
+      localStorage.getItem("ecomax_cart") || "[]"
+    );
+
+
+    const cartOverlay =
+      document.getElementById("cartOverlay");
+
+    const cartItems =
+      document.getElementById("cartItems");
+
+    const cartCount =
+      document.getElementById("cartCount");
+
+    const cartTotal =
+      document.getElementById("cartTotal");
+
+
+    function saveCart() {
+
+      localStorage.setItem(
+        "ecomax_cart",
+        JSON.stringify(cart)
+      );
+
+    }
+
+
+    function renderCart() {
+
+      cartItems.innerHTML = "";
+
+      if (!cart.length) {
+
+        cartItems.innerHTML = `
+          <div class="empty-cart">
+            კალათა ცარიელია 🛒
+          </div>
+        `;
+
+        cartCount.textContent = "0";
+        cartTotal.textContent = "0 ₾";
+
+        return;
+      }
+
+
+      let total = 0;
+      let count = 0;
+
+
+      cart.forEach((item, index) => {
+
+        total += item.price * item.quantity;
+        count += item.quantity;
+
+
+        const element =
+          document.createElement("div");
+
+        element.className = "cart-item";
+
+        element.innerHTML = `
+
+          <div class="cart-thumb">
+            ECOMAX
+          </div>
+
+          <div>
+
+            <strong>
+              ${item.name}
+            </strong>
+
+            <span>
+              ${item.quantity} × ${item.price} ₾
+            </span>
+
+          </div>
+
+          <button
+            class="remove-item"
+            data-index="${index}"
+            type="button"
+          >
+            ×
+          </button>
+
+        `;
+
+
+        cartItems.appendChild(element);
+
+      });
+
+
+      cartCount.textContent = count;
+      cartTotal.textContent =
+        total.toFixed(2) + " ₾";
+
+
+      document
+        .querySelectorAll(".remove-item")
+        .forEach(button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              const index =
+                Number(button.dataset.index);
+
+              cart.splice(index, 1);
+
+              saveCart();
+              renderCart();
+
+            }
+          );
+
+        });
+
+    }
+
+
+    function showToast(text) {
+
+      const toast =
+        document.getElementById("toast");
+
+      toast.textContent = text;
+
+      toast.classList.add("show");
+
+      setTimeout(() => {
+
+        toast.classList.remove("show");
+
+      }, 2200);
+
+    }
+
+
+    document
+      .querySelectorAll(".add-cart")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const card =
+              button.closest(".product-card");
+
+            const name =
+              card.dataset.name;
+
+            const price =
+              Number(card.dataset.price);
+
+
+            const existing =
+              cart.find(
+                item => item.name === name
+              );
+
+
+            if (existing) {
+
+              existing.quantity++;
+
+            } else {
+
+              cart.push({
+                name: name,
+                price: price,
+                quantity: 1
+              });
+
+            }
+
+
+            saveCart();
+            renderCart();
+
+            showToast(
+              "პროდუქტი დაემატა კალათაში ✓"
+            );
+
+          }
+        );
+
+      });
+
+
+    /*
+    ============================================
+    OPEN / CLOSE CART
+    ============================================
+    */
+
+    document
+      .getElementById("openCart")
+      .addEventListener(
+        "click",
+        () => {
+
+          cartOverlay.classList.add("open");
+
+        }
+      );
+
+
+    document
+      .getElementById("closeCart")
+      .addEventListener(
+        "click",
+        () => {
+
+          cartOverlay.classList.remove("open");
+
+        }
+      );
+
+
+    cartOverlay.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target === cartOverlay
+        ) {
+
+          cartOverlay.classList.remove(
+            "open"
+          );
+
+        }
+
+      }
+    );
+
+
+    /*
+    ============================================
+    CHECKOUT
+    ============================================
+    */
+
+    document
+      .getElementById("checkout")
+      .addEventListener(
+        "click",
+        () => {
+
+          if (!cart.length) {
+
+            showToast(
+              "ჯერ დაამატე პროდუქტი კალათაში."
+            );
+
+            return;
+          }
+
+
+          /*
+            ამ ეტაპზე შეკვეთის გვერდი ჯერ
+            არ შეგვიქმნია.
+
+            მომხმარებელს Login-ზე ვაგზავნით.
+          */
+
+          window.location.href =
+            "login.html";
+
+        }
+      );
+
+
+    /*
+    ============================================
+    CHATBOT DEMO
+    ============================================
+    */
+
+    const chatForm =
+      document.getElementById("chatForm");
+
+    const chatInput =
+      document.getElementById("chatInput");
+
+    const chatMessages =
+      document.getElementById("chatMessages");
+
+
+    function addMessage(
+      text,
+      type
+    ) {
+
+      const message =
+        document.createElement("div");
+
+      message.className =
+        "message " +
+        (
+          type === "user"
+            ? "user-message"
+            : "bot-message"
+        );
+
+      message.textContent = text;
+
+      chatMessages.appendChild(
+        message
+      );
+
+      chatMessages.scrollTop =
+        chatMessages.scrollHeight;
+
+    }
+
+
+    function getBotAnswer(question) {
+
+      const q =
+        question.toLowerCase();
+
+
+      if (
+        q.includes("ფასი") ||
+        q.includes("ღირს")
+      ) {
+
+        return "პროდუქციის მიმდინარე ფასები პროდუქტების ბლოკშია. აირჩიე სასურველი პროდუქტი და დაამატე კალათაში.";
+
+      }
+
+
+      if (
+        q.includes("გაზავ") ||
+        q.includes("წყალი")
+      ) {
+
+        return "გაზავებისას აუცილებლად მიჰყევი კონკრეტული პროდუქტის ეტიკეტზე მითითებულ დოზირებას. სხვადასხვა პროდუქტის ერთმანეთში შერევა არ შეიძლება, თუ მწარმოებელი ამას არ ითვალისწინებს.";
+
+      }
+
+
+      if (
+        q.includes("უსაფრთხ") ||
+        q.includes("ხელთათ")
+      ) {
+
+        return "ქიმიურ პროდუქტებთან მუშაობისას გამოიყენე შესაბამისი დამცავი საშუალებები და დაიცავი პროდუქტის ეტიკეტზე მითითებული უსაფრთხოების წესები.";
+
+      }
+
+
+      if (
+        q.includes("შეკვეთ") ||
+        q.includes("კალათ")
+      ) {
+
+        return "პროდუქტის კალათაში დამატება შეგიძლია პროდუქტის ბლოკიდან. შემდეგ გახსენი 🛒 კალათა და გააგრძელე შეკვეთის პროცესი.";
+
+      }
+
+
+      if (
+        q.includes("გამარჯ") ||
+        q.includes("hello")
+      ) {
+
+        return "გამარჯობა 👋 რით შემიძლია დაგეხმარო? შეგიძლია მკითხო ფასზე, პროდუქტზე, გაზავებაზე ან შეკვეთაზე.";
+
+      }
+
+
+      return "შეგიძლია მკითხო პროდუქტების ფასებზე, გაზავებებზე, უსაფრთხოების წესებზე ან შეკვეთის პროცესზე.";
+
+    }
+
+
+    chatForm.addEventListener(
+      "submit",
+      event => {
+
+        event.preventDefault();
+
+
+        const text =
+          chatInput.value.trim();
+
+
+        if (!text) {
+          return;
+        }
+
+
+        addMessage(
+          text,
+          "user"
+        );
+
+
+        chatInput.value = "";
+
+
+        setTimeout(() => {
+
+          addMessage(
+            getBotAnswer(text),
+            "bot"
+          );
+
+        }, 450);
+
+      }
+    );
+
+
+    /*
+    ============================================
+    INITIALIZE
+    ============================================
+    */
+
+    renderCart();
+
+  </script>
+
+</body>
+</html>
