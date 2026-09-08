@@ -236,42 +236,33 @@ if (cartItems) {
 function normalizeVolume(value) {
     const n = Number(value);
     if (!Number.isFinite(n)) return 0.5;
-    return Math.min(20, Math.max(0.5, Math.round(n * 2) / 2));
+    return Math.min(20, Math.max(0.5, n));
 }
 
 function updateProductVolume(card) {
     const select = card.querySelector(".volume-select");
-    const input = card.querySelector(".volume-input");
     const priceEl = card.querySelector(".selected-price");
     const volumeEl = card.querySelector(".selected-volume");
     const button = card.querySelector(".add-cart");
-    if (!select || !input || !priceEl || !volumeEl || !button) return;
 
-    const volume = normalizeVolume(input.value);
+    if (!select || !priceEl || !volumeEl || !button) return;
+
+    const volume = normalizeVolume(select.value);
     const price = volume * Number(card.dataset.unitPrice || 10);
     const label = volume === 0.5 ? "500 მლ" : `${volume} ლიტრი`;
 
-    input.value = volume;
     priceEl.textContent = `${price} ₾`;
     volumeEl.textContent = label;
     button.dataset.price = String(price);
     button.dataset.volume = label;
-
-    const option = Array.from(select.options).find(o => Number(o.value) === volume);
-    if (option) select.value = String(volume);
 }
 
 document.querySelectorAll(".product-card").forEach(card => {
     const select = card.querySelector(".volume-select");
-    const input = card.querySelector(".volume-input");
 
     select?.addEventListener("change", () => {
-        input.value = select.value;
         updateProductVolume(card);
     });
-
-    input?.addEventListener("input", () => updateProductVolume(card));
-    input?.addEventListener("blur", () => updateProductVolume(card));
 
     updateProductVolume(card);
 });
