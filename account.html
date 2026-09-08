@@ -1,24 +1,1069 @@
-<!doctype html><html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ECOMAX — ჩემი ანგარიში</title><link rel="stylesheet" href="css/style.css"><style>
-.account{padding:55px 0 90px}.accountHero{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:25px}.eyebrow{display:inline-flex;gap:8px;color:var(--accent);font-size:11px;font-weight:800;letter-spacing:2px}.accountHero h1{font-size:46px;letter-spacing:-2px;margin:10px 0}.muted{color:var(--muted);line-height:1.6}.layout{display:grid;grid-template-columns:280px 1fr;gap:18px}.side,.panel{background:linear-gradient(145deg,#0b1219,#080d12);border:1px solid var(--line);border-radius:22px}.side{padding:20px;height:max-content}.avatar{width:62px;height:62px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#28e7ff22,#8b5cf633);border:1px solid #28e7ff44;font:700 25px 'Space Grotesk';color:var(--accent);margin-bottom:14px}.side h3{margin:0 0 5px}.side small{color:var(--muted);word-break:break-all}.menu{display:grid;gap:7px;margin-top:25px}.menu button{border:1px solid transparent;background:transparent;color:#b7c4cc;text-align:left;padding:11px;border-radius:10px;cursor:pointer}.menu button:hover{background:#ffffff05;border-color:var(--line);color:var(--accent)}.danger{color:#ff8092!important}.panel{padding:26px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}.stat{border:1px solid var(--line);border-radius:16px;padding:18px;background:#070d13}.stat b{display:block;font:700 25px 'Space Grotesk';color:var(--accent)}.stat span{font-size:11px;color:var(--muted)}.status{display:flex;align-items:center;gap:10px;border:1px solid #45e0a333;background:#45e0a30a;border-radius:14px;padding:13px;margin:18px 0;color:#9debc9;font-size:13px}.actions{display:flex;gap:10px;flex-wrap:wrap}@media(max-width:760px){.layout{grid-template-columns:1fr}.accountHero{align-items:start;flex-direction:column}.stats{grid-template-columns:1fr 1fr}}@media(max-width:480px){.stats{grid-template-columns:1fr}.accountHero h1{font-size:38px}}
-</style></head><body><div class="topbar">ECOMAX • MY ACCOUNT</div><header class="nav"><div class="container navin"><a class="brand" href="index.html">ECOMAX</a><nav class="links"><a href="index.html#products">პროდუქტები</a><a href="index.html#services">სერვისები</a><a href="index.html#safety">უსაფრთხოება</a></nav><div class="actions"><a class="ghost" href="index.html">მთავარი</a><button id="logout" class="primary">გასვლა</button></div></div></header>
-<main class="container account"><div class="accountHero"><div><span class="eyebrow">ACCOUNT CENTER</span><h1>ჩემი ანგარიში</h1><p class="muted">მართე შენი ECOMAX ანგარიში ერთ სივრცეში.</p></div></div>
-<div class="layout"><aside class="side"><div class="avatar" id="avatar">E</div><h3 id="name">იტვირთება…</h3><small id="email">იტვირთება…</small><div class="menu"><button>👤 პროფილი</button><button>🛍️ ჩემი შეკვეთები</button><button>📍 მისამართები</button><button>⚙️ პარამეტრები</button><button class="danger" id="logout2">↪ გასვლა</button></div></aside>
-<section><div class="stats"><div class="stat"><b>0</b><span>შეკვეთები</span></div><div class="stat"><b>0 ₾</b><span>შესყიდვები</span></div><div class="stat"><b>0</b><span>რჩეული</span></div></div><div class="panel"><span class="eyebrow">ACCOUNT STATUS</span><h2>ანგარიში აქტიურია</h2><div class="status">● უსაფრთხო სესია აქტიურია</div><p class="muted">შეკვეთების, კალათისა და სხვა ფუნქციების ბლოკები შემდეგ ეტაპებზე დაემატება.</p><div class="actions"><a class="primary" href="index.html#products">შოპინგის დაწყება →</a></div></div></section></div></main></body>
-<script src="js/supabase.js"></script><script>
-const cfg=window.ECOMAX_SUPABASE;
-async function getUser(){
- const raw=localStorage.getItem('ecomax_session');
- if(!raw){location.replace('login.html');return}
- try{
-  const s=JSON.parse(raw),token=s.access_token;
-  if(!token) throw 0;
-  const r=await fetch(cfg.url+'/auth/v1/user',{headers:{apikey:cfg.key,Authorization:'Bearer '+token}});
-  if(!r.ok) throw 0; const u=await r.json();
-  const name=u.user_metadata?.full_name||u.email?.split('@')[0]||'მომხმარებელი';
-  document.getElementById('name').textContent=name;document.getElementById('email').textContent=u.email||'';
-  document.getElementById('avatar').textContent=name.charAt(0).toUpperCase();
- }catch(e){localStorage.removeItem('ecomax_session');location.replace('login.html')}
-}
-async function logout(){localStorage.removeItem('ecomax_session');location.replace('login.html')}
-document.getElementById('logout').onclick=logout;document.getElementById('logout2').onclick=logout;getUser();
-</script></html>
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ECOMAX — ჩემი ანგარიში</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+    :root {
+      --bg: #05080d;
+      --bg2: #080d14;
+      --card: rgba(12, 19, 28, .82);
+      --card2: #0b131d;
+      --border: rgba(255,255,255,.08);
+      --text: #f4f8fb;
+      --muted: #82909d;
+      --cyan: #28e7ff;
+      --purple: #8b5cf6;
+      --green: #43e6a3;
+      --red: #ff637d;
+      --shadow: 0 25px 80px rgba(0,0,0,.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(40,231,255,.10), transparent 28%),
+        radial-gradient(circle at 90% 20%, rgba(139,92,246,.12), transparent 30%),
+        radial-gradient(circle at 50% 100%, rgba(40,231,255,.05), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .top-line {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border);
+      color: #6f7d89;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(5,8,13,.82);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      width: min(1200px, calc(100% - 32px));
+      height: 74px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .logo {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      color: var(--cyan);
+      text-shadow: 0 0 25px rgba(40,231,255,.35);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      margin-left: auto;
+    }
+
+    .nav-links a {
+      color: #a8b4be;
+      font-size: 13px;
+      transition: .2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--cyan);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 9px;
+      margin-left: 8px;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 10px 15px;
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(40,231,255,.4);
+    }
+
+    .btn-primary {
+      border: none;
+      background: linear-gradient(135deg, #28e7ff, #77f1ff);
+      color: #001015;
+      font-weight: 800;
+      box-shadow: 0 10px 30px rgba(40,231,255,.15);
+    }
+
+    /* =========================
+       PAGE
+    ========================= */
+
+    .container {
+      width: min(1200px, calc(100% - 32px));
+      margin: auto;
+    }
+
+    .account-page {
+      padding: 55px 0 90px;
+    }
+
+    .welcome {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--cyan);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 15px var(--cyan);
+    }
+
+    .welcome h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(38px, 5vw, 58px);
+      line-height: 1;
+      margin: 13px 0;
+      letter-spacing: -2px;
+    }
+
+    .gradient {
+      background: linear-gradient(100deg, #fff, var(--cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .welcome p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* =========================
+       LAYOUT
+    ========================= */
+
+    .account-layout {
+      display: grid;
+      grid-template-columns: 285px 1fr;
+      gap: 18px;
+    }
+
+    .sidebar {
+      height: fit-content;
+      padding: 22px;
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .profile-mini {
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      border-radius: 21px;
+      margin-bottom: 15px;
+      background:
+        linear-gradient(135deg,
+          rgba(40,231,255,.15),
+          rgba(139,92,246,.18));
+      border: 1px solid rgba(40,231,255,.3);
+      color: var(--cyan);
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      box-shadow: 0 0 40px rgba(40,231,255,.08);
+    }
+
+    .profile-mini h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .profile-mini p {
+      color: var(--muted);
+      font-size: 11px;
+      word-break: break-word;
+    }
+
+    .menu {
+      margin-top: 20px;
+      display: grid;
+      gap: 5px;
+    }
+
+    .menu-item {
+      width: 100%;
+      border: 1px solid transparent;
+      background: transparent;
+      border-radius: 11px;
+      padding: 12px;
+      color: #9eabb5;
+      text-align: left;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .menu-item:hover,
+    .menu-item.active {
+      color: var(--cyan);
+      background: rgba(40,231,255,.05);
+      border-color: rgba(40,231,255,.12);
+    }
+
+    .logout-item {
+      color: var(--red);
+    }
+
+    /* =========================
+       CONTENT
+    ========================= */
+
+    .content {
+      min-width: 0;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 13px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      padding: 20px;
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      transition: .2s;
+    }
+
+    .stat:hover {
+      transform: translateY(-3px);
+      border-color: rgba(40,231,255,.2);
+    }
+
+    .stat-icon {
+      font-size: 20px;
+      margin-bottom: 13px;
+    }
+
+    .stat-number {
+      display: block;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    /* =========================
+       PANELS
+    ========================= */
+
+    .panel {
+      padding: 25px;
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 22px;
+    }
+
+    .panel-title {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .panel-subtitle {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    /* =========================
+       SECURITY
+    ========================= */
+
+    .security-box {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 17px;
+      border-radius: 15px;
+      background: rgba(67,230,163,.05);
+      border: 1px solid rgba(67,230,163,.15);
+    }
+
+    .security-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(67,230,163,.08);
+      color: var(--green);
+      font-size: 18px;
+    }
+
+    .security-box strong {
+      display: block;
+      color: #b9f5da;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .security-box span {
+      color: #789487;
+      font-size: 10px;
+    }
+
+    /* =========================
+       QUICK ACTIONS
+    ========================= */
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .quick {
+      display: block;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: rgba(255,255,255,.02);
+      transition: .2s;
+    }
+
+    .quick:hover {
+      transform: translateY(-3px);
+      border-color: rgba(40,231,255,.25);
+      background: rgba(40,231,255,.035);
+    }
+
+    .quick-icon {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .quick strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .quick span {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    /* =========================
+       EMPTY ORDERS
+    ========================= */
+
+    .empty {
+      padding: 35px 20px;
+      text-align: center;
+      border: 1px dashed rgba(255,255,255,.1);
+      border-radius: 16px;
+    }
+
+    .empty-icon {
+      font-size: 35px;
+      margin-bottom: 12px;
+    }
+
+    .empty h3 {
+      font-size: 15px;
+      margin-bottom: 7px;
+    }
+
+    .empty p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 18px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 30px 0;
+      color: #64717c;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    /* =========================
+       LOADING
+    ========================= */
+
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+    }
+
+    .loading-box {
+      text-align: center;
+    }
+
+    .loading-logo {
+      font-family: "Space Grotesk", sans-serif;
+      color: var(--cyan);
+      font-size: 25px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      margin-bottom: 20px;
+    }
+
+    .loader {
+      width: 45px;
+      height: 45px;
+      margin: auto;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.08);
+      border-top-color: var(--cyan);
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 900px) {
+      .account-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        order: 1;
+      }
+
+      .content {
+        order: 2;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .nav {
+        width: calc(100% - 20px);
+        height: 64px;
+      }
+
+      .logo {
+        font-size: 20px;
+      }
+
+      .nav-actions .btn:first-child {
+        display: none;
+      }
+
+      .container {
+        width: calc(100% - 20px);
+      }
+
+      .account-page {
+        padding-top: 35px;
+      }
+
+      .welcome {
+        display: block;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        padding: 19px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOADING -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-box">
+      <div class="loading-logo">ECOMAX</div>
+      <div class="loader"></div>
+    </div>
+  </div>
+
+  <!-- TOP -->
+  <div class="top-line">
+    ECOMAX • MY ACCOUNT • SECURE AREA
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <nav class="nav">
+
+      <a href="index.html" class="logo">
+        ECOMAX
+      </a>
+
+      <div class="nav-links">
+        <a href="index.html">მთავარი</a>
+        <a href="index.html#products">პროდუქტები</a>
+        <a href="index.html#safety">უსაფრთხოება</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="index.html" class="btn">
+          🏠 მთავარი
+        </a>
+
+        <button class="btn btn-primary" id="logoutTop">
+          გასვლა
+        </button>
+      </div>
+
+    </nav>
+  </header>
+
+  <!-- MAIN -->
+  <main class="account-page">
+
+    <div class="container">
+
+      <!-- WELCOME -->
+      <section class="welcome">
+
+        <div>
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            ACCOUNT CENTER
+          </div>
+
+          <h1>
+            გამარჯობა,
+            <span class="gradient" id="welcomeName">
+              მომხმარებელო
+            </span>
+            👋
+          </h1>
+
+          <p>
+            მართე შენი ECOMAX ანგარიში ერთ სივრცეში.
+          </p>
+        </div>
+
+      </section>
+
+      <!-- LAYOUT -->
+      <div class="account-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+          <div class="profile-mini">
+
+            <div class="avatar" id="avatar">
+              E
+            </div>
+
+            <h3 id="profileName">
+              იტვირთება...
+            </h3>
+
+            <p id="profileEmail">
+              იტვირთება...
+            </p>
+
+          </div>
+
+          <div class="menu">
+
+            <button class="menu-item active">
+              👤 ჩემი პროფილი
+            </button>
+
+            <button class="menu-item">
+              🛍️ ჩემი შეკვეთები
+            </button>
+
+            <button class="menu-item">
+              ❤️ რჩეულები
+            </button>
+
+            <button class="menu-item">
+              📍 მისამართები
+            </button>
+
+            <button class="menu-item">
+              ⚙️ პარამეტრები
+            </button>
+
+            <button class="menu-item logout-item" id="logoutSide">
+              ↪ გასვლა
+            </button>
+
+          </div>
+
+        </aside>
+
+        <!-- CONTENT -->
+        <section class="content">
+
+          <!-- STATS -->
+          <div class="stats">
+
+            <div class="stat">
+              <div class="stat-icon">🛍️</div>
+              <span class="stat-number">0</span>
+              <span class="stat-label">
+                შეკვეთა
+              </span>
+            </div>
+
+            <div class="stat">
+              <div class="stat-icon">💰</div>
+              <span class="stat-number">0 ₾</span>
+              <span class="stat-label">
+                დახარჯული თანხა
+              </span>
+            </div>
+
+            <div class="stat">
+              <div class="stat-icon">❤️</div>
+              <span class="stat-number">0</span>
+              <span class="stat-label">
+                რჩეული
+              </span>
+            </div>
+
+          </div>
+
+          <!-- PROFILE -->
+          <section class="panel">
+
+            <div class="panel-head">
+
+              <div>
+                <div class="panel-title">
+                  პროფილის ინფორმაცია
+                </div>
+
+                <div class="panel-subtitle">
+                  შენი ანგარიშის ძირითადი მონაცემები
+                </div>
+              </div>
+
+            </div>
+
+            <div class="security-box">
+
+              <div class="security-icon">
+                🔐
+              </div>
+
+              <div>
+                <strong>
+                  ანგარიში დაცულია
+                </strong>
+
+                <span>
+                  ავტორიზებული სესია აქტიურია
+                </span>
+              </div>
+
+            </div>
+
+          </section>
+
+          <!-- QUICK ACTIONS -->
+          <section class="panel">
+
+            <div class="panel-head">
+
+              <div>
+                <div class="panel-title">
+                  სწრაფი მოქმედებები
+                </div>
+
+                <div class="panel-subtitle">
+                  ყველაზე ხშირად გამოყენებული ფუნქციები
+                </div>
+              </div>
+
+            </div>
+
+            <div class="quick-grid">
+
+              <a href="index.html#products" class="quick">
+                <div class="quick-icon">
+                  🛒
+                </div>
+
+                <strong>
+                  შოპინგის დაწყება
+                </strong>
+
+                <span>
+                  დაათვალიერე პროდუქტები
+                </span>
+              </a>
+
+              <a href="index.html#safety" class="quick">
+                <div class="quick-icon">
+                  🛡️
+                </div>
+
+                <strong>
+                  უსაფრთხოების წესები
+                </strong>
+
+                <span>
+                  იხილე მნიშვნელოვანი ინფორმაცია
+                </span>
+              </a>
+
+              <a href="index.html" class="quick">
+                <div class="quick-icon">
+                  🧪
+                </div>
+
+                <strong>
+                  გაზავებები
+                </strong>
+
+                <span>
+                  პროდუქციის გამოყენების ინფორმაცია
+                </span>
+              </a>
+
+              <a href="index.html" class="quick">
+                <div class="quick-icon">
+                  💬
+                </div>
+
+                <strong>
+                  ECOMAX დახმარება
+                </strong>
+
+                <span>
+                  დაგვეკონტაქტე დახმარებისთვის
+                </span>
+              </a>
+
+            </div>
+
+          </section>
+
+          <!-- ORDERS -->
+          <section class="panel">
+
+            <div class="panel-head">
+
+              <div>
+                <div class="panel-title">
+                  ბოლო შეკვეთები
+                </div>
+
+                <div class="panel-subtitle">
+                  შენი შეკვეთების ისტორია
+                </div>
+              </div>
+
+            </div>
+
+            <div class="empty">
+
+              <div class="empty-icon">
+                📦
+              </div>
+
+              <h3>
+                შეკვეთები ჯერ არ გაქვს
+              </h3>
+
+              <p>
+                როცა შეკვეთას გააკეთებ, ის აქ გამოჩნდება.
+              </p>
+
+              <a href="index.html#products" class="btn btn-primary">
+                პროდუქტების ნახვა →
+              </a>
+
+            </div>
+
+          </section>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      © 2026 ECOMAX • ყველა უფლება დაცულია
+    </div>
+  </footer>
+
+
+  <!-- SUPABASE -->
+  <script src="js/supabase.js"></script>
+
+  <script>
+    (async function () {
+
+      const loading = document.getElementById("loadingScreen");
+
+      try {
+
+        /*
+          ვიღებთ შენახულ ECOMAX session-ს
+        */
+
+        const rawSession =
+          localStorage.getItem("ecomax_session");
+
+        if (!rawSession) {
+          window.location.replace("login.html");
+          return;
+        }
+
+        const session = JSON.parse(rawSession);
+
+        if (!session.access_token) {
+          throw new Error("Invalid session");
+        }
+
+        /*
+          ვამოწმებთ რეალურ Supabase user-ს
+        */
+
+        const response = await fetch(
+          window.ECOMAX_SUPABASE.url +
+          "/auth/v1/user",
+          {
+            method: "GET",
+
+            headers: {
+              "apikey":
+                window.ECOMAX_SUPABASE.key,
+
+              "Authorization":
+                "Bearer " +
+                session.access_token
+            }
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Session expired");
+        }
+
+        const user = await response.json();
+
+        /*
+          მომხმარებლის სახელი
+        */
+
+        const name =
+          user.user_metadata &&
+          user.user_metadata.full_name
+            ? user.user_metadata.full_name
+            : (
+                user.email
+                  ? user.email.split("@")[0]
+                  : "მომხმარებელი"
+              );
+
+        const email =
+          user.email || "";
+
+        /*
+          UI
+        */
+
+        document.getElementById(
+          "welcomeName"
+        ).textContent = name;
+
+        document.getElementById(
+          "profileName"
+        ).textContent = name;
+
+        document.getElementById(
+          "profileEmail"
+        ).textContent = email;
+
+        document.getElementById(
+          "avatar"
+        ).textContent =
+          name.charAt(0).toUpperCase();
+
+        /*
+          Loading-ის გაქრობა
+        */
+
+        loading.style.display = "none";
+
+      } catch (error) {
+
+        console.error(
+          "ECOMAX Account Error:",
+          error
+        );
+
+        localStorage.removeItem(
+          "ecomax_session"
+        );
+
+        window.location.replace(
+          "login.html"
+        );
+
+      }
+
+    })();
+
+
+    /*
+      LOGOUT
+    */
+
+    function logout() {
+
+      localStorage.removeItem(
+        "ecomax_session"
+      );
+
+      sessionStorage.removeItem(
+        "ecomax_pending_email"
+      );
+
+      window.location.replace(
+        "login.html"
+      );
+
+    }
+
+
+    document
+      .getElementById("logoutTop")
+      .addEventListener("click", logout);
+
+
+    document
+      .getElementById("logoutSide")
+      .addEventListener("click", logout);
+
+  </script>
+
+</body>
+</html>
