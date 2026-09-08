@@ -167,431 +167,267 @@
 
 
 <!-- ================= PRODUCTS ================= -->
-
 <section class="section products-section" id="products">
-
     <div class="section-heading">
-
-        <div>
-            <div class="section-label">
-                ECOMAX PRODUCTS
-            </div>
-
-            <h2>
-                პროფესიონალური
-                <span>პროდუქცია</span>
-            </h2>
-        </div>
-
-        <p>
-            შეარჩიე შესაბამისი ECOMAX პროდუქტი
-            ავტომობილის მოვლისთვის.
-        </p>
-
+        <div><div class="section-label">ECOMAX PRODUCTS</div><h2>პროფესიონალური <span>პროდუქცია</span></h2></div>
+        <p>აირჩიე 500 მლ-დან 20 ლიტრამდე მოცულობა, ან შეიყვანე სასურველი რაოდენობა. ფასი ითვლება მოცულობის მიხედვით.</p>
     </div>
-
-
     <div class="products-grid" id="productsGrid">
 
-        <!-- PRODUCT 1 -->
-
-        <article class="product-card">
-
-            <div class="product-top">
-                <span class="product-tag">ENGINE</span>
-                <span class="product-number">01</span>
-            </div>
-
-            <div class="product-icon">
-                ⚙
-            </div>
-
-            <div class="product-name">
-                ENGINE
-                <strong>CLEAN</strong>
-            </div>
-
+        <article class="product-card featured" data-unit-price="10">
+            <div class="product-top"><span class="product-tag">ENGINE</span><span class="product-number">01</span></div>
+            <div class="product-icon">⚙</div>
+            <div class="product-name">ENGINE<strong>CLEAN</strong></div>
             <h3>ძრავის სარეცხი</h3>
-
-            <p>
-                პროფესიონალური საშუალება ძრავისა და
-                ტექნიკური ზედაპირების გასაწმენდად.
-            </p>
-
-            <div class="product-info">
-                <strong>10 ₾</strong>
-                <span>1 ლიტრი</span>
+            <p>ძრავის ბლოკი, ცილინდრები და სხვა ძირითადი მექანიზმები; მიმცხვარი ზეთი, ძლიერი ჩამჯდარი ჭუჭყი და ნაგარი.</p>
+            <div class="product-details">
+                <div><b>გაზავება:</b> 1×1, 1×2 ან 1×3 — დასვრილი ზედაპირის მიხედვით.</div>
+                <div><b>მოხმარება:</b> ფშიკალკით რეცხვა, აპარატით რეცხვა და შესაბამისი პროფესიონალური რეცხვის მეთოდი.</div>
             </div>
-
-            <div class="product-volume">
-                5 ლ — 40 ₾
+            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
+            <div class="volume-picker">
+                <label>მოცულობის არჩევა</label>
+                <select class="volume-select" aria-label="ძრავის სარეცხი — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
             </div>
-
-            <button class="add-cart"
-                data-name="ძრავის სარეცხი"
-                data-price="10"
-                data-volume="1 ლიტრი">
-                + კალათაში
-            </button>
-
+            <div class="custom-volume">
+                <label>სხვა რაოდენობა (0.5–20 ლ)</label>
+                <div class="custom-volume-row"><input class="volume-input" type="number" min="0.5" max="20" step="0.5" value="0.5" inputmode="decimal"><span>L</span></div>
+            </div>
+            <div class="product-volume">500 მლ — 5 ₾ • 1L — 10 ₾ • 2L — 20 ₾ • 3L — 30 ₾ • 4L — 40 ₾ • 5L — 50 ₾ • 6L — 60 ₾ • 7L — 70 ₾ • 8L — 80 ₾ • 9L — 90 ₾ • 10L — 100 ₾ • 20L — 200 ₾</div>
+            <button class="add-cart" data-name="ძრავის სარეცხი" data-price="5" data-volume="500 მლ">+ კალათაში</button>
         </article>
 
-
-        <!-- PRODUCT 2 -->
-
-        <article class="product-card">
-
-            <div class="product-top">
-                <span class="product-tag">WHEEL</span>
-                <span class="product-number">02</span>
-            </div>
-
-            <div class="product-icon">
-                ◉
-            </div>
-
-            <div class="product-name">
-                WHEEL
-                <strong>CLEAN</strong>
-            </div>
-
-            <h3>დისკების სარეცხი</h3>
-
-            <p>
-                დისკებისა და შესაბამისი ავტომობილის
-                ზედაპირებისთვის განკუთვნილი საშუალება.
-            </p>
-
-            <div class="product-info">
-                <strong>10 ₾</strong>
-                <span>1 ლიტრი</span>
-            </div>
-
-            <div class="product-volume">
-                5 ლ — 40 ₾
-            </div>
-
-            <button class="add-cart"
-                data-name="დისკების სარეცხი"
-                data-price="10"
-                data-volume="1 ლიტრი">
-                + კალათაში
-            </button>
-
-        </article>
-
-
-        <!-- PRODUCT 3 -->
-
-        <article class="product-card">
-
-            <div class="product-top">
-                <span class="product-tag">CARE</span>
-                <span class="product-number">03</span>
-            </div>
-
-            <div class="product-icon">
-                ✦
-            </div>
-
-            <div class="product-name">
-                TEXTILE
-                <strong>CLEAN</strong>
-            </div>
-
-            <h3>ნაჭრის ქიმწმენდა</h3>
-
-            <p>
-                ტექსტილისა და ქსოვილის ზედაპირების
-                პროფესიონალური წმენდისთვის.
-            </p>
-
-            <div class="product-info">
-                <strong>10 ₾</strong>
-                <span>1 ლიტრი</span>
-            </div>
-
-            <div class="product-volume">
-                5 ლ — 40 ₾
-            </div>
-
-            <button class="add-cart"
-                data-name="ნაჭრის ქიმწმენდა"
-                data-price="10"
-                data-volume="1 ლიტრი">
-                + კალათაში
-            </button>
-
-        </article>
-
-
-        <!-- PRODUCT 4 -->
-
-        <article class="product-card">
-
-            <div class="product-top">
-                <span class="product-tag">CARE</span>
-                <span class="product-number">04</span>
-            </div>
-
-            <div class="product-icon">
-                ◆
-            </div>
-
-            <div class="product-name">
-                LEATHER
-                <strong>CARE</strong>
-            </div>
-
+        <article class="product-card " data-unit-price="10">
+            <div class="product-top"><span class="product-tag">LEATHER</span><span class="product-number">02</span></div>
+            <div class="product-icon">◆</div>
+            <div class="product-name">LEATHER<strong>CLEAN</strong></div>
             <h3>ტყავის ქიმწმენდა</h3>
-
-            <p>
-                ტყავის ზედაპირების მოვლისა და
-                გაწმენდისთვის განკუთვნილი საშუალება.
-            </p>
-
-            <div class="product-info">
-                <strong>10 ₾</strong>
-                <span>1 ლიტრი</span>
+            <p>მანქანის ტყავის სიდენიები და სხვადასხვა ტყავის ზედაპირის რეცხვა-წმენდა.</p>
+            <div class="product-details">
+                <div><b>გაზავება:</b> 1×1-დან 1×3-მდე — დასვრილიანობის მიხედვით.</div>
+                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
             </div>
-
-            <div class="product-volume">
-                5 ლ — 40 ₾
+            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
+            <div class="volume-picker">
+                <label>მოცულობის არჩევა</label>
+                <select class="volume-select" aria-label="ტყავის ქიმწმენდა — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
             </div>
-
-            <button class="add-cart"
-                data-name="ტყავის ქიმწმენდა"
-                data-price="10"
-                data-volume="1 ლიტრი">
-                + კალათაში
-            </button>
-
+            <div class="custom-volume">
+                <label>სხვა რაოდენობა (0.5–20 ლ)</label>
+                <div class="custom-volume-row"><input class="volume-input" type="number" min="0.5" max="20" step="0.5" value="0.5" inputmode="decimal"><span>L</span></div>
+            </div>
+            <div class="product-volume">500 მლ — 5 ₾ • 1L — 10 ₾ • 2L — 20 ₾ • 3L — 30 ₾ • 4L — 40 ₾ • 5L — 50 ₾ • 6L — 60 ₾ • 7L — 70 ₾ • 8L — 80 ₾ • 9L — 90 ₾ • 10L — 100 ₾ • 20L — 200 ₾</div>
+            <button class="add-cart" data-name="ტყავის ქიმწმენდა" data-price="5" data-volume="500 მლ">+ კალათაში</button>
         </article>
 
-
-        <!-- PRODUCT 5 -->
-
-        <article class="product-card">
-
-            <div class="product-top">
-                <span class="product-tag">PRO</span>
-                <span class="product-number">05</span>
+        <article class="product-card " data-unit-price="10">
+            <div class="product-top"><span class="product-tag">TEXTILE</span><span class="product-number">03</span></div>
+            <div class="product-icon">✦</div>
+            <div class="product-name">TEXTILE<strong>CLEAN</strong></div>
+            <h3>ნაჭრის ქიმწმენდა</h3>
+            <p>ნაჭრის ზედაპირები, მანქანის ნაჭრის სიდენიები, სახლის დივნები და სხვადასხვა ქსოვილები.</p>
+            <div class="product-details">
+                <div><b>გაზავება:</b> 1×1-დან 1×10-მდე, გამოყენების მეთოდისა და საჭიროების მიხედვით.</div>
+                <div><b>მოხმარება:</b> კონცენტრატი 1×1-ში; აპარატით გამოყენებისთვის 1×10-მდე.</div>
             </div>
-
-            <div class="product-icon">
-                ◌
+            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
+            <div class="volume-picker">
+                <label>მოცულობის არჩევა</label>
+                <select class="volume-select" aria-label="ნაჭრის ქიმწმენდა — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
             </div>
-
-            <div class="product-name">
-                RADIATOR
-                <strong>CLEAN</strong>
+            <div class="custom-volume">
+                <label>სხვა რაოდენობა (0.5–20 ლ)</label>
+                <div class="custom-volume-row"><input class="volume-input" type="number" min="0.5" max="20" step="0.5" value="0.5" inputmode="decimal"><span>L</span></div>
             </div>
-
-            <h3>რადიატორის სარეცხი</h3>
-
-            <p>
-                რადიატორის შესაბამისი სამუშაოებისთვის
-                განკუთვნილი პროფესიონალური საშუალება.
-            </p>
-
-            <div class="product-info">
-                <strong>10 ₾</strong>
-                <span>1 ლიტრი</span>
-            </div>
-
-            <div class="product-volume">
-                5 ლ — 40 ₾
-            </div>
-
-            <button class="add-cart"
-                data-name="რადიატორის სარეცხი"
-                data-price="10"
-                data-volume="1 ლიტრი">
-                + კალათაში
-            </button>
-
+            <div class="product-volume">500 მლ — 5 ₾ • 1L — 10 ₾ • 2L — 20 ₾ • 3L — 30 ₾ • 4L — 40 ₾ • 5L — 50 ₾ • 6L — 60 ₾ • 7L — 70 ₾ • 8L — 80 ₾ • 9L — 90 ₾ • 10L — 100 ₾ • 20L — 200 ₾</div>
+            <button class="add-cart" data-name="ნაჭრის ქიმწმენდა" data-price="5" data-volume="500 მლ">+ კალათაში</button>
         </article>
 
-
-        <!-- PRODUCT 6 -->
-
-        <article class="product-card">
-
-            <div class="product-top">
-                <span class="product-tag">SPECIAL</span>
-                <span class="product-number">06</span>
+        <article class="product-card " data-unit-price="10">
+            <div class="product-top"><span class="product-tag">WHEEL</span><span class="product-number">04</span></div>
+            <div class="product-icon">◉</div>
+            <div class="product-name">WHEEL<strong>CLEAN</strong></div>
+            <h3>დისკების და ალუმინების სარეცხი საწმენდი</h3>
+            <p>ალუმინი, მანქანის დისკები, კალოტკები და დისკებზე ძლიერი ჭუჭყისა და მიმცხვარი ნაგარების მოცილება.</p>
+            <div class="product-details">
+                <div><b>გაზავება:</b> 1×1-დან 1×3-მდე — დასვრილიანობის მიხედვით.</div>
+                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
             </div>
-
-            <div class="product-icon">
-                ✧
+            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
+            <div class="volume-picker">
+                <label>მოცულობის არჩევა</label>
+                <select class="volume-select" aria-label="დისკების და ალუმინების სარეცხი საწმენდი — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
             </div>
-
-            <div class="product-name">
-                ECOMAX
-                <strong>SPECIAL</strong>
+            <div class="custom-volume">
+                <label>სხვა რაოდენობა (0.5–20 ლ)</label>
+                <div class="custom-volume-row"><input class="volume-input" type="number" min="0.5" max="20" step="0.5" value="0.5" inputmode="decimal"><span>L</span></div>
             </div>
-
-            <h3>სანთელი</h3>
-
-            <p>
-                ECOMAX-ის სპეციალური პროდუქტი
-                შესაბამისი გამოყენების ინსტრუქციის მიხედვით.
-            </p>
-
-            <div class="product-info">
-                <strong>10 ₾</strong>
-                <span>1 ლიტრი</span>
-            </div>
-
-            <div class="product-volume">
-                5 ლ — 40 ₾
-            </div>
-
-            <button class="add-cart"
-                data-name="სანთელი"
-                data-price="10"
-                data-volume="1 ლიტრი">
-                + კალათაში
-            </button>
-
+            <div class="product-volume">500 მლ — 5 ₾ • 1L — 10 ₾ • 2L — 20 ₾ • 3L — 30 ₾ • 4L — 40 ₾ • 5L — 50 ₾ • 6L — 60 ₾ • 7L — 70 ₾ • 8L — 80 ₾ • 9L — 90 ₾ • 10L — 100 ₾ • 20L — 200 ₾</div>
+            <button class="add-cart" data-name="დისკების და ალუმინების სარეცხი საწმენდი" data-price="5" data-volume="500 მლ">+ კალათაში</button>
         </article>
 
-
-        <!-- PRODUCT 7 -->
-
-        <article class="product-card">
-
-            <div class="product-top">
-                <span class="product-tag">FOAM</span>
-                <span class="product-number">07</span>
+        <article class="product-card " data-unit-price="10">
+            <div class="product-top"><span class="product-tag">RADIATOR</span><span class="product-number">05</span></div>
+            <div class="product-icon">◌</div>
+            <div class="product-name">RADIATOR<strong>CLEAN</strong></div>
+            <h3>რადიატორის და წყლის სისტემის გამოსარეცხი</h3>
+            <p>რადიატორის და წყლის სისტემის სრულად გამოსარეცხად.</p>
+            <div class="product-details">
+                <div><b>გაზავება:</b> 1×1-დან 1×3-მდე — დასვრილიანობის მიხედვით.</div>
+                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
             </div>
-
-            <div class="product-icon">
-                ☁
+            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
+            <div class="volume-picker">
+                <label>მოცულობის არჩევა</label>
+                <select class="volume-select" aria-label="რადიატორის და წყლის სისტემის გამოსარეცხი — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
             </div>
-
-            <div class="product-name">
-                FOAM
-                <strong>MEDIUM</strong>
+            <div class="custom-volume">
+                <label>სხვა რაოდენობა (0.5–20 ლ)</label>
+                <div class="custom-volume-row"><input class="volume-input" type="number" min="0.5" max="20" step="0.5" value="0.5" inputmode="decimal"><span>L</span></div>
             </div>
-
-            <h3>ქაფი Medium</h3>
-
-            <p>
-                ავტომობილის სარეცხი ქაფი.
-                გამოიყენე პროდუქტის ინსტრუქციის შესაბამისად.
-            </p>
-
-            <div class="product-info">
-                <strong>10 ₾</strong>
-                <span>1 ლიტრი</span>
-            </div>
-
-            <div class="product-volume">
-                პროფესიონალური გამოყენება
-            </div>
-
-            <button class="add-cart"
-                data-name="ქაფი Medium"
-                data-price="10"
-                data-volume="1 ლიტრი">
-                + კალათაში
-            </button>
-
+            <div class="product-volume">500 მლ — 5 ₾ • 1L — 10 ₾ • 2L — 20 ₾ • 3L — 30 ₾ • 4L — 40 ₾ • 5L — 50 ₾ • 6L — 60 ₾ • 7L — 70 ₾ • 8L — 80 ₾ • 9L — 90 ₾ • 10L — 100 ₾ • 20L — 200 ₾</div>
+            <button class="add-cart" data-name="რადიატორის და წყლის სისტემის გამოსარეცხი" data-price="5" data-volume="500 მლ">+ კალათაში</button>
         </article>
 
-
-        <!-- PRODUCT 8 -->
-
-        <article class="product-card">
-
-            <div class="product-top">
-                <span class="product-tag">HARD</span>
-                <span class="product-number">08</span>
+        <article class="product-card " data-unit-price="10">
+            <div class="product-top"><span class="product-tag">RUST / CONCRETE</span><span class="product-number">06</span></div>
+            <div class="product-icon">✧</div>
+            <div class="product-name">RUST / CONCRETE<strong>REMOVER</strong></div>
+            <h3>ჟანგის, ბეტონის, გუდრონის, კოროზიებისა და მარილების მოსაშორებელი</h3>
+            <p>ჟანგის, ბეტონის მიმცხვარი მტვრის, კოროზიებისა და მარილების მოსაშორებლად.</p>
+            <div class="product-details">
+                <div><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</div>
+                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
             </div>
-
-            <div class="product-icon">
-                ◈
+            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
+            <div class="volume-picker">
+                <label>მოცულობის არჩევა</label>
+                <select class="volume-select" aria-label="ჟანგის, ბეტონის, გუდრონის, კოროზიებისა და მარილების მოსაშორებელი — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
             </div>
-
-            <div class="product-name">
-                FOAM
-                <strong>HARD</strong>
+            <div class="custom-volume">
+                <label>სხვა რაოდენობა (0.5–20 ლ)</label>
+                <div class="custom-volume-row"><input class="volume-input" type="number" min="0.5" max="20" step="0.5" value="0.5" inputmode="decimal"><span>L</span></div>
             </div>
-
-            <h3>ქაფი Hard</h3>
-
-            <p>
-                ძლიერი ქაფის ფორმულა.
-                გამოიყენე შესაბამისი ზედაპირისა და ინსტრუქციის მიხედვით.
-            </p>
-
-            <div class="product-info">
-                <strong>15 ₾</strong>
-                <span>1 ლიტრი</span>
-            </div>
-
-            <div class="product-volume">
-                ძლიერი ფორმულა
-            </div>
-
-            <button class="add-cart"
-                data-name="ქაფი Hard"
-                data-price="15"
-                data-volume="1 ლიტრი">
-                + კალათაში
-            </button>
-
+            <div class="product-volume">500 მლ — 5 ₾ • 1L — 10 ₾ • 2L — 20 ₾ • 3L — 30 ₾ • 4L — 40 ₾ • 5L — 50 ₾ • 6L — 60 ₾ • 7L — 70 ₾ • 8L — 80 ₾ • 9L — 90 ₾ • 10L — 100 ₾ • 20L — 200 ₾</div>
+            <button class="add-cart" data-name="ჟანგის, ბეტონის, გუდრონის, კოროზიებისა და მარილების მოსაშორებელი" data-price="5" data-volume="500 მლ">+ კალათაში</button>
         </article>
 
-
-        <!-- PRODUCT 9 -->
-
-        <article class="product-card featured">
-
-            <div class="product-top">
-                <span class="product-tag">VALUE</span>
-                <span class="product-number">09</span>
+        <article class="product-card " data-unit-price="10">
+            <div class="product-top"><span class="product-tag">TIRE</span><span class="product-number">07</span></div>
+            <div class="product-icon">◒</div>
+            <div class="product-name">TIRE<strong>SHINE</strong></div>
+            <h3>საბურავის საპრიალებელი</h3>
+            <p>საბურავების და რეზინების საშავებლად და საპრიალებლად.</p>
+            <div class="product-details">
+                <div><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</div>
+                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
             </div>
-
-            <div class="product-icon">
-                ✺
+            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
+            <div class="volume-picker">
+                <label>მოცულობის არჩევა</label>
+                <select class="volume-select" aria-label="საბურავის საპრიალებელი — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
             </div>
-
-            <div class="product-name">
-                FOAM
-                <strong>2L</strong>
+            <div class="custom-volume">
+                <label>სხვა რაოდენობა (0.5–20 ლ)</label>
+                <div class="custom-volume-row"><input class="volume-input" type="number" min="0.5" max="20" step="0.5" value="0.5" inputmode="decimal"><span>L</span></div>
             </div>
-
-            <h3>ქაფი 2 ლიტრი</h3>
-
-            <p>
-                დიდი მოცულობის ქაფის ვარიანტი
-                ყოველდღიური ავტოსამრეცხაო გამოყენებისთვის.
-            </p>
-
-            <div class="product-info">
-                <strong>10 ₾</strong>
-                <span>2 ლიტრი</span>
-            </div>
-
-            <div class="product-volume">
-                VALUE PACK
-            </div>
-
-            <button class="add-cart"
-                data-name="ქაფი 2 ლიტრი"
-                data-price="10"
-                data-volume="2 ლიტრი">
-                + კალათაში
-            </button>
-
+            <div class="product-volume">500 მლ — 5 ₾ • 1L — 10 ₾ • 2L — 20 ₾ • 3L — 30 ₾ • 4L — 40 ₾ • 5L — 50 ₾ • 6L — 60 ₾ • 7L — 70 ₾ • 8L — 80 ₾ • 9L — 90 ₾ • 10L — 100 ₾ • 20L — 200 ₾</div>
+            <button class="add-cart" data-name="საბურავის საპრიალებელი" data-price="5" data-volume="500 მლ">+ კალათაში</button>
         </article>
 
+        <article class="product-card " data-unit-price="10">
+            <div class="product-top"><span class="product-tag">DASH</span><span class="product-number">08</span></div>
+            <div class="product-icon">✺</div>
+            <div class="product-name">DASH<strong>SHINE</strong></div>
+            <h3>ტორპედოს საპრიალებელი</h3>
+            <p>მანქანის ტორპედოს საპრიალებლად.</p>
+            <div class="product-details">
+                <div><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</div>
+                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
+            </div>
+            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
+            <div class="volume-picker">
+                <label>მოცულობის არჩევა</label>
+                <select class="volume-select" aria-label="ტორპედოს საპრიალებელი — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
+            </div>
+            <div class="custom-volume">
+                <label>სხვა რაოდენობა (0.5–20 ლ)</label>
+                <div class="custom-volume-row"><input class="volume-input" type="number" min="0.5" max="20" step="0.5" value="0.5" inputmode="decimal"><span>L</span></div>
+            </div>
+            <div class="product-volume">500 მლ — 5 ₾ • 1L — 10 ₾ • 2L — 20 ₾ • 3L — 30 ₾ • 4L — 40 ₾ • 5L — 50 ₾ • 6L — 60 ₾ • 7L — 70 ₾ • 8L — 80 ₾ • 9L — 90 ₾ • 10L — 100 ₾ • 20L — 200 ₾</div>
+            <button class="add-cart" data-name="ტორპედოს საპრიალებელი" data-price="5" data-volume="500 მლ">+ კალათაში</button>
+        </article>
+
+        <article class="product-card " data-unit-price="10">
+            <div class="product-top"><span class="product-tag">LEATHER</span><span class="product-number">09</span></div>
+            <div class="product-icon">◇</div>
+            <div class="product-name">LEATHER<strong>CARE</strong></div>
+            <h3>ტყავის მკვებავი</h3>
+            <p>მანქანის ტყავის საპრიალებლად; იცავს მზის პირდაპირი სხივებისგან; არ ჭიმავს და არ აუხეშებს ტყავს; არბილებს და უნარჩუნებს პირვანდელ იერს.</p>
+            <div class="product-details">
+                <div><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</div>
+                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა ან ბუბკა.</div>
+            </div>
+            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
+            <div class="volume-picker">
+                <label>მოცულობის არჩევა</label>
+                <select class="volume-select" aria-label="ტყავის მკვებავი — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
+            </div>
+            <div class="custom-volume">
+                <label>სხვა რაოდენობა (0.5–20 ლ)</label>
+                <div class="custom-volume-row"><input class="volume-input" type="number" min="0.5" max="20" step="0.5" value="0.5" inputmode="decimal"><span>L</span></div>
+            </div>
+            <div class="product-volume">500 მლ — 5 ₾ • 1L — 10 ₾ • 2L — 20 ₾ • 3L — 30 ₾ • 4L — 40 ₾ • 5L — 50 ₾ • 6L — 60 ₾ • 7L — 70 ₾ • 8L — 80 ₾ • 9L — 90 ₾ • 10L — 100 ₾ • 20L — 200 ₾</div>
+            <button class="add-cart" data-name="ტყავის მკვებავი" data-price="5" data-volume="500 მლ">+ კალათაში</button>
+        </article>
+
+        <article class="product-card " data-unit-price="10">
+            <div class="product-top"><span class="product-tag">CAR</span><span class="product-number">10</span></div>
+            <div class="product-icon">✹</div>
+            <div class="product-name">CAR<strong>WAX</strong></div>
+            <h3>სანთელი მანქანის</h3>
+            <p>მანქანის გარე ზედაპირსა და კორპუსზე; იცავს წვიმიანი ტალახისგან, მტვრისგან და სხვადასხვა პირობების ზემოქმედებისგან.</p>
+            <div class="product-details">
+                <div><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</div>
+                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
+            </div>
+            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
+            <div class="volume-picker">
+                <label>მოცულობის არჩევა</label>
+                <select class="volume-select" aria-label="სანთელი მანქანის — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
+            </div>
+            <div class="custom-volume">
+                <label>სხვა რაოდენობა (0.5–20 ლ)</label>
+                <div class="custom-volume-row"><input class="volume-input" type="number" min="0.5" max="20" step="0.5" value="0.5" inputmode="decimal"><span>L</span></div>
+            </div>
+            <div class="product-volume">500 მლ — 5 ₾ • 1L — 10 ₾ • 2L — 20 ₾ • 3L — 30 ₾ • 4L — 40 ₾ • 5L — 50 ₾ • 6L — 60 ₾ • 7L — 70 ₾ • 8L — 80 ₾ • 9L — 90 ₾ • 10L — 100 ₾ • 20L — 200 ₾</div>
+            <button class="add-cart" data-name="სანთელი მანქანის" data-price="5" data-volume="500 მლ">+ კალათაში</button>
+        </article>
+
+        <article class="product-card " data-unit-price="10">
+            <div class="product-top"><span class="product-tag">CAR</span><span class="product-number">11</span></div>
+            <div class="product-icon">✦</div>
+            <div class="product-name">CAR<strong>PERFUME</strong></div>
+            <h3>მანქანის სუნამო</h3>
+            <p>სახლში, მანქანის სალონში და კუბრიკებზე მოსაფრქვევად.</p>
+            <div class="product-details">
+                <div><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</div>
+                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
+            </div>
+            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
+            <div class="volume-picker">
+                <label>მოცულობის არჩევა</label>
+                <select class="volume-select" aria-label="მანქანის სუნამო — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
+            </div>
+            <div class="custom-volume">
+                <label>სხვა რაოდენობა (0.5–20 ლ)</label>
+                <div class="custom-volume-row"><input class="volume-input" type="number" min="0.5" max="20" step="0.5" value="0.5" inputmode="decimal"><span>L</span></div>
+            </div>
+            <div class="product-volume">500 მლ — 5 ₾ • 1L — 10 ₾ • 2L — 20 ₾ • 3L — 30 ₾ • 4L — 40 ₾ • 5L — 50 ₾ • 6L — 60 ₾ • 7L — 70 ₾ • 8L — 80 ₾ • 9L — 90 ₾ • 10L — 100 ₾ • 20L — 200 ₾</div>
+            <button class="add-cart" data-name="მანქანის სუნამო" data-price="5" data-volume="500 მლ">+ კალათაში</button>
+        </article>
     </div>
-
 </section>
-
 
 <!-- ================= DILUTION & PRICES ================= -->
 <section class="section dark-section" id="dilution">
