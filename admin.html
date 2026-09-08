@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ECOMAX — Admin Panel</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#02080d;color:#eefcff;font-family:Arial,sans-serif;min-height:100vh}header{padding:18px 24px;border-bottom:1px solid #19e6ff22;background:#06131a;display:flex;justify-content:space-between;align-items:center}.logo{font-size:25px;font-weight:900;letter-spacing:5px;color:#19e6ff}a,button{font:inherit}a{color:#19e6ff;text-decoration:none}.wrap{max-width:1200px;margin:auto;padding:28px 18px}.hero{padding:25px;border:1px solid #19e6ff33;border-radius:20px;background:linear-gradient(135deg,#07161d,#030b10);margin-bottom:18px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.stat{padding:20px;border:1px solid #173b47;border-radius:15px;background:#06131a}.num{font-size:28px;font-weight:900;color:#19e6ff}.label{color:#8fa8b2;font-size:12px;margin-top:6px}.panel{margin-top:18px;padding:20px;border:1px solid #173b47;border-radius:18px;background:#06131a;overflow:auto}.row{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #12313a}.pill{padding:5px 9px;border-radius:999px;background:#0b2730;color:#19e6ff;font-size:11px}.btn{border:1px solid #19e6ff55;background:#0a222b;color:#fff;padding:10px 14px;border-radius:9px;cursor:pointer}.btn:hover{background:#19e6ff;color:#001015}.danger{border-color:#ff687a55}.msg{margin-top:12px;color:#8fa8b2}.error{color:#ff687a}@media(max-width:800px){.grid{grid-template-columns:1fr 1fr}}@media(max-width:480px){.grid{grid-template-columns:1fr}header{padding:15px}}
+</style></head><body>
+<header><div class="logo">ECOMAX</div><div><a href="/">← მთავარი</a></div></header>
+<main class="wrap">
+<section class="hero"><h1>ადმინ პანელი</h1><p id="auth" style="color:#8fa8b2">წვდომის შემოწმება...</p></section>
+<section class="grid">
+<div class="stat"><div class="num" id="products">—</div><div class="label">აქტიური პროდუქტი</div></div>
+<div class="stat"><div class="num" id="orders">—</div><div class="label">შეკვეთები</div></div>
+<div class="stat"><div class="num" id="users">—</div><div class="label">მომხმარებლები</div></div>
+<div class="stat"><div class="num" id="revenue">—</div><div class="label">შემოსავალი</div></div>
+</section>
+<section class="panel"><h2>ბოლო შეკვეთები</h2><div id="list">იტვირთება...</div><div id="msg" class="msg"></div></section>
+</main>
+<script>
+const URL="https://mkxkqdvtmfbxmldnvsef.supabase.co",KEY="sb_publishable_K5orPxrE0q9-K0dKYdt-g_0GTFvWtd";
+const sb=supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const $=id=>document.getElementById(id), esc=v=>String(v??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+async function run(){
+ const {data:{session}}=await sb.auth.getSession();
+ if(!session){$("auth").innerHTML='<span class="error">ადმინისთვის ავტორიზაცია საჭიროა.</span> <a href="/?auth=1">შესვლა</a>';return}
+ $("auth").innerHTML="✓ ავტორიზებული: "+esc(session.user.email);
+ const [p,o]=await Promise.all([sb.from("products").select("id",{count:"exact",head:true}).eq("active",true),sb.from("orders").select("id,status,total,customer_name,created_at").order("created_at",{ascending:false}).limit(10)]);
+ if(p.error){$("products").textContent="—";$("msg").textContent=p.error.message}else $("products").textContent=p.count??0;
+ if(o.error){$("orders").textContent="—";$("list").innerHTML='<span class="error">შეკვეთების ჩატვირთვა ვერ მოხერხდა: '+esc(o.error.message)+'</span>';return}
+ const rows=o.data||[];$("orders").textContent=rows.length;
+ $("revenue").textContent=rows.reduce((s,x)=>s+Number(x.total||0),0).toFixed(2)+"₾";
+ $("list").innerHTML=rows.length?rows.map(x=>'<div class="row"><div><b>'+esc(x.customer_name||"მომხმარებელი")+'</b><div style="color:#7f969e;font-size:11px">'+esc(x.created_at||"")+'</div></div><span class="pill">'+esc(x.status||"new")+'</span><b>'+Number(x.total||0).toFixed(2)+'₾</b></div>').join(""):"შეკვეთები ჯერ არ არის.";
+ try{const u=await sb.from("profiles").select("id",{count:"exact",head:true});$("users").textContent=u.error?"—":(u.count??0)}catch{$("users").textContent="—"}
+}
+run();
+</script></body></html>
