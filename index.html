@@ -76,50 +76,6 @@ footer{border-top:1px solid #102d36;color:#6f858e;text-align:center;padding:30px
 .e2-results{position:absolute;left:0;right:0;top:calc(100% + 5px);z-index:200;background:#061219f5;border:1px solid #19e6ff33;border-radius:14px;overflow:hidden;display:none}.e2-results.open{display:block}.e2-result{padding:11px 14px;border-bottom:1px solid #19e6ff10;cursor:pointer}.e2-result:hover{background:#19e6ff09}.e2-search-wrap{position:relative}
 .e2-status{font-size:11px;color:#91aab4;text-align:center;margin:5px}.e2-count{display:inline-flex;min-width:18px;height:18px;padding:0 5px;align-items:center;justify-content:center;border-radius:999px;background:#19e6ff;color:#001014;font-size:10px;font-weight:900}
 </style>
-<script>
-(function(){
-"use strict";
-const U="https://mkxkqdvtmfbxmldnvsef.supabase.co",K="sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
-function ready(){return window.supabase&&document.body}
-function toast(t){let x=document.getElementById("e2Toast");if(!x){x=document.createElement("div");x.id="e2Toast";x.className="e2-toast";document.body.appendChild(x)}x.textContent=t;x.classList.add("show");clearTimeout(window.__e2t);window.__e2t=setTimeout(()=>x.classList.remove("show"),2500)}
-function enhance(){
- if(window.__e2)return; window.__e2=1;
- const db=window.supabase.createClient(U,K);
- const cartKey="ecomax_cart_v2";
- let cart=[];try{cart=JSON.parse(localStorage.getItem(cartKey)||"[]")}catch(e){}
- function save(){localStorage.setItem(cartKey,JSON.stringify(cart));updateBadge()}
- function updateBadge(){
-  const n=cart.reduce((s,x)=>s+Number(x.quantity||1),0);
-  document.querySelectorAll("[data-e2-cart-count]").forEach(x=>{x.textContent=n;x.style.display=n?"inline-flex":"none"});
- }
- function add(name,price,image){
-  const i=cart.find(x=>x.name===name);if(i)i.quantity=(i.quantity||1)+1;else cart.push({name,price:Number(price)||0,image:image||"",quantity:1});save();toast("✓ "+name+" დაემატა კალათაში");
- }
- function wire(){
-  document.querySelectorAll("[data-product-name]").forEach(el=>{
-   if(el.dataset.e2wired)return;el.dataset.e2wired=1;
-   el.addEventListener("click",()=>{let p=el.closest("[data-product]")||el;add(el.dataset.productName||p.dataset.name||"პროდუქტი",el.dataset.price||p.dataset.price||0,el.dataset.image||"")});
-  });
-  updateBadge();
- }
- window.ecomaxCart={add,save,get:()=>cart};
- wire();
- const mo=new MutationObserver(wire);mo.observe(document.body,{childList:true,subtree:true});
- db.auth.getSession().then(({data})=>{
-   
- });
- db.auth.onAuthStateChange((e,s)=>{
-   
- });
- window.ecomaxSearch=async function(q){
-   q=q.trim();if(!q)return [];
-   const {data}=await db.from("products").select("id,name,price,image_url,category").ilike("name","%"+q+"%").limit(8);
-   return data||[];
- };
-}
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(enhance,50));else setTimeout(enhance,50);
-})();
-</script>
 <style id="ecomax-auth-style">
 #ecomaxAuth{display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,5,9,.82);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:18px}
 #ecomaxAuth.open{display:flex}.authbox{width:min(460px,100%);background:#07151d;border:1px solid #19e6ff55;border-radius:24px;padding:26px;box-shadow:0 25px 100px #000}.authhead{display:flex;justify-content:space-between;align-items:center}.authhead b{font-size:24px;letter-spacing:4px;color:#19e6ff}.authclose{background:none;border:0;color:#9fb7bf;font-size:25px;cursor:pointer}.authtabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#030b10;padding:5px;border-radius:12px;margin:20px 0}.authtabs button{border:0;background:transparent;color:#8fa8b2;padding:11px;border-radius:9px;font-weight:800;cursor:pointer}.authtabs button.active{background:#19e6ff;color:#001015}.authform label{display:block;color:#9ab0b8;font-size:12px;margin:11px 0 5px}.authform input{width:100%;padding:13px;border-radius:10px;border:1px solid #245563;background:#030b10;color:#fff;outline:0}.authsubmit{width:100%;padding:14px;margin-top:16px;border:0;border-radius:11px;background:#19e6ff;color:#001015;font-weight:900;cursor:pointer}.authmsg{text-align:center;min-height:20px;margin-top:12px;font-size:13px}.authok{color:#53e6b0}.autherr{color:#ff687a}
@@ -176,7 +132,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <script>
 const SUPABASE_URL="https://mkxkqdvtmfbxmldnvsef.supabase.co";
 const SUPABASE_KEY="sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
-const db=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
+const db=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null; window.__ecomaxDB=db;
 window.openCart=openCart;window.renderProducts=renderProducts;window.addToCart=addToCart;window.closeModal=closeModal;window.openCheckout=openCheckout;window.toggleAI=toggleAI;
 const fallback=[
 {name:"ძრავის სარეცხი",category:"ძრავის მოვლა",description:"პროფესიონალური ძრავის საწმენდი საშუალება ცხიმისა და ძლიერი ჭუჭყის მოსაშორებლად.",usage:"გამოიყენე დაბინძურების ხარისხის მიხედვით.",dilution:"1:1 ან 1:3 — დაბინძურების მიხედვით",price:10,unit:"ლიტრი",badge:"PRO",icon:"🔧"},
@@ -450,7 +406,7 @@ if (location.pathname === "/index.html") { history.replaceState(null, "", "/" + 
 const U="https://mkxkqdvtmfbxmldnvsef.supabase.co",K="sb_publishable_K5orPxrE0q9-K0dKYdt-g_0GTFvWtd";
 function initAuth(){
  if(!window.supabase)return;
- const sb=window.supabase.createClient(U,K,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:"pkce"}});
+ const sb=window.__ecomaxDB; if(!sb)return;
  const box=document.getElementById("ecomaxAuth"),msg=document.getElementById("authMsg"),loginForm=document.getElementById("authLoginForm"),regForm=document.getElementById("authRegForm");
  const say=(t,c)=>{msg.textContent=t;msg.className="authmsg "+(c||"")};
  const open=()=>{box.classList.add("open");box.setAttribute("aria-hidden","false")},close=()=>{box.classList.remove("open");box.setAttribute("aria-hidden","true");say("")};
