@@ -231,34 +231,56 @@ if (cartItems) {
 }
 
 
-/* ================= ADD TO CART BUTTONS ================= */
+/* ================= VOLUME SELECTION + ADD TO CART ================= */
 
-document.querySelectorAll(".add-cart")
-    .forEach(button => {
+function normalizeVolume(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return 0.5;
+    return Math.min(20, Math.max(0.5, Math.round(n * 2) / 2));
+}
 
-        button.addEventListener(
-            "click",
-            function() {
+function updateProductVolume(card) {
+    const select = card.querySelector(".volume-select");
+    const input = card.querySelector(".volume-input");
+    const priceEl = card.querySelector(".selected-price");
+    const volumeEl = card.querySelector(".selected-volume");
+    const button = card.querySelector(".add-cart");
+    if (!select || !input || !priceEl || !volumeEl || !button) return;
 
-                const name =
-                    this.dataset.name;
+    const volume = normalizeVolume(input.value);
+    const price = volume * Number(card.dataset.unitPrice || 10);
+    const label = volume === 0.5 ? "500 მლ" : `${volume} ლიტრი`;
 
-                const price =
-                    this.dataset.price;
+    input.value = volume;
+    priceEl.textContent = `${price} ₾`;
+    volumeEl.textContent = label;
+    button.dataset.price = String(price);
+    button.dataset.volume = label;
 
-                const volume =
-                    this.dataset.volume;
+    const option = Array.from(select.options).find(o => Number(o.value) === volume);
+    if (option) select.value = String(volume);
+}
 
-                addToCart(
-                    name,
-                    price,
-                    volume
-                );
+document.querySelectorAll(".product-card").forEach(card => {
+    const select = card.querySelector(".volume-select");
+    const input = card.querySelector(".volume-input");
 
-            }
-        );
-
+    select?.addEventListener("change", () => {
+        input.value = select.value;
+        updateProductVolume(card);
     });
+
+    input?.addEventListener("input", () => updateProductVolume(card));
+    input?.addEventListener("blur", () => updateProductVolume(card));
+
+    updateProductVolume(card);
+});
+
+document.querySelectorAll(".add-cart").forEach(button => {
+    button.addEventListener("click", function() {
+        addToCart(this.dataset.name, this.dataset.price, this.dataset.volume);
+    });
+});
 
 
 /* ================= CHECKOUT ================= */
@@ -497,30 +519,3 @@ window.addEventListener(
     },
     { passive: true }
 );
-
-/* ================= PRODUCT SHOWCASE IMAGE ================= */
-(function addProductShowcase() {
-    const productsSection = document.getElementById("products");
-    if (!productsSection || document.getElementById("ecomaxVisualShowcase")) return;
-
-    const section = document.createElement("section");
-    section.id = "ecomaxVisualShowcase";
-    section.className = "visual-showcase";
-    section.innerHTML = `
-        <div class="visual-showcase-inner">
-            <div class="section-label">ECOMAX VISUAL COLLECTION</div>
-            <h2>პროდუქციის <span>ვიზუალური კოლექცია</span></h2>
-            <p>ECOMAX-ის ახალი ვიზუალური პროდუქტის კოლექცია.</p>
-            <div class="visual-showcase-frame">
-                <img
-                    src="assets/ecomax-product-showcase.webp"
-                    alt="ECOMAX პროფესიონალური ავტოქიმიის პროდუქციის კოლექცია"
-                    loading="lazy"
-                    decoding="async"
-                >
-            </div>
-        </div>
-    `;
-
-    productsSection.insertAdjacentElement("afterend", section);
-})();
