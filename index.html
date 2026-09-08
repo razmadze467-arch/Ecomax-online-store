@@ -6,6 +6,7 @@
 <link rel="canonical" href="https://ecomax.com.ge/">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+window.accountAction=window.accountAction||function(){location.href="login.html"};
 window.toggleAI=window.toggleAI||function(){var e=document.getElementById("aiPanel");if(e)e.classList.toggle("open")};
 window.openCart=window.openCart||function(){var e=document.getElementById("cartModal");if(e)e.classList.add("open")};
 </script>
@@ -76,18 +77,57 @@ footer{border-top:1px solid #102d36;color:#6f858e;text-align:center;padding:30px
 .e2-results{position:absolute;left:0;right:0;top:calc(100% + 5px);z-index:200;background:#061219f5;border:1px solid #19e6ff33;border-radius:14px;overflow:hidden;display:none}.e2-results.open{display:block}.e2-result{padding:11px 14px;border-bottom:1px solid #19e6ff10;cursor:pointer}.e2-result:hover{background:#19e6ff09}.e2-search-wrap{position:relative}
 .e2-status{font-size:11px;color:#91aab4;text-align:center;margin:5px}.e2-count{display:inline-flex;min-width:18px;height:18px;padding:0 5px;align-items:center;justify-content:center;border-radius:999px;background:#19e6ff;color:#001014;font-size:10px;font-weight:900}
 </style>
-<style id="ecomax-auth-style">
-#ecomaxAuth{display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,5,9,.82);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:18px}
-#ecomaxAuth.open{display:flex}.authbox{width:min(460px,100%);background:#07151d;border:1px solid #19e6ff55;border-radius:24px;padding:26px;box-shadow:0 25px 100px #000}.authhead{display:flex;justify-content:space-between;align-items:center}.authhead b{font-size:24px;letter-spacing:4px;color:#19e6ff}.authclose{background:none;border:0;color:#9fb7bf;font-size:25px;cursor:pointer}.authtabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#030b10;padding:5px;border-radius:12px;margin:20px 0}.authtabs button{border:0;background:transparent;color:#8fa8b2;padding:11px;border-radius:9px;font-weight:800;cursor:pointer}.authtabs button.active{background:#19e6ff;color:#001015}.authform label{display:block;color:#9ab0b8;font-size:12px;margin:11px 0 5px}.authform input{width:100%;padding:13px;border-radius:10px;border:1px solid #245563;background:#030b10;color:#fff;outline:0}.authsubmit{width:100%;padding:14px;margin-top:16px;border:0;border-radius:11px;background:#19e6ff;color:#001015;font-weight:900;cursor:pointer}.authmsg{text-align:center;min-height:20px;margin-top:12px;font-size:13px}.authok{color:#53e6b0}.autherr{color:#ff687a}
-</style>
+<script>
+(function(){
+"use strict";
+const U="https://mkxkqdvtmfbxmldnvsef.supabase.co",K="sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
+function ready(){return window.supabase&&document.body}
+function toast(t){let x=document.getElementById("e2Toast");if(!x){x=document.createElement("div");x.id="e2Toast";x.className="e2-toast";document.body.appendChild(x)}x.textContent=t;x.classList.add("show");clearTimeout(window.__e2t);window.__e2t=setTimeout(()=>x.classList.remove("show"),2500)}
+function enhance(){
+ if(window.__e2)return; window.__e2=1;
+ const db=window.supabase.createClient(U,K);
+ const cartKey="ecomax_cart_v2";
+ let cart=[];try{cart=JSON.parse(localStorage.getItem(cartKey)||"[]")}catch(e){}
+ function save(){localStorage.setItem(cartKey,JSON.stringify(cart));updateBadge()}
+ function updateBadge(){
+  const n=cart.reduce((s,x)=>s+Number(x.quantity||1),0);
+  document.querySelectorAll("[data-e2-cart-count]").forEach(x=>{x.textContent=n;x.style.display=n?"inline-flex":"none"});
+ }
+ function add(name,price,image){
+  const i=cart.find(x=>x.name===name);if(i)i.quantity=(i.quantity||1)+1;else cart.push({name,price:Number(price)||0,image:image||"",quantity:1});save();toast("✓ "+name+" დაემატა კალათაში");
+ }
+ function wire(){
+  document.querySelectorAll("[data-product-name]").forEach(el=>{
+   if(el.dataset.e2wired)return;el.dataset.e2wired=1;
+   el.addEventListener("click",()=>{let p=el.closest("[data-product]")||el;add(el.dataset.productName||p.dataset.name||"პროდუქტი",el.dataset.price||p.dataset.price||0,el.dataset.image||"")});
+  });
+  updateBadge();
+ }
+ window.ecomaxCart={add,save,get:()=>cart};
+ wire();
+ const mo=new MutationObserver(wire);mo.observe(document.body,{childList:true,subtree:true});
+ db.auth.getSession().then(({data})=>{
+   document.querySelectorAll("[data-e2-account]").forEach(a=>{a.textContent=data.session?"👤 ჩემი ანგარიში":"👤 შესვლა / რეგისტრაცია";a.href="/account.html"});
+ });
+ db.auth.onAuthStateChange((e,s)=>{
+   document.querySelectorAll("[data-e2-account]").forEach(a=>{a.textContent=s?"👤 ჩემი ანგარიში":"👤 შესვლა / რეგისტრაცია";a.href="/account.html"});
+ });
+ window.ecomaxSearch=async function(q){
+   q=q.trim();if(!q)return [];
+   const {data}=await db.from("products").select("id,name,price,image_url,category").ilike("name","%"+q+"%").limit(8);
+   return data||[];
+ };
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(enhance,50));else setTimeout(enhance,50);
+})();
+</script>
 </head>
 <body>
 <header>
 <div class="nav">
 <a class="brand" href="#"><span class="orb"></span>ECOMAX</a>
 <div class="search"><input id="search" placeholder="მოძებნე პროდუქტი..."><button onclick="renderProducts()">⌕</button></div>
-
-<button class="navbtn" id="authOpenBtn" type="button">👤 შესვლა / რეგისტრაცია</button>
+<button class="navbtn" id="accountBtn" onclick="accountAction()">👤 <span id="accountText">შესვლა</span></button>
 <button class="navbtn" onclick="openCart()">🛒 კალათა <span class="cart-count" id="cartCount">0</span></button>
 </div>
 <nav><div class="navlinks"><a href="#products">პროდუქცია</a><a href="#about">რატომ ECOMAX</a><a href="#companion">AI Companion</a><a href="admin.html">ადმინ პანელი</a></div></nav>
@@ -132,10 +172,8 @@ footer{border-top:1px solid #102d36;color:#6f858e;text-align:center;padding:30px
 <script>
 const SUPABASE_URL="https://mkxkqdvtmfbxmldnvsef.supabase.co";
 const SUPABASE_KEY="sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
-const db=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:"pkce"}}):null; window.__ecomaxDB=db;
-let ecomaxSession=null;
-if(db){db.auth.getSession().then(({data})=>{ecomaxSession=data?.session||null});db.auth.onAuthStateChange((_event,session)=>{ecomaxSession=session||null})}
-window.openCart=openCart;window.renderProducts=renderProducts;window.addToCart=addToCart;window.closeModal=closeModal;window.openCheckout=openCheckout;window.toggleAI=toggleAI;
+const db=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
+window.accountAction=accountAction;window.openCart=openCart;window.renderProducts=renderProducts;window.addToCart=addToCart;window.closeModal=closeModal;window.openCheckout=openCheckout;window.toggleAI=toggleAI;
 const fallback=[
 {name:"ძრავის სარეცხი",category:"ძრავის მოვლა",description:"პროფესიონალური ძრავის საწმენდი საშუალება ცხიმისა და ძლიერი ჭუჭყის მოსაშორებლად.",usage:"გამოიყენე დაბინძურების ხარისხის მიხედვით.",dilution:"1:1 ან 1:3 — დაბინძურების მიხედვით",price:10,unit:"ლიტრი",badge:"PRO",icon:"🔧"},
 {name:"დისკების სარეცხი",category:"დისკების მოვლა",description:"დისკებისთვის განკუთვნილი ძლიერი გამწმენდი.",usage:"ზედაპირზე დატანე და ჩამორეცხე.",dilution:"1:1 ან 1:3 — დაბინძურების მიხედვით",price:10,unit:"ლიტრი",badge:"PRO",icon:"⭕"},
@@ -162,7 +200,8 @@ function openCart(){const modal=document.getElementById("cartModal"),box=documen
 function setQty(id,q){const x=cart.find(x=>x.id===id);if(x){x.qty=Math.max(1,Math.floor(Number(q)||1));saveCart();openCart()}}
 function changeQty(id,d){const x=cart.find(x=>x.id===id);if(!x)return;x.qty+=d;if(x.qty<=0)cart=cart.filter(x=>x.id!==id);saveCart();openCart()}
 function closeModal(id){document.getElementById(id)?.classList.remove("open")}
-async function openCheckout(){if(!cart.length)return;closeModal("cartModal");const p=ecomaxSession?await db.from("profiles").select("*").eq("id",ecomaxSession.user.id).maybeSingle():{data:null};if(p.data){document.getElementById("coName").value=p.data.full_name||"";document.getElementById("coPhone").value=p.data.phone||"";document.getElementById("coAddress").value=p.data.address||"";document.getElementById("coCity").value=p.data.city||"ქუთაისი"}checkoutSummary();document.getElementById("checkoutModal")?.classList.add("open")}
+async function accountAction(){if(!db){location.href="login.html";return}const r=await db.auth.getSession();location.href=r.data.session?"account.html":"login.html"}
+async function openCheckout(){if(!cart.length)return;if(!db){location.href="login.html";return}const r=await db.auth.getSession();if(!r.data.session){const next=encodeURIComponent(location.pathname+location.search+location.hash);location.href="/account.html?next="+next;return}closeModal("cartModal");const p=await db.from("profiles").select("*").eq("id",r.data.session.user.id).maybeSingle();if(p.data){document.getElementById("coName").value=p.data.full_name||"";document.getElementById("coPhone").value=p.data.phone||"";document.getElementById("coAddress").value=p.data.address||"";document.getElementById("coCity").value=p.data.city||"ქუთაისი"}checkoutSummary();document.getElementById("checkoutModal")?.classList.add("open")}
 function checkoutSummary(){let total=0;const box=document.getElementById("checkoutSummary");if(!box)return;box.innerHTML=cart.map(x=>{const p=products.find(p=>p.id===x.id);if(!p)return"";const t=Number(p.price)*x.qty;total+=t;return "<div>"+esc(p.name)+" • "+x.qty+" ლ — "+t.toFixed(2)+"₾</div>"}).join("")+"<hr><b>სულ: "+total.toFixed(2)+"₾</b>"}
 function toggleAI(){document.getElementById("aiPanel")?.classList.toggle("open")}
 /* ================= ECOMAX AI COMPANION 2.0 ================= */
@@ -390,92 +429,22 @@ function toastAI(msg){
  if(chat)chat.insertAdjacentHTML("beforeend",'<div class="msg bot">'+esc(msg)+'</div>');
 }
 
-document.getElementById("checkoutForm")?.addEventListener("submit",async e=>{e.preventDefault();let total=0;const items=cart.map(x=>{const p=products.find(p=>p.id===x.id),line=Number(p.price)*x.qty;total+=line;return{product_id:p.id,product_name:p.name,quantity:x.qty,unit_price:Number(p.price),unit:p.unit}});const {error}=await db.from("orders").insert({user_id:ecomaxSession?.user?.id||null,status:"new",customer_name:document.getElementById("coName").value.trim(),phone:document.getElementById("coPhone").value.trim(),address:document.getElementById("coAddress").value.trim(),city:document.getElementById("coCity").value.trim(),delivery_method:document.getElementById("coDelivery").value,payment_method:document.getElementById("coPayment").value,items,total});const m=document.getElementById("checkoutMsg");if(error){m.innerHTML='<p class="error">შეკვეთა ვერ გაიგზავნა: '+esc(error.message)+'</p>';return}cart=[];saveCart();m.innerHTML='<p class="success">შეკვეთა მიღებულია.</p>';setTimeout(()=>location.reload(),800)});
+document.getElementById("checkoutForm")?.addEventListener("submit",async e=>{e.preventDefault();const r=await db.auth.getSession();if(!r.data.session){location.href="login.html";return}let total=0;const items=cart.map(x=>{const p=products.find(p=>p.id===x.id),line=Number(p.price)*x.qty;total+=line;return{product_id:p.id,product_name:p.name,quantity:x.qty,unit_price:Number(p.price),unit:p.unit}});const {error}=await db.from("orders").insert({user_id:r.data.session.user.id,status:"new",customer_name:document.getElementById("coName").value.trim(),phone:document.getElementById("coPhone").value.trim(),address:document.getElementById("coAddress").value.trim(),city:document.getElementById("coCity").value.trim(),delivery_method:document.getElementById("coDelivery").value,payment_method:document.getElementById("coPayment").value,items,total});const m=document.getElementById("checkoutMsg");if(error){m.innerHTML='<p class="error">შეკვეთა ვერ გაიგზავნა: '+esc(error.message)+'</p>';return}cart=[];saveCart();m.innerHTML='<p class="success">შეკვეთა მიღებულია.</p>';setTimeout(()=>location.href="account.html",800)});
+});
 </script>
 <script>
 if (location.pathname === "/index.html") { history.replaceState(null, "", "/" + location.hash); }
 </script>
-<div id="ecomaxAuth" aria-hidden="true">
-<div class="authbox">
-<div class="authhead"><b>ECOMAX</b><button class="authclose" id="authClose" type="button">×</button></div>
-<div class="authtabs"><button id="authLoginTab" class="active" type="button">შესვლა</button><button id="authRegTab" type="button">რეგისტრაცია</button></div>
-<form id="authLoginForm" class="authform"><label>ელფოსტა</label><input id="authLoginEmail" type="email" autocomplete="email" required><label>პაროლი</label><input id="authLoginPassword" type="password" autocomplete="current-password" required><button class="authsubmit" type="submit">🔓 შესვლა</button><div style="text-align:center;margin-top:10px"><button id="authForgot" type="button" style="background:none;border:0;color:#19e6ff;cursor:pointer">დაგავიწყდა პაროლი?</button></div></form>
-<form id="authRegForm" class="authform" style="display:none"><label>სახელი</label><input id="authFirst" required><label>გვარი</label><input id="authLast" required><label>ელფოსტა</label><input id="authRegEmail" type="email" autocomplete="email" required><label>ტელეფონი</label><input id="authPhone" type="tel"><label>პაროლი</label><input id="authRegPassword" type="password" minlength="6" autocomplete="new-password" required><label>გაიმეორე პაროლი</label><input id="authConfirm" type="password" autocomplete="new-password" required><button class="authsubmit" type="submit">✦ რეგისტრაცია</button></form>
-<div id="authMsg" class="authmsg"></div><button id="authResend" type="button" style="display:none;width:100%;margin-top:10px;background:transparent;border:1px solid #19e6ff55;color:#19e6ff;padding:11px;border-radius:10px;cursor:pointer">↻ დადასტურების ელფოსტის ხელახლა გაგზავნა</button>
-</div></div>
-<script id="ecomax-auth-script">(function(){
-function initAuth(){
- const sb=window.__ecomaxDB;
- if(!sb)return;
- const box=document.getElementById("ecomaxAuth"),msg=document.getElementById("authMsg"),loginForm=document.getElementById("authLoginForm"),regForm=document.getElementById("authRegForm"),resend=document.getElementById("authResend");
- const emailInput=document.getElementById("authRegEmail");
- let pendingEmail=localStorage.getItem("ecomax_pending_email")||"";
- const say=(t,c)=>{msg.textContent=t;msg.className="authmsg "+(c||"")};
- const open=()=>{box.classList.add("open");box.setAttribute("aria-hidden","false")},close=()=>{box.classList.remove("open");box.setAttribute("aria-hidden","true");say("");resend.style.display="none"};
- const showResend=()=>{resend.style.display=pendingEmail?"block":"none"};
- const switchTab=(reg)=>{document.getElementById("authLoginTab").classList.toggle("active",!reg);document.getElementById("authRegTab").classList.toggle("active",reg);loginForm.style.display=reg?"none":"block";regForm.style.display=reg?"block":"none";say("");showResend()};
- document.getElementById("authOpenBtn").onclick=open;
- document.getElementById("authClose").onclick=close;
- box.onclick=e=>{if(e.target===box)close()};
- document.getElementById("authLoginTab").onclick=()=>switchTab(false);
- document.getElementById("authRegTab").onclick=()=>switchTab(true);
- loginForm.onsubmit=async e=>{
-  e.preventDefault(); say("⟳ მიმდინარეობს შესვლა...");
-  try{
-   const email=document.getElementById("authLoginEmail").value.trim().toLowerCase(), password=document.getElementById("authLoginPassword").value;
-   const {data,error}=await sb.auth.signInWithPassword({email,password});
-   if(error)throw error;
-   if(data.session){say("✓ წარმატებით შეხვედი","authok");setTimeout(close,500)}
-  }catch(e){
-   const m=String(e.message||"").toLowerCase();
-   if(m.includes("email not confirmed")){pendingEmail=document.getElementById("authLoginEmail").value.trim().toLowerCase();localStorage.setItem("ecomax_pending_email",pendingEmail);say("ელფოსტა ჯერ არ არის დადასტურებული. შეამოწმე Spam/Junk ან ხელახლა გაგზავნე დადასტურების წერილი.","autherr");showResend()}
-   else if(m.includes("invalid login credentials"))say("ელფოსტა ან პაროლი არასწორია.","autherr");
-   else say("ავტორიზაცია ვერ მოხერხდა. სცადე თავიდან.","autherr");
-  }
- };
- regForm.onsubmit=async e=>{
-  e.preventDefault();
-  const email=emailInput.value.trim().toLowerCase(), p=document.getElementById("authRegPassword").value, confirm=document.getElementById("authConfirm").value;
-  if(p!==confirm){say("პაროლები არ ემთხვევა.","autherr");return}
-  if(p.length<6){say("პაროლი მინიმუმ 6 სიმბოლო უნდა იყოს.","autherr");return}
-  pendingEmail=email;localStorage.setItem("ecomax_pending_email",email);say("⟳ ანგარიშის შექმნა...");
-  try{
-   const {data,error}=await sb.auth.signUp({email,password:p,options:{emailRedirectTo:location.origin+"/",data:{first_name:document.getElementById("authFirst").value.trim(),last_name:document.getElementById("authLast").value.trim(),phone:document.getElementById("authPhone").value.trim()}}});
-   if(error)throw error;
-   if(data.session){
-    localStorage.removeItem("ecomax_pending_email");say("✓ ანგარიში შეიქმნა და შესული ხარ.","authok");setTimeout(close,700);
-   }else{
-    say("✓ რეგისტრაცია დასრულდა. დადასტურების წერილი უნდა გამოგეგზავნოს ელფოსტაზე. თუ ვერ იპოვე, შეამოწმე Spam/Junk და დააჭირე ხელახლა გაგზავნას.","authok");showResend();
-   }
-  }catch(e){
-   const m=String(e.message||"").toLowerCase();
-   if(m.includes("already registered")||m.includes("user already registered"))say("ეს ელფოსტა უკვე რეგისტრირებულია. სცადე შესვლა ან პაროლის აღდგენა.","autherr");
-   else if(m.includes("rate limit"))say("ელფოსტის გაგზავნის ლიმიტი დროებით ამოიწურა. რამდენიმე წუთში სცადე ხელახლა.","autherr");
-   else say("რეგისტრაცია ვერ მოხერხდა: "+String(e.message||"უცნობი შეცდომა"),"autherr");
-  }
- };
- resend.onclick=async()=>{
-  if(!pendingEmail)return;
-  resend.disabled=true;resend.textContent="⟳ იგზავნება...";
-  try{
-   const {error}=await sb.auth.resend({type:"signup",email:pendingEmail,options:{emailRedirectTo:location.origin+"/"}});
-   if(error)throw error;
-   say("✓ დადასტურების ახალი წერილი გაიგზავნა. შეამოწმე Inbox და Spam/Junk.","authok");
-  }catch(e){say("წერილის ხელახლა გაგზავნა ვერ მოხერხდა: "+String(e.message||"სცადე მოგვიანებით"),"autherr")}
-  finally{resend.disabled=false;resend.textContent="↻ დადასტურების ელფოსტის ხელახლა გაგზავნა"}
- };
- document.getElementById("authForgot").onclick=async()=>{
-  const email=prompt("შეიყვანე ელფოსტა:");
-  if(!email)return;
-  try{
-   const {error}=await sb.auth.resetPasswordForEmail(email.trim().toLowerCase(),{redirectTo:location.origin+"/"});
-   if(error)throw error;
-   say("✓ პაროლის აღდგენის ბმული გაიგზავნა.","authok");
-  }catch(e){say("პაროლის აღდგენა ვერ მოხერხდა.","autherr")}
- };
- showResend();
-}
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initAuth);else initAuth();
-})();</script>
-</body>
+<script>
+(function(){
+ const SURL="https://mkxkqdvtmfbxmldnvsef.supabase.co",SKEY="sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
+ if(!window.supabase||window.__ecomaxAuthUI)return; window.__ecomaxAuthUI=1;
+ const client=window.supabase.createClient(SURL,SKEY);
+ const a=document.createElement("a");a.href="/account.html";a.id="ecomaxAccountLink";a.textContent="👤 ჩემი ანგარიში";a.style.cssText="display:inline-flex;align-items:center;gap:7px;padding:9px 13px;border:1px solid #19e6ff44;border-radius:11px;color:#effcff;text-decoration:none;background:#071820;margin:8px";
+ document.body.appendChild(a);
+ function update(s){if(s){a.textContent="👤 "+(s.user_metadata?.full_name||s.email?.split("@")[0]||"ჩემი ანგარიში")}else a.textContent="👤 შესვლა / რეგისტრაცია"}
+ client.auth.getSession().then(({data})=>update(data.session));
+ client.auth.onAuthStateChange((e,s)=>update(s));
+})();
+</script></body>
 </html>
