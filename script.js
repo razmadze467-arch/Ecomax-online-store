@@ -497,3 +497,30 @@ window.addEventListener(
     },
     { passive: true }
 );
+
+/* ================= PRODUCT SHOWCASE IMAGE ================= */
+(function addProductShowcase() {
+    const productsSection = document.getElementById("products");
+    if (!productsSection || document.getElementById("ecomaxVisualShowcase")) return;
+
+    const section = document.createElement("section");
+    section.id = "ecomaxVisualShowcase";
+    section.className = "visual-showcase";
+    section.innerHTML = `
+        <div class="visual-showcase-inner">
+            <div class="section-label">ECOMAX VISUAL COLLECTION</div>
+            <h2>პროდუქციის <span>ვიზუალური კოლექცია</span></h2>
+            <p>ECOMAX-ის ახალი ვიზუალური პროდუქტის კოლექცია.</p>
+            <div class="visual-showcase-frame">
+                <img
+                    src="assets/ecomax-product-showcase.webp"
+                    alt="ECOMAX პროფესიონალური ავტოქიმიის პროდუქციის კოლექცია"
+                    loading="lazy"
+                    decoding="async"
+                >
+            </div>
+        </div>
+    `;
+
+    productsSection.insertAdjacentElement("afterend", section);
+})();
