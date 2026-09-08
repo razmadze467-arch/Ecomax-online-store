@@ -106,10 +106,10 @@ function enhance(){
  wire();
  const mo=new MutationObserver(wire);mo.observe(document.body,{childList:true,subtree:true});
  db.auth.getSession().then(({data})=>{
-   document.querySelectorAll("[data-e2-account]").forEach(a=>{a.textContent=data.session?"👤 ჩემი ანგარიში":"👤 შესვლა / რეგისტრაცია";a.href="/account.html"});
+   
  });
  db.auth.onAuthStateChange((e,s)=>{
-   document.querySelectorAll("[data-e2-account]").forEach(a=>{a.textContent=s?"👤 ჩემი ანგარიში":"👤 შესვლა / რეგისტრაცია";a.href="/account.html"});
+   
  });
  window.ecomaxSearch=async function(q){
    q=q.trim();if(!q)return [];
@@ -120,6 +120,10 @@ function enhance(){
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(enhance,50));else setTimeout(enhance,50);
 })();
 </script>
+<style id="ecomax-auth-style">
+#ecomaxAuth{display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,5,9,.82);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:18px}
+#ecomaxAuth.open{display:flex}.authbox{width:min(460px,100%);background:#07151d;border:1px solid #19e6ff55;border-radius:24px;padding:26px;box-shadow:0 25px 100px #000}.authhead{display:flex;justify-content:space-between;align-items:center}.authhead b{font-size:24px;letter-spacing:4px;color:#19e6ff}.authclose{background:none;border:0;color:#9fb7bf;font-size:25px;cursor:pointer}.authtabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#030b10;padding:5px;border-radius:12px;margin:20px 0}.authtabs button{border:0;background:transparent;color:#8fa8b2;padding:11px;border-radius:9px;font-weight:800;cursor:pointer}.authtabs button.active{background:#19e6ff;color:#001015}.authform label{display:block;color:#9ab0b8;font-size:12px;margin:11px 0 5px}.authform input{width:100%;padding:13px;border-radius:10px;border:1px solid #245563;background:#030b10;color:#fff;outline:0}.authsubmit{width:100%;padding:14px;margin-top:16px;border:0;border-radius:11px;background:#19e6ff;color:#001015;font-weight:900;cursor:pointer}.authmsg{text-align:center;min-height:20px;margin-top:12px;font-size:13px}.authok{color:#53e6b0}.autherr{color:#ff687a}
+</style>
 </head>
 <body>
 <header>
@@ -127,7 +131,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 <a class="brand" href="#"><span class="orb"></span>ECOMAX</a>
 <div class="search"><input id="search" placeholder="მოძებნე პროდუქტი..."><button onclick="renderProducts()">⌕</button></div>
 
-<a class="navbtn" data-e2-account href="/account.html">👤 შესვლა / რეგისტრაცია</a>
+<button class="navbtn" id="authOpenBtn" type="button">👤 შესვლა / რეგისტრაცია</button>
 <button class="navbtn" onclick="openCart()">🛒 კალათა <span class="cart-count" id="cartCount">0</span></button>
 </div>
 <nav><div class="navlinks"><a href="#products">პროდუქცია</a><a href="#about">რატომ ECOMAX</a><a href="#companion">AI Companion</a><a href="admin.html">ადმინ პანელი</a></div></nav>
@@ -445,5 +449,30 @@ if (location.pathname === "/index.html") { history.replaceState(null, "", "/" + 
  client.auth.getSession().then(({data})=>update(data.session));
  client.auth.onAuthStateChange((e,s)=>update(s));
 })();
-</script></body>
+</script><div id="ecomaxAuth" aria-hidden="true">
+<div class="authbox">
+<div class="authhead"><b>ECOMAX</b><button class="authclose" id="authClose" type="button">×</button></div>
+<div class="authtabs"><button id="authLoginTab" class="active" type="button">შესვლა</button><button id="authRegTab" type="button">რეგისტრაცია</button></div>
+<form id="authLoginForm" class="authform"><label>ელფოსტა</label><input id="authLoginEmail" type="email" autocomplete="email" required><label>პაროლი</label><input id="authLoginPassword" type="password" autocomplete="current-password" required><button class="authsubmit" type="submit">🔓 შესვლა</button><div style="text-align:center;margin-top:10px"><button id="authForgot" type="button" style="background:none;border:0;color:#19e6ff;cursor:pointer">დაგავიწყდა პაროლი?</button></div></form>
+<form id="authRegForm" class="authform" style="display:none"><label>სახელი</label><input id="authFirst" required><label>გვარი</label><input id="authLast" required><label>ელფოსტა</label><input id="authRegEmail" type="email" autocomplete="email" required><label>ტელეფონი</label><input id="authPhone" type="tel"><label>პაროლი</label><input id="authRegPassword" type="password" minlength="6" autocomplete="new-password" required><label>გაიმეორე პაროლი</label><input id="authConfirm" type="password" autocomplete="new-password" required><button class="authsubmit" type="submit">✦ რეგისტრაცია</button></form>
+<div id="authMsg" class="authmsg"></div>
+</div></div>
+<script id="ecomax-auth-script">(function(){
+const U="https://mkxkqdvtmfbxmldnvsef.supabase.co",K="sb_publishable_K5orPxrE0q9-K0dKYdt-g_0GTFvWtd";
+function initAuth(){
+ if(!window.supabase)return;
+ const sb=window.supabase.createClient(U,K,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:"pkce"}});
+ const box=document.getElementById("ecomaxAuth"),msg=document.getElementById("authMsg"),loginForm=document.getElementById("authLoginForm"),regForm=document.getElementById("authRegForm");
+ const say=(t,c)=>{msg.textContent=t;msg.className="authmsg "+(c||"")};
+ const open=()=>{box.classList.add("open");box.setAttribute("aria-hidden","false")},close=()=>{box.classList.remove("open");box.setAttribute("aria-hidden","true");say("")};
+ document.getElementById("authOpenBtn").onclick=open;document.getElementById("authClose").onclick=close;box.onclick=e=>{if(e.target===box)close()};
+ document.getElementById("authLoginTab").onclick=()=>{document.getElementById("authLoginTab").classList.add("active");document.getElementById("authRegTab").classList.remove("active");loginForm.style.display="block";regForm.style.display="none";say("")};
+ document.getElementById("authRegTab").onclick=()=>{document.getElementById("authRegTab").classList.add("active");document.getElementById("authLoginTab").classList.remove("active");loginForm.style.display="none";regForm.style.display="block";say("")};
+ loginForm.onsubmit=async e=>{e.preventDefault();say("⟳ მიმდინარეობს შესვლა...");try{const {data,error}=await sb.auth.signInWithPassword({email:authLoginEmail.value.trim().toLowerCase(),password:authLoginPassword.value});if(error)throw error;if(data.session){say("✓ წარმატებით შეხვედი","authok");setTimeout(close,500)}}catch(e){say(String(e.message||"ავტორიზაცია ვერ მოხერხდა").toLowerCase().includes("not confirmed")?"ელფოსტა ჯერ არ არის დადასტურებული.":"ელფოსტა ან პაროლი არასწორია.","autherr")}};
+ regForm.onsubmit=async e=>{e.preventDefault();const p=authRegPassword.value;if(p!==authConfirm.value){say("პაროლები არ ემთხვევა.","autherr");return}if(p.length<6){say("პაროლი მინიმუმ 6 სიმბოლო უნდა იყოს.","autherr");return}say("⟳ ანგარიშის შექმნა...");try{const {data,error}=await sb.auth.signUp({email:authRegEmail.value.trim().toLowerCase(),password:p,options:{emailRedirectTo:location.href,data:{first_name:authFirst.value.trim(),last_name:authLast.value.trim(),phone:authPhone.value.trim()}}});if(error)throw error;if(data.session){say("✓ ანგარიში შეიქმნა","authok");setTimeout(close,600)}else say("✓ რეგისტრაცია დასრულდა. შეამოწმე ელფოსტა დასადასტურებლად.","authok")}catch(e){say(String(e.message||"რეგისტრაცია ვერ მოხერხდა").toLowerCase().includes("already registered")?"ეს ელფოსტა უკვე რეგისტრირებულია.":"რეგისტრაცია ვერ მოხერხდა.","autherr")}};
+ document.getElementById("authForgot").onclick=async()=>{const email=prompt("შეიყვანე ელფოსტა:");if(!email)return;try{const {error}=await sb.auth.resetPasswordForEmail(email.trim().toLowerCase(),{redirectTo:location.href});if(error)throw error;say("✓ აღდგენის ბმული გაიგზავნა.","authok")}catch(e){say("პაროლის აღდგენა ვერ მოხერხდა.","autherr")}};
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initAuth);else initAuth();
+})();</script>
+</body>
 </html>
