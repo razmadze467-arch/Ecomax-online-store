@@ -1,1913 +1,2267 @@
 <!DOCTYPE html>
 <html lang="ka">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#02060a">
 
-<title>ECOMAX — რეგისტრაცია</title>
+  <title>ECOMAX — რეგისტრაცია</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta
+    name="description"
+    content="შექმენი შენი ECOMAX ანგარიში"
+  >
 
-<style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-:root{
-    --cyan:#19e6ff;
-    --cyan2:#00a9c4;
-    --bg:#02070b;
-    --panel:#061219;
-    --line:#163b47;
-    --text:#f5fbfd;
-    --muted:#8ba5ae;
-    --danger:#ff6078;
-    --success:#49e39b;
-}
+  <style>
 
-html,body{
-    width:100%;
-    min-height:100%;
-}
+    :root {
+      --bg: #02060a;
+      --panel: rgba(5, 16, 23, .82);
 
-body{
-    min-height:100vh;
-    overflow-x:hidden;
-    color:var(--text);
-    font-family:Arial,"Noto Sans Georgian",sans-serif;
-    background:
-        radial-gradient(circle at 12% 18%,rgba(25,230,255,.13),transparent 28%),
-        radial-gradient(circle at 88% 78%,rgba(0,170,200,.10),transparent 30%),
-        #02070b;
-}
+      --cyan: #19e6ff;
+      --blue: #4a8cff;
+      --purple: #a66cff;
 
-/* BACKGROUND */
+      --white: #f4fdff;
+      --muted: #8da8b0;
 
-.scene{
-    position:fixed;
-    inset:0;
-    overflow:hidden;
-    pointer-events:none;
-}
+      --green: #64f0aa;
+      --yellow: #ffd66b;
+      --red: #ff637c;
 
-.grid{
-    position:absolute;
-    width:160%;
-    height:70%;
-    left:-30%;
-    bottom:-20%;
-    transform:perspective(500px) rotateX(65deg);
-
-    background-image:
-        linear-gradient(rgba(25,230,255,.10) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(25,230,255,.10) 1px,transparent 1px);
-
-    background-size:55px 55px;
-
-    mask-image:linear-gradient(to top,black,transparent);
-
-    animation:gridMove 10s linear infinite;
-}
-
-@keyframes gridMove{
-    from{
-        transform:perspective(500px) rotateX(65deg) translateY(0);
+      --line: rgba(25, 230, 255, .18);
     }
 
-    to{
-        transform:perspective(500px) rotateX(65deg) translateY(55px);
+
+    * {
+      box-sizing: border-box;
     }
-}
 
-.orb{
-    position:absolute;
-    border-radius:50%;
-}
 
-.orb.one{
-    width:320px;
-    height:320px;
-    left:-120px;
-    top:12%;
+    html {
+      min-height: 100%;
+    }
 
-    border:1px solid rgba(25,230,255,.15);
 
-    box-shadow:
-        0 0 90px rgba(25,230,255,.08),
-        inset 0 0 80px rgba(25,230,255,.05);
-}
+    body {
+      margin: 0;
 
-.orb.two{
-    width:440px;
-    height:440px;
-    right:-210px;
-    bottom:0;
+      min-height: 100vh;
 
-    border:1px solid rgba(25,230,255,.12);
+      color: var(--white);
 
-    box-shadow:
-        0 0 110px rgba(25,230,255,.07);
-}
+      font-family:
+        "Noto Sans Georgian",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
 
-/* HEADER */
+      background:
 
-header{
-    position:relative;
-    z-index:10;
-
-    height:76px;
-
-    border-bottom:1px solid rgba(25,230,255,.12);
-
-    background:rgba(2,7,11,.72);
-
-    backdrop-filter:blur(18px);
-}
-
-.nav{
-    max-width:1250px;
-    height:100%;
-    margin:auto;
-
-    padding:0 24px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
-
-.logo{
-    display:flex;
-    align-items:center;
-    gap:12px;
-
-    font-size:20px;
-    font-weight:900;
-    letter-spacing:5px;
-}
-
-.logo-mark{
-    width:38px;
-    height:38px;
-    border-radius:50%;
-
-    background:
         radial-gradient(
-            circle at 35% 30%,
-            #fff 0 3%,
-            #9cf7ff 6%,
-            var(--cyan) 14%,
-            #086b80 35%,
-            #03131a 68%,
-            #02070b 78%
-        );
+          circle at 50% 0%,
+          rgba(25, 230, 255, .13),
+          transparent 35%
+        ),
 
-    box-shadow:
-        0 0 22px rgba(25,230,255,.75),
-        0 0 60px rgba(25,230,255,.18);
-}
-
-.back{
-    color:var(--muted);
-    text-decoration:none;
-    font-size:13px;
-    font-weight:700;
-    transition:.2s;
-}
-
-.back:hover{
-    color:var(--cyan);
-}
-
-/* MAIN */
-
-main{
-    position:relative;
-    z-index:2;
-
-    min-height:calc(100vh - 76px);
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    padding:45px 20px;
-}
-
-.wrapper{
-    width:min(1100px,100%);
-
-    display:grid;
-    grid-template-columns:1fr 470px;
-
-    gap:55px;
-
-    align-items:center;
-}
-
-/* INTRO */
-
-.intro{
-    padding:20px;
-}
-
-.eyebrow{
-    display:inline-flex;
-    align-items:center;
-    gap:9px;
-
-    padding:8px 13px;
-
-    border:1px solid rgba(25,230,255,.25);
-    border-radius:999px;
-
-    background:rgba(25,230,255,.05);
-
-    color:var(--cyan);
-
-    font-size:10px;
-    font-weight:900;
-
-    letter-spacing:3px;
-}
-
-.eyebrow:before{
-    content:"";
-
-    width:7px;
-    height:7px;
-
-    border-radius:50%;
-
-    background:var(--cyan);
-
-    box-shadow:0 0 14px var(--cyan);
-}
-
-.intro h1{
-    margin-top:25px;
-
-    font-size:clamp(42px,6vw,70px);
-
-    line-height:.95;
-
-    letter-spacing:-3px;
-}
-
-.intro h1 span{
-    background:
-        linear-gradient(
-            90deg,
-            #fff,
-            var(--cyan)
-        );
-
-    -webkit-background-clip:text;
-    background-clip:text;
-
-    color:transparent;
-}
-
-.intro p{
-    max-width:570px;
-
-    margin-top:25px;
-
-    color:var(--muted);
-
-    font-size:15px;
-
-    line-height:1.8;
-}
-
-.benefits{
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:10px;
-
-    margin-top:30px;
-}
-
-.benefit{
-    position:relative;
-
-    padding:17px;
-
-    overflow:hidden;
-
-    border:1px solid rgba(25,230,255,.12);
-
-    border-radius:14px;
-
-    background:rgba(7,20,27,.55);
-}
-
-.benefit:before{
-    content:"";
-
-    position:absolute;
-
-    top:0;
-    left:0;
-
-    width:100%;
-    height:1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            var(--cyan),
-            transparent
-        );
-
-    opacity:.5;
-}
-
-.benefit-icon{
-    font-size:20px;
-    margin-bottom:9px;
-}
-
-.benefit strong{
-    display:block;
-
-    font-size:13px;
-
-    margin-bottom:5px;
-}
-
-.benefit span{
-    color:var(--muted);
-
-    font-size:11px;
-
-    line-height:1.5;
-}
-
-/* REGISTER CARD */
-
-.card{
-    position:relative;
-
-    padding:34px;
-
-    border:1px solid rgba(25,230,255,.25);
-
-    border-radius:25px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(8,25,33,.97),
-            rgba(3,12,17,.99)
-        );
-
-    box-shadow:
-        0 35px 100px rgba(0,0,0,.65),
-        0 0 70px rgba(25,230,255,.06),
-        inset 0 1px 0 rgba(255,255,255,.03);
-
-    overflow:hidden;
-}
-
-.card:before{
-    content:"";
-
-    position:absolute;
-
-    top:0;
-    left:12%;
-    right:12%;
-
-    height:1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            var(--cyan),
-            transparent
-        );
-
-    box-shadow:0 0 18px var(--cyan);
-}
-
-.card:after{
-    content:"";
-
-    position:absolute;
-
-    width:180px;
-    height:180px;
-
-    right:-100px;
-    top:-100px;
-
-    border-radius:50%;
-
-    background:
         radial-gradient(
-            circle,
-            rgba(25,230,255,.15),
-            transparent 70%
-        );
-}
+          circle at 0% 100%,
+          rgba(110, 70, 255, .13),
+          transparent 30%
+        ),
 
-.card-title{
-    position:relative;
-    z-index:1;
-}
+        radial-gradient(
+          circle at 100% 70%,
+          rgba(0, 190, 230, .08),
+          transparent 30%
+        ),
 
-.card-title h2{
-    font-size:27px;
-}
+        var(--bg);
 
-.card-title p{
-    margin-top:8px;
+      overflow-x: hidden;
+    }
 
-    color:var(--muted);
 
-    font-size:12px;
-}
+    /* =====================================
+       MAGIC GRID
+    ====================================== */
 
-/* MESSAGE */
+    body::before {
 
-.message{
-    display:none;
+      content: "";
 
-    margin-top:20px;
+      position: fixed;
 
-    padding:12px 13px;
+      inset: 0;
 
-    border-radius:10px;
+      pointer-events: none;
 
-    font-size:11px;
+      opacity: .16;
 
-    line-height:1.5;
-}
+      background-image:
 
-.message.error{
-    display:block;
-
-    color:#ff9aaa;
-
-    border:1px solid rgba(255,96,120,.25);
-
-    background:rgba(255,96,120,.07);
-}
-
-.message.success{
-    display:block;
-
-    color:#82f0bd;
-
-    border:1px solid rgba(73,227,155,.25);
-
-    background:rgba(73,227,155,.07);
-}
-
-/* FORM */
-
-.form{
-    position:relative;
-    z-index:2;
-
-    margin-top:25px;
-}
-
-.field{
-    margin-bottom:15px;
-}
-
-label{
-    display:block;
-
-    margin-bottom:8px;
-
-    color:#b8cbd0;
-
-    font-size:11px;
-
-    font-weight:800;
-}
-
-.input-wrap{
-    position:relative;
-}
-
-input{
-    width:100%;
-    height:49px;
-
-    padding:0 46px 0 15px;
-
-    border:1px solid #163c48;
-
-    border-radius:11px;
-
-    outline:none;
-
-    background:rgba(2,10,14,.82);
-
-    color:#fff;
-
-    font-size:13px;
-
-    transition:.2s;
-}
-
-input::placeholder{
-    color:#526b73;
-}
-
-input:focus{
-    border-color:var(--cyan);
-
-    box-shadow:
-        0 0 0 3px rgba(25,230,255,.06),
-        0 0 22px rgba(25,230,255,.07);
-}
-
-.input-icon{
-    position:absolute;
-
-    right:15px;
-    top:50%;
-
-    transform:translateY(-50%);
-
-    color:#58747d;
-
-    pointer-events:none;
-}
-
-.password-toggle{
-    position:absolute;
-
-    right:9px;
-    top:50%;
-
-    transform:translateY(-50%);
-
-    width:34px;
-    height:34px;
-
-    border:0;
-
-    background:transparent;
-
-    color:#66818a;
-
-    cursor:pointer;
-}
-
-.password-toggle:hover{
-    color:var(--cyan);
-}
-
-/* PASSWORD STRENGTH */
-
-.strength{
-    height:3px;
-
-    margin-top:8px;
-
-    border-radius:99px;
-
-    background:#10262e;
-
-    overflow:hidden;
-}
-
-.strength-bar{
-    width:0%;
-    height:100%;
-
-    transition:.3s;
-}
-
-.strength-text{
-    margin-top:5px;
-
-    color:#607a83;
-
-    font-size:9px;
-}
-
-/* TERMS */
-
-.terms{
-    display:flex;
-
-    align-items:flex-start;
-
-    gap:9px;
-
-    margin:18px 0;
-
-    color:#718b94;
-
-    font-size:10px;
-
-    line-height:1.5;
-}
-
-.terms input{
-    width:15px;
-    height:15px;
-
-    min-width:15px;
-
-    margin-top:1px;
-
-    accent-color:var(--cyan);
-
-    padding:0;
-}
-
-.terms a{
-    color:var(--cyan);
-
-    text-decoration:none;
-}
-
-/* REGISTER BUTTON */
-
-.register-btn{
-    width:100%;
-    height:52px;
-
-    border:0;
-
-    border-radius:12px;
-
-    background:
         linear-gradient(
-            100deg,
-            #0dc6df,
-            #19e6ff
-        );
+          rgba(25,230,255,.08) 1px,
+          transparent 1px
+        ),
 
-    color:#001015;
-
-    font-weight:900;
-
-    font-size:14px;
-
-    cursor:pointer;
-
-    box-shadow:
-        0 0 30px rgba(25,230,255,.18);
-
-    transition:.2s;
-}
-
-.register-btn:hover{
-    transform:translateY(-2px);
-
-    box-shadow:
-        0 10px 35px rgba(25,230,255,.22);
-}
-
-.register-btn:disabled{
-    opacity:.6;
-    cursor:not-allowed;
-    transform:none;
-}
-
-/* DIVIDER */
-
-.divider{
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-    margin:22px 0;
-
-    color:#526a72;
-
-    font-size:10px;
-}
-
-.divider:before,
-.divider:after{
-    content:"";
-
-    flex:1;
-
-    height:1px;
-
-    background:#16343e;
-}
-
-/* GOOGLE */
-
-.google{
-    width:100%;
-    height:48px;
-
-    border:1px solid #21434d;
-
-    border-radius:11px;
-
-    background:#07151b;
-
-    color:#fff;
-
-    font-weight:800;
-
-    font-size:13px;
-
-    cursor:pointer;
-
-    transition:.2s;
-}
-
-.google:hover{
-    border-color:var(--cyan);
-    background:#091a21;
-}
-
-.google:disabled{
-    opacity:.6;
-}
-
-/* LOGIN LINK */
-
-.login{
-    margin-top:22px;
-
-    padding-top:20px;
-
-    border-top:1px solid #12313b;
-
-    text-align:center;
-
-    color:var(--muted);
-
-    font-size:12px;
-}
-
-.login a{
-    color:var(--cyan);
-
-    text-decoration:none;
-
-    font-weight:900;
-}
-
-.login a:hover{
-    text-decoration:underline;
-}
-
-/* LOADER */
-
-.loader{
-    display:none;
-
-    width:17px;
-    height:17px;
-
-    margin:auto;
-
-    border:2px solid rgba(0,16,21,.35);
-
-    border-top-color:#001015;
-
-    border-radius:50%;
-
-    animation:spin .7s linear infinite;
-}
-
-@keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-.register-text{
-    display:inline;
-}
-
-/* SUCCESS SCREEN */
-
-.success-screen{
-    display:none;
-
-    position:relative;
-    z-index:5;
-
-    text-align:center;
-
-    padding:20px 0;
-}
-
-.success-icon{
-    width:80px;
-    height:80px;
-
-    margin:0 auto 22px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border-radius:50%;
-
-    color:#031015;
-
-    font-size:35px;
-
-    background:
         linear-gradient(
-            135deg,
-            #7ffff0,
-            var(--cyan)
+          90deg,
+          rgba(25,230,255,.08) 1px,
+          transparent 1px
         );
 
-    box-shadow:
-        0 0 50px rgba(25,230,255,.35);
-}
+      background-size: 44px 44px;
 
-.success-screen h2{
-    font-size:24px;
-}
-
-.success-screen p{
-    margin-top:12px;
-
-    color:var(--muted);
-
-    font-size:12px;
-
-    line-height:1.7;
-}
-
-/* RESPONSIVE */
-
-@media(max-width:900px){
-
-    .wrapper{
-        grid-template-columns:1fr;
-
-        max-width:500px;
+      mask-image:
+        radial-gradient(
+          ellipse at center,
+          black,
+          transparent 78%
+        );
     }
 
-    .intro{
-        text-align:center;
-        padding:0;
+
+    /* =====================================
+       PARTICLES
+    ====================================== */
+
+    #particles {
+
+      position: fixed;
+
+      inset: 0;
+
+      pointer-events: none;
+
+      overflow: hidden;
+
+      z-index: 0;
     }
 
-    .intro p{
-        margin-left:auto;
-        margin-right:auto;
+
+    .particle {
+
+      position: absolute;
+
+      width: 2px;
+      height: 2px;
+
+      border-radius: 50%;
+
+      background: var(--cyan);
+
+      box-shadow:
+        0 0 8px var(--cyan);
+
+      animation:
+        particleMove
+        linear
+        infinite;
     }
 
-}
 
-@media(max-width:520px){
+    @keyframes particleMove {
 
-    header{
-        height:66px;
+      from {
+
+        transform:
+          translateY(110vh)
+          scale(.4);
+
+        opacity: 0;
+
+      }
+
+      15% {
+
+        opacity: .8;
+
+      }
+
+      85% {
+
+        opacity: .8;
+
+      }
+
+      to {
+
+        transform:
+          translateY(-15vh)
+          scale(1);
+
+        opacity: 0;
+
+      }
+
     }
 
-    .nav{
-        padding:0 15px;
+
+    /* =====================================
+       HOME
+    ====================================== */
+
+    .home {
+
+      position: fixed;
+
+      top: 20px;
+      left: 20px;
+
+      z-index: 50;
+
+      padding: 10px 15px;
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius: 13px;
+
+      background:
+        rgba(3,13,18,.72);
+
+      backdrop-filter:
+        blur(15px);
+
+      color: #fff;
+
+      text-decoration: none;
+
+      font-size: 12px;
+
+      transition: .25s;
+
     }
 
-    .logo{
-        font-size:16px;
+
+    .home:hover {
+
+      color: var(--cyan);
+
+      border-color:
+        rgba(25,230,255,.6);
+
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 0 25px
+        rgba(25,230,255,.1);
+
     }
 
-    .logo-mark{
-        width:34px;
-        height:34px;
+
+    /* =====================================
+       PAGE
+    ====================================== */
+
+    .page {
+
+      position: relative;
+
+      z-index: 2;
+
+      min-height: 100vh;
+
+      display: grid;
+
+      place-items: center;
+
+      padding: 35px 20px;
+
     }
 
-    main{
-        padding:30px 12px;
+
+    /* =====================================
+       MAIN CARD
+    ====================================== */
+
+    .register-shell {
+
+      width:
+        min(1120px, 100%);
+
+      display: grid;
+
+      grid-template-columns:
+        .9fr 1.1fr;
+
+      border:
+        1px solid
+        rgba(25,230,255,.22);
+
+      border-radius: 32px;
+
+      overflow: hidden;
+
+      background:
+        rgba(3,13,19,.78);
+
+      backdrop-filter:
+        blur(28px);
+
+      box-shadow:
+
+        0 0 100px
+        rgba(25,230,255,.06),
+
+        inset 0 0 80px
+        rgba(25,230,255,.02);
+
     }
 
-    .intro h1{
-        font-size:43px;
+
+    /* =====================================
+       MAGIC SIDE
+    ====================================== */
+
+    .magic {
+
+      position: relative;
+
+      min-height: 720px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: center;
+
+      align-items: center;
+
+      padding: 40px;
+
+      overflow: hidden;
+
+      border-right:
+        1px solid
+        rgba(25,230,255,.12);
+
     }
 
-    .benefits{
-        grid-template-columns:1fr;
-        text-align:left;
+
+    /* =====================================
+       ORBITS
+    ====================================== */
+
+    .orbit {
+
+      position: absolute;
+
+      border:
+        1px solid
+        rgba(25,230,255,.18);
+
+      border-radius: 50%;
+
+      pointer-events: none;
+
     }
 
-    .card{
-        padding:24px 19px;
-        border-radius:19px;
+
+    .orbit.one {
+
+      width: 410px;
+      height: 410px;
+
+      animation:
+        orbitRotate
+        18s
+        linear
+        infinite;
+
     }
 
-}
-</style>
+
+    .orbit.two {
+
+      width: 320px;
+      height: 320px;
+
+      border-style: dashed;
+
+      animation:
+        orbitRotateReverse
+        12s
+        linear
+        infinite;
+
+    }
+
+
+    .orbit.three {
+
+      width: 235px;
+      height: 235px;
+
+      border-color:
+        rgba(166,108,255,.3);
+
+      animation:
+        orbitRotate
+        8s
+        linear
+        infinite;
+
+    }
+
+
+    @keyframes orbitRotate {
+
+      to {
+        transform:
+          rotate(360deg);
+      }
+
+    }
+
+
+    @keyframes orbitRotateReverse {
+
+      to {
+        transform:
+          rotate(-360deg);
+      }
+
+    }
+
+
+    /* =====================================
+       MAGIC STAR
+    ====================================== */
+
+    .magic-star {
+
+      position: relative;
+
+      z-index: 10;
+
+      width: 175px;
+      height: 175px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 50%;
+
+      background:
+
+        radial-gradient(
+          circle,
+          rgba(25,230,255,.35),
+          rgba(40,60,140,.12) 45%,
+          transparent 70%
+        );
+
+      border:
+        1px solid
+        rgba(25,230,255,.65);
+
+      box-shadow:
+
+        0 0 35px
+        rgba(25,230,255,.28),
+
+        0 0 110px
+        rgba(25,230,255,.08),
+
+        inset 0 0 45px
+        rgba(25,230,255,.15);
+
+      animation:
+        starPulse
+        3s
+        ease-in-out
+        infinite;
+
+    }
+
+
+    @keyframes starPulse {
+
+      0%,
+      100% {
+
+        transform:
+          scale(1)
+          rotate(0deg);
+
+      }
+
+      50% {
+
+        transform:
+          scale(1.04)
+          rotate(2deg);
+
+      }
+
+    }
+
+
+    .star-core {
+
+      width: 105px;
+      height: 105px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 50%;
+
+      background:
+
+        radial-gradient(
+          circle,
+          #b9faff 0%,
+          #19e6ff 12%,
+          #05728b 32%,
+          #031117 67%
+        );
+
+      box-shadow:
+
+        0 0 30px
+        rgba(25,230,255,.8),
+
+        inset 0 0 20px
+        rgba(255,255,255,.35);
+
+      font-size: 42px;
+
+    }
+
+
+    /* =====================================
+       MAGIC TEXT
+    ====================================== */
+
+    .magic-text {
+
+      position: relative;
+
+      z-index: 10;
+
+      text-align: center;
+
+      margin-top: 55px;
+
+    }
+
+
+    .logo {
+
+      font-size: 42px;
+
+      font-weight: 1000;
+
+      letter-spacing: 9px;
+
+      color: var(--cyan);
+
+      text-shadow:
+
+        0 0 12px
+        rgba(25,230,255,.8),
+
+        0 0 40px
+        rgba(25,230,255,.18);
+
+    }
+
+
+    .magic-title {
+
+      margin-top: 12px;
+
+      font-size: 18px;
+
+      font-weight: 800;
+
+    }
+
+
+    .magic-description {
+
+      max-width: 340px;
+
+      margin:
+        12px auto 0;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.8;
+
+    }
+
+
+    /* =====================================
+       SYSTEM STATUS
+    ====================================== */
+
+    .system-status {
+
+      position: relative;
+
+      z-index: 10;
+
+      margin-top: 28px;
+
+      display: flex;
+
+      gap: 8px;
+
+      align-items: center;
+
+      color: var(--green);
+
+      font-size: 10px;
+
+      letter-spacing: 1px;
+
+    }
+
+
+    .status-dot {
+
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: var(--green);
+
+      box-shadow:
+        0 0 12px
+        var(--green);
+
+      animation:
+        blink
+        1.5s
+        infinite;
+
+    }
+
+
+    @keyframes blink {
+
+      50% {
+        opacity: .25;
+      }
+
+    }
+
+
+    /* =====================================
+       FORM
+    ====================================== */
+
+    .form {
+
+      padding: 48px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: center;
+
+    }
+
+
+    .heading {
+
+      margin: 0;
+
+      font-size: 30px;
+
+      font-weight: 950;
+
+    }
+
+
+    .subtitle {
+
+      margin:
+        8px 0 28px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.7;
+
+    }
+
+
+    .row {
+
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 13px;
+
+    }
+
+
+    .field {
+
+      margin-bottom: 15px;
+
+    }
+
+
+    label {
+
+      display: block;
+
+      margin-bottom: 7px;
+
+      font-size: 11px;
+
+      color: #ccecf2;
+
+      font-weight: 800;
+
+    }
+
+
+    .input {
+
+      position: relative;
+
+    }
+
+
+    .icon {
+
+      position: absolute;
+
+      left: 14px;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      font-size: 15px;
+
+      opacity: .7;
+
+      pointer-events: none;
+
+    }
+
+
+    input {
+
+      width: 100%;
+
+      height: 50px;
+
+      padding:
+        0 43px;
+
+      color: #fff;
+
+      background:
+        rgba(1,9,13,.82);
+
+      border:
+        1px solid
+        rgba(25,230,255,.15);
+
+      border-radius: 12px;
+
+      outline: none;
+
+      transition: .25s;
+
+    }
+
+
+    input:focus {
+
+      border-color:
+        rgba(25,230,255,.65);
+
+      box-shadow:
+        0 0 25px
+        rgba(25,230,255,.08);
+
+    }
+
+
+    input::placeholder {
+
+      color: #547078;
+
+    }
+
+
+    .toggle {
+
+      position: absolute;
+
+      right: 7px;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      width: 35px;
+      height: 35px;
+
+      border: 0;
+
+      border-radius: 8px;
+
+      color: #91abb2;
+
+      background: transparent;
+
+      cursor: pointer;
+
+    }
+
+
+    .toggle:hover {
+
+      color: var(--cyan);
+
+      background:
+        rgba(25,230,255,.06);
+
+    }
+
+
+    /* =====================================
+       PASSWORD STRENGTH
+    ====================================== */
+
+    .strength {
+
+      margin-top: 8px;
+
+    }
+
+
+    .strength-bars {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 4px;
+
+    }
+
+
+    .bar {
+
+      height: 3px;
+
+      border-radius: 10px;
+
+      background:
+        rgba(255,255,255,.09);
+
+      transition: .3s;
+
+    }
+
+
+    .strength-text {
+
+      margin-top: 6px;
+
+      color: #718990;
+
+      font-size: 10px;
+
+    }
+
+
+    /* =====================================
+       TERMS
+    ====================================== */
+
+    .terms {
+
+      display: flex;
+
+      align-items: flex-start;
+
+      gap: 9px;
+
+      margin:
+        5px 0 18px;
+
+      color: #819ba3;
+
+      font-size: 10px;
+
+      line-height: 1.6;
+
+    }
+
+
+    .terms input {
+
+      width: 16px;
+      height: 16px;
+
+      flex: 0 0 16px;
+
+      margin: 0;
+
+      accent-color:
+        var(--cyan);
+
+      cursor: pointer;
+
+    }
+
+
+    .terms a {
+
+      color: var(--cyan);
+
+      text-decoration: none;
+
+    }
+
+
+    /* =====================================
+       REGISTER BUTTON
+    ====================================== */
+
+    .register-btn {
+
+      position: relative;
+
+      width: 100%;
+
+      height: 54px;
+
+      border: 1px solid
+        rgba(25,230,255,.55);
+
+      border-radius: 14px;
+
+      color: #001014;
+
+      background:
+
+        linear-gradient(
+          135deg,
+          #19e6ff,
+          #8df6ff
+        );
+
+      font-weight: 950;
+
+      cursor: pointer;
+
+      overflow: hidden;
+
+      transition: .25s;
+
+    }
+
+
+    .register-btn::after {
+
+      content: "";
+
+      position: absolute;
+
+      top: 0;
+      bottom: 0;
+
+      width: 80px;
+
+      left: -120px;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(255,255,255,.8),
+          transparent
+        );
+
+      transform:
+        skewX(-20deg);
+
+      animation:
+        scan 3.2s
+        infinite;
+
+    }
+
+
+    @keyframes scan {
+
+      0% {
+        left: -120px;
+      }
+
+      45%,
+      100% {
+        left: 120%;
+      }
+
+    }
+
+
+    .register-btn:hover {
+
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+
+        0 0 35px
+        rgba(25,230,255,.25);
+
+    }
+
+
+    .register-btn:disabled {
+
+      opacity: .55;
+
+      cursor: wait;
+
+      transform: none;
+
+    }
+
+
+    /* =====================================
+       MESSAGE
+    ====================================== */
+
+    .message {
+
+      min-height: 22px;
+
+      margin-top: 11px;
+
+      text-align: center;
+
+      font-size: 11px;
+
+      line-height: 1.6;
+
+    }
+
+
+    .message.error {
+      color: var(--red);
+    }
+
+
+    .message.success {
+      color: var(--green);
+    }
+
+
+    /* =====================================
+       LOGIN LINK
+    ====================================== */
+
+    .login {
+
+      margin-top: 20px;
+
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+    }
+
+
+    .login a {
+
+      color: var(--cyan);
+
+      font-weight: 900;
+
+      text-decoration: none;
+
+    }
+
+
+    .login a:hover {
+
+      text-decoration: underline;
+
+    }
+
+
+    /* =====================================
+       RESPONSIVE
+    ====================================== */
+
+    @media (max-width: 850px) {
+
+      .register-shell {
+
+        grid-template-columns: 1fr;
+
+        max-width: 600px;
+
+      }
+
+
+      .magic {
+
+        min-height: 390px;
+
+        border-right: 0;
+
+        border-bottom:
+          1px solid
+          rgba(25,230,255,.12);
+
+      }
+
+
+      .orbit.one {
+
+        width: 330px;
+        height: 330px;
+
+      }
+
+
+      .orbit.two {
+
+        width: 260px;
+        height: 260px;
+
+      }
+
+
+      .orbit.three {
+
+        width: 190px;
+        height: 190px;
+
+      }
+
+
+      .magic-star {
+
+        width: 135px;
+        height: 135px;
+
+      }
+
+
+      .star-core {
+
+        width: 82px;
+        height: 82px;
+
+        font-size: 32px;
+
+      }
+
+
+      .magic-text {
+
+        margin-top: 28px;
+
+      }
+
+
+      .logo {
+
+        font-size: 31px;
+
+      }
+
+    }
+
+
+    @media (max-width: 560px) {
+
+      .page {
+
+        padding:
+          20px 10px;
+
+      }
+
+
+      .home {
+
+        top: 10px;
+        left: 10px;
+
+      }
+
+
+      .form {
+
+        padding:
+          30px 20px;
+
+      }
+
+
+      .row {
+
+        grid-template-columns: 1fr;
+
+        gap: 0;
+
+      }
+
+
+      .heading {
+
+        font-size: 25px;
+
+      }
+
+
+      .magic {
+
+        min-height: 340px;
+
+        padding: 25px;
+
+      }
+
+
+      .magic-description {
+
+        display: none;
+
+      }
+
+    }
+
+  </style>
 </head>
+
 
 <body>
 
-<div class="scene">
-    <div class="grid"></div>
-    <div class="orb one"></div>
-    <div class="orb two"></div>
-</div>
 
-<header>
+<!-- =====================================
+     PARTICLES
+====================================== -->
 
-<div class="nav">
+<div id="particles"></div>
 
-<div class="logo">
-    <div class="logo-mark"></div>
-    ECOMAX
-</div>
 
-<a href="index.html" class="back">
-    ← მთავარ გვერდზე
+<!-- =====================================
+     HOME
+====================================== -->
+
+<a
+  class="home"
+  href="/"
+>
+  ← ECOMAX
 </a>
 
-</div>
 
-</header>
+<main class="page">
 
 
-<main>
+  <div class="register-shell">
 
-<div class="wrapper">
 
+    <!-- =================================
+         MAGIC AI SIDE
+    ================================== -->
 
-<section class="intro">
+    <section class="magic">
 
-<div class="eyebrow">
-    ECOMAX PROFESSIONAL ACCOUNT
-</div>
 
-<h1>
-შექმენი შენი<br>
-<span>ECOMAX ანგარიში.</span>
-</h1>
+      <div class="orbit one"></div>
 
-<p>
-დარეგისტრირდი და მიიღე სრული წვდომა
-პროდუქტებზე, კალათაზე, შეკვეთების ისტორიაზე
-და ECOMAX AI Companion-ზე.
-</p>
+      <div class="orbit two"></div>
 
+      <div class="orbit three"></div>
 
-<div class="benefits">
 
-<div class="benefit">
+      <div class="magic-star">
 
-<div class="benefit-icon">✦</div>
+        <div class="star-core">
+          ✦
+        </div>
 
-<strong>
-პერსონალური ანგარიში
-</strong>
+      </div>
 
-<span>
-შენი მონაცემები და შეკვეთები ერთ სივრცეში.
-</span>
 
-</div>
+      <div class="magic-text">
 
+        <div class="logo">
+          ECOMAX
+        </div>
 
-<div class="benefit">
 
-<div class="benefit-icon">🛒</div>
+        <div class="magic-title">
+          შენი ციფრული ავტო-კომუნა
+        </div>
 
-<strong>
-სწრაფი შეკვეთა
-</strong>
 
-<span>
-აირჩიე პროდუქტი და საჭირო ლიტრაჟი.
-</span>
+        <div class="magic-description">
 
-</div>
+          შექმენი შენი პირადი ECOMAX ანგარიში,
+          მართე შეკვეთები, პროდუქტები და
+          შენი ავტომობილის მოვლის ისტორია
+          ერთი თანამედროვე სისტემიდან.
 
+        </div>
 
-<div class="benefit">
 
-<div class="benefit-icon">✦</div>
+        <div class="system-status">
 
-<strong>
-AI Companion
-</strong>
+          <span class="status-dot"></span>
 
-<span>
-ჭკვიანი დახმარება პროდუქტის შერჩევასა და შეკვეთაში.
-</span>
+          MAGIC AI CORE ONLINE
 
-</div>
+        </div>
 
+      </div>
 
-<div class="benefit">
+    </section>
 
-<div class="benefit-icon">🔐</div>
 
-<strong>
-უსაფრთხო სისტემა
-</strong>
+    <!-- =================================
+         REGISTER FORM
+    ================================== -->
 
-<span>
-Supabase Authentication-ის დაცული ავტორიზაცია.
-</span>
+    <section class="form">
 
-</div>
 
-</div>
+      <h1 class="heading">
+        ანგარიშის შექმნა
+      </h1>
 
-</section>
 
+      <p class="subtitle">
 
+        შემოგვიერთდი ECOMAX-ის მომავალში.
+        რეგისტრაცია რამდენიმე წამში დასრულდება.
 
-<section class="card">
+      </p>
 
 
-<div class="card-title">
+      <form
+        id="registerForm"
+        novalidate
+      >
 
-<h2>
-ანგარიშის შექმნა
-</h2>
 
-<p>
-შეავსე ინფორმაცია ახალი ანგარიშისთვის
-</p>
+        <!-- NAME -->
 
-</div>
+        <div class="row">
 
+          <div class="field">
 
-<div
-    id="message"
-    class="message"
-></div>
+            <label for="firstName">
+              სახელი
+            </label>
 
+            <div class="input">
 
+              <span class="icon">
+                👤
+              </span>
 
-<form
-    id="registerForm"
-    class="form"
->
+              <input
+                id="firstName"
+                type="text"
+                placeholder="მაგ. ელგუჯა"
+                autocomplete="given-name"
+                required
+              >
 
+            </div>
 
-<div class="field">
+          </div>
 
-<label for="name">
-სახელი და გვარი
-</label>
 
-<div class="input-wrap">
+          <div class="field">
 
-<input
-    id="name"
-    type="text"
-    autocomplete="name"
-    placeholder="მაგ. გიორგი ბერიძე"
-    required
->
+            <label for="lastName">
+              გვარი
+            </label>
 
-<span class="input-icon">
-👤
-</span>
+            <div class="input">
 
-</div>
+              <span class="icon">
+                ✦
+              </span>
 
-</div>
+              <input
+                id="lastName"
+                type="text"
+                placeholder="გვარი"
+                autocomplete="family-name"
+                required
+              >
 
+            </div>
 
+          </div>
 
-<div class="field">
+        </div>
 
-<label for="email">
-ელ. ფოსტა
-</label>
 
-<div class="input-wrap">
+        <!-- EMAIL -->
 
-<input
-    id="email"
-    type="email"
-    autocomplete="email"
-    placeholder="you@example.com"
-    required
->
+        <div class="field">
 
-<span class="input-icon">
-✉
-</span>
+          <label for="email">
+            ელფოსტა
+          </label>
 
-</div>
+          <div class="input">
 
-</div>
+            <span class="icon">
+              ✉️
+            </span>
 
+            <input
+              id="email"
+              type="email"
+              placeholder="example@email.com"
+              autocomplete="email"
+              required
+            >
 
+          </div>
 
-<div class="field">
+        </div>
 
-<label for="phone">
-ტელეფონი
-</label>
 
-<div class="input-wrap">
+        <!-- PHONE -->
 
-<input
-    id="phone"
-    type="tel"
-    autocomplete="tel"
-    placeholder="+995 5XX XX XX XX"
->
+        <div class="field">
 
-<span class="input-icon">
-☎
-</span>
+          <label for="phone">
+            ტელეფონი
+          </label>
 
-</div>
+          <div class="input">
 
-</div>
+            <span class="icon">
+              📱
+            </span>
 
+            <input
+              id="phone"
+              type="tel"
+              placeholder="+995 5XX XX XX XX"
+              autocomplete="tel"
+            >
 
+          </div>
 
-<div class="field">
+        </div>
 
-<label for="password">
-პაროლი
-</label>
 
-<div class="input-wrap">
+        <!-- PASSWORD -->
 
-<input
-    id="password"
-    type="password"
-    autocomplete="new-password"
-    placeholder="მინიმუმ 6 სიმბოლო"
-    required
->
+        <div class="field">
 
-<button
-    type="button"
-    class="password-toggle"
-    onclick="togglePassword('password','eye1')"
-    aria-label="პაროლის ჩვენება"
->
+          <label for="password">
+            პაროლი
+          </label>
 
-<span id="eye1">
-👁
-</span>
+          <div class="input">
 
-</button>
+            <span class="icon">
+              🔐
+            </span>
 
-</div>
+            <input
+              id="password"
+              type="password"
+              placeholder="შექმენი ძლიერი პაროლი"
+              autocomplete="new-password"
+              minlength="6"
+              required
+            >
 
+            <button
+              class="toggle"
+              type="button"
+              data-target="password"
+            >
+              👁
+            </button>
 
-<div class="strength">
+          </div>
 
-<div
-    id="strengthBar"
-    class="strength-bar"
-></div>
 
-</div>
+          <div class="strength">
 
-<div
-    id="strengthText"
-    class="strength-text"
->
-პაროლის სიმტკიცე
-</div>
+            <div class="strength-bars">
 
-</div>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
 
+            </div>
 
 
-<div class="field">
+            <div
+              class="strength-text"
+              id="strengthText"
+            >
+              პაროლის სიმტკიცე: — 
+            </div>
 
-<label for="confirmPassword">
-გაიმეორე პაროლი
-</label>
+          </div>
 
-<div class="input-wrap">
+        </div>
 
-<input
-    id="confirmPassword"
-    type="password"
-    autocomplete="new-password"
-    placeholder="გაიმეორე პაროლი"
-    required
->
 
-<button
-    type="button"
-    class="password-toggle"
-    onclick="togglePassword('confirmPassword','eye2')"
->
+        <!-- CONFIRM PASSWORD -->
 
-<span id="eye2">
-👁
-</span>
+        <div class="field">
 
-</button>
+          <label for="confirmPassword">
+            გაიმეორე პაროლი
+          </label>
 
-</div>
+          <div class="input">
 
-</div>
+            <span class="icon">
+              🛡️
+            </span>
 
+            <input
+              id="confirmPassword"
+              type="password"
+              placeholder="გაიმეორე პაროლი"
+              autocomplete="new-password"
+              required
+            >
 
+            <button
+              class="toggle"
+              type="button"
+              data-target="confirmPassword"
+            >
+              👁
+            </button>
 
-<label class="terms">
+          </div>
 
-<input
-    id="terms"
-    type="checkbox"
-    required
->
+        </div>
 
-<span>
-ვეთანხმები ECOMAX-ის
-<a href="#" onclick="return false">
-მომსახურების პირობებს
-</a>
-და ვადასტურებ, რომ მითითებული ინფორმაცია სწორია.
-</span>
 
-</label>
+        <!-- TERMS -->
 
+        <label class="terms">
 
+          <input
+            id="terms"
+            type="checkbox"
+            required
+          >
 
-<button
-    id="registerBtn"
-    class="register-btn"
-    type="submit"
->
+          <span>
 
-<span
-    id="registerText"
-    class="register-text"
->
-ანგარიშის შექმნა
-</span>
+            ვეთანხმები ECOMAX-ის
+            <a href="#">
+              მომსახურების პირობებს
+            </a>
+            და
+            <a href="#">
+              კონფიდენციალურობის პოლიტიკას
+            </a>.
 
-<span
-    id="loader"
-    class="loader"
-></span>
+          </span>
 
-</button>
+        </label>
 
 
-</form>
+        <!-- REGISTER -->
 
+        <button
+          class="register-btn"
+          id="registerBtn"
+          type="submit"
+        >
 
+          <span id="registerText">
+            ✦ შექმენი ჩემი ECOMAX ანგარიში
+          </span>
 
-<div class="divider">
-ან
-</div>
+        </button>
 
 
+        <!-- MESSAGE -->
 
-<button
-    id="googleBtn"
-    class="google"
-    type="button"
-    onclick="googleRegister()"
->
-G&nbsp;&nbsp; Google-ით რეგისტრაცია
-</button>
+        <div
+          class="message"
+          id="message"
+        ></div>
 
 
+      </form>
 
-<div class="login">
 
-უკვე გაქვს ანგარიში?
+      <!-- LOGIN -->
 
-<a href="login.html">
-შესვლა
-</a>
+      <div class="login">
 
-</div>
+        უკვე გაქვს ანგარიში?
 
+        <a href="/login.html">
+          შედი ანგარიშში →
+        </a>
 
-<div
-    id="successScreen"
-    class="success-screen"
->
+      </div>
 
-<div class="success-icon">
-✓
-</div>
 
-<h2>
-ანგარიში თითქმის მზადაა
-</h2>
+    </section>
 
-<p>
-შენს ელ. ფოსტაზე გამოგზავნილია
-დადასტურების ბმული.<br>
-დაადასტურე ელფოსტა და შემდეგ შედი ანგარიშში.
-</p>
 
-</div>
-
-
-</section>
-
-</div>
+  </div>
 
 </main>
 
 
-
 <script>
 
-/*
-====================================================
-ECOMAX SUPABASE
-====================================================
-*/
 
-const SUPABASE_URL =
-"https://mkxkqdvtmfbxmldnvsef.supabase.co";
+  /* =====================================
+     SUPABASE
+  ====================================== */
 
-const SUPABASE_ANON_KEY =
-"sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
+  const SUPABASE_URL =
+    "https://mkxkqdvtmfbxmldnvsef.supabase.co";
 
 
-const db =
-window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-);
+  const SUPABASE_ANON_KEY =
+    "sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
 
 
-/*
-====================================================
-ELEMENTS
-====================================================
-*/
-
-const form =
-document.getElementById("registerForm");
-
-const nameInput =
-document.getElementById("name");
-
-const emailInput =
-document.getElementById("email");
-
-const phoneInput =
-document.getElementById("phone");
-
-const passwordInput =
-document.getElementById("password");
-
-const confirmInput =
-document.getElementById("confirmPassword");
-
-const terms =
-document.getElementById("terms");
-
-const message =
-document.getElementById("message");
-
-const registerBtn =
-document.getElementById("registerBtn");
-
-const googleBtn =
-document.getElementById("googleBtn");
-
-const registerText =
-document.getElementById("registerText");
-
-const loader =
-document.getElementById("loader");
-
-const strengthBar =
-document.getElementById("strengthBar");
-
-const strengthText =
-document.getElementById("strengthText");
-
-const successScreen =
-document.getElementById("successScreen");
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
 
 
-/*
-====================================================
-MESSAGE
-====================================================
-*/
+  /* =====================================
+     PARTICLES
+  ====================================== */
 
-function showMessage(
+  const particles =
+    document.getElementById(
+      "particles"
+    );
+
+
+  for (
+    let i = 0;
+    i < 90;
+    i++
+  ) {
+
+    const p =
+      document.createElement(
+        "span"
+      );
+
+
+    p.className =
+      "particle";
+
+
+    p.style.left =
+      Math.random() * 100 + "%";
+
+
+    p.style.animationDuration =
+      (
+        8 +
+        Math.random() * 16
+      ) + "s";
+
+
+    p.style.animationDelay =
+      (
+        -Math.random() * 18
+      ) + "s";
+
+
+    p.style.opacity =
+      .2 +
+      Math.random() * .6;
+
+
+    particles.appendChild(p);
+
+  }
+
+
+  /* =====================================
+     ELEMENTS
+  ====================================== */
+
+  const form =
+    document.getElementById(
+      "registerForm"
+    );
+
+
+  const firstName =
+    document.getElementById(
+      "firstName"
+    );
+
+
+  const lastName =
+    document.getElementById(
+      "lastName"
+    );
+
+
+  const email =
+    document.getElementById(
+      "email"
+    );
+
+
+  const phone =
+    document.getElementById(
+      "phone"
+    );
+
+
+  const password =
+    document.getElementById(
+      "password"
+    );
+
+
+  const confirmPassword =
+    document.getElementById(
+      "confirmPassword"
+    );
+
+
+  const terms =
+    document.getElementById(
+      "terms"
+    );
+
+
+  const button =
+    document.getElementById(
+      "registerBtn"
+    );
+
+
+  const buttonText =
+    document.getElementById(
+      "registerText"
+    );
+
+
+  const message =
+    document.getElementById(
+      "message"
+    );
+
+
+  /* =====================================
+     MESSAGE
+  ====================================== */
+
+  function showMessage(
     text,
-    type="error"
-){
-
-    if(!text){
-
-        message.textContent = "";
-
-        message.className =
-            "message";
-
-        return;
-    }
+    type = ""
+  ) {
 
     message.textContent =
-        text;
+      text;
 
     message.className =
-        "message " + type;
+      "message " + type;
 
-}
-
-
-/*
-====================================================
-LOADING
-====================================================
-*/
-
-function setLoading(
-    loading
-){
-
-    registerBtn.disabled =
-        loading;
-
-    googleBtn.disabled =
-        loading;
+  }
 
 
-    if(loading){
+  /* =====================================
+     PASSWORD VISIBILITY
+  ====================================== */
 
-        registerText.style.display =
-            "none";
+  document
+    .querySelectorAll(".toggle")
+    .forEach(
+      toggle => {
 
-        loader.style.display =
-            "block";
+        toggle.addEventListener(
+          "click",
+          () => {
 
-    }else{
-
-        registerText.style.display =
-            "inline";
-
-        loader.style.display =
-            "none";
-
-    }
-
-}
+            const target =
+              document.getElementById(
+                toggle.dataset.target
+              );
 
 
-/*
-====================================================
-PASSWORD TOGGLE
-====================================================
-*/
-
-function togglePassword(
-    inputId,
-    eyeId
-){
-
-    const input =
-        document.getElementById(inputId);
-
-    const eye =
-        document.getElementById(eyeId);
+            const visible =
+              target.type === "text";
 
 
-    if(input.type === "password"){
-
-        input.type = "text";
-
-        eye.textContent = "🙈";
-
-    }else{
-
-        input.type = "password";
-
-        eye.textContent = "👁";
-
-    }
-
-}
+            target.type =
+              visible
+                ? "password"
+                : "text";
 
 
-/*
-====================================================
-PASSWORD STRENGTH
-====================================================
-*/
+            toggle.textContent =
+              visible
+                ? "👁"
+                : "🙈";
 
-passwordInput.addEventListener(
+          }
+        );
+
+      }
+    );
+
+
+  /* =====================================
+     PASSWORD STRENGTH
+  ====================================== */
+
+  password.addEventListener(
     "input",
-    function(){
+    () => {
 
-        const value =
-            passwordInput.value;
-
-        let score = 0;
+      const value =
+        password.value;
 
 
-        if(value.length >= 6)
-            score += 25;
-
-        if(value.length >= 10)
-            score += 20;
-
-        if(/[A-Z]/.test(value))
-            score += 15;
-
-        if(/[a-z]/.test(value))
-            score += 15;
-
-        if(/[0-9]/.test(value))
-            score += 15;
-
-        if(/[^A-Za-z0-9]/.test(value))
-            score += 10;
+      const bars =
+        document.querySelectorAll(
+          ".bar"
+        );
 
 
-        strengthBar.style.width =
-            Math.min(score,100) + "%";
+      const strengthText =
+        document.getElementById(
+          "strengthText"
+        );
 
 
-        if(score < 35){
+      let score = 0;
 
-            strengthText.textContent =
-                "სუსტი პაროლი";
 
-            strengthText.style.color =
-                "#ff6078";
+      if (value.length >= 6)
+        score++;
 
-        }else if(score < 65){
 
-            strengthText.textContent =
-                "საშუალო სიმტკიცე";
+      if (value.length >= 10)
+        score++;
 
-            strengthText.style.color =
-                "#ffd166";
 
-        }else{
+      if (/[A-Z]/.test(value))
+        score++;
 
-            strengthText.textContent =
-                "ძლიერი პაროლი";
 
-            strengthText.style.color =
-                "#49e39b";
+      if (
+        /[0-9]/.test(value) &&
+        /[^A-Za-z0-9]/.test(value)
+      )
+        score++;
+
+
+      bars.forEach(
+        (bar, index) => {
+
+          if (index < score) {
+
+            bar.style.background =
+              "var(--cyan)";
+
+            bar.style.boxShadow =
+              "0 0 8px rgba(25,230,255,.4)";
+
+          } else {
+
+            bar.style.background =
+              "rgba(255,255,255,.09)";
+
+            bar.style.boxShadow =
+              "none";
+
+          }
 
         }
+      );
+
+
+      const labels = [
+        "პაროლის სიმტკიცე: —",
+        "სუსტი",
+        "საშუალო",
+        "ძლიერი",
+        "ძალიან ძლიერი"
+      ];
+
+
+      strengthText.textContent =
+        "პაროლის სიმტკიცე: " +
+        (
+          value
+            ? labels[score]
+            : "—"
+        );
 
     }
-);
+  );
 
 
-/*
-====================================================
-REGISTER
-====================================================
-*/
+  /* =====================================
+     PASSWORD MATCH
+  ====================================== */
 
-form.addEventListener(
+  confirmPassword.addEventListener(
+    "input",
+    () => {
+
+      if (
+        confirmPassword.value &&
+        confirmPassword.value !==
+        password.value
+      ) {
+
+        confirmPassword.style.borderColor =
+          "rgba(255,99,124,.7)";
+
+      } else {
+
+        confirmPassword.style.borderColor =
+          "";
+
+      }
+
+    }
+  );
+
+
+  /* =====================================
+     REGISTER
+  ====================================== */
+
+  form.addEventListener(
     "submit",
-    async function(event){
+    async event => {
 
-        event.preventDefault();
-
-        showMessage("");
+      event.preventDefault();
 
 
-        const name =
-            nameInput.value.trim();
-
-        const email =
-            emailInput.value.trim().toLowerCase();
-
-        const phone =
-            phoneInput.value.trim();
-
-        const password =
-            passwordInput.value;
-
-        const confirmPassword =
-            confirmInput.value;
+      const first =
+        firstName.value.trim();
 
 
-        /*
-        VALIDATION
-        */
-
-        if(name.length < 2){
-
-            showMessage(
-                "გთხოვ, შეიყვანე შენი სახელი და გვარი."
-            );
-
-            nameInput.focus();
-
-            return;
-        }
+      const last =
+        lastName.value.trim();
 
 
-        if(!email){
-
-            showMessage(
-                "შეიყვანე ელ. ფოსტის მისამართი."
-            );
-
-            emailInput.focus();
-
-            return;
-        }
+      const mail =
+        email.value.trim();
 
 
-        if(password.length < 6){
-
-            showMessage(
-                "პაროლი უნდა შეიცავდეს მინიმუმ 6 სიმბოლოს."
-            );
-
-            passwordInput.focus();
-
-            return;
-        }
+      const tel =
+        phone.value.trim();
 
 
-        if(password !== confirmPassword){
-
-            showMessage(
-                "პაროლები ერთმანეთს არ ემთხვევა."
-            );
-
-            confirmInput.focus();
-
-            return;
-        }
+      const pass =
+        password.value;
 
 
-        if(!terms.checked){
-
-            showMessage(
-                "რეგისტრაციის გასაგრძელებლად დაეთანხმე პირობებს."
-            );
-
-            return;
-        }
+      const confirm =
+        confirmPassword.value;
 
 
-        setLoading(true);
+      /* VALIDATION */
+
+      if (
+        !first ||
+        !last ||
+        !mail ||
+        !pass ||
+        !confirm
+      ) {
+
+        showMessage(
+          "გთხოვ შეავსე ყველა აუცილებელი ველი.",
+          "error"
+        );
+
+        return;
+
+      }
 
 
-        try{
+      if (pass.length < 6) {
 
-            const result =
-                await db.auth.signUp({
+        showMessage(
+          "პაროლი უნდა შეიცავდეს მინიმუმ 6 სიმბოლოს.",
+          "error"
+        );
 
-                    email:email,
+        return;
 
-                    password:password,
-
-                    options:{
-                        data:{
-                            full_name:name,
-                            phone:phone
-                        },
-
-                        emailRedirectTo:
-                            window.location.origin +
-                            "/login.html"
-                    }
-
-                });
+      }
 
 
-            if(result.error){
+      if (pass !== confirm) {
 
-                console.error(
-                    "REGISTER ERROR:",
-                    result.error
-                );
+        showMessage(
+          "პაროლები ერთმანეთს არ ემთხვევა.",
+          "error"
+        );
+
+        return;
+
+      }
 
 
-                const errorText =
-                    result.error.message
-                    .toLowerCase();
+      if (!terms.checked) {
+
+        showMessage(
+          "გთხოვ დაეთანხმე მომსახურების პირობებს.",
+          "error"
+        );
+
+        return;
+
+      }
 
 
-                if(
-                    errorText.includes(
-                        "user already registered"
-                    )
-                ){
+      /* LOADING */
 
-                    showMessage(
-                        "ამ ელ. ფოსტით ანგარიში უკვე არსებობს. სცადე ავტორიზაცია."
-                    );
+      button.disabled =
+        true;
 
-                }else{
 
-                    showMessage(
-                        result.error.message
-                    );
+      buttonText.textContent =
+        "⟳ მიმდინარეობს ანგარიშის შექმნა...";
+
+
+      showMessage("");
+
+
+      try {
+
+
+        /* ================================
+           SUPABASE SIGN UP
+        ================================= */
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth
+            .signUp({
+
+              email: mail,
+
+              password: pass,
+
+              options: {
+
+                data: {
+
+                  first_name:
+                    first,
+
+                  last_name:
+                    last,
+
+                  phone:
+                    tel
 
                 }
 
-                return;
-            }
-
-
-            /*
-            Supabase ზოგჯერ აბრუნებს session-ს
-            თუ Email Confirmation გამორთულია.
-            */
-
-            if(result.data.session){
-
-                showMessage(
-                    "✓ ანგარიში წარმატებით შეიქმნა.",
-                    "success"
-                );
-
-
-                setTimeout(
-                    function(){
-
-                        window.location.href =
-                            "index.html";
-
-                    },
-                    900
-                );
-
-            }else{
-
-                /*
-                Email confirmation ჩართულია.
-                */
-
-                form.style.display =
-                    "none";
-
-                googleBtn.style.display =
-                    "none";
-
-                successScreen.style.display =
-                    "block";
-
-                showMessage("");
-
-            }
-
-
-        }catch(error){
-
-            console.error(
-                "REGISTER:",
-                error
-            );
-
-            showMessage(
-                "რეგისტრაციისას დაფიქსირდა შეცდომა. სცადე თავიდან."
-            );
-
-        }finally{
-
-            setLoading(false);
-
-        }
-
-    }
-);
-
-
-/*
-====================================================
-GOOGLE REGISTER
-====================================================
-*/
-
-async function googleRegister(){
-
-    showMessage("");
-
-    googleBtn.disabled = true;
-
-
-    try{
-
-        const result =
-            await db.auth.signInWithOAuth({
-
-                provider:"google",
-
-                options:{
-                    redirectTo:
-                        window.location.origin +
-                        "/index.html"
-                }
+              }
 
             });
 
 
-        if(result.error){
+        if (error) {
+          throw error;
+        }
 
-            console.error(
-                result.error
-            );
 
-            showMessage(
-                result.error.message
-            );
+        /* ================================
+           SUCCESS
+        ================================= */
 
-            googleBtn.disabled =
-                false;
+        if (
+          data.session
+        ) {
+
+          showMessage(
+            "✓ ანგარიში წარმატებით შეიქმნა! გადამისამართება...",
+            "success"
+          );
+
+
+          setTimeout(
+            () => {
+
+              window.location.href =
+                "/account.html";
+
+            },
+            800
+          );
+
+
+        } else {
+
+          showMessage(
+            "✓ რეგისტრაცია დასრულებულია. შეამოწმე ელფოსტა ანგარიშის დასადასტურებლად.",
+            "success"
+          );
+
+
+          buttonText.textContent =
+            "✓ რეგისტრაცია დასრულებულია";
 
         }
 
-    }catch(error){
+
+      } catch (error) {
 
         console.error(error);
 
-        showMessage(
-            "Google რეგისტრაცია ვერ შესრულდა."
-        );
 
-        googleBtn.disabled =
-            false;
-
-    }
-
-}
+        let text =
+          "რეგისტრაცია ვერ მოხერხდა.";
 
 
-/*
-====================================================
-CHECK EXISTING SESSION
-====================================================
-*/
-
-async function checkSession(){
-
-    try{
-
-        const result =
-            await db.auth.getSession();
+        const errorText =
+          (
+            error.message ||
+            ""
+          ).toLowerCase();
 
 
-        if(result.data.session){
+        if (
+          errorText.includes(
+            "already registered"
+          )
+        ) {
 
-            window.location.href =
-                "index.html";
+          text =
+            "ეს ელფოსტა უკვე რეგისტრირებულია.";
 
         }
 
-    }catch(error){
 
-        console.error(
-            "SESSION:",
-            error
+        if (
+          errorText.includes(
+            "password"
+          )
+        ) {
+
+          text =
+            "პაროლი ვერ აკმაყოფილებს მოთხოვნებს.";
+
+        }
+
+
+        if (
+          errorText.includes(
+            "email"
+          )
+        ) {
+
+          text =
+            "გთხოვ შეამოწმე ელფოსტის მისამართი.";
+
+        }
+
+
+        showMessage(
+          text,
+          "error"
         );
+
+
+        button.disabled =
+          false;
+
+
+        buttonText.textContent =
+          "✦ შექმენი ჩემი ECOMAX ანგარიში";
+
+      }
+
+    }
+  );
+
+
+  /* =====================================
+     ALREADY LOGGED IN
+  ====================================== */
+
+  async function checkSession() {
+
+    const {
+      data
+    } =
+      await supabaseClient.auth
+        .getSession();
+
+
+    if (data.session) {
+
+      window.location.href =
+        "/account.html";
 
     }
 
-}
+  }
 
 
-/*
-====================================================
-AUTH LISTENER
-====================================================
-*/
+  checkSession();
 
-db.auth.onAuthStateChange(
-    function(event,session){
-
-        console.log(
-            "ECOMAX AUTH:",
-            event
-        );
-
-    }
-);
-
-
-/*
-====================================================
-START
-====================================================
-*/
-
-checkSession();
 
 </script>
+
 
 </body>
 </html>
