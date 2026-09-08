@@ -1,7 +1,2119 @@
-<!doctype html><html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ECOMAX — რეგისტრაცია</title><link rel="stylesheet" href="css/style.css"><style>
-.authPage{min-height:calc(100vh - 38px);display:grid;place-items:center;padding:45px 16px;position:relative;overflow:hidden}.authPage:before,.authPage:after{content:"";position:absolute;width:440px;height:440px;border-radius:50%;filter:blur(95px);opacity:.16;pointer-events:none}.authPage:before{background:#28e7ff;left:-190px;top:5%}.authPage:after{background:#8b5cf6;right:-190px;bottom:-60px}.authCard{width:min(480px,100%);position:relative;z-index:1;background:#091119ed;backdrop-filter:blur(22px);border:1px solid #28e7ff33;border-radius:28px;padding:32px;box-shadow:0 30px 100px #0008}.back{display:inline-block;color:var(--muted);font-size:13px;margin-bottom:25px}.back:hover{color:var(--accent)}.authLogo{text-align:center;font:700 30px 'Space Grotesk';letter-spacing:7px;color:var(--accent);text-shadow:0 0 28px #28e7ff55}.authTitle{text-align:center;font:700 29px 'Space Grotesk';margin:14px 0 7px}.authSub{text-align:center;color:var(--muted);font-size:13px;line-height:1.6;margin:0 0 23px}.field{margin:13px 0}.field label{display:block;color:#c5d0d7;font-size:12px;font-weight:700;margin-bottom:7px}.field input{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:13px;background:#050a0f;color:var(--text);outline:none;transition:.2s}.field input:focus{border-color:#28e7ff88;box-shadow:0 0 0 4px #28e7ff10}.passwordWrap{position:relative}.toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--muted);cursor:pointer}.meter{height:5px;background:#17232c;border-radius:99px;overflow:hidden;margin-top:8px}.meter span{display:block;height:100%;width:0;transition:.25s}.rules{display:grid;grid-template-columns:1fr 1fr;gap:5px 12px;color:#667681;font-size:10px;margin-top:8px}.rules b{font-weight:500}.rules .ok{color:#45e0a3}.submit{width:100%;padding:14px;margin-top:12px}.msg{text-align:center;min-height:20px;color:var(--muted);font-size:12px;margin-top:12px}.terms{color:#667681;font-size:10px;line-height:1.5;text-align:center;margin:16px 0 0}.terms a,.loginLink{color:var(--accent)}.divider{display:flex;align-items:center;gap:12px;color:#52616b;font-size:10px;margin:20px 0}.divider:before,.divider:after{content:"";height:1px;background:var(--line);flex:1}
-</style></head><body><div class="topbar">ECOMAX • CREATE YOUR ACCOUNT</div><main class="authPage"><section class="authCard"><a class="back" href="index.html">← მთავარ გვერდზე დაბრუნება</a><div class="authLogo">ECOMAX</div><h1 class="authTitle">შექმენი შენი ანგარიში</h1><p class="authSub">დარეგისტრირდი და მიიღე სრული წვდომა ECOMAX-ის შესაძლებლობებზე.</p><form id="registerForm" novalidate><div class="field"><label for="name">სახელი</label><input id="name" type="text" autocomplete="name" placeholder="შენი სახელი" required></div><div class="field"><label for="email">ელფოსტა</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com" required></div><div class="field"><label for="password">პაროლი</label><div class="passwordWrap"><input id="password" type="password" autocomplete="new-password" placeholder="მინიმუმ 8 სიმბოლო" required><button class="toggle" id="togglePassword" type="button">◉</button></div><div class="meter"><span id="meter"></span></div><div class="rules"><b id="r1">○ 8+ სიმბოლო</b><b id="r2">○ დიდი ასო</b><b id="r3">○ პატარა ასო</b><b id="r4">○ ციფრი</b></div></div><div class="field"><label for="confirm">გაიმეორე პაროლი</label><input id="confirm" type="password" autocomplete="new-password" placeholder="გაიმეორე პაროლი" required></div><button class="primary submit" type="submit">ანგარიშის შექმნა ✦</button><div id="msg" class="msg"></div></form><p class="terms">რეგისტრაციით ეთანხმები ECOMAX-ის გამოყენების წესებსა და უსაფრთხოების პოლიტიკას.</p><div class="divider">უკვე გაქვს ანგარიში?</div><p style="text-align:center;margin:0;font-size:13px"><a class="loginLink" href="login.html">შესვლა →</a></p></section></main>
-<script src="js/supabase.js"></script><script>
-const cfg=window.ECOMAX_SUPABASE,form=document.getElementById('registerForm'),msg=document.getElementById('msg'),p=document.getElementById('password'),confirm=document.getElementById('confirm'),meter=document.getElementById('meter');const rules=[['r1',v=>v.length>=8],['r2',v=>/[A-Z]/.test(v)],['r3',v=>/[a-z]/.test(v)],['r4',v=>/\d/.test(v)]];p.addEventListener('input',()=>{const v=p.value,n=rules.filter(x=>x[1](v)).length;meter.style.width=n*25+'%';rules.forEach(([id,fn])=>{const e=document.getElementById(id),ok=fn(v);e.textContent=(ok?'✓ ':'○ ')+e.textContent.slice(2);e.classList.toggle('ok',ok)})});document.getElementById('togglePassword').onclick=()=>p.type=p.type==='password'?'text':'password';
-form.addEventListener('submit',async e=>{e.preventDefault();msg.textContent='';const name=document.getElementById('name').value.trim(),email=document.getElementById('email').value.trim(),password=p.value;if(!name||!email||password.length<8||password!==confirm.value){msg.textContent='გთხოვ, ყველა ველი სწორად შეავსე და პაროლები ერთმანეთს დაემთხვეს.';return}const b=form.querySelector('button[type=submit]');b.disabled=true;b.textContent='იქმნება ანგარიში…';try{if(!cfg?.url||!cfg?.key)throw new Error('რეგისტრაციის კონფიგურაცია ვერ ჩაიტვირთა.');const r=await fetch(cfg.url+'/auth/v1/signup',{method:'POST',headers:{'Content-Type':'application/json',apikey:cfg.key,Authorization:'Bearer '+cfg.key},body:JSON.stringify({email,password,data:{full_name:name}})});const d=await r.json();if(!r.ok)throw new Error(d.error_description||d.msg||d.message||'რეგისტრაცია ვერ შესრულდა.');if(d.access_token){localStorage.setItem('ecomax_session',JSON.stringify(d));msg.textContent='✓ ანგარიში შეიქმნა.';setTimeout(()=>location.href='account.html',700)}else{sessionStorage.setItem('ecomax_pending_email',email);msg.textContent='✓ რეგისტრაცია დასრულდა. შეამოწმე ელფოსტა დასადასტურებლად.'}}catch(err){msg.textContent='⚠️ '+err.message}finally{b.disabled=false;b.textContent='ანგარიშის შექმნა ✦'}});
-</script></body></html>
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ECOMAX • რეგისტრაცია</title>
+
+  <meta
+    name="description"
+    content="ECOMAX — ახალი ანგარიშის შექმნა."
+  >
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+    :root {
+      --bg: #04070b;
+      --card: rgba(10,17,25,.9);
+      --text: #f4f8fb;
+      --muted: #84929d;
+      --cyan: #28e7ff;
+      --cyan-light: #86f5ff;
+      --green: #43e6a3;
+      --red: #ff647d;
+      --yellow: #ffd166;
+      --border: rgba(255,255,255,.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+
+      display: flex;
+      flex-direction: column;
+
+      background:
+        radial-gradient(
+          circle at 15% 10%,
+          rgba(40,231,255,.10),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 90% 15%,
+          rgba(139,92,246,.13),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 50% 100%,
+          rgba(40,231,255,.035),
+          transparent 35%
+        ),
+        var(--bg);
+
+      color: var(--text);
+
+      font-family: Inter, sans-serif;
+
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+
+      position: fixed;
+      inset: 0;
+
+      pointer-events: none;
+
+      opacity: .025;
+
+      background-image:
+        linear-gradient(
+          rgba(255,255,255,.5) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,.5) 1px,
+          transparent 1px
+        );
+
+      background-size: 45px 45px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    /* =====================================
+       TOP BAR
+    ===================================== */
+
+    .topbar {
+      height: 34px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-bottom: 1px solid var(--border);
+
+      color: #687780;
+
+      font-size: 9px;
+      font-weight: 700;
+
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+    }
+
+    /* =====================================
+       HEADER
+    ===================================== */
+
+    header {
+      border-bottom: 1px solid var(--border);
+
+      background: rgba(4,7,11,.72);
+
+      backdrop-filter: blur(20px);
+    }
+
+    .nav {
+      width: min(1180px, calc(100% - 32px));
+
+      height: 72px;
+
+      margin: auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: "Space Grotesk", sans-serif;
+
+      color: var(--cyan);
+
+      font-size: 25px;
+      font-weight: 700;
+
+      letter-spacing: 5px;
+
+      text-shadow:
+        0 0 25px rgba(40,231,255,.35);
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 10px 13px;
+
+      border: 1px solid var(--border);
+      border-radius: 11px;
+
+      background: rgba(255,255,255,.025);
+
+      color: #aebac1;
+
+      font-size: 11px;
+
+      transition: .2s;
+    }
+
+    .back:hover {
+      color: var(--cyan);
+
+      border-color:
+        rgba(40,231,255,.28);
+
+      transform: translateY(-2px);
+    }
+
+    /* =====================================
+       MAIN
+    ===================================== */
+
+    main {
+      flex: 1;
+
+      width: min(1180px, calc(100% - 32px));
+
+      margin: auto;
+
+      padding: 60px 0 80px;
+
+      display: grid;
+
+      grid-template-columns: 1fr 500px;
+
+      gap: 85px;
+
+      align-items: center;
+    }
+
+    /* =====================================
+       INTRO
+    ===================================== */
+
+    .intro {
+      max-width: 580px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 8px 12px;
+
+      border: 1px solid rgba(40,231,255,.15);
+      border-radius: 100px;
+
+      background: rgba(40,231,255,.035);
+
+      color: var(--cyan);
+
+      font-size: 9px;
+      font-weight: 800;
+
+      letter-spacing: 1.7px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+
+      border-radius: 50%;
+
+      background: var(--cyan);
+
+      box-shadow:
+        0 0 15px var(--cyan);
+    }
+
+    .intro h1 {
+      margin-top: 23px;
+
+      font-family: "Space Grotesk", sans-serif;
+
+      font-size: clamp(42px, 6vw, 70px);
+
+      line-height: .98;
+
+      letter-spacing: -3px;
+    }
+
+    .gradient {
+      color: transparent;
+
+      background:
+        linear-gradient(
+          100deg,
+          #fff,
+          var(--cyan-light)
+        );
+
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .intro p {
+      max-width: 530px;
+
+      margin-top: 20px;
+
+      color: var(--muted);
+
+      font-size: 14px;
+
+      line-height: 1.8;
+    }
+
+    .features {
+      display: grid;
+
+      gap: 11px;
+
+      margin-top: 30px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      color: #9aa8b0;
+
+      font-size: 11px;
+    }
+
+    .feature-icon {
+      width: 31px;
+      height: 31px;
+
+      flex: 0 0 31px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 9px;
+
+      background: rgba(40,231,255,.055);
+
+      border: 1px solid rgba(40,231,255,.11);
+
+      color: var(--cyan);
+    }
+
+    /* =====================================
+       REGISTER CARD
+    ===================================== */
+
+    .register-card {
+      position: relative;
+
+      padding: 30px;
+
+      border: 1px solid rgba(255,255,255,.09);
+
+      border-radius: 24px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(14,23,33,.96),
+          rgba(6,11,17,.97)
+        );
+
+      box-shadow:
+        0 35px 100px rgba(0,0,0,.52);
+
+      overflow: hidden;
+    }
+
+    .register-card::before {
+      content: "";
+
+      position: absolute;
+
+      width: 250px;
+      height: 250px;
+
+      top: -160px;
+      right: -100px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(40,231,255,.07);
+
+      filter: blur(30px);
+
+      pointer-events: none;
+    }
+
+    .card-header {
+      position: relative;
+      z-index: 1;
+
+      margin-bottom: 22px;
+    }
+
+    .card-label {
+      color: var(--cyan);
+
+      font-size: 9px;
+      font-weight: 800;
+
+      letter-spacing: 2px;
+    }
+
+    .card-header h2 {
+      margin-top: 8px;
+
+      font-family: "Space Grotesk", sans-serif;
+
+      font-size: 27px;
+
+      letter-spacing: -.7px;
+    }
+
+    .card-header p {
+      margin-top: 7px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+      line-height: 1.6;
+    }
+
+    /* =====================================
+       MESSAGE
+    ===================================== */
+
+    .message {
+      display: none;
+
+      position: relative;
+      z-index: 2;
+
+      margin-bottom: 16px;
+
+      padding: 12px 13px;
+
+      border-radius: 11px;
+
+      font-size: 10px;
+
+      line-height: 1.55;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      border: 1px solid
+        rgba(255,100,125,.2);
+
+      background:
+        rgba(255,100,125,.06);
+
+      color: #ffb4c0;
+    }
+
+    .message.success {
+      border: 1px solid
+        rgba(67,230,163,.2);
+
+      background:
+        rgba(67,230,163,.055);
+
+      color: #9df0c9;
+    }
+
+    .message.warning {
+      border: 1px solid
+        rgba(255,209,102,.2);
+
+      background:
+        rgba(255,209,102,.055);
+
+      color: #ffe29a;
+    }
+
+    /* =====================================
+       FORM
+    ===================================== */
+
+    form {
+      position: relative;
+      z-index: 1;
+    }
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+    .field label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: #c5d0d6;
+
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+
+      left: 14px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      color: #64747d;
+
+      font-size: 13px;
+
+      pointer-events: none;
+    }
+
+    input {
+      width: 100%;
+
+      height: 47px;
+
+      padding:
+        0 42px 0 40px;
+
+      border: 1px solid rgba(255,255,255,.08);
+
+      border-radius: 11px;
+
+      outline: none;
+
+      background:
+        rgba(3,7,11,.76);
+
+      color: #edf8fb;
+
+      font-size: 12px;
+
+      transition: .2s;
+    }
+
+    input::placeholder {
+      color: #53616a;
+    }
+
+    input:focus {
+      border-color:
+        rgba(40,231,255,.45);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(40,231,255,.055);
+    }
+
+    input.invalid {
+      border-color:
+        rgba(255,100,125,.6);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(255,100,125,.06);
+    }
+
+    .password-toggle {
+      position: absolute;
+
+      right: 8px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      width: 34px;
+      height: 34px;
+
+      border: none;
+      border-radius: 8px;
+
+      background: transparent;
+
+      color: #64747d;
+
+      transition: .2s;
+    }
+
+    .password-toggle:hover {
+      color: var(--cyan);
+
+      background:
+        rgba(40,231,255,.05);
+    }
+
+    /* =====================================
+       PASSWORD STRENGTH
+    ===================================== */
+
+    .strength {
+      margin-top: 7px;
+    }
+
+    .strength-bar {
+      height: 3px;
+
+      border-radius: 10px;
+
+      background: #17212a;
+
+      overflow: hidden;
+    }
+
+    .strength-fill {
+      width: 0;
+      height: 100%;
+
+      border-radius: 10px;
+
+      transition: .25s;
+    }
+
+    .strength-text {
+      display: block;
+
+      margin-top: 5px;
+
+      color: #586770;
+
+      font-size: 8px;
+    }
+
+    /* =====================================
+       TERMS
+    ===================================== */
+
+    .terms {
+      display: flex;
+
+      align-items: flex-start;
+
+      gap: 9px;
+
+      margin: 16px 0 20px;
+
+      color: #74828a;
+
+      font-size: 9px;
+
+      line-height: 1.55;
+
+      cursor: pointer;
+    }
+
+    .terms input {
+      width: 14px;
+      height: 14px;
+
+      flex: 0 0 14px;
+
+      margin-top: 1px;
+
+      accent-color: var(--cyan);
+
+      cursor: pointer;
+    }
+
+    .terms a {
+      color: var(--cyan);
+    }
+
+    /* =====================================
+       REGISTER BUTTON
+    ===================================== */
+
+    .register-button {
+      width: 100%;
+      height: 50px;
+
+      border: none;
+
+      border-radius: 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--cyan),
+          var(--cyan-light)
+        );
+
+      color: #001014;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      box-shadow:
+        0 15px 35px
+        rgba(40,231,255,.12);
+
+      transition: .2s;
+    }
+
+    .register-button:hover:not(:disabled) {
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 18px 45px
+        rgba(40,231,255,.20);
+    }
+
+    .register-button:disabled {
+      opacity: .65;
+
+      cursor: not-allowed;
+    }
+
+    .button-content {
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+
+      gap: 8px;
+    }
+
+    .spinner {
+      width: 15px;
+      height: 15px;
+
+      border: 2px solid
+        rgba(0,16,20,.25);
+
+      border-top-color:
+        #001014;
+
+      border-radius: 50%;
+
+      animation:
+        spin .7s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* =====================================
+       LOGIN LINK
+    ===================================== */
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      margin: 21px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+
+      height: 1px;
+
+      flex: 1;
+
+      background:
+        var(--border);
+    }
+
+    .divider span {
+      color: #53616a;
+
+      font-size: 9px;
+
+      letter-spacing: 1.4px;
+    }
+
+    .login-link {
+      text-align: center;
+
+      color: #687780;
+
+      font-size: 10px;
+    }
+
+    .login-link a {
+      color: var(--cyan);
+
+      font-weight: 700;
+    }
+
+    /* =====================================
+       FOOTER
+    ===================================== */
+
+    footer {
+      padding: 22px 15px;
+
+      border-top: 1px solid var(--border);
+
+      text-align: center;
+
+      color: #52616a;
+
+      font-size: 9px;
+    }
+
+    footer strong {
+      color: #71818b;
+    }
+
+    /* =====================================
+       RESPONSIVE
+    ===================================== */
+
+    @media (max-width: 900px) {
+
+      main {
+        grid-template-columns: 1fr;
+
+        max-width: 600px;
+
+        gap: 45px;
+      }
+
+      .intro {
+        max-width: none;
+
+        text-align: center;
+      }
+
+      .intro p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .features {
+        width: fit-content;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 560px) {
+
+      .topbar {
+        font-size: 7px;
+
+        letter-spacing: 1.5px;
+      }
+
+      .nav {
+        width: calc(100% - 20px);
+
+        height: 65px;
+      }
+
+      .logo {
+        font-size: 20px;
+        letter-spacing: 4px;
+      }
+
+      .back {
+        padding: 9px 10px;
+
+        font-size: 9px;
+      }
+
+      main {
+        width: calc(100% - 20px);
+
+        padding:
+          42px 0 55px;
+      }
+
+      .intro h1 {
+        font-size: 45px;
+
+        letter-spacing: -2px;
+      }
+
+      .register-card {
+        padding: 22px 17px;
+
+        border-radius: 19px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================================
+       TOP BAR
+  ========================================== -->
+
+  <div class="topbar">
+    ECOMAX • SECURE REGISTRATION • SUPABASE AUTH
+  </div>
+
+
+  <!-- =========================================
+       HEADER
+  ========================================== -->
+
+  <header>
+
+    <nav class="nav">
+
+      <a
+        href="index.html"
+        class="logo"
+      >
+        ECOMAX
+      </a>
+
+      <a
+        href="index.html"
+        class="back"
+      >
+        ← მთავარ გვერდზე
+      </a>
+
+    </nav>
+
+  </header>
+
+
+  <!-- =========================================
+       MAIN
+  ========================================== -->
+
+  <main>
+
+
+    <!-- =====================================
+         INTRO
+    ====================================== -->
+
+    <section class="intro">
+
+      <div class="status">
+
+        <span class="status-dot"></span>
+
+        CREATE ACCOUNT
+
+      </div>
+
+
+      <h1>
+
+        შექმენი შენი
+
+        <br>
+
+        <span class="gradient">
+          ECOMAX ანგარიში.
+        </span>
+
+      </h1>
+
+
+      <p>
+
+        დარეგისტრირდი ECOMAX-ზე და მიიღე წვდომა
+        პირად ანგარიშზე, შეკვეთებზე, კალათასა და
+        მომავალ პერსონალურ ფუნქციებზე.
+
+      </p>
+
+
+      <div class="features">
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            🔐
+          </div>
+
+          <span>
+            დაცული Supabase Auth
+          </span>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            ✉
+          </div>
+
+          <span>
+            ელფოსტის დადასტურება
+          </span>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            👤
+          </div>
+
+          <span>
+            პირადი ECOMAX ანგარიში
+          </span>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            ⚡
+          </div>
+
+          <span>
+            სწრაფი რეგისტრაცია
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================
+         REGISTER CARD
+    ====================================== -->
+
+    <section class="register-card">
+
+      <div class="card-header">
+
+        <div class="card-label">
+          ECOMAX ACCOUNT
+        </div>
+
+        <h2>
+          ანგარიშის შექმნა
+        </h2>
+
+        <p>
+          შეავსე მონაცემები ახალი ანგარიშის შესაქმნელად.
+        </p>
+
+      </div>
+
+
+      <!-- MESSAGE -->
+
+      <div
+        id="message"
+        class="message"
+        role="alert"
+      ></div>
+
+
+      <!-- FORM -->
+
+      <form
+        id="registerForm"
+        novalidate
+      >
+
+
+        <!-- EMAIL -->
+
+        <div class="field">
+
+          <label for="email">
+            ელფოსტა
+          </label>
+
+          <div class="input-wrap">
+
+            <span class="input-icon">
+              ✉
+            </span>
+
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              placeholder="მაგ. example@gmail.com"
+              required
+            >
+
+          </div>
+
+        </div>
+
+
+        <!-- PASSWORD -->
+
+        <div class="field">
+
+          <label for="password">
+            პაროლი
+          </label>
+
+          <div class="input-wrap">
+
+            <span class="input-icon">
+              🔒
+            </span>
+
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="new-password"
+              placeholder="მინიმუმ 8 სიმბოლო"
+              minlength="8"
+              required
+            >
+
+            <button
+              id="togglePassword"
+              class="password-toggle"
+              type="button"
+              aria-label="პაროლის ჩვენება"
+            >
+              ◉
+            </button>
+
+          </div>
+
+
+          <div class="strength">
+
+            <div class="strength-bar">
+
+              <div
+                id="strengthFill"
+                class="strength-fill"
+              ></div>
+
+            </div>
+
+            <span
+              id="strengthText"
+              class="strength-text"
+            >
+              პაროლის სიმტკიცე
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- CONFIRM PASSWORD -->
+
+        <div class="field">
+
+          <label for="confirmPassword">
+            გაიმეორე პაროლი
+          </label>
+
+          <div class="input-wrap">
+
+            <span class="input-icon">
+              🔒
+            </span>
+
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              autocomplete="new-password"
+              placeholder="გაიმეორე პაროლი"
+              minlength="8"
+              required
+            >
+
+            <button
+              id="toggleConfirmPassword"
+              class="password-toggle"
+              type="button"
+              aria-label="პაროლის ჩვენება"
+            >
+              ◉
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- TERMS -->
+
+        <label class="terms">
+
+          <input
+            id="terms"
+            type="checkbox"
+          >
+
+          <span>
+
+            ვეთანხმები ECOMAX-ის გამოყენების წესებს
+            და ვადასტურებ, რომ მოწოდებული ინფორმაცია
+            სწორია.
+
+          </span>
+
+        </label>
+
+
+        <!-- SUBMIT -->
+
+        <button
+          id="registerButton"
+          class="register-button"
+          type="submit"
+        >
+
+          <span
+            id="buttonContent"
+            class="button-content"
+          >
+            ანგარიშის შექმნა →
+          </span>
+
+        </button>
+
+      </form>
+
+
+      <!-- DIVIDER -->
+
+      <div class="divider">
+
+        <span>
+          უკვე გაქვს ანგარიში?
+        </span>
+
+      </div>
+
+
+      <!-- LOGIN -->
+
+      <div class="login-link">
+
+        <a href="login.html">
+          შესვლა ანგარიშში →
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================
+       FOOTER
+  ========================================== -->
+
+  <footer>
+
+    🔒 დაცული რეგისტრაცია •
+    <strong>ECOMAX</strong>
+    • 2026
+
+  </footer>
+
+
+  <!-- =========================================
+       SUPABASE
+  ========================================== -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+  <script>
+
+    /*
+    ==================================================
+    ECOMAX SUPABASE CONFIG
+    ==================================================
+    */
+
+    const SUPABASE_URL =
+      "https://mkxkqdvtmfbxmldnvsef.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
+
+
+    const {
+      createClient
+    } = window.supabase;
+
+
+    const supabaseClient =
+      createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+          auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true
+          }
+        }
+      );
+
+
+    /*
+    ==================================================
+    ELEMENTS
+    ==================================================
+    */
+
+    const registerForm =
+      document.getElementById(
+        "registerForm"
+      );
+
+    const emailInput =
+      document.getElementById(
+        "email"
+      );
+
+    const passwordInput =
+      document.getElementById(
+        "password"
+      );
+
+    const confirmPasswordInput =
+      document.getElementById(
+        "confirmPassword"
+      );
+
+    const termsInput =
+      document.getElementById(
+        "terms"
+      );
+
+    const registerButton =
+      document.getElementById(
+        "registerButton"
+      );
+
+    const buttonContent =
+      document.getElementById(
+        "buttonContent"
+      );
+
+    const message =
+      document.getElementById(
+        "message"
+      );
+
+    const togglePassword =
+      document.getElementById(
+        "togglePassword"
+      );
+
+    const toggleConfirmPassword =
+      document.getElementById(
+        "toggleConfirmPassword"
+      );
+
+    const strengthFill =
+      document.getElementById(
+        "strengthFill"
+      );
+
+    const strengthText =
+      document.getElementById(
+        "strengthText"
+      );
+
+
+    /*
+    ==================================================
+    MESSAGE
+    ==================================================
+    */
+
+    function showMessage(
+      text,
+      type = "error"
+    ) {
+
+      message.textContent =
+        text;
+
+      message.className =
+        "message show " + type;
+
+    }
+
+
+    function hideMessage() {
+
+      message.textContent =
+        "";
+
+      message.className =
+        "message";
+
+    }
+
+
+    /*
+    ==================================================
+    LOADING
+    ==================================================
+    */
+
+    function setLoading(
+      loading
+    ) {
+
+      registerButton.disabled =
+        loading;
+
+
+      if (loading) {
+
+        buttonContent.innerHTML = `
+          <span class="spinner"></span>
+          ანგარიშის შექმნა...
+        `;
+
+      } else {
+
+        buttonContent.textContent =
+          "ანგარიშის შექმნა →";
+
+      }
+
+    }
+
+
+    /*
+    ==================================================
+    EMAIL NORMALIZATION
+    ==================================================
+    */
+
+    function normalizeEmail(
+      value
+    ) {
+
+      return value
+        .trim()
+        .toLowerCase();
+
+    }
+
+
+    /*
+    ==================================================
+    PASSWORD VISIBILITY
+    ==================================================
+    */
+
+    function setupPasswordToggle(
+      button,
+      input
+    ) {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const hidden =
+            input.type === "password";
+
+
+          input.type =
+            hidden
+              ? "text"
+              : "password";
+
+
+          button.textContent =
+            hidden
+              ? "◉"
+              : "◌";
+
+        }
+      );
+
+    }
+
+
+    setupPasswordToggle(
+      togglePassword,
+      passwordInput
+    );
+
+
+    setupPasswordToggle(
+      toggleConfirmPassword,
+      confirmPasswordInput
+    );
+
+
+    /*
+    ==================================================
+    PASSWORD STRENGTH
+    ==================================================
+    */
+
+    function getPasswordStrength(
+      password
+    ) {
+
+      let score = 0;
+
+
+      if (password.length >= 8) {
+        score++;
+      }
+
+      if (password.length >= 12) {
+        score++;
+      }
+
+      if (/[A-Z]/.test(password)) {
+        score++;
+      }
+
+      if (/[a-z]/.test(password)) {
+        score++;
+      }
+
+      if (/[0-9]/.test(password)) {
+        score++;
+      }
+
+      if (
+        /[^A-Za-z0-9]/.test(password)
+      ) {
+        score++;
+      }
+
+
+      return score;
+
+    }
+
+
+    function updatePasswordStrength() {
+
+      const password =
+        passwordInput.value;
+
+
+      const score =
+        getPasswordStrength(
+          password
+        );
+
+
+      if (!password) {
+
+        strengthFill.style.width =
+          "0%";
+
+        strengthText.textContent =
+          "პაროლის სიმტკიცე";
+
+        return;
+
+      }
+
+
+      if (score <= 2) {
+
+        strengthFill.style.width =
+          "30%";
+
+        strengthText.textContent =
+          "სუსტი პაროლი";
+
+      } else if (score <= 4) {
+
+        strengthFill.style.width =
+          "65%";
+
+        strengthText.textContent =
+          "საშუალო სიმტკიცე";
+
+      } else {
+
+        strengthFill.style.width =
+          "100%";
+
+        strengthText.textContent =
+          "ძლიერი პაროლი";
+
+      }
+
+    }
+
+
+    passwordInput.addEventListener(
+      "input",
+      updatePasswordStrength
+    );
+
+
+    /*
+    ==================================================
+    RESET INPUT ERRORS
+    ==================================================
+    */
+
+    [
+      emailInput,
+      passwordInput,
+      confirmPasswordInput
+    ].forEach(input => {
+
+      input.addEventListener(
+        "input",
+        () => {
+
+          input.classList.remove(
+            "invalid"
+          );
+
+          hideMessage();
+
+        }
+      );
+
+    });
+
+
+    /*
+    ==================================================
+    REGISTER
+    ==================================================
+    */
+
+    registerForm.addEventListener(
+      "submit",
+      async (event) => {
+
+        event.preventDefault();
+
+        hideMessage();
+
+
+        const email =
+          normalizeEmail(
+            emailInput.value
+          );
+
+        const password =
+          passwordInput.value;
+
+        const confirmPassword =
+          confirmPasswordInput.value;
+
+
+        /*
+        ----------------------------------------------
+        EMAIL
+        ----------------------------------------------
+        */
+
+        if (!email) {
+
+          emailInput.classList.add(
+            "invalid"
+          );
+
+          showMessage(
+            "გთხოვ, შეიყვანე ელფოსტა."
+          );
+
+          emailInput.focus();
+
+          return;
+
+        }
+
+
+        if (
+          !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
+            .test(email)
+        ) {
+
+          emailInput.classList.add(
+            "invalid"
+          );
+
+          showMessage(
+            "შეიყვანე სწორი ელფოსტის მისამართი."
+          );
+
+          emailInput.focus();
+
+          return;
+
+        }
+
+
+        /*
+        ----------------------------------------------
+        PASSWORD
+        ----------------------------------------------
+        */
+
+        if (!password) {
+
+          passwordInput.classList.add(
+            "invalid"
+          );
+
+          showMessage(
+            "გთხოვ, შეიყვანე პაროლი."
+          );
+
+          passwordInput.focus();
+
+          return;
+
+        }
+
+
+        if (password.length < 8) {
+
+          passwordInput.classList.add(
+            "invalid"
+          );
+
+          showMessage(
+            "პაროლი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს."
+          );
+
+          passwordInput.focus();
+
+          return;
+
+        }
+
+
+        /*
+        ----------------------------------------------
+        CONFIRM PASSWORD
+        ----------------------------------------------
+        */
+
+        if (
+          password !==
+          confirmPassword
+        ) {
+
+          confirmPasswordInput.classList.add(
+            "invalid"
+          );
+
+          showMessage(
+            "პაროლები ერთმანეთს არ ემთხვევა."
+          );
+
+          confirmPasswordInput.focus();
+
+          return;
+
+        }
+
+
+        /*
+        ----------------------------------------------
+        TERMS
+        ----------------------------------------------
+        */
+
+        if (!termsInput.checked) {
+
+          showMessage(
+            "რეგისტრაციის გასაგრძელებლად დაეთანხმე გამოყენების წესებს."
+          );
+
+          termsInput.focus();
+
+          return;
+
+        }
+
+
+        /*
+        ----------------------------------------------
+        LOADING
+        ----------------------------------------------
+        */
+
+        setLoading(true);
+
+
+        try {
+
+          /*
+          ============================================
+          SUPABASE SIGN UP
+          ============================================
+          */
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient.auth.signUp({
+
+              email: email,
+
+              password: password,
+
+              options: {
+
+                emailRedirectTo:
+                  window.location.origin +
+                  "/login.html"
+
+              }
+
+            });
+
+
+          /*
+          ============================================
+          ERROR
+          ============================================
+          */
+
+          if (error) {
+
+            console.error(
+              "Supabase registration error:",
+              error
+            );
+
+
+            const errorMessage =
+              (
+                error.message ||
+                ""
+              ).toLowerCase();
+
+
+            if (
+              errorMessage.includes(
+                "user already registered"
+              )
+            ) {
+
+              showMessage(
+                "ამ ელფოსტით ანგარიში უკვე არსებობს. სცადე შესვლა.",
+                "warning"
+              );
+
+              return;
+
+            }
+
+
+            if (
+              errorMessage.includes(
+                "password should be at least"
+              )
+            ) {
+
+              showMessage(
+                "პაროლი ძალიან მოკლეა. გამოიყენე მინიმუმ 8 სიმბოლო.",
+                "error"
+              );
+
+              return;
+
+            }
+
+
+            if (
+              errorMessage.includes(
+                "rate limit"
+              ) ||
+              errorMessage.includes(
+                "too many requests"
+              )
+            ) {
+
+              showMessage(
+                "ძალიან ბევრი მოთხოვნაა. ცოტა ხანში თავიდან სცადე.",
+                "warning"
+              );
+
+              return;
+
+            }
+
+
+            showMessage(
+              error.message ||
+              "რეგისტრაცია ვერ დასრულდა. თავიდან სცადე.",
+              "error"
+            );
+
+            return;
+
+          }
+
+
+          /*
+          ============================================
+          SUCCESS
+          ============================================
+          */
+
+          /*
+            Supabase-ის კონფიგურაციის მიხედვით
+            შესაძლებელია ორი შემთხვევა:
+
+            1. email confirmation ჩართულია
+               → session არ არსებობს
+
+            2. email confirmation გამორთულია
+               → session არსებობს
+          */
+
+
+          if (
+            data &&
+            data.session
+          ) {
+
+            showMessage(
+              "რეგისტრაცია წარმატებით დასრულდა ✓",
+              "success"
+            );
+
+
+            setTimeout(
+              () => {
+
+                window.location.replace(
+                  "account.html"
+                );
+
+              },
+              900
+            );
+
+
+            return;
+
+          }
+
+
+          /*
+          ============================================
+          EMAIL CONFIRMATION
+          ============================================
+          */
+
+          showMessage(
+            "რეგისტრაცია დასრულდა ✓ შეამოწმე ელფოსტა დასადასტურებლად, შემდეგ შედი ანგარიშში.",
+            "success"
+          );
+
+
+          /*
+            ველებს ვასუფთავებთ,
+            მაგრამ მომხმარებელს გვერდზე ვტოვებთ,
+            რათა მან დაინახოს შეტყობინება.
+          */
+
+          passwordInput.value =
+            "";
+
+          confirmPasswordInput.value =
+            "";
+
+          termsInput.checked =
+            false;
+
+          updatePasswordStrength();
+
+
+          /*
+            2.5 წამში Login-ზე გადასვლა.
+          */
+
+          setTimeout(
+            () => {
+
+              window.location.replace(
+                "login.html"
+              );
+
+            },
+            2500
+          );
+
+        } catch (error) {
+
+          console.error(
+            "Unexpected registration error:",
+            error
+          );
+
+
+          showMessage(
+            "დაფიქსირდა ტექნიკური შეცდომა. შეამოწმე ინტერნეტი და თავიდან სცადე.",
+            "error"
+          );
+
+        } finally {
+
+          setLoading(false);
+
+        }
+
+      }
+    );
+
+
+    /*
+    ==================================================
+    CHECK EXISTING SESSION
+    ==================================================
+    */
+
+    async function checkExistingSession() {
+
+      try {
+
+        const {
+          data
+        } =
+          await supabaseClient.auth.getSession();
+
+
+        if (
+          data &&
+          data.session
+        ) {
+
+          /*
+            თუ უკვე ავტორიზებულია,
+            Register გვერდზე ყოფნას აზრი აღარ აქვს.
+          */
+
+          showMessage(
+            "შენ უკვე შესული ხარ ECOMAX ანგარიშში.",
+            "success"
+          );
+
+
+          setTimeout(
+            () => {
+
+              window.location.replace(
+                "account.html"
+              );
+
+            },
+            900
+          );
+
+        }
+
+      } catch (error) {
+
+        console.warn(
+          "Session check failed:",
+          error
+        );
+
+      }
+
+    }
+
+
+    checkExistingSession();
+
+
+    /*
+    ==================================================
+    AUTH STATE
+    ==================================================
+    */
+
+    supabaseClient.auth.onAuthStateChange(
+      (
+        event,
+        session
+      ) => {
+
+        if (
+          event === "SIGNED_IN" &&
+          session
+        ) {
+
+          console.log(
+            "ECOMAX registration/login session active."
+          );
+
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
