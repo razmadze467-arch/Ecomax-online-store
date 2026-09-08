@@ -586,6 +586,7 @@
       }
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -918,151 +919,83 @@
   <script src="js/supabase.js"></script>
 
   <script>
-    (async function () {
+    /* =========================
+       ECOMAX SUPABASE ACCOUNT AUTH
+       ========================= */
 
+    const SUPABASE_URL = "https://mkxkqdvtmfbxmldnvsef.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
+
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true
+        }
+      }
+    );
+
+    async function loadAccount() {
       const loading = document.getElementById("loadingScreen");
 
       try {
+        const { data, error } = await supabaseClient.auth.getSession();
 
-        /*
-          ვიღებთ შენახულ ECOMAX session-ს
-        */
+        if (error) throw error;
 
-        const rawSession =
-          localStorage.getItem("ecomax_session");
+        const session = data?.session;
 
-        if (!rawSession) {
-          window.location.replace("login.html");
+        if (!session?.user) {
+          window.location.replace("login.html?redirect=account.html");
           return;
         }
 
-        const session = JSON.parse(rawSession);
-
-        if (!session.access_token) {
-          throw new Error("Invalid session");
-        }
-
-        /*
-          ვამოწმებთ რეალურ Supabase user-ს
-        */
-
-        const response = await fetch(
-          window.ECOMAX_SUPABASE.url +
-          "/auth/v1/user",
-          {
-            method: "GET",
-
-            headers: {
-              "apikey":
-                window.ECOMAX_SUPABASE.key,
-
-              "Authorization":
-                "Bearer " +
-                session.access_token
-            }
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Session expired");
-        }
-
-        const user = await response.json();
-
-        /*
-          მომხმარებლის სახელი
-        */
+        const user = session.user;
 
         const name =
-          user.user_metadata &&
-          user.user_metadata.full_name
-            ? user.user_metadata.full_name
-            : (
-                user.email
-                  ? user.email.split("@")[0]
-                  : "მომხმარებელი"
-              );
+          user.user_metadata?.full_name ||
+          user.user_metadata?.name ||
+          (user.email ? user.email.split("@")[0] : "მომხმარებელი");
 
-        const email =
-          user.email || "";
+        const email = user.email || "";
 
-        /*
-          UI
-        */
-
-        document.getElementById(
-          "welcomeName"
-        ).textContent = name;
-
-        document.getElementById(
-          "profileName"
-        ).textContent = name;
-
-        document.getElementById(
-          "profileEmail"
-        ).textContent = email;
-
-        document.getElementById(
-          "avatar"
-        ).textContent =
+        document.getElementById("welcomeName").textContent = name;
+        document.getElementById("profileName").textContent = name;
+        document.getElementById("profileEmail").textContent = email;
+        document.getElementById("avatar").textContent =
           name.charAt(0).toUpperCase();
-
-        /*
-          Loading-ის გაქრობა
-        */
 
         loading.style.display = "none";
 
       } catch (error) {
-
-        console.error(
-          "ECOMAX Account Error:",
-          error
-        );
-
-        localStorage.removeItem(
-          "ecomax_session"
-        );
-
-        window.location.replace(
-          "login.html"
-        );
-
+        console.error("ECOMAX Account Error:", error);
+        await supabaseClient.auth.signOut();
+        window.location.replace("login.html?redirect=account.html");
       }
-
-    })();
-
-
-    /*
-      LOGOUT
-    */
-
-    function logout() {
-
-      localStorage.removeItem(
-        "ecomax_session"
-      );
-
-      sessionStorage.removeItem(
-        "ecomax_pending_email"
-      );
-
-      window.location.replace(
-        "login.html"
-      );
-
     }
 
+    /* Keep the account page synchronized with Supabase Auth. */
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" || !session) {
+        window.location.replace("login.html?redirect=account.html");
+      }
+    });
 
-    document
-      .getElementById("logoutTop")
-      .addEventListener("click", logout);
+    async function logout() {
+      try {
+        await supabaseClient.auth.signOut();
+      } finally {
+        window.location.replace("login.html");
+      }
+    }
 
+    document.getElementById("logoutTop")?.addEventListener("click", logout);
+    document.getElementById("logoutSide")?.addEventListener("click", logout);
 
-    document
-      .getElementById("logoutSide")
-      .addEventListener("click", logout);
-
+    loadAccount();
   </script>
 
 </body>
