@@ -11,9 +11,26 @@
 <button class="primary submit" type="submit">ანგარიშის შექმნა ✦</button><div id="msg" class="msg"></div></form>
 <p class="terms">რეგისტრაციით ეთანხმები ECOMAX-ის გამოყენების წესებსა და უსაფრთხოების პოლიტიკას.</p><div class="divider">უკვე გაქვს ანგარიში?</div><p style="text-align:center;margin:0;font-size:13px"><a class="loginLink" href="login.html">შესვლა →</a></p>
 </section></main>
+<script src="js/supabase.js"></script>
 <script>
-const p=document.getElementById('password'),m=document.getElementById('meter'),ids=[['r1',v=>v.length>=8],['r2',v=>/[A-Z]/.test(v)],['r3',v=>/[a-z]/.test(v)],['r4',v=>/\d/.test(v)]];
-p.addEventListener('input',()=>{let v=p.value,n=ids.filter(x=>x[1](v)).length;m.style.width=(n*25)+'%';ids.forEach(([id,fn])=>{let e=document.getElementById(id);e.textContent=(fn(v)?'✓ ':'○ ')+e.textContent.slice(2);e.classList.toggle('ok',fn(v))})});
+const form=document.getElementById('registerForm'),msg=document.getElementById('msg');
+const p=document.getElementById('password'),confirm=document.getElementById('confirm');
+const meter=document.getElementById('meter'),ids=[['r1',v=>v.length>=8],['r2',v=>/[A-Z]/.test(v)],['r3',v=>/[a-z]/.test(v)],['r4',v=>/\d/.test(v)]];
+p.addEventListener('input',()=>{const v=p.value,n=ids.filter(x=>x[1](v)).length;meter.style.width=(n*25)+'%';ids.forEach(([id,fn])=>{const e=document.getElementById(id),ok=fn(v);e.textContent=(ok?'✓ ':'○ ')+e.textContent.slice(2);e.classList.toggle('ok',ok)})});
 document.getElementById('togglePassword').onclick=()=>p.type=p.type==='password'?'text':'password';
-document.getElementById('registerForm').addEventListener('submit',e=>{e.preventDefault();const msg=document.getElementById('msg');if(!document.getElementById('name').value.trim()||!document.getElementById('email').value.trim()||p.value.length<8||p.value!==document.getElementById('confirm').value){msg.textContent='გთხოვ, შეავსე ყველა ველი სწორად და გადაამოწმე პაროლი.';return}msg.textContent='რეგისტრაციის სისტემა მზად არის Supabase-თან დასაკავშირებლად.'});
+form.addEventListener('submit',async e=>{
+ e.preventDefault(); msg.textContent='';
+ const name=document.getElementById('name').value.trim(),email=document.getElementById('email').value.trim(),password=p.value;
+ if(!name||!email||password.length<8||password!==confirm.value){msg.textContent='გთხოვ, ყველა ველი სწორად შეავსე და პაროლები ერთმანეთს დაემთხვეს.';return}
+ const btn=form.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='იქმნება ანგარიში…';
+ try{
+  const r=await fetch(window.ECOMAX_SUPABASE.url+'/auth/v1/signup',{method:'POST',headers:{'Content-Type':'application/json','apikey':window.ECOMAX_SUPABASE.key,'Authorization':'Bearer '+window.ECOMAX_SUPABASE.key},body:JSON.stringify({email,password,data:{full_name:name}})});
+  const data=await r.json();
+  if(!r.ok) throw new Error(data.msg||data.message||data.error_description||'რეგისტრაცია ვერ შესრულდა.');
+  msg.textContent=data.access_token?'✓ ანგარიში შეიქმნა.':'✓ რეგისტრაცია დასრულდა. შეამოწმე ელფოსტა დასადასტურებლად.';
+  if(!data.access_token){sessionStorage.setItem('ecomax_pending_email',email);}
+  else setTimeout(()=>location.href='account.html',700);
+ }catch(err){msg.textContent='⚠️ '+err.message}
+ finally{btn.disabled=false;btn.textContent='ანგარიშის შექმნა ✦'}
+});
 </script></body></html>
