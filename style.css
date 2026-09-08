@@ -1111,3 +1111,44 @@ button {
         border-radius: 16px;
     }
 }
+
+/* ================= PRODUCT VOLUME CONTROLS ================= */
+.product-details {
+    margin-top: 14px;
+    display: grid;
+    gap: 7px;
+    color: #6f8995;
+    font-size: 11px;
+    line-height: 1.65;
+}
+.product-details b { color: #a9c4cf; }
+.volume-picker, .custom-volume { margin-top: 13px; }
+.volume-picker label, .custom-volume label {
+    display: block;
+    color: #6f8995;
+    font-size: 10px;
+    margin-bottom: 6px;
+}
+.volume-select, .volume-input {
+    width: 100%;
+    border: 1px solid rgba(0,234,255,.22);
+    border-radius: 10px;
+    background: rgba(0,234,255,.045);
+    color: #e9fbff;
+    padding: 11px 12px;
+    outline: none;
+    font-family: inherit;
+}
+.volume-select:focus, .volume-input:focus {
+    border-color: rgba(0,234,255,.7);
+    box-shadow: 0 0 18px rgba(0,234,255,.1);
+}
+.volume-select option { background: #03101c; color: #fff; }
+.custom-volume-row { display: flex; align-items: center; gap: 8px; }
+.custom-volume-row .volume-input { flex: 1; }
+.custom-volume-row > span { color: var(--cyan); font-size: 12px; font-weight: 800; }
+.product-card .product-info { margin-top: 16px; }
+.product-card .product-volume { line-height: 1.6; }
+@media (max-width: 700px) {
+    .product-details { font-size: 11px; }
+}
