@@ -132,7 +132,9 @@ footer{border-top:1px solid #102d36;color:#6f858e;text-align:center;padding:30px
 <script>
 const SUPABASE_URL="https://mkxkqdvtmfbxmldnvsef.supabase.co";
 const SUPABASE_KEY="sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
-const db=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null; window.__ecomaxDB=db;
+const db=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:"pkce"}}):null; window.__ecomaxDB=db;
+let ecomaxSession=null;
+if(db){db.auth.getSession().then(({data})=>{ecomaxSession=data?.session||null});db.auth.onAuthStateChange((_event,session)=>{ecomaxSession=session||null})}
 window.openCart=openCart;window.renderProducts=renderProducts;window.addToCart=addToCart;window.closeModal=closeModal;window.openCheckout=openCheckout;window.toggleAI=toggleAI;
 const fallback=[
 {name:"ძრავის სარეცხი",category:"ძრავის მოვლა",description:"პროფესიონალური ძრავის საწმენდი საშუალება ცხიმისა და ძლიერი ჭუჭყის მოსაშორებლად.",usage:"გამოიყენე დაბინძურების ხარისხის მიხედვით.",dilution:"1:1 ან 1:3 — დაბინძურების მიხედვით",price:10,unit:"ლიტრი",badge:"PRO",icon:"🔧"},
@@ -160,7 +162,7 @@ function openCart(){const modal=document.getElementById("cartModal"),box=documen
 function setQty(id,q){const x=cart.find(x=>x.id===id);if(x){x.qty=Math.max(1,Math.floor(Number(q)||1));saveCart();openCart()}}
 function changeQty(id,d){const x=cart.find(x=>x.id===id);if(!x)return;x.qty+=d;if(x.qty<=0)cart=cart.filter(x=>x.id!==id);saveCart();openCart()}
 function closeModal(id){document.getElementById(id)?.classList.remove("open")}
-async function openCheckout(){if(!cart.length)return;closeModal("cartModal");const p=await db.from("profiles").select("*").eq("id",r.data.session.user.id).maybeSingle();if(p.data){document.getElementById("coName").value=p.data.full_name||"";document.getElementById("coPhone").value=p.data.phone||"";document.getElementById("coAddress").value=p.data.address||"";document.getElementById("coCity").value=p.data.city||"ქუთაისი"}checkoutSummary();document.getElementById("checkoutModal")?.classList.add("open")}
+async function openCheckout(){if(!cart.length)return;closeModal("cartModal");const p=ecomaxSession?await db.from("profiles").select("*").eq("id",ecomaxSession.user.id).maybeSingle():{data:null};if(p.data){document.getElementById("coName").value=p.data.full_name||"";document.getElementById("coPhone").value=p.data.phone||"";document.getElementById("coAddress").value=p.data.address||"";document.getElementById("coCity").value=p.data.city||"ქუთაისი"}checkoutSummary();document.getElementById("checkoutModal")?.classList.add("open")}
 function checkoutSummary(){let total=0;const box=document.getElementById("checkoutSummary");if(!box)return;box.innerHTML=cart.map(x=>{const p=products.find(p=>p.id===x.id);if(!p)return"";const t=Number(p.price)*x.qty;total+=t;return "<div>"+esc(p.name)+" • "+x.qty+" ლ — "+t.toFixed(2)+"₾</div>"}).join("")+"<hr><b>სულ: "+total.toFixed(2)+"₾</b>"}
 function toggleAI(){document.getElementById("aiPanel")?.classList.toggle("open")}
 /* ================= ECOMAX AI COMPANION 2.0 ================= */
@@ -388,8 +390,7 @@ function toastAI(msg){
  if(chat)chat.insertAdjacentHTML("beforeend",'<div class="msg bot">'+esc(msg)+'</div>');
 }
 
-document.getElementById("checkoutForm")?.addEventListener("submit",async e=>{e.preventDefault();let total=0;const items=cart.map(x=>{const p=products.find(p=>p.id===x.id),line=Number(p.price)*x.qty;total+=line;return{product_id:p.id,product_name:p.name,quantity:x.qty,unit_price:Number(p.price),unit:p.unit}});const {error}=await db.from("orders").insert({user_id:r.data.session.user.id,status:"new",customer_name:document.getElementById("coName").value.trim(),phone:document.getElementById("coPhone").value.trim(),address:document.getElementById("coAddress").value.trim(),city:document.getElementById("coCity").value.trim(),delivery_method:document.getElementById("coDelivery").value,payment_method:document.getElementById("coPayment").value,items,total});const m=document.getElementById("checkoutMsg");if(error){m.innerHTML='<p class="error">შეკვეთა ვერ გაიგზავნა: '+esc(error.message)+'</p>';return}cart=[];saveCart();m.innerHTML='<p class="success">შეკვეთა მიღებულია.</p>';setTimeout(()=>location.reload(),800)});
-}
+document.getElementById("checkoutForm")?.addEventListener("submit",async e=>{e.preventDefault();let total=0;const items=cart.map(x=>{const p=products.find(p=>p.id===x.id),line=Number(p.price)*x.qty;total+=line;return{product_id:p.id,product_name:p.name,quantity:x.qty,unit_price:Number(p.price),unit:p.unit}});const {error}=await db.from("orders").insert({user_id:ecomaxSession?.user?.id||null,status:"new",customer_name:document.getElementById("coName").value.trim(),phone:document.getElementById("coPhone").value.trim(),address:document.getElementById("coAddress").value.trim(),city:document.getElementById("coCity").value.trim(),delivery_method:document.getElementById("coDelivery").value,payment_method:document.getElementById("coPayment").value,items,total});const m=document.getElementById("checkoutMsg");if(error){m.innerHTML='<p class="error">შეკვეთა ვერ გაიგზავნა: '+esc(error.message)+'</p>';return}cart=[];saveCart();m.innerHTML='<p class="success">შეკვეთა მიღებულია.</p>';setTimeout(()=>location.reload(),800)});
 </script>
 <script>
 if (location.pathname === "/index.html") { history.replaceState(null, "", "/" + location.hash); }
@@ -418,6 +419,7 @@ function initAuth(){
  document.getElementById("authForgot").onclick=async()=>{const email=prompt("შეიყვანე ელფოსტა:");if(!email)return;try{const {error}=await sb.auth.resetPasswordForEmail(email.trim().toLowerCase(),{redirectTo:location.href});if(error)throw error;say("✓ აღდგენის ბმული გაიგზავნა.","authok")}catch(e){say("პაროლის აღდგენა ვერ მოხერხდა.","autherr")}};
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initAuth);else initAuth();
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",loadProducts);else loadProducts();
 })();</script>
 </body>
 </html>
