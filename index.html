@@ -382,5 +382,16 @@ document.getElementById("checkoutForm")?.addEventListener("submit",async e=>{e.p
 <script>
 if (location.pathname === "/index.html") { history.replaceState(null, "", "/" + location.hash); }
 </script>
-</body>
+<script>
+(function(){
+ const SURL="https://mkxkqdvtmfbxmldnvsef.supabase.co",SKEY="sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
+ if(!window.supabase||window.__ecomaxAuthUI)return; window.__ecomaxAuthUI=1;
+ const client=window.supabase.createClient(SURL,SKEY);
+ const a=document.createElement("a");a.href="/account.html";a.id="ecomaxAccountLink";a.textContent="👤 ჩემი ანგარიში";a.style.cssText="display:inline-flex;align-items:center;gap:7px;padding:9px 13px;border:1px solid #19e6ff44;border-radius:11px;color:#effcff;text-decoration:none;background:#071820;margin:8px";
+ document.body.appendChild(a);
+ function update(s){if(s){a.textContent="👤 "+(s.user_metadata?.full_name||s.email?.split("@")[0]||"ჩემი ანგარიში")}else a.textContent="👤 შესვლა / რეგისტრაცია"}
+ client.auth.getSession().then(({data})=>update(data.session));
+ client.auth.onAuthStateChange((e,s)=>update(s));
+})();
+</script></body>
 </html>
