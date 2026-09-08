@@ -1,139 +1,27 @@
-<!doctype html>
-<html lang="ka">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ECOMAX — ჩემი ანგარიში</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;600;700;800;900&display=swap');
-:root{--bg:#02070b;--panel:#07141b;--panel2:#0a1c24;--line:#153945;--cyan:#19e6ff;--text:#f4fbfd;--muted:#8ba5ae;--green:#49e39b;--yellow:#ffd078;--red:#ff637a}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 10% 10%,rgba(25,230,255,.12),transparent 30%),radial-gradient(circle at 90% 85%,rgba(0,160,200,.08),transparent 30%),var(--bg);color:var(--text);font-family:"Noto Sans Georgian",Arial,sans-serif}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;background-image:linear-gradient(rgba(25,230,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(25,230,255,.08) 1px,transparent 1px);background-size:55px 55px;mask-image:linear-gradient(to bottom,#000,transparent 80%)}
-header{position:sticky;top:0;z-index:20;background:rgba(2,7,11,.84);backdrop-filter:blur(18px);border-bottom:1px solid rgba(25,230,255,.13)}
-.nav{max-width:1200px;margin:auto;height:70px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:15px}.brand{display:flex;align-items:center;gap:11px;font:bold 20px Arial;letter-spacing:4px}.orb{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle,#fff 0 3%,var(--cyan) 12%,#08788b 40%,#02141a 72%);box-shadow:0 0 25px rgba(25,230,255,.7)}
-.actions{display:flex;gap:9px}.btn{border:1px solid #193d49;background:#07151b;color:#dcecef;border-radius:9px;padding:10px 14px;font:700 11px "Noto Sans Georgian";cursor:pointer;text-decoration:none}.btn:hover{border-color:var(--cyan);color:var(--cyan)}
-main{position:relative;z-index:2;max-width:1200px;margin:auto;padding:42px 20px 70px}.eyebrow{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(25,230,255,.22);border-radius:99px;padding:7px 11px;color:var(--cyan);font-size:9px;font-weight:900;letter-spacing:2px}.eyebrow:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
-h1{font-size:clamp(35px,5vw,58px);line-height:1;margin:18px 0 9px;letter-spacing:-2px}h1 span{color:var(--cyan)}.lead{color:var(--muted);font-size:12px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:25px 0}.stat,.card{border:1px solid rgba(25,230,255,.14);border-radius:17px;background:linear-gradient(145deg,rgba(8,25,33,.95),rgba(3,12,17,.98));box-shadow:0 20px 60px rgba(0,0,0,.3)}.stat{padding:19px}.stat small{color:#718b94;font-size:9px;font-weight:800}.stat strong{display:block;margin-top:8px;font:bold 25px Arial}.cyan{color:var(--cyan)}.green{color:var(--green)}
-.layout{display:grid;grid-template-columns:350px 1fr;gap:18px}.card{overflow:hidden}.head{padding:18px 20px;border-bottom:1px solid rgba(25,230,255,.09);display:flex;justify-content:space-between;align-items:center}.head b{font-size:14px}.head small{display:block;color:#718b94;font-size:9px;margin-top:4px}.profile{padding:22px}.avatar{width:72px;height:72px;border-radius:20px;display:grid;place-items:center;background:radial-gradient(circle,#fff 0 3%,var(--cyan) 12%,#08788b 45%,#031319 72%);color:#001015;font:bold 25px Arial;box-shadow:0 0 35px rgba(25,230,255,.18)}.name{font-size:21px;font-weight:900;margin-top:15px}.email{color:var(--muted);font-size:10px;margin-top:4px;word-break:break-all}.row{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05)}.row:last-child{border:0}.row small{display:block;color:#5f7982;font-size:8px;text-transform:uppercase;letter-spacing:1px}.row div{margin-top:4px;font-size:11px}.edit{width:100%;height:44px;border:1px solid rgba(25,230,255,.3);background:rgba(25,230,255,.06);color:var(--cyan);border-radius:9px;font-weight:900;cursor:pointer}
-.orders{padding:7px 18px 18px}.order{display:grid;grid-template-columns:1fr auto auto;gap:18px;align-items:center;padding:17px 2px;border-bottom:1px solid rgba(255,255,255,.06)}.order:last-child{border:0}.code{color:var(--cyan);font:bold 11px Arial}.date{color:#708891;font-size:9px;margin-top:5px}.amount{font:bold 15px Arial}.status{display:inline-block;min-width:100px;text-align:center;padding:7px 9px;border-radius:99px;font-size:8px;font-weight:900}.new,.pending{color:var(--yellow);background:rgba(255,208,120,.07);border:1px solid rgba(255,208,120,.18)}.confirmed,.processing{color:#8defff;background:rgba(25,230,255,.06);border:1px solid rgba(25,230,255,.16)}.shipped{color:#b2b8ff;background:rgba(130,140,255,.07);border:1px solid rgba(130,140,255,.17)}.delivered{color:var(--green);background:rgba(73,227,155,.07);border:1px solid rgba(73,227,155,.17)}.cancelled{color:#ff91a0;background:rgba(255,99,122,.07);border:1px solid rgba(255,99,122,.17)}.details{margin-top:7px;background:#07151b;color:#8da6ae;border:1px solid #183b47;border-radius:7px;padding:6px 8px;font-size:8px;cursor:pointer}.details:hover{color:var(--cyan);border-color:var(--cyan)}
-.empty{padding:70px 15px;text-align:center;color:var(--muted);font-size:11px}.empty strong{display:block;color:#dcecef;font-size:14px;margin-bottom:7px}
-.modal{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.76);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:18px}.modal.open{display:flex}.box{width:min(620px,100%);max-height:90vh;overflow:auto;background:#07141b;border:1px solid rgba(25,230,255,.24);border-radius:18px;box-shadow:0 30px 100px #000}.mh{padding:18px 20px;border-bottom:1px solid #15343e;display:flex;justify-content:space-between}.close{background:none;border:0;color:#8da6ae;font-size:25px;cursor:pointer}.mb{padding:20px}.details-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.detail{padding:12px;border:1px solid #143640;border-radius:9px;background:#061017}.detail small{color:#607a83;font-size:8px}.detail strong{display:block;margin-top:5px;font-size:11px}.items{margin-top:20px}.item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #14313a;font-size:10px}.item b{color:var(--cyan)}.total{display:flex;justify-content:space-between;padding-top:15px;font:bold 16px Arial}
-.form{padding:20px}.field{margin-bottom:14px}.field label{display:block;color:#9eb4bb;font-size:9px;font-weight:800;margin-bottom:6px}.field input{width:100%;height:45px;background:#030b10;border:1px solid #173944;border-radius:9px;color:#fff;padding:0 12px;outline:none}.field input:focus{border-color:var(--cyan)}.save{width:100%;height:46px;border:0;border-radius:9px;background:var(--cyan);color:#001015;font-weight:900;cursor:pointer}
-.toast{position:fixed;right:18px;bottom:18px;z-index:200;padding:13px 16px;background:#071a21;border:1px solid var(--cyan);border-radius:10px;color:#dffaff;font-size:10px;transform:translateY(100px);opacity:0;transition:.25s}.toast.show{transform:translateY(0);opacity:1}
-.loading{padding:60px;text-align:center;color:var(--muted);font-size:10px}
-@media(max-width:800px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.order{grid-template-columns:1fr auto}.order .status{grid-column:2}.order .amount{grid-column:1}.details-grid{grid-template-columns:1fr}}
-@media(max-width:500px){main{padding:28px 12px}.nav{padding:0 12px}.brand{font-size:16px}.site{display:none}.stats{grid-template-columns:1fr}.order{gap:8px}.order .details{font-size:7px}.order .status{min-width:90px}.details-grid{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
-<header><div class="nav"><div class="brand"><span class="orb"></span>ECOMAX</div><div class="actions"><a class="btn site" href="index.html">← მაღაზია</a><button class="btn" onclick="location.reload()">↻</button><button class="btn" onclick="logout()">გამოსვლა</button></div></div></header>
-
-<main>
-<div class="eyebrow">MY ECOMAX ACCOUNT</div>
-<h1>ჩემი <span>ECOMAX</span></h1>
-<div class="lead">პროფილი, შეკვეთები და მათი მიმდინარე სტატუსები ერთ სივრცეში.</div>
-
-<div class="stats">
-<div class="stat"><small>შეკვეთების რაოდენობა</small><strong id="count" class="cyan">0</strong></div>
-<div class="stat"><small>შეკვეთების ჯამი</small><strong id="spent">₾0.00</strong></div>
-<div class="stat"><small>ანგარიში</small><strong class="green">ACTIVE</strong></div>
-</div>
-
-<div class="layout">
-<section class="card">
-<div class="head"><div><b>👤 პროფილი</b><small>პერსონალური მონაცემები</small></div></div>
-<div class="profile">
-<div id="avatar" class="avatar">E</div>
-<div id="name" class="name">იტვირთება...</div>
-<div id="email" class="email">—</div>
-<div class="row"><small>ტელეფონი</small><div id="phone">—</div></div>
-<div class="row"><small>ქალაქი</small><div id="city">—</div></div>
-<div class="row"><small>მისამართი</small><div id="address">—</div></div>
-<div class="row"><small>რეგისტრაცია</small><div id="created">—</div></div>
-<button class="edit" onclick="openEdit()">✦ პროფილის რედაქტირება</button>
-</div>
-</section>
-
-<section class="card">
-<div class="head"><div><b>📦 ჩემი შეკვეთები</b><small>შეკვეთების ისტორია</small></div></div>
-<div id="orders" class="orders"><div class="loading">შეკვეთების ჩატვირთვა...</div></div>
-</section>
-</div>
-</main>
-
-<div id="orderModal" class="modal" onclick="outside(event,'orderModal')"><div class="box"><div class="mh"><b id="orderTitle">შეკვეთის დეტალები</b><button class="close" onclick="closeModal('orderModal')">×</button></div><div id="orderBody" class="mb"></div></div></div>
-
-<div id="editModal" class="modal" onclick="outside(event,'editModal')"><div class="box"><div class="mh"><b>პროფილის რედაქტირება</b><button class="close" onclick="closeModal('editModal')">×</button></div><form id="editForm" class="form"><div class="field"><label>სახელი და გვარი</label><input id="editName" required></div><div class="field"><label>ტელეფონი</label><input id="editPhone"></div><div class="field"><label>ქალაქი</label><input id="editCity"></div><div class="field"><label>მისამართი</label><input id="editAddress"></div><button class="save" type="submit">ცვლილებების შენახვა</button></form></div></div>
-<div id="toast" class="toast"></div>
-
+<!doctype html><html lang="ka"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#02070b"><title>ECOMAX — ჩემი ანგარიში</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,#073944,#02070b 45%);color:#effcff;font-family:system-ui,-apple-system,"Noto Sans Georgian",sans-serif}.wrap{width:min(1050px,calc(100% - 28px));margin:auto}.top{padding:20px 0;display:flex;justify-content:space-between;align-items:center}.logo{font-weight:900;letter-spacing:4px;color:#19e6ff;text-shadow:0 0 20px #19e6ff55}.back,.btn,.tab,.side button{border:1px solid #19e6ff35;border-radius:11px;background:#071820;color:#effcff;padding:11px 14px;cursor:pointer}.back{text-decoration:none}.hero{text-align:center;padding:30px 0}.hero h1{font-size:clamp(32px,7vw,56px);margin:0}.muted{color:#8ba5ae}.card{background:#07141bee;border:1px solid #19e6ff35;border-radius:22px;padding:22px;box-shadow:0 0 45px #00eaff12;backdrop-filter:blur(14px)}.auth{width:min(480px,100%);margin:auto}.tabs{display:grid;grid-template-columns:1fr 1fr;margin-bottom:20px}.tab{border-radius:0}.tab:first-child{border-radius:10px 0 0 10px}.tab:last-child{border-radius:0 10px 10px 0}.tab.active,.side button.active{background:#0c3b45}.hide{display:none!important}label{display:block;margin:12px 0 6px;color:#b4cbd1;font-size:13px}input{width:100%;padding:13px;border-radius:11px;border:1px solid #19e6ff30;background:#020b10;color:#fff;outline:0}input:focus{border-color:#19e6ff;box-shadow:0 0 15px #19e6ff18}.btn{width:100%;margin-top:15px;background:#0a3038;font-weight:800}.link{display:block;border:0;background:none;color:#19e6ff;margin:13px auto;cursor:pointer}.msg{min-height:20px;margin-top:12px;font-size:13px}.error{color:#ff7085}.ok{color:#61edaa}.dashboard{display:grid;grid-template-columns:270px 1fr;gap:18px}.side{display:flex;flex-direction:column;gap:7px}.avatar{width:76px;height:76px;border:1px solid #19e6ff66;border-radius:50%;display:grid;place-items:center;font-size:30px;margin:0 auto 10px;box-shadow:0 0 25px #19e6ff20}.side button{text-align:left;background:transparent}.order{padding:14px;border:1px solid #19e6ff1c;border-radius:12px;margin:9px 0}.badge{float:right;padding:4px 8px;border:1px solid #19e6ff44;border-radius:99px;font-size:11px}.danger{color:#ff7085}@media(max-width:700px){.dashboard{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr}.identity{grid-column:1/-1}}
+</style></head><body><div class="wrap"><header class="top"><div class="logo">ECOMAX</div><a class="back" href="/">← მაღაზიაში</a></header>
+<section id="auth"><div class="hero"><h1>MY ACCOUNT</h1><p class="muted">უსაფრთხო ავტორიზაცია და შენი შეკვეთები</p></div><div class="card auth"><div class="tabs"><button id="lt" class="tab active" onclick="mode('login')">ავტორიზაცია</button><button id="st" class="tab" onclick="mode('signup')">რეგისტრაცია</button></div>
+<form id="lf" onsubmit="login(event)"><label>ელფოსტა</label><input id="le" type="email" autocomplete="email" required><label>პაროლი</label><input id="lp" type="password" autocomplete="current-password" required><button class="btn">შესვლა</button><button type="button" class="link" onclick="forgot()">დაგავიწყდა პაროლი?</button></form>
+<form id="sf" class="hide" onsubmit="signup(event)"><label>სახელი და გვარი</label><input id="sn" autocomplete="name" required><label>ტელეფონი</label><input id="sp" type="tel" autocomplete="tel"><label>ელფოსტა</label><input id="se" type="email" autocomplete="email" required><label>პაროლი <span class="muted">(მინ. 8 სიმბოლო)</span></label><input id="ss" type="password" minlength="8" autocomplete="new-password" required><button class="btn">ანგარიშის შექმნა</button></form><div id="am" class="msg"></div></div></section>
+<section id="account" class="hide"><div class="hero"><h1>ACCOUNT</h1><p id="welcome" class="muted"></p></div><div class="dashboard"><aside class="card side"><div class="identity" style="text-align:center"><div class="avatar">🤖</div><b id="name">ECOMAX USER</b><small id="email" class="muted" style="display:block"></small></div><button class="active" onclick="tab('profile',this)">👤 პროფილი</button><button onclick="tab('orders',this)">📦 შეკვეთები</button><button onclick="tab('security',this)">🔐 უსაფრთხოება</button><button onclick="logout()">↪ გასვლა</button></aside><main class="card">
+<div id="profile"><h2>პროფილი</h2><label>სახელი და გვარი</label><input id="pn"><label>ტელეფონი</label><input id="pp"><button class="btn" onclick="saveProfile()">შენახვა</button><div id="pm" class="msg"></div></div>
+<div id="orders" class="hide"><h2>ჩემი შეკვეთები</h2><div id="ol" class="muted">იტვირთება...</div></div>
+<div id="security" class="hide"><h2>უსაფრთხოება</h2><label>ახალი პაროლი</label><input id="np" type="password" minlength="8" autocomplete="new-password"><button class="btn" onclick="changePassword()">პაროლის შეცვლა</button><div id="sm" class="msg"></div></div>
+</main></div></section></div>
 <script>
-const SUPABASE_URL="https://mkxkqdvtmfbxmldnvsef.supabase.co";
-const SUPABASE_ANON_KEY="sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
-const db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-let user=null,profile=null,orders=[];
-
-const $=id=>document.getElementById(id);
-const esc=v=>String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
-const money=v=>"₾"+Number(v||0).toFixed(2);
-const date=v=>v?new Date(v).toLocaleString("ka-GE",{dateStyle:"medium",timeStyle:"short"}):"—";
-function initials(n){return (n||"E").trim().split(/\s+/).map(x=>x[0]).slice(0,2).join("").toUpperCase()||"E"}
-function status(s){const x=String(s||"new").toLowerCase();const map={new:"ახალი",confirmed:"დადასტურებული",processing:"მუშავდება",shipped:"გაგზავნილია",delivered:"ჩაბარებული",cancelled:"გაუქმებული",canceled:"გაუქმებული",pending:"მოლოდინში"};return {text:map[x]||s||"ახალი",cls:x==="canceled"?"cancelled":x}}
-function toast(t){$("toast").textContent=t;$("toast").classList.add("show");clearTimeout(window.tt);window.tt=setTimeout(()=>$("toast").classList.remove("show"),3000)}
-
-async function init(){
- const r=await db.auth.getSession(); user=r.data.session?.user;
- if(!user){location.href="login.html";return}
- await loadProfile();
- await loadOrders();
-}
-async function loadProfile(){
- const r=await db.from("profiles").select("id,full_name,phone,address,city,created_at,updated_at,role").eq("id",user.id).maybeSingle();
- if(r.error) console.warn("profiles:",r.error);
- const m=user.user_metadata||{};
- profile=r.data||{id:user.id,full_name:m.full_name||m.name||user.email?.split("@")[0]||"ECOMAX User",phone:m.phone||"",address:m.address||"",city:m.city||"ქუთაისი",created_at:user.created_at,role:"customer"};
- renderProfile();
-}
-function renderProfile(){
- const n=profile.full_name||user.user_metadata?.full_name||"ECOMAX User";
- $("name").textContent=n;$("email").textContent=user.email||"—";$("phone").textContent=profile.phone||"არ არის მითითებული";$("city").textContent=profile.city||"—";$("address").textContent=profile.address||"—";$("created").textContent=date(profile.created_at||user.created_at);$("avatar").textContent=initials(n);
- $("editName").value=n;$("editPhone").value=profile.phone||"";$("editCity").value=profile.city||"";$("editAddress").value=profile.address||"";
-}
-async function loadOrders(){
- const r=await db.from("orders").select("id,user_id,status,customer_name,phone,address,city,items,total,created_at,admin_note,updated_at,payment_method,delivery_method").eq("user_id",user.id).order("created_at",{ascending:false});
- if(r.error){console.error(r.error);$("orders").innerHTML='<div class="empty"><strong>შეკვეთების ჩატვირთვა ვერ მოხერხდა</strong>'+esc(r.error.message)+'</div>';return}
- orders=r.data||[];renderOrders();
- $("count").textContent=orders.length;$("spent").textContent=money(orders.reduce((a,o)=>a+Number(o.total||0),0));
-}
-function renderOrders(){
- if(!orders.length){$("orders").innerHTML='<div class="empty"><strong>ჯერ შეკვეთა არ გაქვს 🛒</strong><span>გადადით მაღაზიაში და გააკეთეთ პირველი შეკვეთა.</span><br><br><a class="btn" href="index.html">პროდუქციის ნახვა</a></div>';return}
- $("orders").innerHTML=orders.map((o,i)=>{const s=status(o.status);return '<div class="order"><div><div class="code">ECOMAX-'+String(o.id).slice(0,8).toUpperCase()+'</div><div class="date">'+date(o.created_at)+'</div></div><div><span class="status '+esc(s.cls)+'">'+esc(s.text)+'</span><br><button class="details" onclick="openOrder('+i+')">დეტალები</button></div><div class="amount">'+money(o.total)+'</div></div>'}).join("");
-}
-function openOrder(i){
- const o=orders[i];if(!o)return;
- $("orderTitle").textContent="ECOMAX-"+String(o.id).slice(0,8).toUpperCase();
- let items=o.items||[];if(typeof items==="string"){try{items=JSON.parse(items)}catch{items=[]}}
- const ih=Array.isArray(items)&&items.length?items.map(x=>{const q=Number(x.quantity??x.qty??1);const p=Number(x.unit_price??x.price??0);return '<div class="item"><span>'+esc(x.product_name||x.name||"პროდუქტი")+' × '+q+'</span><b>'+money(x.total??q*p)+'</b></div>'}).join(""):'<div class="item">პროდუქციის დეტალები არ არის შენახული.</div>';
- const s=status(o.status);
- $("orderBody").innerHTML='<div class="details-grid"><div class="detail"><small>სტატუსი</small><strong><span class="status '+esc(s.cls)+'">'+esc(s.text)+'</span></strong></div><div class="detail"><small>სრული თანხა</small><strong>'+money(o.total)+'</strong></div><div class="detail"><small>კლიენტი</small><strong>'+esc(o.customer_name||profile.full_name)+'</strong></div><div class="detail"><small>ტელეფონი</small><strong>'+esc(o.phone||profile.phone)+'</strong></div><div class="detail"><small>ქალაქი</small><strong>'+esc(o.city||profile.city)+'</strong></div><div class="detail"><small>მისამართი</small><strong>'+esc(o.address||profile.address)+'</strong></div><div class="detail"><small>მიწოდება</small><strong>'+esc(o.delivery_method||"—")+'</strong></div><div class="detail"><small>გადახდა</small><strong>'+esc(o.payment_method||"—")+'</strong></div></div><div class="items">'+ih+'<div class="total"><span>სულ</span><span>'+money(o.total)+'</span></div></div>'+(o.admin_note?'<div class="detail" style="margin-top:15px"><small>ადმინისტრატორის შენიშვნა</small><strong>'+esc(o.admin_note)+'</strong></div>':"");
- $("orderModal").classList.add("open");document.body.style.overflow="hidden";
-}
-function openEdit(){$("editModal").classList.add("open");document.body.style.overflow="hidden"}
-function closeModal(id){$(id).classList.remove("open");document.body.style.overflow=""}
-function outside(e,id){if(e.target.id===id)closeModal(id)}
-$("editForm").addEventListener("submit",async e=>{
- e.preventDefault();const name=$("editName").value.trim();if(name.length<2){toast("სახელი ძალიან მოკლეა");return}
- const data={full_name:name,phone:$("editPhone").value.trim(),city:$("editCity").value.trim(),address:$("editAddress").value.trim(),updated_at:new Date().toISOString()};
- let r=await db.from("profiles").upsert({id:user.id,...data},{onConflict:"id"});
- if(r.error){console.error(r.error);toast("პროფილის შენახვა ვერ მოხერხდა: "+r.error.message);return}
- const meta={...(user.user_metadata||{}),full_name:name,phone:data.phone,address:data.address,city:data.city};
- const au=await db.auth.updateUser({data:meta});if(au.error)console.warn(au.error);
- profile={...(profile||{}),...data,id:user.id};renderProfile();closeModal("editModal");toast("✓ პროფილი განახლდა");
-});
-async function logout(){await db.auth.signOut();location.href="login.html"}
-db.auth.onAuthStateChange((event,session)=>{if(event==="SIGNED_OUT")location.href="login.html"});
-init();
-</script>
-</body>
-</html>
+const URL="https://mkxkqdvtmfbxmldnvsef.supabase.co",KEY="sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd",sb=supabase.createClient(URL,KEY),$=id=>document.getElementById(id);
+function message(id,t,c=""){const e=$(id);e.textContent=t;e.className="msg "+c}
+function mode(x){$("lf").classList.toggle("hide",x!=="login");$("sf").classList.toggle("hide",x!=="signup");$("lt").classList.toggle("active",x==="login");$("st").classList.toggle("active",x==="signup");message("am","")}
+async function login(e){e.preventDefault();message("am","მიმდინარეობს შესვლა...");const r=await sb.auth.signInWithPassword({email:$("le").value.trim(),password:$("lp").value});if(r.error)return message("am",r.error.message,"error");load()}
+async function signup(e){e.preventDefault();message("am","ანგარიში იქმნება...");const r=await sb.auth.signUp({email:$("se").value.trim(),password:$("ss").value,options:{data:{full_name:$("sn").value.trim(),phone:$("sp").value.trim()}}});if(r.error)return message("am",r.error.message,"error");if(r.data.session)load();else message("am","ანგარიში შეიქმნა. შეამოწმე ელფოსტა დასადასტურებლად.","ok")}
+async function forgot(){const e=prompt("შეიყვანე ანგარიშის ელფოსტა:");if(!e)return;const r=await sb.auth.resetPasswordForEmail(e.trim(),{redirectTo:location.origin+"/account.html"});alert(r.error?r.error.message:"აღდგენის ბმული გამოგზავნილია ელფოსტაზე.")}
+async function load(){const r=await sb.auth.getUser(),u=r.data.user;if(!u)return;$("auth").classList.add("hide");$("account").classList.remove("hide");const m=u.user_metadata||{};$("name").textContent=m.full_name||"ECOMAX USER";$("email").textContent=u.email||"";$("welcome").textContent="მოგესალმები, "+(m.full_name||"მომხმარებელო")+" 👋";$("pn").value=m.full_name||"";$("pp").value=m.phone||"";orders(u.id)}
+async function saveProfile(){const r=await sb.auth.updateUser({data:{full_name:$("pn").value.trim(),phone:$("pp").value.trim()}});message("pm",r.error?r.error.message:"პროფილი განახლდა.",r.error?"error":"ok");if(!r.error)load()}
+async function changePassword(){const p=$("np").value;if(p.length<8)return message("sm","პაროლი მინიმუმ 8 სიმბოლო უნდა იყოს.","error");const r=await sb.auth.updateUser({password:p});message("sm",r.error?r.error.message:"პაროლი შეიცვალა.",r.error?"error":"ok");if(!r.error)$("np").value=""}
+async function orders(uid){const b=$("ol"),r=await sb.from("orders").select("order_number,status,total,created_at,updated_at").eq("user_id",uid).order("created_at",{ascending:false}).limit(30);if(r.error)return b.innerHTML='<span class="danger">შეკვეთების ჩატვირთვა ვერ მოხერხდა.</span>';if(!r.data?.length)return b.textContent="ჯერ შეკვეთები არ გაქვს.";b.innerHTML=r.data.map(o=>'<div class="order"><b>'+esc(o.order_number||"შეკვეთა")+'</b><span class="badge">'+esc(status(o.status))+'</span><div style="margin-top:10px">სულ: <b>'+Number(o.total||0).toFixed(2)+'₾</b></div><small class="muted">'+new Date(o.created_at).toLocaleString("ka-GE")+'</small></div>').join("")}
+function status(s){return({new:"მიღებულია",processing:"მუშავდება",shipped:"იგზავნება",completed:"ჩაბარდა",cancelled:"გაუქმებული"})[s]||s||"უცნობი"}
+function esc(v){return String(v??"").replace(/[&<>"']/g,x=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[x]))}
+function tab(x,b){["profile","orders","security"].forEach(n=>$(n).classList.toggle("hide",n!==x));document.querySelectorAll(".side button").forEach(e=>e.classList.remove("active"));b.classList.add("active");if(x==="orders")sb.auth.getUser().then(r=>orders(r.data.user.id))}
+async function logout(){await sb.auth.signOut();location.reload()}sb.auth.onAuthStateChange((e,s)=>{if(s)load()});load();
+</script></body></html>
