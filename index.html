@@ -8,6 +8,8 @@
     <meta name="description" content="ECOMAX — პროფესიონალური ავტოქიმია და ავტომობილის მოვლის საშუალებები.">
 
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
 </head>
 
 <body>
@@ -35,12 +37,16 @@
 
         <div class="nav-actions">
 
-            <a href="login.html" class="login-link">
+            <a href="login.html" class="login-link" id="loginLink">
                 შესვლა
             </a>
 
-            <a href="register.html" class="register-link">
+            <a href="register.html" class="register-link" id="registerLink">
                 რეგისტრაცია
+            </a>
+
+            <a href="account.html" class="register-link" id="authAccountLink" style="display:none;">
+                ჩემი ანგარიში
             </a>
 
             <button class="cart-button" id="cartButton">
@@ -576,5 +582,38 @@
 
 <script src="script.js"></script>
 
+<script>
+/* ECOMAX — keep homepage header in sync with Supabase Auth */
+(async function syncAuthHeader() {
+    try {
+        const client = window.supabase.createClient(
+            window.ECOMAX_SUPABASE.url,
+            window.ECOMAX_SUPABASE.key,
+            {
+                auth: {
+                    persistSession: true,
+                    autoRefreshToken: true,
+                    detectSessionInUrl: true
+                }
+            }
+        );
+
+        const { data } = await client.auth.getSession();
+        const loggedIn = !!data?.session?.user;
+
+        const login = document.getElementById("loginLink");
+        const register = document.getElementById("registerLink");
+        const account = document.getElementById("authAccountLink");
+
+        if (loggedIn) {
+            if (login) login.style.display = "none";
+            if (register) register.style.display = "none";
+            if (account) account.style.display = "inline-flex";
+        }
+    } catch (error) {
+        console.warn("ECOMAX auth header:", error);
+    }
+})();
+</script>
 </body>
 </html>
