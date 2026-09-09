@@ -923,12 +923,9 @@
        ECOMAX SUPABASE ACCOUNT AUTH
        ========================= */
 
-    const SUPABASE_URL = "https://mkxkqdvtmfbxmldnvsef.supabase.co";
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
-
-    const supabaseClient = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY,
+    const ECOMAX_ACCOUNT_CLIENT = window.supabase.createClient(
+      window.ECOMAX_SUPABASE.url,
+      window.ECOMAX_SUPABASE.key,
       {
         auth: {
           persistSession: true,
@@ -942,7 +939,7 @@
       const loading = document.getElementById("loadingScreen");
 
       try {
-        const { data, error } = await supabaseClient.auth.getSession();
+        const { data, error } = await ECOMAX_ACCOUNT_CLIENT.auth.getSession();
 
         if (error) throw error;
 
@@ -972,13 +969,13 @@
 
       } catch (error) {
         console.error("ECOMAX Account Error:", error);
-        await supabaseClient.auth.signOut();
+        await ECOMAX_ACCOUNT_CLIENT.auth.signOut();
         window.location.replace("login.html?redirect=account.html");
       }
     }
 
     /* Keep the account page synchronized with Supabase Auth. */
-    supabaseClient.auth.onAuthStateChange((event, session) => {
+    ECOMAX_ACCOUNT_CLIENT.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT" || !session) {
         window.location.replace("login.html?redirect=account.html");
       }
@@ -986,7 +983,7 @@
 
     async function logout() {
       try {
-        await supabaseClient.auth.signOut();
+        await ECOMAX_ACCOUNT_CLIENT.auth.signOut();
       } finally {
         window.location.replace("login.html");
       }
