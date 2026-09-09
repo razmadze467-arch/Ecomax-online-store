@@ -1215,41 +1215,27 @@
   ========================================== -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+  <script src="js/supabase.js"></script>
 
   <script>
 
     /*
-    ==================================================
-    ECOMAX SUPABASE CONFIGURATION
-    ==================================================
+    ECOMAX AUTH
+    Use the same shared Supabase configuration/client
+    on every page so the persisted session is consistent.
     */
 
-    const SUPABASE_URL =
-      "https://mkxkqdvtmfbxmldnvsef.supabase.co";
-
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
-
-
-    const {
-      createClient
-    } = window.supabase;
-
-
-    const supabaseClient =
-      createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY,
-        {
-          auth: {
-            persistSession: true,
-            autoRefreshToken: true,
-            detectSessionInUrl: true
-          }
+    const supabaseClient = window.supabase.createClient(
+      window.ECOMAX_SUPABASE.url,
+      window.ECOMAX_SUPABASE.key,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true
         }
-      );
-
+      }
+    );
 
     /*
     ==================================================
