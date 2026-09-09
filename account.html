@@ -916,6 +916,7 @@
 
 
   <!-- SUPABASE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase.js"></script>
 
   <script>
@@ -974,9 +975,12 @@
       }
     }
 
-    /* Keep the account page synchronized with Supabase Auth. */
-    ECOMAX_ACCOUNT_CLIENT.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT" || !session) {
+    /* Keep the account page synchronized with Supabase Auth.
+       IMPORTANT: do not redirect on INITIAL_SESSION with a null
+       session; getSession() below is the source of truth during
+       initial page load. */
+    ECOMAX_ACCOUNT_CLIENT.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_OUT") {
         window.location.replace("login.html?redirect=account.html");
       }
     });
