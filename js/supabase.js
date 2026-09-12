@@ -45,6 +45,19 @@ window.ECOMAX_SUPABASE = {
     });
 })();
 
+/* Homepage-only premium responsive design. Functional pages are untouched. */
+(function loadHomepageEnhancements() {
+  const path = window.location.pathname.replace(/\\/+$/, "");
+  const isHome = path === "" || path === "/index.html" || path.endsWith("/index.html");
+  if (!isHome || document.getElementById("ecomaxEnhancementsCss")) return;
+
+  const link = document.createElement("link");
+  link.id = "ecomaxEnhancementsCss";
+  link.rel = "stylesheet";
+  link.href = "enhancements.css?v=20260913";
+  document.head.appendChild(link);
+})();
+
 /* =========================================================
    ECOMAX FOOTER + MOVING CAR CREDIT
    Design-only layer. Does not touch auth/cart/checkout.
@@ -124,8 +137,6 @@ window.ECOMAX_SUPABASE = {
 
     addStyle();
 
-    // Only install the copyright once. Replacing it on every DOM mutation
-    // creates an infinite MutationObserver loop and can freeze mobile Chrome.
     if (footer.querySelector(".ecomax-footer-copyright")) return;
 
     footer.querySelectorAll(".footer-bottom").forEach((el) => el.remove());
@@ -158,8 +169,6 @@ window.ECOMAX_SUPABASE = {
   function start() {
     apply();
 
-    // script.js creates the moving car after page load. Observe only for the
-    // car; do NOT rewrite the footer on every mutation.
     const observer = new MutationObserver(() => {
       fixMovingCar();
     });
