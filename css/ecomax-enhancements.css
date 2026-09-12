@@ -1,0 +1,110 @@
+/* ECOMAX PREMIUM VISUAL LAYER — design only */
+
+:root{
+  --eco-cyan:#00eaff;
+  --eco-blue:#008cff;
+  --eco-glow:rgba(0,234,255,.28);
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  opacity:.16;
+  background-image:linear-gradient(rgba(0,234,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(0,234,255,.055) 1px,transparent 1px);
+  background-size:55px 55px;
+  mask-image:linear-gradient(to bottom,#000,transparent 88%);
+}
+
+.header{box-shadow:0 10px 45px rgba(0,0,0,.28)}
+.logo{position:relative}
+.logo::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:1px;background:linear-gradient(90deg,transparent,var(--eco-cyan),transparent);box-shadow:0 0 12px var(--eco-cyan);opacity:.65}
+
+.hero-content,.hero-visual,.section,.footer{position:relative;z-index:1}
+.hero-content{animation:ecoFadeUp .8s ease both}
+.hero-visual{animation:ecoFloatIn 1s ease both}
+
+.hero-badge{box-shadow:inset 0 0 18px rgba(0,234,255,.05),0 0 25px rgba(0,234,255,.05)}
+.hero-badge span{animation:ecoPulse 1.8s infinite}
+
+.primary-button,.secondary-button,.cart-button,.register-link{position:relative;overflow:hidden}
+.primary-button::before,.secondary-button::before,.cart-button::before,.register-link::before{
+  content:"";position:absolute;top:0;left:-120%;width:70%;height:100%;transform:skewX(-22deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transition:left .65s ease;pointer-events:none
+}
+.primary-button:hover::before,.secondary-button:hover::before,.cart-button:hover::before,.register-link:hover::before{left:150%}
+
+.product-card{transform-style:preserve-3d;box-shadow:inset 0 1px rgba(255,255,255,.04),0 12px 45px rgba(0,0,0,.16)}
+.product-card::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(125deg,rgba(0,234,255,.09),transparent 35%,transparent 65%,rgba(0,140,255,.07));pointer-events:none}
+.product-icon{transition:transform .35s ease,box-shadow .35s ease}
+.product-card:hover .product-icon{transform:translateZ(18px) rotate(-4deg) scale(1.06);box-shadow:0 0 35px rgba(0,234,255,.2)}
+.add-cart{position:relative;z-index:2}
+
+.section-heading h2{text-shadow:0 0 28px rgba(0,234,255,.06)}
+.dilution-card,.safety-box{box-shadow:inset 0 1px rgba(255,255,255,.035),0 18px 50px rgba(0,0,0,.15);transition:transform .3s,border-color .3s,box-shadow .3s}
+.dilution-card:hover{transform:translateY(-5px);border-color:rgba(0,234,255,.38);box-shadow:0 18px 45px rgba(0,0,0,.25),0 0 25px rgba(0,234,255,.06)}
+
+.footer{position:relative;overflow:hidden}
+.footer::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--eco-cyan),transparent);box-shadow:0 0 18px var(--eco-cyan)}
+.footer-logo{text-shadow:0 0 25px rgba(0,234,255,.35)}
+
+@keyframes ecoFadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes ecoFloatIn{from{opacity:0;transform:translateX(24px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes ecoPulse{0%,100%{box-shadow:0 0 8px var(--eco-cyan)}50%{box-shadow:0 0 20px var(--eco-cyan)}}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;min-height:auto;padding-top:125px;padding-bottom:45px;text-align:center}
+  .hero-content{display:flex;flex-direction:column;align-items:center}
+  .hero p{font-size:14px;line-height:1.75}
+  .hero-stats{justify-content:center;gap:25px;flex-wrap:wrap;margin-top:35px}
+  .hero-visual{height:500px;transform:none}
+  .products-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dilution-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .section{padding:80px 0}
+}
+
+@media (max-width:600px){
+  body::before{background-size:38px 38px;opacity:.09}
+  .nav-container{height:68px;width:94%}
+  .logo{font-size:21px;letter-spacing:3px}
+  .nav-actions{gap:5px}
+  .login-link,.register-link{font-size:11px;padding:8px 9px}
+  .cart-button{padding:8px 9px;font-size:11px}
+  .hero{width:94%;padding-top:105px;padding-bottom:25px}
+  .hero h1{font-size:39px;letter-spacing:-1.8px}
+  .hero-badge{font-size:9px;letter-spacing:1px}
+  .hero-visual{height:410px;overflow:hidden}
+  .product-core{width:220px;height:315px;border-radius:30px;padding:25px 15px}
+  .core-main{width:130px;height:130px}
+  .core-main strong{font-size:30px}
+  .orbital-one{width:350px;height:350px}.orbital-two{width:290px;height:290px}
+  .floating-card{width:118px;padding:11px;font-size:9px}
+  .floating-card b{font-size:14px}
+  .card-one{top:35px;left:0}.card-two{bottom:35px;right:0}.card-three{top:185px;right:-4px}
+  .section{width:94%;padding:65px 0}
+  .dark-section{padding-left:3%;padding-right:3%}
+  .section-heading{display:block;margin-bottom:28px}
+  .section-heading h2{font-size:31px}
+  .section-heading>p{margin-top:14px;font-size:12px}
+  .products-grid{grid-template-columns:1fr;gap:14px}
+  .product-card{min-height:0;padding:21px;border-radius:18px}
+  .product-icon{width:62px;height:62px;margin:22px 0 16px;font-size:26px}
+  .product-name strong{font-size:19px}
+  .product-card h3{font-size:18px}
+  .product-card p{min-height:0;font-size:12px}
+  .dilution-grid{grid-template-columns:1fr;gap:12px}
+  .dilution-card{padding:22px}
+  .safety-box{grid-template-columns:1fr;padding:25px;gap:20px;border-radius:20px}
+  .safety-icon{width:60px;height:60px;font-size:25px}
+  .safety-box h2{font-size:28px}
+  .safety-list{grid-template-columns:1fr}
+  .contact-section{padding:90px 15px}
+  .contact-content h2{font-size:39px}
+  .footer{padding:35px 4% 25px}
+  .footer-main p{font-size:9px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}
+}
