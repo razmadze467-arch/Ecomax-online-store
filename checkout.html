@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ECOMAX • შეკვეთა</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#03101c;color:#e9fbff;font-family:Arial,sans-serif}a{text-decoration:none;color:inherit}.wrap{max-width:1050px;margin:auto;padding:30px 18px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.logo{font-size:28px;font-weight:900;letter-spacing:5px;color:#00eaff}.back{border:1px solid #15586b;padding:10px 15px;border-radius:10px}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}.box{background:rgba(5,25,40,.9);border:1px solid #12475a;border-radius:18px;padding:22px;box-shadow:0 0 30px rgba(0,234,255,.08)}h1{margin:5px 0 8px;font-size:32px}.muted{color:#8eb8c5}label{display:block;margin:14px 0 7px;font-weight:bold}input,select,textarea{width:100%;padding:13px;border-radius:10px;border:1px solid #15586b;background:#061d2b;color:#fff;font-size:15px}textarea{min-height:90px;resize:vertical}.item{display:flex;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid #123746}.total{display:flex;justify-content:space-between;font-size:21px;font-weight:bold;padding-top:18px}.submit{width:100%;margin-top:20px;padding:15px;border:0;border-radius:12px;background:#00d9ef;color:#00131c;font-size:17px;font-weight:900;cursor:pointer}.submit:disabled{opacity:.5}.msg{margin-top:15px;padding:12px;border-radius:10px;display:none}.success{display:block;background:#0b352c}.error{display:block;background:#4b1820}.hidden{display:none}.success-screen{text-align:center;padding:50px 20px}.order-id{font-size:18px;color:#00eaff;margin:20px 0}@media(max-width:750px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;gap:15px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><a class="logo" href="index.html">ECOMAX</a><a class="back" href="index.html">← დაბრუნება</a></header>
+<div id="checkout">
+<div class="grid">
+<section class="box"><h1>შეკვეთის გაფორმება</h1><p class="muted">შეავსე მონაცემები და დაადასტურე შეკვეთა.</p>
+<form id="orderForm">
+<label>სახელი და გვარი *</label><input id="customerName" required autocomplete="name">
+<label>ტელეფონი *</label><input id="phone" required type="tel" autocomplete="tel" placeholder="5XX XX XX XX">
+<label>ქალაქი *</label><input id="city" required autocomplete="address-level2">
+<label>მისამართი</label><textarea id="address" autocomplete="street-address" placeholder="ქუჩა, ნომერი, ბინა"></textarea>
+<label>მიტანის მეთოდი</label><select id="delivery"><option value="delivery">კურიერით მიწოდება</option><option value="pickup">თვითგატანა</option></select>
+<label>გადახდის მეთოდი</label><select id="payment"><option value="cash">ნაღდი ანგარიშსწორება</option><option value="card">ბარათით გადახდა — მალე</option></select>
+<button class="submit" id="submitBtn" type="submit">შეკვეთის დადასტურება →</button>
+<div id="msg" class="msg"></div>
+</form></section>
+<section class="box"><h2>შენი კალათა</h2><div id="items"></div><div class="total"><span>ჯამი</span><span id="total">0 ₾</span></div></section>
+</div></div>
+<div id="success" class="box success-screen hidden"><div style="font-size:55px">✓</div><h1>შეკვეთა მიღებულია!</h1><p class="muted">მადლობა ECOMAX-ის არჩევისთვის. შენი შეკვეთა ადმინისტრატორთან გაიგზავნა.</p><div class="order-id" id="orderId"></div><a class="submit" style="display:inline-block;width:auto" href="index.html">მთავარ გვერდზე დაბრუნება</a></div>
+</div>
+<script>
+const cart=JSON.parse(localStorage.getItem('ecomax_cart')||'[]');
+const itemsEl=document.getElementById('items'), totalEl=document.getElementById('total'), form=document.getElementById('orderForm'), msg=document.getElementById('msg'), btn=document.getElementById('submitBtn');
+const total=cart.reduce((s,i)=>s+Number(i.price)*Number(i.quantity),0);
+if(!cart.length){itemsEl.innerHTML='<p class="muted">კალათა ცარიელია. დაბრუნდი პროდუქტებზე.</p>';btn.disabled=true;}else{itemsEl.innerHTML=cart.map(i=>`<div class="item"><span>${String(i.name).replaceAll('<','&lt;')}<br><small class="muted">${String(i.volume).replaceAll('<','&lt;')} × ${i.quantity}</small></span><b>${Number(i.price)*Number(i.quantity)} ₾</b></div>`).join('');totalEl.textContent=total+' ₾';}
+async function loadUser(){try{const c=window.supabase.createClient(window.ECOMAX_SUPABASE.url,window.ECOMAX_SUPABASE.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});const {data}=await c.auth.getUser();if(data?.user){document.getElementById('customerName').value=data.user.user_metadata?.full_name||data.user.user_metadata?.name||'';}}catch(e){console.warn(e)}}
+loadUser();
+form.addEventListener('submit',async e=>{e.preventDefault();if(!cart.length)return;btn.disabled=true;btn.textContent='იგზავნება...';msg.className='msg';msg.style.display='none';try{
+const client=window.supabase.createClient(window.ECOMAX_SUPABASE.url,window.ECOMAX_SUPABASE.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});const {data:{user},error:userError}=await client.auth.getUser();if(userError||!user){window.location.href='login.html?redirect=checkout.html';return;}
+const payload={user_id:user.id,status:'new',customer_name:document.getElementById('customerName').value.trim(),phone:document.getElementById('phone').value.trim(),city:document.getElementById('city').value.trim(),address:document.getElementById('address').value.trim(),items:cart,total:total,payment_method:document.getElementById('payment').value,delivery_method:document.getElementById('delivery').value};
+const {data,error}=await client.from('orders').insert(payload).select('id').single();if(error)throw error;localStorage.removeItem('ecomax_cart');document.getElementById('checkout').classList.add('hidden');document.getElementById('orderId').textContent='შეკვეთის ნომერი: '+data.id;document.getElementById('success').classList.remove('hidden');
+}catch(err){console.error(err);msg.textContent='შეკვეთის გაგზავნა ვერ მოხერხდა. სცადე თავიდან.';msg.className='msg error';msg.style.display='block';btn.disabled=false;btn.textContent='შეკვეთის დადასტურება →';}
+});
+</script>
+</body></html>
