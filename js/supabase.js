@@ -56,3 +56,68 @@ window.ECOMAX_SUPABASE = {
       return null;
     });
 })();
+
+/* =========================================================
+   ECOMAX FOOTER COPYRIGHT
+   Design-only footer correction. Does not touch auth/cart/checkout.
+   ========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
+  const footer = document.querySelector("footer");
+  if (!footer) return;
+
+  // Remove the old developer credit if it exists.
+  footer.querySelectorAll("strong").forEach((el) => {
+    if (/DEVELOPED\s+BY\s+BTCGAMER/i.test(el.textContent || "")) {
+      el.remove();
+    }
+  });
+
+  // Replace the old copyright line.
+  footer.querySelectorAll("span").forEach((el) => {
+    if (/ECOMAX|ყველა უფლება დაცულია/i.test(el.textContent || "")) {
+      el.textContent = "© საავტორო უფლება დაცულია შპს „ეკომაქსის“ მიერ";
+    }
+  });
+
+  // Add a dedicated bottom-left copyright label so it is always visible.
+  let copyright = footer.querySelector(".ecomax-copyright");
+  if (!copyright) {
+    copyright = document.createElement("div");
+    copyright.className = "ecomax-copyright";
+    copyright.textContent = "© საავტორო უფლება დაცულია შპს „ეკომაქსის“ მიერ";
+    footer.appendChild(copyright);
+  }
+
+  Object.assign(footer.style, {
+    position: "relative",
+    overflow: "hidden"
+  });
+
+  Object.assign(copyright.style, {
+    position: "absolute",
+    left: "18px",
+    bottom: "10px",
+    zIndex: "20",
+    maxWidth: "70%",
+    color: "rgba(141,168,184,.78)",
+    fontSize: "9px",
+    lineHeight: "1.35",
+    letterSpacing: ".2px",
+    textAlign: "left",
+    pointerEvents: "none",
+    textShadow: "0 0 10px rgba(0,234,255,.08)"
+  });
+
+  const media = document.createElement("style");
+  media.textContent = `
+    @media (max-width: 600px) {
+      .ecomax-copyright {
+        left: 12px !important;
+        bottom: 8px !important;
+        max-width: 78% !important;
+        font-size: 8px !important;
+      }
+    }
+  `;
+  document.head.appendChild(media);
+});
