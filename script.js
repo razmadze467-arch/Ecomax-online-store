@@ -22,6 +22,69 @@ function note(text) {
   setTimeout(() => n.remove(), 2200);
 }
 
+/* =========================================================
+   ECOMAX AUTH UI
+   Keep the homepage header synchronized with the SAME
+   Supabase persisted session used by login/account pages.
+   ========================================================= */
+async function syncAuthUI() {
+  try {
+    if (!window.supabase || !window.ECOMAX_SUPABASE) return;
+
+    const client = window.supabase.createClient(
+      window.ECOMAX_SUPABASE.url,
+      window.ECOMAX_SUPABASE.key,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true
+        }
+      }
+    );
+
+    const login = document.getElementById("loginLink");
+    const register = document.getElementById("registerLink");
+    const account = document.getElementById("authAccountLink");
+    const mobileNav = document.getElementById("mobileNav");
+
+    let mobileLogin = mobileNav?.querySelector('a[href="login.html"]');
+    let mobileRegister = mobileNav?.querySelector('a[href="register.html"]');
+    let mobileAccount = mobileNav?.querySelector('a[data-auth-account]');
+
+    if (mobileNav && !mobileAccount) {
+      mobileAccount = document.createElement("a");
+      mobileAccount.href = "account.html";
+      mobileAccount.textContent = "ჩემი ანგარიში";
+      mobileAccount.dataset.authAccount = "true";
+      mobileNav.appendChild(mobileAccount);
+    }
+
+    function apply(session) {
+      const loggedIn = !!session?.user;
+
+      if (login) login.style.display = loggedIn ? "none" : "inline-flex";
+      if (register) register.style.display = loggedIn ? "none" : "inline-flex";
+      if (account) account.style.display = loggedIn ? "inline-flex" : "none";
+
+      if (mobileLogin) mobileLogin.style.display = loggedIn ? "none" : "block";
+      if (mobileRegister) mobileRegister.style.display = loggedIn ? "none" : "block";
+      if (mobileAccount) mobileAccount.style.display = loggedIn ? "block" : "none";
+    }
+
+    /* First render from the persisted session. */
+    const { data, error } = await client.auth.getSession();
+    if (!error) apply(data?.session || null);
+
+    /* Keep it correct after login/logout/token refresh/navigation. */
+    client.auth.onAuthStateChange((_event, session) => {
+      apply(session || null);
+    });
+  } catch (error) {
+    console.warn("ECOMAX auth UI:", error);
+  }
+}
+
 function renderCart() {
   const el = document.getElementById("cartItems");
   if (!el) return;
@@ -190,6 +253,7 @@ function init() {
   }
 
   updateCart();
+  syncAuthUI();
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
