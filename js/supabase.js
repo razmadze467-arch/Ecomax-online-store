@@ -65,21 +65,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const footer = document.querySelector("footer");
   if (!footer) return;
 
-  // Remove the old developer credit if it exists.
+  // Remove the old developer credit.
   footer.querySelectorAll("strong").forEach((el) => {
     if (/DEVELOPED\s+BY\s+BTCGAMER/i.test(el.textContent || "")) {
       el.remove();
     }
   });
 
-  // Replace the old copyright line.
+  // Remove the old copyright line from the footer-bottom area.
   footer.querySelectorAll("span").forEach((el) => {
-    if (/ECOMAX|ყველა უფლება დაცულია/i.test(el.textContent || "")) {
-      el.textContent = "© საავტორო უფლება დაცულია შპს „ეკომაქსის“ მიერ";
+    if (/2026\s+ECOMAX|ყველა უფლება დაცულია/i.test(el.textContent || "")) {
+      el.remove();
     }
   });
 
-  // Add a dedicated bottom-left copyright label so it is always visible.
+  const oldBottom = footer.querySelector(".footer-bottom");
+  if (oldBottom && !oldBottom.textContent.trim()) oldBottom.remove();
+
+  // Add the requested copyright visibly in the footer's bottom-left corner.
   let copyright = footer.querySelector(".ecomax-copyright");
   if (!copyright) {
     copyright = document.createElement("div");
@@ -98,8 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
     left: "18px",
     bottom: "10px",
     zIndex: "20",
-    maxWidth: "70%",
-    color: "rgba(141,168,184,.78)",
+    maxWidth: "78%",
+    color: "rgba(141,168,184,.9)",
     fontSize: "9px",
     lineHeight: "1.35",
     letterSpacing: ".2px",
@@ -114,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .ecomax-copyright {
         left: 12px !important;
         bottom: 8px !important;
-        max-width: 78% !important;
+        max-width: 82% !important;
         font-size: 8px !important;
       }
     }
