@@ -9,13 +9,6 @@ window.ECOMAX_SUPABASE = {
   key: SUPABASE_ANON_KEY
 };
 
-/*
-  IMPORTANT:
-  Every ECOMAX page must use the same Auth storage key and the same
-  browser client. This prevents the login page, account page and
-  homepage from getting out of sync when the user returns to Home.
-*/
-
 (function createEcomaxSharedClient() {
   if (!window.supabase || typeof window.supabase.createClient !== "function") {
     console.error("ECOMAX: Supabase library did not load.");
@@ -40,15 +33,10 @@ window.ECOMAX_SUPABASE = {
   );
 
   window.ECOMAX_SUPABASE_CLIENT = client;
-
-  // Compatibility with existing ECOMAX pages which still call
-  // window.supabase.createClient(...). They will all receive this
-  // single shared client instead of creating competing Auth clients.
   window.supabase.createClient = function () {
     return window.ECOMAX_SUPABASE_CLIENT;
   };
 
-  // Helpful promise for pages that need to wait until Auth has loaded.
   window.ECOMAX_AUTH_READY = client.auth.getSession()
     .then(({ data }) => data?.session || null)
     .catch((error) => {
@@ -136,12 +124,12 @@ window.ECOMAX_SUPABASE = {
 
     addStyle();
 
-    // Remove the old footer-bottom completely. This prevents the old
-    // copyright and the standalone BTCGAMER credit from being duplicated.
-    footer.querySelectorAll(".footer-bottom").forEach((el) => el.remove());
+    // Only install the copyright once. Replacing it on every DOM mutation
+    // creates an infinite MutationObserver loop and can freeze mobile Chrome.
+    if (footer.querySelector(".ecomax-footer-copyright")) return;
 
-    // Remove any old injected copies from earlier versions.
-    footer.querySelectorAll(".ecomax-copyright, .ecomax-footer-copyright").forEach((el) => el.remove());
+    footer.querySelectorAll(".footer-bottom").forEach((el) => el.remove());
+    footer.querySelectorAll(".ecomax-copyright").forEach((el) => el.remove());
 
     const main = footer.querySelector(".footer-main") || footer;
     if (getComputedStyle(main).position === "static") main.style.position = "relative";
@@ -154,15 +142,12 @@ window.ECOMAX_SUPABASE = {
 
   function fixMovingCar() {
     const car = document.querySelector(".ecomax-road-car");
-    if (!car) return false;
-
-    if (car.querySelector(".ecomax-car-developer")) return true;
+    if (!car || car.querySelector(".ecomax-car-developer")) return;
 
     const credit = document.createElement("span");
     credit.className = "ecomax-car-developer";
     credit.textContent = DEVELOPER;
     car.appendChild(credit);
-    return true;
   }
 
   function apply() {
@@ -173,17 +158,16 @@ window.ECOMAX_SUPABASE = {
   function start() {
     apply();
 
-    // script.js creates the moving car after page load, so watch for it.
+    // script.js creates the moving car after page load. Observe only for the
+    // car; do NOT rewrite the footer on every mutation.
     const observer = new MutationObserver(() => {
-      fixFooter();
       fixMovingCar();
     });
     observer.observe(document.body, { childList: true, subtree: true });
 
-    // Safety retry for browsers where the animation layer is added later.
-    setTimeout(apply, 300);
-    setTimeout(apply, 1000);
-    setTimeout(apply, 2500);
+    setTimeout(fixMovingCar, 300);
+    setTimeout(fixMovingCar, 1000);
+    setTimeout(fixMovingCar, 2500);
   }
 
   if (document.readyState === "loading") {
