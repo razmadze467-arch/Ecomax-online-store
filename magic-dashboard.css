@@ -1,0 +1,23 @@
+/* ECOMAX — NEON MAGIC UI */
+:root{--mx-bg:#020713;--mx-cyan:#00f0ff;--mx-blue:#1688ff;--mx-violet:#8b5cf6;--mx-text:#f3fbff;--mx-muted:#88a5b5}
+body{background:radial-gradient(900px 500px at 85% 0%,rgba(0,144,255,.18),transparent 62%),radial-gradient(800px 520px at 5% 18%,rgba(139,92,246,.12),transparent 62%),#020713!important;color:var(--mx-text)}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.35;background-image:linear-gradient(rgba(0,240,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,.06) 1px,transparent 1px);background-size:44px 44px}
+.header{background:rgba(2,7,19,.82)!important;box-shadow:0 10px 50px rgba(0,0,0,.4),0 1px 0 rgba(0,240,255,.2)!important}
+.logo{text-shadow:0 0 14px rgba(0,240,255,.8),0 0 35px rgba(0,144,255,.3)!important}
+.nav a:hover{color:#fff!important;text-shadow:0 0 12px var(--mx-cyan)}
+.hero h1 strong{background:linear-gradient(90deg,#00f0ff,#6aa7ff,#a78bfa)!important;-webkit-background-clip:text!important;background-clip:text!important}
+.primary-button{box-shadow:0 0 25px rgba(0,240,255,.25)!important}.primary-button:hover{box-shadow:0 0 45px rgba(0,240,255,.5)!important}
+.section{position:relative}.section-heading:after{content:"";display:block;height:1px;margin-top:22px;background:linear-gradient(90deg,rgba(0,240,255,.55),transparent);box-shadow:0 0 12px rgba(0,240,255,.2)}
+.products-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:20px!important}
+.product-card{background:linear-gradient(145deg,rgba(8,29,52,.9),rgba(3,10,22,.97))!important;border:1px solid rgba(0,240,255,.15)!important;border-radius:20px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 20px 55px rgba(0,0,0,.3)!important;transition:transform .3s,border-color .3s,box-shadow .3s!important}
+.product-card:hover{transform:translateY(-9px)!important;border-color:rgba(0,240,255,.5)!important;box-shadow:0 25px 70px rgba(0,0,0,.45),0 0 35px rgba(0,144,255,.12)!important}
+.product-icon{height:170px!important;background:radial-gradient(circle at 50% 30%,rgba(0,240,255,.2),transparent 58%),#061222!important;position:relative;overflow:hidden}
+.product-icon:after{content:"";position:absolute;left:-50%;top:0;width:35%;height:100%;transform:skewX(-18deg);background:linear-gradient(90deg,transparent,rgba(0,240,255,.2),transparent);animation:mxscan 4s linear infinite}@keyframes mxscan{0%{left:-50%}60%,100%{left:130%}}
+.product-tag{box-shadow:0 0 15px rgba(0,240,255,.25)!important}.product-info strong{font-size:23px!important;text-shadow:0 0 15px rgba(0,240,255,.3)}
+.volume-select,.volume-input{background:rgba(1,10,23,.8)!important;border-color:rgba(0,240,255,.22)!important}
+.add-cart{background:linear-gradient(90deg,#087cff,#00eaff,#7357e8)!important;background-size:180% 100%!important;animation:mxbtn 5s ease infinite;box-shadow:0 0 22px rgba(0,240,255,.14)!important}@keyframes mxbtn{0%,100%{background-position:0%}50%{background-position:100%}}
+.dilution-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:20px!important}.dilution-card{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(8,26,47,.78),rgba(4,11,22,.94))!important;border:1px solid rgba(0,240,255,.15)!important;border-radius:20px!important;box-shadow:0 20px 60px rgba(0,0,0,.25)!important;transition:.3s}.dilution-card:hover{transform:translateY(-6px);border-color:rgba(0,240,255,.42)!important;box-shadow:0 20px 65px rgba(0,0,0,.4),0 0 28px rgba(0,240,255,.1)!important}
+footer{background:linear-gradient(180deg,#020812,#01050c)!important;border-top:1px solid rgba(0,240,255,.18)!important;position:relative!important}footer:before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,#8b5cf6,#00f0ff,#8b5cf6,transparent);box-shadow:0 0 18px #00f0ff}
+@media(max-width:1100px){.products-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}.dilution-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:800px){.products-grid,.dilution-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.hero{grid-template-columns:1fr!important}.nav{display:none}.menu-button{display:block}}
+@media(max-width:560px){body:before{background-size:32px 32px;opacity:.22}.products-grid,.dilution-grid{grid-template-columns:1fr!important}.product-icon{height:145px!important}.section{width:90%;padding:58px 0}.hero h1{font-size:34px!important}}
