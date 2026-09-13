@@ -1,32 +1,62 @@
 // ECOMAX — ONE shared Supabase Auth client
 const SUPABASE_URL = "https://mkxkqdvtmfbxmldnvsef.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
+const ECOMAX_AUTH_STORAGE = "ecomax-auth";
+const ECOMAX_LEGACY_STORAGE = "sb-mkxkqdvtmfbxmldnvsef-auth-token";
+
 window.ECOMAX_SUPABASE = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY };
+
 (function(){
+  // Migrate an older Supabase session once, before the shared client is created.
+  // After migration, ecomax-auth is the single authoritative storage key.
   try{
-    const shared=localStorage.getItem('ecomax-auth');
-    const legacy=localStorage.getItem('sb-mkxkqdvtmfbxmldnvsef-auth-token');
-    if(!shared && legacy) localStorage.setItem('ecomax-auth',legacy);
-    if(shared && !legacy) localStorage.setItem('sb-mkxkqdvtmfbxmldnvsef-auth-token',shared);
+    const shared = localStorage.getItem(ECOMAX_AUTH_STORAGE);
+    const legacy = localStorage.getItem(ECOMAX_LEGACY_STORAGE);
+    if(!shared && legacy) localStorage.setItem(ECOMAX_AUTH_STORAGE, legacy);
   }catch(e){}
+
   if(!window.supabase || typeof window.supabase.createClient !== 'function') return;
   if(window.ECOMAX_SUPABASE_CLIENT) return;
-  const original=window.supabase.createClient.bind(window.supabase);
-  window.ECOMAX_SUPABASE_CLIENT=original(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{storageKey:'ecomax-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-  window.supabase.createClient=function(){return window.ECOMAX_SUPABASE_CLIENT;};
-  window.ECOMAX_AUTH_READY=window.ECOMAX_SUPABASE_CLIENT.auth.getSession().then(function(r){return r.data?.session||null;}).catch(function(){return null;});
+
+  const original = window.supabase.createClient.bind(window.supabase);
+  window.ECOMAX_SUPABASE_CLIENT = original(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
+    {
+      auth: {
+        storageKey: ECOMAX_AUTH_STORAGE,
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
+    }
+  );
+
+  // Compatibility for older page scripts: every createClient call on pages
+  // that load this file receives the same singleton client.
+  window.supabase.createClient = function(){
+    return window.ECOMAX_SUPABASE_CLIENT;
+  };
+
+  window.ECOMAX_AUTH_READY = window.ECOMAX_SUPABASE_CLIENT.auth
+    .getSession()
+    .then(function(r){ return r.data && r.data.session ? r.data.session : null; })
+    .catch(function(){ return null; });
 })();
+
 (function(){
   function loadAuthBridge(){
     if(document.getElementById('ecomaxAuthFixJs')) return;
     const x=document.createElement('script');
     x.id='ecomaxAuthFixJs';
-    x.src='js/auth-fix.js?v=20260913-2';
+    x.src='js/auth-fix.js?v=20260914-1';
     x.defer=true;
     document.head.appendChild(x);
   }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',loadAuthBridge); else loadAuthBridge();
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',loadAuthBridge);
+  else loadAuthBridge();
 })();
+
 (function(){
   const path=window.location.pathname.replace(/\\/+$/,'');
   const home=path===''||path==='/index.html'||path.endsWith('/index.html');
