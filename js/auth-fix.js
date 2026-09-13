@@ -9,10 +9,8 @@
     document.head.appendChild(s);
   }
   function start(){
-    loadScript('ecomaxAuthBootstrap','js/auth-bootstrap.js?v=20260914-1');
-    loadScript('ecomaxAuthRedirectFix','js/auth-redirect-fix.js?v=20260914-1');
+    loadScript('ecomaxAuthBootstrap','js/auth-bootstrap.js?v=20260914-2');
+    loadScript('ecomaxAuthRedirectFix','js/auth-redirect-fix.js?v=20260914-2');
   }
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',start,{once:true});
-  }else start();
+  start();
 })();
