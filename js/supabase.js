@@ -1,25 +1,37 @@
 // ECOMAX — ONE shared Supabase Auth client
+// IMPORTANT: every page must use this single client and the same storage key.
 const SUPABASE_URL = "https://mkxkqdvtmfbxmldnvsef.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
 const ECOMAX_AUTH_STORAGE = "ecomax-auth";
 const ECOMAX_LEGACY_STORAGE = "sb-mkxkqdvtmfbxmldnvsef-auth-token";
 
-window.ECOMAX_SUPABASE = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY };
+window.ECOMAX_SUPABASE = {
+  url: SUPABASE_URL,
+  key: SUPABASE_ANON_KEY
+};
 
-(function(){
-  // Migrate an older Supabase session once, before the shared client is created.
-  // After migration, ecomax-auth is the single authoritative storage key.
-  try{
+(function () {
+  try {
+    // Keep an old Supabase session if one exists, but never create competing clients.
     const shared = localStorage.getItem(ECOMAX_AUTH_STORAGE);
     const legacy = localStorage.getItem(ECOMAX_LEGACY_STORAGE);
-    if(!shared && legacy) localStorage.setItem(ECOMAX_AUTH_STORAGE, legacy);
-  }catch(e){}
+    if (!shared && legacy) {
+      localStorage.setItem(ECOMAX_AUTH_STORAGE, legacy);
+    }
+  } catch (e) {
+    console.warn("ECOMAX auth storage migration skipped", e);
+  }
 
-  if(!window.supabase || typeof window.supabase.createClient !== 'function') return;
-  if(window.ECOMAX_SUPABASE_CLIENT) return;
+  if (!window.supabase || typeof window.supabase.createClient !== "function") {
+    console.error("ECOMAX: Supabase CDN is not loaded.");
+    return;
+  }
 
-  const original = window.supabase.createClient.bind(window.supabase);
-  window.ECOMAX_SUPABASE_CLIENT = original(
+  if (window.ECOMAX_SUPABASE_CLIENT) return;
+
+  const createClient = window.supabase.createClient.bind(window.supabase);
+
+  const client = createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY,
     {
@@ -27,46 +39,91 @@ window.ECOMAX_SUPABASE = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY };
         storageKey: ECOMAX_AUTH_STORAGE,
         persistSession: true,
         autoRefreshToken: true,
-        detectSessionInUrl: true
+        detectSessionInUrl: true,
+        flowType: "pkce"
       }
     }
   );
 
-  // Compatibility for older page scripts: every createClient call on pages
-  // that load this file receives the same singleton client.
-  window.supabase.createClient = function(){
+  window.ECOMAX_SUPABASE_CLIENT = client;
+  window.ECOMAX_AUTH_CLIENT = client;
+
+  // Older page code may call createClient(). Always return the same client.
+  window.supabase.createClient = function () {
     return window.ECOMAX_SUPABASE_CLIENT;
   };
 
-  window.ECOMAX_AUTH_READY = window.ECOMAX_SUPABASE_CLIENT.auth
+  window.ECOMAX_AUTH_READY = client.auth
     .getSession()
-    .then(function(r){ return r.data && r.data.session ? r.data.session : null; })
-    .catch(function(){ return null; });
+    .then(function (result) {
+      const session = result && result.data ? result.data.session : null;
+      window.ECOMAX_CURRENT_SESSION = session || null;
+      window.ECOMAX_CURRENT_USER = session && session.user ? session.user : null;
+      return session || null;
+    })
+    .catch(function (error) {
+      console.error("ECOMAX: getSession failed", error);
+      window.ECOMAX_CURRENT_SESSION = null;
+      window.ECOMAX_CURRENT_USER = null;
+      return null;
+    });
+
+  client.auth.onAuthStateChange(function (event, session) {
+    window.ECOMAX_CURRENT_SESSION = session || null;
+    window.ECOMAX_CURRENT_USER = session && session.user ? session.user : null;
+
+    try {
+      if (session) {
+        const raw = localStorage.getItem(ECOMAX_AUTH_STORAGE);
+        if (raw) localStorage.setItem(ECOMAX_LEGACY_STORAGE, raw);
+      } else if (event === "SIGNED_OUT") {
+        localStorage.removeItem(ECOMAX_AUTH_STORAGE);
+        localStorage.removeItem(ECOMAX_LEGACY_STORAGE);
+      }
+    } catch (e) {}
+
+    window.dispatchEvent(
+      new CustomEvent("ecomax-auth-change", {
+        detail: {
+          event: event,
+          session: session || null,
+          user: session && session.user ? session.user : null
+        }
+      })
+    );
+  });
 })();
 
-(function(){
-  function loadAuthBridge(){
-    if(document.getElementById('ecomaxAuthFixJs')) return;
-    const x=document.createElement('script');
-    x.id='ecomaxAuthFixJs';
-    x.src='js/auth-fix.js?v=20260914-1';
-    x.defer=true;
+(function () {
+  const path = window.location.pathname.replace(/\\/+$/, "");
+  const home = path === "" || path === "/index.html" || path.endsWith("/index.html");
+  if (!home) return;
+
+  function css(id, href) {
+    if (document.getElementById(id)) return;
+    const x = document.createElement("link");
+    x.id = id;
+    x.rel = "stylesheet";
+    x.href = href;
     document.head.appendChild(x);
   }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',loadAuthBridge);
-  else loadAuthBridge();
-})();
 
-(function(){
-  const path=window.location.pathname.replace(/\\/+$/,'');
-  const home=path===''||path==='/index.html'||path.endsWith('/index.html');
-  if(!home)return;
-  function css(id,href){if(document.getElementById(id))return;const x=document.createElement('link');x.id=id;x.rel='stylesheet';x.href=href;document.head.appendChild(x);}
-  function js(id,src,cb){if(document.getElementById(id))return;const x=document.createElement('script');x.id=id;x.src=src;x.defer=true;if(cb)x.onload=cb;document.head.appendChild(x);}
-  css('ecomaxEnhancementsCss','enhancements-v2.css?v=20260913-7');
-  css('ecomaxStoreUiCss','store-ui.css?v=20260913-7');
-  css('ecomaxFinalUiCss','ecomax-final-ui.css?v=20260913-1');
-  js('ecomaxStoreUiJs','store-ui.js?v=20260913-7');
-  js('ecomaxFinalHomeJs','homepage-final.js?v=20260913-7',function(){if(window.ECOMAX_FINAL_INIT)window.ECOMAX_FINAL_INIT();});
-  js('ecomaxFinalUiJs','ecomax-final-ui.js?v=20260913-1');
+  function js(id, src, cb) {
+    if (document.getElementById(id)) return;
+    const x = document.createElement("script");
+    x.id = id;
+    x.src = src;
+    x.defer = true;
+    if (cb) x.onload = cb;
+    document.head.appendChild(x);
+  }
+
+  css("ecomaxEnhancementsCss", "enhancements-v2.css?v=20260913-7");
+  css("ecomaxStoreUiCss", "store-ui.css?v=20260913-7");
+  css("ecomaxFinalUiCss", "ecomax-final-ui.css?v=20260913-1");
+  js("ecomaxStoreUiJs", "store-ui.js?v=20260913-7");
+  js("ecomaxFinalHomeJs", "homepage-final.js?v=20260913-7", function () {
+    if (window.ECOMAX_FINAL_INIT) window.ECOMAX_FINAL_INIT();
+  });
+  js("ecomaxFinalUiJs", "ecomax-final-ui.js?v=20260913-1");
 })();
