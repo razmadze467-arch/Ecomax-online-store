@@ -3,7 +3,6 @@
 
 const SUPABASE_URL = "https://mkxkqdvtmfbxmldnvsef.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
-
 window.ECOMAX_SUPABASE = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY };
 
 (function createEcomaxSharedClient() {
@@ -36,9 +35,9 @@ window.ECOMAX_SUPABASE = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY };
     if (document.getElementById(id)) return;
     const s=document.createElement("script"); s.id=id; s.src=src; s.defer=true; document.head.appendChild(s);
   }
-  css("ecomaxEnhancementsCss","enhancements.css?v=20260913-2");
-  css("ecomaxStoreUiCss","store-ui.css?v=20260913-2");
-  js("ecomaxStoreUiJs","store-ui.js?v=20260913-2");
+  css("ecomaxEnhancementsCss","enhancements-v2.css?v=20260913-3");
+  css("ecomaxStoreUiCss","store-ui.css?v=20260913-3");
+  js("ecomaxStoreUiJs","store-ui.js?v=20260913-3");
 })();
 
 /* =========================================================
