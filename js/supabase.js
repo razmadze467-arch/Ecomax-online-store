@@ -3,12 +3,29 @@ const SUPABASE_URL = "https://mkxkqdvtmfbxmldnvsef.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
 window.ECOMAX_SUPABASE = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY };
 (function(){
+  try{
+    const shared=localStorage.getItem('ecomax-auth');
+    const legacy=localStorage.getItem('sb-mkxkqdvtmfbxmldnvsef-auth-token');
+    if(!shared && legacy) localStorage.setItem('ecomax-auth',legacy);
+    if(shared && !legacy) localStorage.setItem('sb-mkxkqdvtmfbxmldnvsef-auth-token',shared);
+  }catch(e){}
   if(!window.supabase || typeof window.supabase.createClient !== 'function') return;
   if(window.ECOMAX_SUPABASE_CLIENT) return;
   const original=window.supabase.createClient.bind(window.supabase);
   window.ECOMAX_SUPABASE_CLIENT=original(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{storageKey:'ecomax-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
   window.supabase.createClient=function(){return window.ECOMAX_SUPABASE_CLIENT;};
   window.ECOMAX_AUTH_READY=window.ECOMAX_SUPABASE_CLIENT.auth.getSession().then(function(r){return r.data?.session||null;}).catch(function(){return null;});
+})();
+(function(){
+  function loadAuthBridge(){
+    if(document.getElementById('ecomaxAuthFixJs')) return;
+    const x=document.createElement('script');
+    x.id='ecomaxAuthFixJs';
+    x.src='js/auth-fix.js?v=20260913-2';
+    x.defer=true;
+    document.head.appendChild(x);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',loadAuthBridge); else loadAuthBridge();
 })();
 (function(){
   const path=window.location.pathname.replace(/\\/+$/,'');
