@@ -16,8 +16,10 @@ window.ECOMAX_SUPABASE = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY };
   if(!home)return;
   function css(id,href){if(document.getElementById(id))return;const x=document.createElement('link');x.id=id;x.rel='stylesheet';x.href=href;document.head.appendChild(x);}
   function js(id,src,cb){if(document.getElementById(id))return;const x=document.createElement('script');x.id=id;x.src=src;x.defer=true;if(cb)x.onload=cb;document.head.appendChild(x);}
-  css('ecomaxEnhancementsCss','enhancements-v2.css?v=20260913-6');
-  css('ecomaxStoreUiCss','store-ui.css?v=20260913-6');
-  js('ecomaxStoreUiJs','store-ui.js?v=20260913-6');
-  js('ecomaxFinalHomeJs','homepage-final.js?v=20260913-6',function(){if(window.ECOMAX_FINAL_INIT)window.ECOMAX_FINAL_INIT();});
+  css('ecomaxEnhancementsCss','enhancements-v2.css?v=20260913-7');
+  css('ecomaxStoreUiCss','store-ui.css?v=20260913-7');
+  css('ecomaxFinalUiCss','ecomax-final-ui.css?v=20260913-1');
+  js('ecomaxStoreUiJs','store-ui.js?v=20260913-7');
+  js('ecomaxFinalHomeJs','homepage-final.js?v=20260913-7',function(){if(window.ECOMAX_FINAL_INIT)window.ECOMAX_FINAL_INIT();});
+  js('ecomaxFinalUiJs','ecomax-final-ui.js?v=20260913-1');
 })();
