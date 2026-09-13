@@ -20,7 +20,7 @@ window.ECOMAX_SUPABASE={url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
   window.ECOMAX_AUTH_CLIENT=client;
   window.supabase.createClient=function(){return window.ECOMAX_SUPABASE_CLIENT;};
   async function stableSession(){
-    for(let i=0;i<8;i++){
+    for(let i=0;i<20;i++){
       try{
         const r=await client.auth.getSession();
         const session=r&&r.data?r.data.session:null;
@@ -45,7 +45,7 @@ window.ECOMAX_SUPABASE={url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
   });
 })();
 (function(){
-  function load(){if(document.getElementById("ecomaxAuthFixJs"))return;const s=document.createElement("script");s.id="ecomaxAuthFixJs";s.src="js/auth-fix.js?v=20260914-4";s.defer=true;document.head.appendChild(s);}
+  function load(){if(document.getElementById("ecomaxAuthFixJs"))return;const s=document.createElement("script");s.id="ecomaxAuthFixJs";s.src="js/auth-fix.js?v=20260914-5";s.defer=true;document.head.appendChild(s);}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",load);else load();
 })();
 (function(){
