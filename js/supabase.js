@@ -46,7 +46,7 @@ window.ECOMAX_SUPABASE = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY };
    Design-only layer. Does not touch auth/cart/checkout.
    ========================================================= */
 (function installEcomaxBranding() {
-  const COPYRIGHT = "© ყველა უფლება დაცულია შპს „ეკომაქსის“ მიერ";
+  const COPYRIGHT = "© ყველა უფლება დაცულია შპს „ეკომაქსის“ მიერ — 2026";
   const DEVELOPER = "DEVELOPED BY BTCGAMER";
   function addStyle() {
     if (document.getElementById("ecomaxBrandingStyle")) return;
