@@ -1,72 +1,729 @@
-/* ECOMAX FINAL UI — safe override layer */
-html,body{overflow-x:hidden!important}
-body{max-width:100vw}
+/* =========================================================
+   ECOMAX FINAL MOBILE + NEON UI
+   Clean override layer
+   ========================================================= */
 
-/* Prevent old desktop blocks from overflowing on phones */
-@media (max-width:900px){
-  .hero,.section,.safety-section,#safety,#contact{max-width:100%;overflow:hidden}
-  .hero-content,.hero-visual,.section-heading{min-width:0!important}
-  .section-heading{padding-left:18px!important;padding-right:18px!important}
-  .section-heading p{max-width:100%!important}
-  .products-grid{grid-template-columns:1fr!important;width:100%!important}
-  .product-card{width:100%!important;min-width:0!important;box-sizing:border-box!important}
-  .product-card *{max-width:100%}
-  .hero{grid-template-columns:1fr!important}
-  .hero-visual{min-height:300px!important}
-  .nav-container{width:100%!important;box-sizing:border-box!important}
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
-@media (max-width:600px){
-  .hero{padding-left:18px!important;padding-right:18px!important}
-  .hero-content{width:100%!important}
-  .hero-content h1{font-size:clamp(32px,10vw,48px)!important;line-height:1.05!important;overflow-wrap:anywhere}
-  .hero-content p{font-size:14px!important}
-  .hero-buttons{flex-wrap:wrap!important}
-  .hero-buttons a{width:100%!important;box-sizing:border-box;text-align:center}
-  .hero-stats{grid-template-columns:1fr 1fr!important}
-  .hero-stats>div:last-child{grid-column:1/-1}
-  .section{padding-left:0!important;padding-right:0!important}
-  .products-section{padding-top:42px!important}
-  .product-card{border-radius:18px!important;padding:18px!important}
-  .volume-picker select{width:100%!important;box-sizing:border-box}
-  .add-cart{width:100%!important}
-  .ecomax-final-care{padding:42px 18px!important}
+html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+    scroll-behavior: smooth;
 }
 
-/* Clean futuristic footer */
-.ecomax-clean-footer{position:relative;z-index:20;background:linear-gradient(180deg,#031321 0%,#010711 100%);border-top:1px solid rgba(0,234,255,.25);box-shadow:0 -15px 55px rgba(0,170,255,.08);overflow:hidden}
-.ecomax-clean-footer:before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,#00eaff,#7c3cff,#00eaff,transparent);box-shadow:0 0 18px rgba(0,234,255,.8)}
-.ecomax-footer-main{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:35px;max-width:1200px;margin:auto;padding:55px 28px 35px}
-.ecomax-brand{font-size:30px;font-weight:950;letter-spacing:4px;color:#f2fbff;text-shadow:0 0 18px rgba(0,234,255,.35)}
-.ecomax-brand span{color:#00eaff}
-.ecomax-sub{margin-top:8px;color:#718b9c;font-size:12px;letter-spacing:2px}
-.ecomax-footer-title{color:#00eaff;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:15px}
-.ecomax-footer-links{display:flex;flex-direction:column;gap:9px}
-.ecomax-footer-links a{color:#a7bac7;text-decoration:none;font-size:13px;transition:.2s}
-.ecomax-footer-links a:hover{color:#00eaff;transform:translateX(4px)}
-.ecomax-footer-bottom{border-top:1px solid rgba(0,234,255,.1);padding:18px 28px 22px;text-align:center;color:#6e8492;font-size:11px}
-.ecomax-footer-bottom strong{color:#00eaff;font-weight:800}
-
-/* Alternating developer/copyright road */
-.ecomax-clean-road{height:78px;position:relative;overflow:hidden;background:#01060d;border-top:1px solid rgba(0,234,255,.10)}
-.ecomax-clean-road:before{content:"";position:absolute;left:0;right:0;bottom:17px;height:2px;background:repeating-linear-gradient(90deg,rgba(0,234,255,.75) 0 68px,transparent 68px 120px);box-shadow:0 0 10px rgba(0,234,255,.3);animation:ecomaxRoadMove 1.2s linear infinite}
-.ecomax-clean-car{position:absolute;left:-170px;bottom:25px;width:135px;height:34px;animation:ecomaxCarDrive 11s linear infinite,ecomaxCarZig 1.1s ease-in-out infinite;filter:drop-shadow(0 0 8px #00eaff)}
-.ecomax-clean-car .carbody{position:absolute;left:25px;bottom:2px;width:96px;height:20px;border:2px solid #00eaff;border-radius:7px 20px 5px 5px;background:linear-gradient(90deg,rgba(0,55,80,.9),rgba(40,0,80,.75))}
-.ecomax-clean-car .roof{position:absolute;left:49px;bottom:21px;width:47px;height:17px;border:2px solid #00eaff;border-bottom:0;border-radius:20px 20px 0 0}
-.ecomax-clean-car .wheel{position:absolute;bottom:-1px;width:12px;height:12px;border:2px solid #00eaff;border-radius:50%;background:#01060d}
-.ecomax-clean-car .wheel.one{left:34px}.ecomax-clean-car .wheel.two{right:12px}
-.ecomax-clean-credit{position:absolute;left:15px;top:2px;white-space:nowrap;color:#00eaff;font:900 9px Arial,sans-serif;letter-spacing:1px;text-shadow:0 0 8px rgba(0,234,255,.9);transition:opacity .2s}
-@keyframes ecomaxCarDrive{from{left:-180px}to{left:calc(100% + 180px)}}
-@keyframes ecomaxCarZig{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-@keyframes ecomaxRoadMove{to{background-position:-120px 0}}
-
-@media(max-width:700px){
-  .ecomax-footer-main{grid-template-columns:1fr 1fr;gap:24px;padding:42px 20px 28px}
-  .ecomax-footer-main>div:first-child{grid-column:1/-1}
-  .ecomax-clean-road{height:72px}
-  .ecomax-clean-credit{font-size:7px;left:8px}
+body {
+    width: 100%;
+    max-width: 100vw;
+    margin: 0;
+    overflow-x: hidden !important;
+    background:
+        radial-gradient(circle at 15% 15%, rgba(0, 234, 255, .08), transparent 28%),
+        radial-gradient(circle at 85% 25%, rgba(124, 60, 255, .08), transparent 30%),
+        #020812;
 }
-@media(max-width:430px){
-  .ecomax-footer-main{grid-template-columns:1fr;padding:35px 18px 25px}
-  .ecomax-footer-main>div:first-child{grid-column:auto}
+
+/* =========================================================
+   MOBILE SAFETY
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .hero,
+    .section,
+    .safety-section,
+    #safety,
+    #contact {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+
+    .hero-content,
+    .hero-visual,
+    .section-heading {
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .section-heading {
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+    }
+
+    .section-heading p {
+        max-width: 100% !important;
+    }
+
+    .products-grid {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .product-card {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .product-card * {
+        max-width: 100%;
+    }
+
+    .nav-container {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* =========================================================
+   PHONE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .hero {
+        display: block !important;
+        width: 100% !important;
+        padding: 55px 18px !important;
+    }
+
+    .hero-content {
+        width: 100% !important;
+    }
+
+    .hero-content h1 {
+        font-size: clamp(32px, 10vw, 48px) !important;
+        line-height: 1.08 !important;
+        overflow-wrap: anywhere !important;
+        word-break: normal !important;
+    }
+
+    .hero-content p {
+        font-size: 14px !important;
+        line-height: 1.7 !important;
+    }
+
+    .hero-buttons {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .hero-buttons a {
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    .hero-stats {
+        grid-template-columns: 1fr 1fr !important;
+        width: 100% !important;
+    }
+
+    .hero-stats > div:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .hero-visual {
+        width: 100% !important;
+        min-height: 280px !important;
+        margin-top: 30px;
+    }
+
+    .section {
+        width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .products-section {
+        padding-top: 42px !important;
+    }
+
+    .products-grid {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+        padding: 0 18px !important;
+    }
+
+    .product-card {
+        border-radius: 18px !important;
+        padding: 18px !important;
+    }
+
+    .volume-picker {
+        width: 100% !important;
+    }
+
+    .volume-picker select {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .add-cart {
+        width: 100% !important;
+    }
+}
+
+/* =========================================================
+   CLEAN FUTURISTIC FOOTER
+   ========================================================= */
+
+.ecomax-clean-footer {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(0, 234, 255, .10),
+            transparent 45%
+        ),
+        linear-gradient(
+            180deg,
+            #031321 0%,
+            #010711 100%
+        );
+
+    border-top: 1px solid rgba(0, 234, 255, .30);
+
+    box-shadow:
+        0 -20px 70px rgba(0, 170, 255, .08);
+}
+
+.ecomax-clean-footer::before {
+    content: "";
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #00eaff,
+            #7c3cff,
+            #00eaff,
+            transparent
+        );
+
+    box-shadow:
+        0 0 20px rgba(0, 234, 255, .8);
+}
+
+/* =========================================================
+   FOOTER MAIN
+   ========================================================= */
+
+.ecomax-footer-main {
+
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        1.5fr
+        1fr
+        1fr;
+
+    gap: 35px;
+
+    padding:
+        55px
+        28px
+        35px;
+}
+
+.ecomax-brand {
+
+    font-size: 30px;
+
+    font-weight: 950;
+
+    letter-spacing: 4px;
+
+    color: #f2fbff;
+
+    text-shadow:
+        0 0 18px rgba(0, 234, 255, .35);
+}
+
+.ecomax-brand span {
+    color: #00eaff;
+}
+
+.ecomax-sub {
+
+    margin-top: 8px;
+
+    color: #718b9c;
+
+    font-size: 12px;
+
+    letter-spacing: 2px;
+}
+
+.ecomax-footer-title {
+
+    margin-bottom: 15px;
+
+    color: #00eaff;
+
+    font-size: 11px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+}
+
+.ecomax-footer-links {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.ecomax-footer-links a {
+
+    color: #a7bac7;
+
+    font-size: 13px;
+
+    text-decoration: none;
+
+    transition:
+        color .2s ease,
+        transform .2s ease;
+}
+
+.ecomax-footer-links a:hover {
+
+    color: #00eaff;
+
+    transform: translateX(5px);
+}
+
+/* =========================================================
+   COPYRIGHT
+   ========================================================= */
+
+.ecomax-footer-bottom {
+
+    width: 100%;
+
+    border-top:
+        1px solid
+        rgba(0, 234, 255, .10);
+
+    padding:
+        18px
+        28px
+        22px;
+
+    text-align: center;
+
+    color: #6e8492;
+
+    font-size: 11px;
+}
+
+.ecomax-footer-bottom strong {
+
+    color: #00eaff;
+
+    font-weight: 800;
+}
+
+/* =========================================================
+   REMOVE OLD BROKEN FOOTER
+   ========================================================= */
+
+footer.footer .footer-bottom {
+    display: none !important;
+}
+
+footer.footer .footer-main > p {
+    display: none !important;
+}
+
+/* old generated bottom UI */
+.ecomax-bottom-ui,
+.ecomax-road,
+.ecomax-car {
+    display: none !important;
+}
+
+/* =========================================================
+   MOVING ECOMAX ROAD
+   ========================================================= */
+
+.ecomax-clean-road {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 78px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            180deg,
+            #020912,
+            #01050d
+        );
+
+    border-top:
+        1px solid
+        rgba(0, 234, 255, .10);
+}
+
+.ecomax-clean-road::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: 17px;
+
+    height: 2px;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(0, 234, 255, .75) 0 68px,
+            transparent 68px 120px
+        );
+
+    box-shadow:
+        0 0 10px
+        rgba(0, 234, 255, .3);
+
+    animation:
+        ecomaxRoadMove
+        1.2s
+        linear
+        infinite;
+}
+
+/* =========================================================
+   CAR
+   ========================================================= */
+
+.ecomax-clean-car {
+
+    position: absolute;
+
+    left: -180px;
+
+    bottom: 25px;
+
+    width: 135px;
+
+    height: 38px;
+
+    animation:
+        ecomaxCarDrive
+        11s
+        linear
+        infinite,
+
+        ecomaxCarZig
+        1.1s
+        ease-in-out
+        infinite;
+
+    filter:
+        drop-shadow(
+            0 0 9px
+            #00eaff
+        );
+
+    z-index: 10;
+}
+
+/* car body */
+
+.ecomax-clean-car .carbody {
+
+    position: absolute;
+
+    left: 25px;
+
+    bottom: 2px;
+
+    width: 96px;
+
+    height: 20px;
+
+    border:
+        2px solid
+        #00eaff;
+
+    border-radius:
+        7px
+        20px
+        5px
+        5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 55, 80, .95),
+            rgba(40, 0, 80, .85)
+        );
+
+    box-shadow:
+        inset 0 0 15px
+        rgba(0, 234, 255, .15);
+}
+
+/* roof */
+
+.ecomax-clean-car .roof {
+
+    position: absolute;
+
+    left: 49px;
+
+    bottom: 21px;
+
+    width: 47px;
+
+    height: 17px;
+
+    border:
+        2px solid
+        #00eaff;
+
+    border-bottom: 0;
+
+    border-radius:
+        20px
+        20px
+        0
+        0;
+}
+
+/* wheels */
+
+.ecomax-clean-car .wheel {
+
+    position: absolute;
+
+    bottom: -1px;
+
+    width: 12px;
+
+    height: 12px;
+
+    border:
+        2px solid
+        #00eaff;
+
+    border-radius: 50%;
+
+    background:
+        #01060d;
+
+    box-shadow:
+        0 0 5px
+        rgba(0, 234, 255, .5);
+}
+
+.ecomax-clean-car .wheel.one {
+    left: 34px;
+}
+
+.ecomax-clean-car .wheel.two {
+    right: 12px;
+}
+
+/* =========================================================
+   TEXT ATTACHED TO CAR
+   ========================================================= */
+
+.ecomax-clean-credit {
+
+    position: absolute;
+
+    left: 15px;
+
+    top: 2px;
+
+    white-space: nowrap;
+
+    color: #00eaff;
+
+    font:
+        900 9px
+        Arial,
+        sans-serif;
+
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 0 8px
+        rgba(0, 234, 255, .9);
+
+    transition:
+        opacity .2s ease;
+}
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes ecomaxCarDrive {
+
+    from {
+        left: -180px;
+    }
+
+    to {
+        left: calc(100% + 180px);
+    }
+}
+
+@keyframes ecomaxCarZig {
+
+    0%,
+    100% {
+        transform:
+            translateY(0);
+    }
+
+    50% {
+        transform:
+            translateY(-10px);
+    }
+}
+
+@keyframes ecomaxRoadMove {
+
+    to {
+        background-position:
+            -120px 0;
+    }
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .ecomax-footer-main {
+
+        grid-template-columns:
+            1fr
+            1fr;
+
+        gap: 24px;
+
+        padding:
+            42px
+            20px
+            28px;
+    }
+
+    .ecomax-footer-main > div:first-child {
+
+        grid-column:
+            1 / -1;
+    }
+
+    .ecomax-clean-road {
+
+        height: 72px;
+    }
+
+    .ecomax-clean-credit {
+
+        font-size: 7px;
+
+        left: 8px;
+    }
+}
+
+/* =========================================================
+   SMALL PHONE
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+    .ecomax-footer-main {
+
+        grid-template-columns: 1fr;
+
+        padding:
+            35px
+            18px
+            25px;
+    }
+
+    .ecomax-footer-main > div:first-child {
+
+        grid-column: auto;
+    }
+
+    .ecomax-brand {
+
+        font-size: 25px;
+
+        letter-spacing: 3px;
+    }
+
+    .ecomax-footer-bottom {
+
+        font-size: 10px;
+
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .ecomax-clean-credit {
+
+        font-size: 6px;
+
+        letter-spacing: .5px;
+    }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .ecomax-clean-car,
+    .ecomax-clean-road::before {
+
+        animation: none !important;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
 }
