@@ -782,27 +782,24 @@
 
     </div>
 
-
     <div class="admin-avatar">
       🤖
     </div>
-
 
     <div id="adminName" class="admin-name">
       ADMIN
     </div>
 
-
     <div class="admin-role">
       ● ONLINE
     </div>
-
 
     <nav class="nav">
 
       <button
         class="active"
         onclick="showSection('dashboard',this)"
+        type="button"
       >
         <span class="nav-icon">📊</span>
         <span class="nav-text">Dashboard</span>
@@ -810,6 +807,7 @@
 
       <button
         onclick="showSection('orders',this)"
+        type="button"
       >
         <span class="nav-icon">📦</span>
         <span class="nav-text">შეკვეთები</span>
@@ -817,6 +815,7 @@
 
       <button
         onclick="showSection('products',this)"
+        type="button"
       >
         <span class="nav-icon">🧴</span>
         <span class="nav-text">პროდუქტები</span>
@@ -824,6 +823,7 @@
 
       <button
         onclick="showSection('customers',this)"
+        type="button"
       >
         <span class="nav-icon">👥</span>
         <span class="nav-text">მომხმარებლები</span>
@@ -831,13 +831,13 @@
 
       <button
         onclick="showSection('analytics',this)"
+        type="button"
       >
         <span class="nav-icon">📈</span>
         <span class="nav-text">ანალიტიკა</span>
       </button>
 
     </nav>
-
 
     <div class="sidebar-bottom">
 
@@ -870,7 +870,6 @@
 
       </div>
 
-
       <div class="top-actions">
 
         <button
@@ -893,9 +892,7 @@
     </div>
 
 
-    <!-- =========================
-         DASHBOARD
-    ========================== -->
+    <!-- DASHBOARD -->
 
     <section
       id="section-dashboard"
@@ -910,10 +907,7 @@
             სულ შეკვეთები
           </div>
 
-          <div
-            id="statOrders"
-            class="stat-value"
-          >
+          <div id="statOrders" class="stat-value">
             0
           </div>
 
@@ -930,10 +924,7 @@
             ახალი შეკვეთები
           </div>
 
-          <div
-            id="statNew"
-            class="stat-value"
-          >
+          <div id="statNew" class="stat-value">
             0
           </div>
 
@@ -950,10 +941,7 @@
             მომხმარებლები
           </div>
 
-          <div
-            id="statCustomers"
-            class="stat-value"
-          >
+          <div id="statCustomers" class="stat-value">
             0
           </div>
 
@@ -970,10 +958,7 @@
             გაყიდვების თანხა
           </div>
 
-          <div
-            id="statRevenue"
-            class="stat-value"
-          >
+          <div id="statRevenue" class="stat-value">
             0₾
           </div>
 
@@ -1007,7 +992,6 @@
 
         </div>
 
-
         <div class="table-scroll">
 
           <table>
@@ -1036,9 +1020,7 @@
     </section>
 
 
-    <!-- =========================
-         ORDERS
-    ========================== -->
+    <!-- ORDERS -->
 
     <section
       id="section-orders"
@@ -1055,7 +1037,6 @@
 
         </div>
 
-
         <div class="toolbar">
 
           <input
@@ -1064,7 +1045,6 @@
             placeholder="🔎 Order Number / ტელეფონი / სახელი"
             oninput="renderOrders()"
           >
-
 
           <select
             id="orderStatusFilter"
@@ -1100,7 +1080,6 @@
 
         </div>
 
-
         <div class="table-scroll">
 
           <table>
@@ -1131,9 +1110,7 @@
     </section>
 
 
-    <!-- =========================
-         PRODUCTS
-    ========================== -->
+    <!-- PRODUCTS -->
 
     <section
       id="section-products"
@@ -1150,7 +1127,6 @@
 
         </div>
 
-
         <div class="toolbar">
 
           <input
@@ -1161,7 +1137,6 @@
           >
 
         </div>
-
 
         <div class="table-scroll">
 
@@ -1191,9 +1166,7 @@
     </section>
 
 
-    <!-- =========================
-         CUSTOMERS
-    ========================== -->
+    <!-- CUSTOMERS -->
 
     <section
       id="section-customers"
@@ -1210,7 +1183,6 @@
 
         </div>
 
-
         <div class="toolbar">
 
           <input
@@ -1221,7 +1193,6 @@
           >
 
         </div>
-
 
         <div class="table-scroll">
 
@@ -1250,9 +1221,7 @@
     </section>
 
 
-    <!-- =========================
-         ANALYTICS
-    ========================== -->
+    <!-- ANALYTICS -->
 
     <section
       id="section-analytics"
@@ -1267,10 +1236,7 @@
             საშუალო შეკვეთა
           </div>
 
-          <div
-            id="avgOrder"
-            class="stat-value"
-          >
+          <div id="avgOrder" class="stat-value">
             0₾
           </div>
 
@@ -1283,10 +1249,7 @@
             ჩაბარებული
           </div>
 
-          <div
-            id="completedOrders"
-            class="stat-value"
-          >
+          <div id="completedOrders" class="stat-value">
             0
           </div>
 
@@ -1299,10 +1262,7 @@
             მიმდინარე
           </div>
 
-          <div
-            id="activeOrders"
-            class="stat-value"
-          >
+          <div id="activeOrders" class="stat-value">
             0
           </div>
 
@@ -1315,10 +1275,7 @@
             გაუქმებული
           </div>
 
-          <div
-            id="cancelledOrders"
-            class="stat-value"
-          >
+          <div id="cancelledOrders" class="stat-value">
             0
           </div>
 
@@ -1352,9 +1309,7 @@
 </div>
 
 
-<!-- =========================
-     ORDER MODAL
-========================== -->
+<!-- ORDER MODAL -->
 
 <div
   id="orderModal"
@@ -1400,20 +1355,6 @@
   /* ==========================================
      ECOMAX SHARED SUPABASE
   ========================================== */
-
-  /*
-    IMPORTANT:
-
-    admin.html აღარ ქმნის საკუთარ Supabase client-ს.
-
-    ყველა გვერდი იყენებს ერთსა და იმავე client-ს:
-
-      window.ECOMAX_SUPABASE_CLIENT
-
-    და ერთსა და იმავე storage key-ს:
-
-      ecomax-auth
-  */
 
   const db =
     window.ECOMAX_SUPABASE_CLIENT;
@@ -1581,41 +1522,55 @@
           "მიმდინარეობს ავტორიზაცია...";
 
 
-        const {
-          data,
-          error
-        } =
-          await db.auth.signInWithPassword({
-            email,
-            password
-          });
+        try {
+
+          const {
+            data,
+            error
+          } =
+            await db.auth.signInWithPassword({
+              email,
+              password
+            });
 
 
-        if (error) {
+          if (error) {
+
+            console.error(
+              "Admin login:",
+              error
+            );
+
+            $("loginError").textContent =
+              "ავტორიზაცია ვერ მოხერხდა: " +
+              error.message;
+
+            return;
+
+          }
+
+
+          currentUser =
+            data.user;
+
+
+          $("loginError").textContent =
+            "";
+
+
+          await openAdmin();
+
+        } catch (error) {
 
           console.error(
-            "Admin login:",
+            "Admin login exception:",
             error
           );
 
           $("loginError").textContent =
-            "ავტორიზაცია ვერ მოხერხდა: " +
-            error.message;
-
-          return;
+            "ავტორიზაციის დროს მოხდა შეცდომა.";
 
         }
-
-
-        currentUser =
-          data.user;
-
-
-        $("loginError").textContent =
-          "";
-
-
-        await openAdmin();
 
       });
 
@@ -1659,12 +1614,16 @@
     try {
 
       /*
-        ძალიან მნიშვნელოვანია:
-
-        აქ session მოდის იგივე
-        ecomax-auth storage-დან,
-        რომელსაც Login/Main/Account იყენებს.
+        ველოდებით shared Supabase client-ს,
+        რომ session სრულად ჩაიტვირთოს.
       */
+
+      if (window.ECOMAX_AUTH_READY) {
+
+        await window.ECOMAX_AUTH_READY;
+
+      }
+
 
       const {
         data,
@@ -1737,12 +1696,6 @@
     currentUser = null;
 
 
-    /*
-      მხოლოდ Admin გვერდიდან გამოსვლა.
-      სხვა გვერდების localStorage/session
-      ხელოვნურად აღარ იშლება.
-    */
-
     $("adminApp")
       .classList.add("hidden");
 
@@ -1756,7 +1709,8 @@
   }
 
 
-  db &&
+  if (db) {
+
     db.auth.onAuthStateChange(
       (event, session) => {
 
@@ -1787,6 +1741,8 @@
 
       }
     );
+
+  }
 
 
   /* ==========================================
@@ -2406,9 +2362,7 @@
                   )}
                 </b>
 
-                <div
-                  style="margin-top:5px"
-                >
+                <div style="margin-top:5px">
                   რაოდენობა:
                   ${esc(
                     item.quantity ||
@@ -2437,10 +2391,7 @@
       <div class="detail-grid">
 
         <div class="detail">
-          <small>
-            Order Number
-          </small>
-
+          <small>Order Number</small>
           <b>
             ${esc(
               order.order_number ||
@@ -2449,119 +2400,75 @@
           </b>
         </div>
 
-
         <div class="detail">
-          <small>
-            სტატუსი
-          </small>
-
-          ${statusBadge(
-            order.status
-          )}
+          <small>სტატუსი</small>
+          ${statusBadge(order.status)}
         </div>
 
-
         <div class="detail">
-          <small>
-            მომხმარებელი
-          </small>
-
+          <small>მომხმარებელი</small>
           ${esc(
             order.customer_name ||
             "—"
           )}
         </div>
 
-
         <div class="detail">
-          <small>
-            ტელეფონი
-          </small>
-
+          <small>ტელეფონი</small>
           ${esc(
             order.phone ||
             "—"
           )}
         </div>
 
-
         <div class="detail">
-          <small>
-            ქალაქი
-          </small>
-
+          <small>ქალაქი</small>
           ${esc(
             order.city ||
             "—"
           )}
         </div>
 
-
         <div class="detail">
-          <small>
-            მისამართი
-          </small>
-
+          <small>მისამართი</small>
           ${esc(
             order.address ||
             "—"
           )}
         </div>
 
-
         <div class="detail">
-          <small>
-            მიწოდება
-          </small>
-
+          <small>მიწოდება</small>
           ${esc(
             order.delivery_method ||
             "—"
           )}
         </div>
 
-
         <div class="detail">
-          <small>
-            გადახდა
-          </small>
-
+          <small>გადახდა</small>
           ${esc(
             order.payment_method ||
             "—"
           )}
         </div>
 
-
         <div class="detail">
-          <small>
-            შეკვეთის თანხა
-          </small>
-
+          <small>შეკვეთის თანხა</small>
           <b>
-            ${money(
-              order.total
-            )}
+            ${money(order.total)}
           </b>
         </div>
 
-
         <div class="detail">
-          <small>
-            შექმნილია
-          </small>
-
-          ${date(
-            order.created_at
-          )}
+          <small>შექმნილია</small>
+          ${date(order.created_at)}
         </div>
 
       </div>
 
 
-      <h3
-        style="margin-top:22px"
-      >
+      <h3 style="margin-top:22px">
         🧴 პროდუქტები
       </h3>
 
@@ -2592,9 +2499,7 @@
                 შენიშვნა
               </small>
 
-              ${esc(
-                order.note
-              )}
+              ${esc(order.note)}
 
             </div>
           `
@@ -2688,8 +2593,7 @@
 
     const search =
       (
-        $("customerSearch")
-          ?.value ||
+        $("customerSearch")?.value ||
         ""
       )
         .toLowerCase()
@@ -2854,8 +2758,7 @@
 
     const search =
       (
-        $("productSearch")
-          ?.value ||
+        $("productSearch")?.value ||
         ""
       )
         .toLowerCase()
@@ -3273,16 +3176,7 @@
      START
   ========================================== */
 
-  /*
-    მცირე დაყოვნება საჭიროა მხოლოდ იმისთვის,
-    რომ shared Supabase client-ს ჰქონდეს
-    session-ის აღების დრო.
-  */
-
-  window.setTimeout(
-    checkSession,
-    0
-  );
+  checkSession();
 
 </script>
 
