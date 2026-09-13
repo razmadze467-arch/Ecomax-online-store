@@ -233,6 +233,519 @@ button,select{font:inherit}
   .pro-product-card{padding:18px}.pc-desc{min-height:auto}.footer-grid{grid-template-columns:1fr;padding:40px 18px 25px}
   .footer-bottom{padding-left:14px;padding-right:14px}.pro-logo{font-size:22px}.pro-cart{padding:9px}
 }
+
+/* =========================================================
+   ECOMAX PRO RESPONSIVE V2
+   Desktop + tablet + phone stability layer
+   ========================================================= */
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden !important;
+}
+
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+img, svg, video, canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+.pro-header {
+  width: 100%;
+}
+
+.pro-nav {
+  width: min(1240px, calc(100% - 32px));
+  min-width: 0;
+  margin: 0 auto;
+  padding: 14px 0;
+}
+
+.pro-logo {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.pro-links {
+  min-width: 0;
+}
+
+.pro-links a,
+.pro-admin,
+.pro-auth {
+  white-space: nowrap;
+}
+
+.pro-actions {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.pro-hero,
+.section-wrap,
+.footer-grid {
+  width: min(1240px, calc(100% - 32px));
+  min-width: 0;
+}
+
+.pro-hero {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.hero-copy,
+.hero-art,
+.section-head,
+.pro-grid,
+.guide-grid,
+.safety-list,
+.contact-grid {
+  min-width: 0;
+}
+
+.hero-copy h1,
+.hero-copy p,
+.section-head h2,
+.section-head p,
+.pro-product-card h3,
+.pc-desc,
+.pc-detail b,
+.contact-card strong,
+.footer-sub {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.pro-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pro-product-card {
+  min-width: 0;
+}
+
+.pc-top,
+.pc-detail,
+.pc-buy > div:first-child {
+  min-width: 0;
+}
+
+.pc-detail b {
+  max-width: 65%;
+}
+
+.volume-select,
+.add-cart,
+.checkout-btn {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.cart-overlay {
+  padding: 16px;
+}
+
+.cart-panel {
+  width: min(520px, 100%);
+  max-height: min(760px, calc(100vh - 32px));
+  min-width: 0;
+  overflow: hidden;
+}
+
+.cart-items {
+  max-height: min(470px, 55vh);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.mobile-nav {
+  width: min(420px, calc(100% - 24px));
+  right: 12px;
+  left: auto;
+}
+
+@media (max-width: 1050px) {
+  .pro-nav {
+    gap: 12px;
+  }
+
+  .pro-links {
+    gap: 2px;
+  }
+
+  .pro-links a,
+  .pro-admin,
+  .pro-auth {
+    padding-left: 7px;
+    padding-right: 7px;
+    font-size: 11px;
+  }
+
+  .pro-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pro-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, .9fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .pro-nav,
+  .pro-hero,
+  .section-wrap,
+  .footer-grid {
+    width: min(100% - 24px, 680px);
+  }
+
+  .pro-links,
+  .pro-auth,
+  .pro-admin {
+    display: none !important;
+  }
+
+  .pro-menu {
+    display: block !important;
+  }
+
+  .pro-actions {
+    margin-left: auto;
+  }
+
+  .pro-hero {
+    display: block;
+    padding-top: 48px;
+    padding-bottom: 40px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(38px, 11vw, 58px);
+    line-height: 1.02;
+    letter-spacing: -2px;
+  }
+
+  .hero-copy p {
+    max-width: 100%;
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .hero-buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .hero-btn {
+    width: 100%;
+  }
+
+  .hero-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .hero-art {
+    min-height: 320px;
+    margin-top: 25px;
+  }
+
+  .section-wrap {
+    padding-top: 58px;
+    padding-bottom: 58px;
+  }
+
+  .section-head {
+    display: block;
+    margin-bottom: 24px;
+  }
+
+  .section-head p {
+    margin-top: 12px;
+    max-width: 100%;
+  }
+
+  .pro-grid,
+  .guide-grid,
+  .safety-list,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pro-product-card {
+    padding: 18px;
+  }
+
+  .pc-detail {
+    align-items: flex-start;
+  }
+
+  .pc-detail b {
+    max-width: 58%;
+    text-align: right;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .footer-grid > div:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .pro-nav,
+  .pro-hero,
+  .section-wrap,
+  .footer-grid {
+    width: calc(100% - 24px);
+  }
+
+  .pro-nav {
+    padding-top: 11px;
+    padding-bottom: 11px;
+  }
+
+  .pro-logo {
+    font-size: 21px;
+    letter-spacing: 3px;
+  }
+
+  .pro-cart {
+    padding: 8px 9px;
+    font-size: 12px;
+  }
+
+  .pro-cart span {
+    display: none;
+  }
+
+  .pro-menu {
+    padding: 8px 10px;
+  }
+
+  .pro-hero {
+    padding-top: 40px;
+  }
+
+  .pro-badge {
+    max-width: 100%;
+    font-size: 8px;
+    letter-spacing: 1.2px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(34px, 12vw, 49px);
+  }
+
+  .hero-copy p {
+    font-size: 13px;
+  }
+
+  .hero-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-metrics div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .hero-art {
+    min-height: 275px;
+  }
+
+  .orbit.o1 {
+    width: 290px;
+    height: 155px;
+  }
+
+  .orbit.o2 {
+    width: 235px;
+    height: 120px;
+  }
+
+  .core {
+    width: 190px;
+    height: 190px;
+  }
+
+  .core strong {
+    font-size: 33px;
+  }
+
+  .float {
+    max-width: 105px;
+    padding: 8px 9px;
+    font-size: 7px;
+  }
+
+  .f1 {
+    left: 0;
+    top: 18px;
+  }
+
+  .f2 {
+    right: 0;
+    top: 110px;
+  }
+
+  .f3 {
+    left: 2%;
+    bottom: 15px;
+  }
+
+  .section-wrap {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  .section-head h2 {
+    font-size: 29px;
+    line-height: 1.1;
+  }
+
+  .info-panel {
+    padding: 16px;
+  }
+
+  .pro-product-card {
+    border-radius: 16px;
+  }
+
+  .pc-code strong {
+    font-size: 17px;
+  }
+
+  .pc-detail {
+    gap: 8px;
+  }
+
+  .pc-detail b {
+    max-width: 55%;
+    font-size: 10px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    padding-top: 36px;
+  }
+
+  .footer-grid > div:first-child {
+    grid-column: auto;
+  }
+
+  .footer-brand {
+    font-size: 25px;
+  }
+
+  .footer-bottom {
+    padding-left: 12px;
+    padding-right: 12px;
+    line-height: 1.7;
+  }
+
+  .cart-overlay {
+    padding: 8px;
+  }
+
+  .cart-panel {
+    width: 100%;
+    max-height: calc(100vh - 16px);
+    border-radius: 15px;
+  }
+
+  .cart-head,
+  .cart-items,
+  .cart-foot {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .cart-items {
+    max-height: 52vh;
+  }
+
+  .cart-item {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 7px;
+  }
+
+  .cart-item strong {
+    overflow-wrap: anywhere;
+  }
+
+  .mobile-nav {
+    width: calc(100% - 16px);
+    right: 8px;
+  }
+}
+
+@media (max-width: 350px) {
+  .pro-nav,
+  .pro-hero,
+  .section-wrap,
+  .footer-grid {
+    width: calc(100% - 18px);
+  }
+
+  .pro-logo {
+    font-size: 19px;
+    letter-spacing: 2px;
+  }
+
+  .hero-copy h1 {
+    font-size: 32px;
+  }
+
+  .hero-metrics strong {
+    font-size: 20px;
+  }
+
+  .hero-art {
+    transform: scale(.9);
+    transform-origin: center;
+    margin-left: -5%;
+    margin-right: -5%;
+  }
+}
+
+
+/* ECOMAX FINAL RESPONSIVE V4 */
+html,body{width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:hidden!important}
+*,*:before,*:after{box-sizing:border-box!important}
+img,svg,video,canvas,iframe{max-width:100%!important}
+@media(max-width:760px){
+ .pro-nav,.pro-hero,.section-wrap,.footer-grid{width:calc(100% - 24px)!important;max-width:680px!important;margin-left:auto!important;margin-right:auto!important;min-width:0!important}
+ .pro-nav{display:flex!important;align-items:center!important;min-height:58px!important;padding:9px 0!important;gap:7px!important}
+ .pro-links,.pro-admin,.pro-auth{display:none!important}.pro-actions{margin-left:auto!important;display:flex!important;align-items:center!important;gap:6px!important}.pro-menu{display:block!important}
+ .pro-logo{font-size:19px!important;letter-spacing:2px!important;white-space:nowrap!important}
+ .pro-hero{display:flex!important;flex-direction:column!important;padding:40px 0 34px!important;overflow:hidden!important}
+ .hero-copy,.hero-art,.section-head,.pro-grid,.guide-grid,.safety-list,.contact-grid{width:100%!important;min-width:0!important}
+ .hero-copy h1{max-width:100%!important;font-size:clamp(34px,11vw,52px)!important;line-height:1.04!important;letter-spacing:-1.5px!important;overflow-wrap:anywhere!important}
+ .hero-copy p{max-width:100%!important;font-size:13px!important;line-height:1.7!important;overflow-wrap:anywhere!important}
+ .hero-buttons{width:100%!important;display:flex!important;flex-direction:column!important;gap:10px!important}.hero-btn{width:100%!important;min-height:46px!important}
+ .hero-metrics{width:100%!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important}.hero-metrics>*{min-width:0!important}.hero-metrics>*:last-child{grid-column:1/-1!important}
+ .hero-art{height:270px!important;min-height:270px!important;margin:26px 0 0!important;overflow:hidden!important}
+ .section-wrap{padding:44px 0!important;overflow:hidden!important}.section-head{margin-bottom:22px!important}.section-head h2{font-size:28px!important;line-height:1.12!important;max-width:100%!important;overflow-wrap:anywhere!important}.section-head p{font-size:13px!important;line-height:1.7!important;max-width:100%!important}
+ .pro-grid,.guide-grid,.safety-list,.contact-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:14px!important}
+ .pro-product-card{width:100%!important;max-width:100%!important;min-width:0!important;padding:16px!important;overflow:hidden!important}.pc-top,.pc-detail,.pc-buy{width:100%!important;min-width:0!important}.pc-detail{display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:8px!important}.pc-detail b{max-width:58%!important;text-align:right!important;overflow-wrap:anywhere!important}.volume-select,.add-cart,.checkout-btn{width:100%!important;max-width:100%!important;min-width:0!important}
+ .footer-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:22px!important;padding:34px 0 24px!important}.footer-grid>div:first-child{grid-column:auto!important}.footer-bottom{width:100%!important;padding:15px 12px!important;text-align:center!important;line-height:1.7!important;overflow-wrap:anywhere!important}
+ .cart-overlay{position:fixed!important;inset:0!important;padding:8px!important;overflow:hidden!important}.cart-panel{width:100%!important;max-width:520px!important;max-height:calc(100dvh - 16px)!important;margin:auto!important;overflow:hidden!important}.cart-items{max-height:52dvh!important;overflow-y:auto!important;overflow-x:hidden!important}
+ .mobile-nav{position:fixed!important;top:68px!important;left:8px!important;right:8px!important;width:auto!important;max-width:none!important;max-height:calc(100dvh - 84px)!important;overflow:auto!important}
+}
+@media(max-width:430px){.pro-nav,.pro-hero,.section-wrap,.footer-grid{width:calc(100% - 18px)!important}.pro-logo{font-size:18px!important;letter-spacing:1.5px!important}.pro-cart{padding:7px 8px!important}.hero-copy h1{font-size:34px!important;letter-spacing:-1px!important}.hero-copy p{font-size:12.5px!important}.hero-art{height:245px!important;min-height:245px!important}.section-head h2{font-size:25px!important}.pro-product-card{padding:14px!important}}
+@media(max-width:350px){.pro-logo{font-size:17px!important;letter-spacing:1px!important}.hero-copy h1{font-size:31px!important}.hero-art{height:220px!important;min-height:220px!important}}
 </style>
 </head>
 
@@ -544,12 +1057,13 @@ function checkout(){
 }
 function closeMobileMenu(){document.getElementById("mobileNav").classList.remove("active")}
 
+let authListenerAttached=false;
 async function syncAuth(){
   if(!sb)return;
   try{
     const {data}=await sb.auth.getSession();
     applyAuth(!!data?.session?.user);
-    sb.auth.onAuthStateChange((_event,session)=>applyAuth(!!session?.user));
+    if(!authListenerAttached){ sb.auth.onAuthStateChange((_event,session)=>applyAuth(!!session?.user)); authListenerAttached=true; }
   }catch(e){console.warn("Auth:",e)}
 }
 function applyAuth(logged){
