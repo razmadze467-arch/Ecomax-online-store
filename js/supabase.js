@@ -5,7 +5,6 @@ const ECOMAX_AUTH_STORAGE="ecomax-auth";
 const ECOMAX_LEGACY_STORAGE="sb-mkxkqdvtmfbxmldnvsef-auth-token";
 window.ECOMAX_SUPABASE={url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
 (function(){
-  // account.html loads this file without the CDN; inject the CDN before continuing.
   if(!window.supabase||typeof window.supabase.createClient!=="function"){
     document.write('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><\\/script>');
   }
@@ -20,7 +19,22 @@ window.ECOMAX_SUPABASE={url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
   window.ECOMAX_SUPABASE_CLIENT=client;
   window.ECOMAX_AUTH_CLIENT=client;
   window.supabase.createClient=function(){return window.ECOMAX_SUPABASE_CLIENT;};
-  window.ECOMAX_AUTH_READY=client.auth.getSession().then(function(r){return r&&r.data?r.data.session:null;}).catch(function(){return null;});
+  async function stableSession(){
+    for(let i=0;i<8;i++){
+      try{
+        const r=await client.auth.getSession();
+        const session=r&&r.data?r.data.session:null;
+        if(session)return session;
+      }catch(e){}
+      await new Promise(function(resolve){setTimeout(resolve,250);});
+    }
+    return null;
+  }
+  window.ECOMAX_AUTH_READY=stableSession().then(function(session){
+    window.ECOMAX_CURRENT_SESSION=session||null;
+    window.ECOMAX_CURRENT_USER=session&&session.user||null;
+    return session||null;
+  });
   client.auth.onAuthStateChange(function(event,session){
     window.ECOMAX_CURRENT_SESSION=session||null;
     window.ECOMAX_CURRENT_USER=session&&session.user||null;
@@ -31,7 +45,7 @@ window.ECOMAX_SUPABASE={url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
   });
 })();
 (function(){
-  function load(){if(document.getElementById("ecomaxAuthFixJs"))return;const s=document.createElement("script");s.id="ecomaxAuthFixJs";s.src="js/auth-fix.js?v=20260914-3";s.defer=true;document.head.appendChild(s);}
+  function load(){if(document.getElementById("ecomaxAuthFixJs"))return;const s=document.createElement("script");s.id="ecomaxAuthFixJs";s.src="js/auth-fix.js?v=20260914-4";s.defer=true;document.head.appendChild(s);}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",load);else load();
 })();
 (function(){
