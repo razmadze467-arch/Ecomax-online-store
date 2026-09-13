@@ -1,619 +1,592 @@
 <!DOCTYPE html>
 <html lang="ka">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#020812">
+<title>ECOMAX — Professional Automotive Care</title>
+<meta name="description" content="ECOMAX — პროფესიონალური ავტოქიმია, ავტომობილის მოვლა და წმენდის პროდუქტები.">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="ecomax-final-ui.css?v=20260913-1">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <title>ECOMAX • Professional Auto Care</title>
-    <meta name="description" content="ECOMAX — პროფესიონალური ავტოქიმია და ავტომობილის მოვლის საშუალებები.">
+<style>
+/* =========================================================
+   ECOMAX PRO HOMEPAGE — standalone visual layer
+   ========================================================= */
+:root{
+  --cyan:#00eaff;
+  --blue:#168cff;
+  --violet:#7c3cff;
+  --bg:#020812;
+  --panel:rgba(5,18,31,.78);
+  --line:rgba(0,234,255,.18);
+  --text:#f2fbff;
+  --muted:#7891a1;
+}
+html,body{margin:0;background:var(--bg);color:var(--text);overflow-x:hidden}
+body{
+  font-family:Arial,"Noto Sans Georgian",sans-serif;
+  background:
+    radial-gradient(circle at 10% 5%,rgba(0,234,255,.10),transparent 28%),
+    radial-gradient(circle at 90% 18%,rgba(124,60,255,.11),transparent 30%),
+    #020812;
+}
+*{box-sizing:border-box}
+a{text-decoration:none}
+button,select{font:inherit}
 
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/supabase.js"></script>
+.pro-header{
+  position:sticky;top:0;z-index:3000;
+  border-bottom:1px solid rgba(0,234,255,.14);
+  background:rgba(2,8,18,.84);
+  backdrop-filter:blur(18px);
+}
+.pro-nav{
+  width:min(1240px,100%);margin:auto;padding:15px 24px;
+  display:flex;align-items:center;gap:22px;
+}
+.pro-logo{
+  color:#fff;font-weight:950;letter-spacing:4px;font-size:25px;
+  text-shadow:0 0 20px rgba(0,234,255,.35);
+}
+.pro-logo span{color:var(--cyan)}
+.pro-links{display:flex;gap:8px;flex:1;justify-content:center}
+.pro-links a,.pro-admin,.pro-auth{
+  color:#a8bbc8;padding:9px 11px;border-radius:9px;font-size:12px;
+  transition:.2s;
+}
+.pro-links a:hover,.pro-admin:hover,.pro-auth:hover{color:var(--cyan);background:rgba(0,234,255,.07)}
+.pro-actions{display:flex;align-items:center;gap:7px}
+.pro-cart{
+  border:1px solid rgba(0,234,255,.35);background:rgba(0,234,255,.07);
+  color:#dffaff;border-radius:10px;padding:10px 13px;cursor:pointer;
+}
+.pro-cart b{
+  display:inline-grid;place-items:center;min-width:21px;height:21px;margin-left:5px;
+  border-radius:50%;background:var(--cyan);color:#001018;font-size:11px;
+}
+.pro-menu{display:none;border:1px solid var(--line);background:transparent;color:#fff;border-radius:9px;padding:10px 12px}
+
+.pro-hero{
+  position:relative;min-height:700px;display:grid;grid-template-columns:1.05fr .95fr;
+  align-items:center;width:min(1240px,100%);margin:auto;padding:75px 24px 60px;
+}
+.grid-bg{
+  position:absolute;inset:0;pointer-events:none;opacity:.25;
+  background-image:linear-gradient(rgba(0,234,255,.08) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(0,234,255,.08) 1px,transparent 1px);
+  background-size:55px 55px;
+  mask-image:linear-gradient(to bottom,#000,transparent);
+}
+.hero-copy{position:relative;z-index:2}
+.pro-badge{
+  display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(0,234,255,.25);
+  background:rgba(0,234,255,.05);border-radius:999px;padding:8px 13px;color:var(--cyan);
+  font-size:10px;font-weight:900;letter-spacing:2px;
+}
+.pro-badge i{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+.hero-copy h1{
+  margin:22px 0 15px;font-size:clamp(44px,6vw,82px);line-height:.98;letter-spacing:-3px;
+  max-width:750px;
+}
+.hero-copy h1 span{display:block;color:var(--cyan);text-shadow:0 0 30px rgba(0,234,255,.25)}
+.hero-copy p{max-width:650px;color:#9bb0bd;line-height:1.85;font-size:16px}
+.hero-buttons{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+.hero-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:14px 19px;border-radius:11px;font-weight:900;font-size:13px;
+}
+.hero-primary{color:#001018;background:var(--cyan);box-shadow:0 0 30px rgba(0,234,255,.18)}
+.hero-secondary{color:#d9f9ff;border:1px solid rgba(0,234,255,.28);background:rgba(0,234,255,.05)}
+.hero-metrics{display:flex;gap:34px;margin-top:38px;flex-wrap:wrap}
+.hero-metrics div{display:flex;flex-direction:column;gap:4px}
+.hero-metrics strong{font-size:24px;color:#fff}.hero-metrics span{font-size:10px;color:#637c8d;letter-spacing:1px}
+
+.hero-art{position:relative;min-height:480px;display:grid;place-items:center}
+.orbit{position:absolute;border:1px solid rgba(0,234,255,.18);border-radius:50%;transform:rotate(-18deg)}
+.orbit.o1{width:410px;height:220px}.orbit.o2{width:330px;height:165px;transform:rotate(38deg);border-color:rgba(124,60,255,.22)}
+.core{
+  position:relative;width:275px;height:275px;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(circle,rgba(0,234,255,.14),rgba(3,16,29,.92) 58%,#01050b);
+  border:1px solid rgba(0,234,255,.35);
+  box-shadow:0 0 70px rgba(0,234,255,.13),inset 0 0 50px rgba(124,60,255,.08);
+}
+.core small{letter-spacing:5px;color:#829aa9;font-size:9px}.core strong{font-size:50px;letter-spacing:5px}.core em{font-style:normal;color:var(--cyan);letter-spacing:3px;font-size:11px}
+.float{
+  position:absolute;padding:12px 15px;border:1px solid rgba(0,234,255,.22);
+  background:rgba(4,17,30,.85);backdrop-filter:blur(10px);border-radius:11px;
+  color:#9fb4c0;font-size:10px;letter-spacing:1px;box-shadow:0 15px 40px rgba(0,0,0,.3)
+}
+.float b{display:block;color:var(--cyan);margin-top:5px}.f1{top:55px;left:5%}.f2{right:0;top:180px}.f3{bottom:55px;left:12%}
+
+.section-wrap{width:min(1240px,100%);margin:auto;padding:80px 24px}
+.section-head{display:flex;justify-content:space-between;gap:25px;align-items:end;margin-bottom:32px}
+.section-label{color:var(--cyan);font-size:10px;font-weight:900;letter-spacing:3px;margin-bottom:10px}
+.section-head h2{font-size:clamp(30px,4vw,48px);margin:0;letter-spacing:-1px}
+.section-head h2 span{color:var(--cyan)}
+.section-head p{max-width:470px;color:#708897;line-height:1.7;font-size:13px;margin:0}
+
+.pro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pro-product-card{
+  position:relative;overflow:hidden;border:1px solid rgba(0,234,255,.12);border-radius:18px;
+  padding:22px;background:linear-gradient(145deg,rgba(7,24,40,.92),rgba(2,10,20,.92));
+  box-shadow:0 15px 50px rgba(0,0,0,.2);
+  transition:transform .25s,border-color .25s,box-shadow .25s;
+}
+.pro-product-card:hover{transform:translateY(-5px);border-color:rgba(0,234,255,.38);box-shadow:0 20px 60px rgba(0,190,255,.08)}
+.pro-product-card.featured{border-color:rgba(0,234,255,.38)}
+.pc-top{display:flex;justify-content:space-between;color:#5f7a8b;font-size:9px;letter-spacing:2px;font-weight:900}
+.pc-top b{color:var(--cyan)}
+.pc-icon{
+  margin:25px 0 14px;width:48px;height:48px;display:grid;place-items:center;border-radius:13px;
+  border:1px solid rgba(0,234,255,.2);color:var(--cyan);font-size:13px;font-weight:900;
+  background:rgba(0,234,255,.05)
+}
+.pc-code{font-size:12px;letter-spacing:2px;color:#b9cbd4}.pc-code strong{display:block;color:#fff;font-size:18px;letter-spacing:3px;margin-top:2px}
+.pro-product-card h3{font-size:18px;line-height:1.35;margin:13px 0 9px}.pc-desc{color:#78919f;font-size:12px;line-height:1.7;min-height:60px}
+.pc-detail{
+  display:flex;justify-content:space-between;gap:12px;border-top:1px solid rgba(255,255,255,.06);
+  padding:10px 0;color:#617987;font-size:10px
+}
+.pc-detail b{color:#b7cbd5;text-align:right}
+.pc-buy{margin-top:13px;padding-top:13px;border-top:1px solid rgba(255,255,255,.07)}
+.pc-buy>div:first-child{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+.pc-buy small{color:#5f7786;font-size:9px}.selected-price{color:var(--cyan);font-size:25px}.selected-volume{color:#91a8b5;font-size:10px}
+.volume-select{
+  width:100%;padding:11px;border-radius:9px;border:1px solid rgba(0,234,255,.18);
+  background:#061522;color:#d8f6ff;outline:none
+}
+.add-cart{
+  width:100%;margin-top:9px;padding:12px;border:1px solid rgba(0,234,255,.35);
+  border-radius:9px;background:linear-gradient(90deg,rgba(0,234,255,.12),rgba(124,60,255,.10));
+  color:#dffaff;font-weight:900;cursor:pointer
+}
+.add-cart:hover{background:rgba(0,234,255,.17);color:#fff}
+
+.info-panel{
+  border:1px solid rgba(0,234,255,.13);border-radius:18px;padding:28px;
+  background:linear-gradient(135deg,rgba(4,20,34,.9),rgba(2,10,18,.95));
+}
+.guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.guide{padding:20px;border-radius:14px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06)}
+.guide span{font-size:9px;color:var(--cyan);letter-spacing:2px}.guide h3{font-size:16px}.guide p{color:#748b99;font-size:12px;line-height:1.7}
+
+.safety-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.safety-item{border:1px solid rgba(0,234,255,.11);background:rgba(3,15,26,.72);border-radius:13px;padding:18px}
+.safety-item strong{display:block;color:#fff;margin-bottom:7px}.safety-item p{margin:0;color:#78919e;font-size:12px;line-height:1.65}
+
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.contact-card{padding:25px;border:1px solid rgba(0,234,255,.13);border-radius:16px;background:rgba(4,18,31,.75)}
+.contact-card small{color:#5e7888;letter-spacing:2px}.contact-card strong{display:block;margin-top:9px;color:#fff;font-size:17px}
+
+.pro-footer{border-top:1px solid rgba(0,234,255,.15);background:#01060d}
+.footer-grid{width:min(1240px,100%);margin:auto;padding:50px 24px 28px;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}
+.footer-brand{font-size:29px;font-weight:950;letter-spacing:4px}.footer-brand span{color:var(--cyan)}
+.footer-sub{color:#617987;font-size:11px;margin-top:8px;line-height:1.6}
+.footer-title{color:var(--cyan);font-size:10px;font-weight:900;letter-spacing:2px;margin-bottom:13px}
+.footer-links{display:flex;flex-direction:column;gap:8px}.footer-links a{color:#78909e;font-size:12px}.footer-links a:hover{color:var(--cyan)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding:17px 24px;text-align:center;color:#566d7a;font-size:10px}
+.footer-bottom strong{color:var(--cyan)}
+
+.mobile-nav{
+  display:none;position:fixed;inset:65px 10px auto 10px;z-index:2500;padding:15px;
+  border:1px solid rgba(0,234,255,.2);border-radius:15px;background:rgba(2,10,19,.96);backdrop-filter:blur(20px)
+}
+.mobile-nav.active{display:flex;flex-direction:column;gap:5px}.mobile-nav a{color:#b4c7d1;padding:12px;border-radius:9px}.mobile-nav a:hover{background:rgba(0,234,255,.07);color:var(--cyan)}
+
+.cart-overlay{
+  display:none;position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,.72);backdrop-filter:blur(7px);
+  align-items:center;justify-content:center;padding:18px
+}
+.cart-overlay.active{display:flex}
+.cart-panel{
+  width:min(560px,100%);max-height:90vh;overflow:auto;border:1px solid rgba(0,234,255,.25);
+  border-radius:18px;background:#04111d;box-shadow:0 30px 100px rgba(0,0,0,.6)
+}
+.cart-head{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:1px solid rgba(255,255,255,.06)}
+.cart-head h3{margin:0}.cart-close{border:0;background:transparent;color:#9ab0bd;font-size:27px;cursor:pointer}
+.cart-items{padding:14px 20px}.cart-item{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.cart-item strong{display:block;color:#fff;font-size:13px}.cart-item span{color:#718a98;font-size:10px}.cart-price{color:var(--cyan);font-weight:900}.remove-item{border:0;background:transparent;color:#9aabb5;font-size:22px;cursor:pointer}
+.empty-cart{text-align:center;padding:35px;color:#708894}.empty-cart div{font-size:35px}.empty-cart h3{color:#fff}
+.cart-foot{padding:18px 20px;border-top:1px solid rgba(255,255,255,.06)}.cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}.cart-total strong{font-size:22px;color:var(--cyan)}
+.checkout-btn{width:100%;padding:13px;border:0;border-radius:10px;background:var(--cyan);color:#001018;font-weight:950;cursor:pointer}
+
+.toast{
+  position:fixed;right:18px;bottom:18px;z-index:9000;padding:13px 16px;border:1px solid rgba(0,234,255,.35);
+  background:#041520;color:var(--cyan);border-radius:10px;font-size:12px;font-weight:800;box-shadow:0 10px 35px rgba(0,0,0,.4)
+}
+
+@media(max-width:950px){
+  .pro-links{display:none}.pro-menu{display:block}.pro-nav{padding:12px 15px}.pro-actions{margin-left:auto}
+  .pro-auth,.pro-admin{display:none}.pro-hero{grid-template-columns:1fr;padding-top:55px}.hero-art{min-height:390px}
+  .pro-grid{grid-template-columns:repeat(2,1fr)}.guide-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:620px){
+  .pro-hero{padding:48px 18px 35px;min-height:auto}.hero-copy h1{font-size:43px;letter-spacing:-2px}
+  .hero-copy p{font-size:13px}.hero-metrics{gap:20px}.hero-art{min-height:310px;margin-top:15px}
+  .orbit.o1{width:300px;height:160px}.orbit.o2{width:250px;height:125px}.core{width:210px;height:210px}.core strong{font-size:38px}
+  .float{font-size:8px;padding:9px}.f1{top:25px;left:0}.f2{right:0;top:125px}.f3{bottom:25px;left:4%}
+  .section-wrap{padding:55px 18px}.section-head{display:block}.section-head p{margin-top:13px}
+  .pro-grid,.guide-grid,.safety-list,.contact-grid{grid-template-columns:1fr}
+  .pro-product-card{padding:18px}.pc-desc{min-height:auto}.footer-grid{grid-template-columns:1fr;padding:40px 18px 25px}
+  .footer-bottom{padding-left:14px;padding-right:14px}.pro-logo{font-size:22px}.pro-cart{padding:9px}
+}
+</style>
 </head>
 
 <body>
-<!-- ECOMAX LIVE HOMEPAGE v2026-09-09 -->
 
-<!-- ================= HEADER ================= -->
+<header class="pro-header">
+  <div class="pro-nav">
+    <a class="pro-logo" href="index.html">ECO<span>MAX</span></a>
 
-<header class="header">
+    <nav class="pro-links">
+      <a href="#home">მთავარი</a>
+      <a href="#products">პროდუქცია</a>
+      <a href="#dilution">გაზავებები</a>
+      <a href="#safety">უსაფრთხოება</a>
+      <a href="#contact">კონტაქტი</a>
+    </nav>
 
-    <div class="nav-container">
-
-        <a href="index.html" class="logo">
-            ECO<span>MAX</span>
-        </a>
-
-        <nav class="nav">
-
-            <a href="#home">მთავარი</a>
-            <a href="#products">პროდუქცია</a>
-            <a href="#dilution">გაზავებები</a>
-            <a href="#safety">უსაფრთხოება</a>
-            <a href="#contact">კონტაქტი</a>
-
-        </nav>
-
-        <div class="nav-actions">
-
-            <a href="login.html" class="login-link" id="loginLink">
-                შესვლა
-            </a>
-
-            <a href="register.html" class="register-link" id="registerLink">
-                რეგისტრაცია
-            </a>
-
-            <a href="account.html" class="register-link" id="authAccountLink" style="display:none;">
-                ჩემი ანგარიში
-            </a>
-
-            <button class="cart-button" id="cartButton">
-                🛒
-                <span>კალათა</span>
-                <b id="cartCount">0</b>
-            </button>
-
-            <button class="menu-button" id="menuButton">
-                ☰
-            </button>
-
-        </div>
-
+    <div class="pro-actions">
+      <a class="pro-auth" id="loginLink" href="login.html">შესვლა</a>
+      <a class="pro-auth" id="registerLink" href="register.html">რეგისტრაცია</a>
+      <a class="pro-auth" id="authAccountLink" href="account.html" style="display:none">ჩემი ანგარიში</a>
+      <a class="pro-admin" href="admin.html">Admin Panel</a>
+      <button class="pro-cart" id="cartButton" type="button">🛒 <span>კალათა</span> <b id="cartCount">0</b></button>
+      <button class="pro-menu" id="menuButton" type="button" aria-label="მენიუ">☰</button>
     </div>
-
+  </div>
 </header>
 
+<nav class="mobile-nav" id="mobileNav">
+  <a href="#home">მთავარი</a>
+  <a href="#products">პროდუქცია</a>
+  <a href="#dilution">გაზავებები</a>
+  <a href="#safety">უსაფრთხოება</a>
+  <a href="#contact">კონტაქტი</a>
+  <a href="admin.html">Admin Panel</a>
+  <a href="login.html" id="mobileLogin">შესვლა</a>
+  <a href="register.html" id="mobileRegister">რეგისტრაცია</a>
+  <a href="account.html" id="mobileAccount" style="display:none">ჩემი ანგარიში</a>
+</nav>
 
-<!-- ================= HERO ================= -->
+<main id="home">
 
-<main>
+<section class="pro-hero">
+  <div class="grid-bg"></div>
+  <div class="hero-copy">
+    <div class="pro-badge"><i></i> PROFESSIONAL AUTOMOTIVE CARE</div>
+    <h1>სუფთა მანქანა.<span>პროფესიონალური შედეგი.</span></h1>
+    <p>ECOMAX-ის პროფესიონალური ავტოქიმია ავტომობილის წმენდისა და მოვლისთვის — სწორი პროდუქტი, სწორი გაზავება და მარტივი შეკვეთა ერთ სისტემაში.</p>
 
-<section class="hero" id="home">
-
-    <div class="hero-glow glow-one"></div>
-    <div class="hero-glow glow-two"></div>
-
-    <div class="hero-content">
-
-        <div class="hero-badge">
-            <span></span>
-            PROFESSIONAL AUTO CHEMISTRY
-        </div>
-
-        <h1>
-            შენი ავტომობილის
-            <strong>ახალი სტანდარტი.</strong>
-        </h1>
-
-        <p>
-            ECOMAX-ის პროფესიონალური ავტოქიმია შექმნილია
-            ავტომობილის ეფექტური წმენდისა და მოვლისთვის.
-        </p>
-
-        <div class="hero-buttons">
-
-            <a href="#products" class="primary-button">
-                პროდუქციის ნახვა
-                <span>→</span>
-            </a>
-
-            <a href="#dilution" class="secondary-button">
-                გაზავებების ნახვა
-            </a>
-
-        </div>
-
-        <div class="hero-stats">
-
-            <div>
-                <strong>11</strong><span>პროდუქტი</span>
-            </div>
-
-            <div>
-                <strong>1L</strong>
-                <span>სტანდარტული მოცულობა</span>
-            </div>
-
-            <div>
-                <strong>ECOMAX</strong>
-                <span>Professional</span>
-            </div>
-
-        </div>
-
+    <div class="hero-buttons">
+      <a class="hero-btn hero-primary" href="#products">პროდუქციის ნახვა →</a>
+      <a class="hero-btn hero-secondary" href="#dilution">გაზავებების ნახვა</a>
     </div>
 
-
-    <div class="hero-visual">
-
-        <div class="orbital orbital-one"></div>
-        <div class="orbital orbital-two"></div>
-
-        <div class="product-core">
-
-            <div class="core-top">
-                ECOMAX
-            </div>
-
-            <div class="core-main">
-                <span>AUTO</span>
-                <strong>CARE</strong>
-            </div>
-
-            <div class="core-bottom">
-                PROFESSIONAL FORMULA
-            </div>
-
-        </div>
-
-        <div class="floating-card card-one">
-            <span>01</span>
-            ENGINE
-            <b>CLEAN</b>
-        </div>
-
-        <div class="floating-card card-two">
-            <span>02</span>
-            WHEEL
-            <b>CLEAN</b>
-        </div>
-
-        <div class="floating-card card-three">
-            <span>03</span>
-            FOAM
-            <b>PRO</b>
-        </div>
-
+    <div class="hero-metrics">
+      <div><strong>13+</strong><span>პროდუქტის კატეგორია</span></div>
+      <div><strong>0.5L–20L</strong><span>მოცულობები</span></div>
+      <div><strong>12+</strong><span>წლის გამოცდილება</span></div>
     </div>
+  </div>
 
+  <div class="hero-art">
+    <div class="orbit o1"></div><div class="orbit o2"></div>
+    <div class="core"><small>ECOMAX</small><strong>AUTO</strong><em>CARE / PRO</em></div>
+    <div class="float f1">01 <b>ENGINE CLEAN</b></div>
+    <div class="float f2">02 <b>WHEEL CARE</b></div>
+    <div class="float f3">03 <b>PRO FOAM</b></div>
+  </div>
 </section>
 
-
-<!-- ================= PRODUCTS ================= -->
-<section class="section products-section" id="products">
-    <div class="section-heading">
-        <div><div class="section-label">ECOMAX PRODUCTS</div><h2>პროფესიონალური <span>პროდუქცია</span></h2></div>
-        <p>აირჩიე 500 მლ-დან 20 ლიტრამდე მოცულობა, ან შეიყვანე სასურველი რაოდენობა. ფასი ითვლება მოცულობის მიხედვით.</p>
+<section class="section-wrap" id="products">
+  <div class="section-head">
+    <div>
+      <div class="section-label">ECOMAX PRODUCTS</div>
+      <h2>პროფესიონალური <span>პროდუქცია</span></h2>
     </div>
-    <div class="products-grid" id="productsGrid">
-
-        <article class="product-card featured" data-unit-price="10">
-            <div class="product-top"><span class="product-tag">ENGINE</span><span class="product-number">01</span></div>
-            <div class="product-icon">⚙</div>
-            <div class="product-name">ENGINE<strong>CLEAN</strong></div>
-            <h3>ძრავის სარეცხი</h3>
-            <p>ძრავის ბლოკი, ცილინდრები და სხვა ძირითადი მექანიზმები; მიმცხვარი ზეთი, ძლიერი ჩამჯდარი ჭუჭყი და ნაგარი.</p>
-            <div class="product-details">
-                <div><b>გაზავება:</b> 1×1, 1×2 ან 1×3 — დასვრილი ზედაპირის მიხედვით.</div>
-                <div><b>მოხმარება:</b> ფშიკალკით რეცხვა, აპარატით რეცხვა და შესაბამისი პროფესიონალური რეცხვის მეთოდი.</div>
-            </div>
-            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
-            <div class="volume-picker">
-                <label>რამდენი ლიტრის შეძენა გსურთ?</label>
-                <select class="volume-select" aria-label="ძრავის სარეცხი — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
-            </div>
-            <div class="product-volume"></div>
-            <button class="add-cart" data-name="ძრავის სარეცხი" data-price="5" data-volume="500 მლ">+ კალათაში</button>
-        </article>
-
-        <article class="product-card " data-unit-price="10">
-            <div class="product-top"><span class="product-tag">LEATHER</span><span class="product-number">02</span></div>
-            <div class="product-icon">◆</div>
-            <div class="product-name">LEATHER<strong>CLEAN</strong></div>
-            <h3>ტყავის ქიმწმენდა</h3>
-            <p>მანქანის ტყავის სიდენიები და სხვადასხვა ტყავის ზედაპირის რეცხვა-წმენდა.</p>
-            <div class="product-details">
-                <div><b>გაზავება:</b> 1×1-დან 1×3-მდე — დასვრილიანობის მიხედვით.</div>
-                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
-            </div>
-            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
-            <div class="volume-picker">
-                <label>რამდენი ლიტრის შეძენა გსურთ?</label>
-                <select class="volume-select" aria-label="ტყავის ქიმწმენდა — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
-            </div>
-            <div class="product-volume"></div>
-            <button class="add-cart" data-name="ტყავის ქიმწმენდა" data-price="5" data-volume="500 მლ">+ კალათაში</button>
-        </article>
-
-        <article class="product-card " data-unit-price="10">
-            <div class="product-top"><span class="product-tag">TEXTILE</span><span class="product-number">03</span></div>
-            <div class="product-icon">✦</div>
-            <div class="product-name">TEXTILE<strong>CLEAN</strong></div>
-            <h3>ნაჭრის ქიმწმენდა</h3>
-            <p>ნაჭრის ზედაპირები, მანქანის ნაჭრის სიდენიები, სახლის დივნები და სხვადასხვა ქსოვილები.</p>
-            <div class="product-details">
-                <div><b>გაზავება:</b> 1×1-დან 1×10-მდე, გამოყენების მეთოდისა და საჭიროების მიხედვით.</div>
-                <div><b>მოხმარება:</b> კონცენტრატი 1×1-ში; აპარატით გამოყენებისთვის 1×10-მდე.</div>
-            </div>
-            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
-            <div class="volume-picker">
-                <label>რამდენი ლიტრის შეძენა გსურთ?</label>
-                <select class="volume-select" aria-label="ნაჭრის ქიმწმენდა — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
-            </div>
-            <div class="product-volume"></div>
-            <button class="add-cart" data-name="ნაჭრის ქიმწმენდა" data-price="5" data-volume="500 მლ">+ კალათაში</button>
-        </article>
-
-        <article class="product-card " data-unit-price="10">
-            <div class="product-top"><span class="product-tag">WHEEL</span><span class="product-number">04</span></div>
-            <div class="product-icon">◉</div>
-            <div class="product-name">WHEEL<strong>CLEAN</strong></div>
-            <h3>დისკების და ალუმინების სარეცხი საწმენდი</h3>
-            <p>ალუმინი, მანქანის დისკები, კალოტკები და დისკებზე ძლიერი ჭუჭყისა და მიმცხვარი ნაგარების მოცილება.</p>
-            <div class="product-details">
-                <div><b>გაზავება:</b> 1×1-დან 1×3-მდე — დასვრილიანობის მიხედვით.</div>
-                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
-            </div>
-            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
-            <div class="volume-picker">
-                <label>რამდენი ლიტრის შეძენა გსურთ?</label>
-                <select class="volume-select" aria-label="დისკების და ალუმინების სარეცხი საწმენდი — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
-            </div>
-            <div class="product-volume"></div>
-            <button class="add-cart" data-name="დისკების და ალუმინების სარეცხი საწმენდი" data-price="5" data-volume="500 მლ">+ კალათაში</button>
-        </article>
-
-        <article class="product-card " data-unit-price="10">
-            <div class="product-top"><span class="product-tag">RADIATOR</span><span class="product-number">05</span></div>
-            <div class="product-icon">◌</div>
-            <div class="product-name">RADIATOR<strong>CLEAN</strong></div>
-            <h3>რადიატორის და წყლის სისტემის გამოსარეცხი</h3>
-            <p>რადიატორის და წყლის სისტემის სრულად გამოსარეცხად.</p>
-            <div class="product-details">
-                <div><b>გაზავება:</b> 1×1-დან 1×3-მდე — დასვრილიანობის მიხედვით.</div>
-                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
-            </div>
-            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
-            <div class="volume-picker">
-                <label>რამდენი ლიტრის შეძენა გსურთ?</label>
-                <select class="volume-select" aria-label="რადიატორის და წყლის სისტემის გამოსარეცხი — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
-            </div>
-            <div class="product-volume"></div>
-            <button class="add-cart" data-name="რადიატორის და წყლის სისტემის გამოსარეცხი" data-price="5" data-volume="500 მლ">+ კალათაში</button>
-        </article>
-
-        <article class="product-card " data-unit-price="10">
-            <div class="product-top"><span class="product-tag">RUST / CONCRETE</span><span class="product-number">06</span></div>
-            <div class="product-icon">✧</div>
-            <div class="product-name">RUST / CONCRETE<strong>REMOVER</strong></div>
-            <h3>ჟანგის, ბეტონის, გუდრონის, კოროზიებისა და მარილების მოსაშორებელი</h3>
-            <p>ჟანგის, ბეტონის მიმცხვარი მტვრის, კოროზიებისა და მარილების მოსაშორებლად.</p>
-            <div class="product-details">
-                <div><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</div>
-                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
-            </div>
-            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
-            <div class="volume-picker">
-                <label>რამდენი ლიტრის შეძენა გსურთ?</label>
-                <select class="volume-select" aria-label="ჟანგის, ბეტონის, გუდრონის, კოროზიებისა და მარილების მოსაშორებელი — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
-            </div>
-            <div class="product-volume"></div>
-            <button class="add-cart" data-name="ჟანგის, ბეტონის, გუდრონის, კოროზიებისა და მარილების მოსაშორებელი" data-price="5" data-volume="500 მლ">+ კალათაში</button>
-        </article>
-
-        <article class="product-card " data-unit-price="10">
-            <div class="product-top"><span class="product-tag">TIRE</span><span class="product-number">07</span></div>
-            <div class="product-icon">◒</div>
-            <div class="product-name">TIRE<strong>SHINE</strong></div>
-            <h3>საბურავის საპრიალებელი</h3>
-            <p>საბურავების და რეზინების საშავებლად და საპრიალებლად.</p>
-            <div class="product-details">
-                <div><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</div>
-                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
-            </div>
-            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
-            <div class="volume-picker">
-                <label>რამდენი ლიტრის შეძენა გსურთ?</label>
-                <select class="volume-select" aria-label="საბურავის საპრიალებელი — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
-            </div>
-            <div class="product-volume"></div>
-            <button class="add-cart" data-name="საბურავის საპრიალებელი" data-price="5" data-volume="500 მლ">+ კალათაში</button>
-        </article>
-
-        <article class="product-card " data-unit-price="10">
-            <div class="product-top"><span class="product-tag">DASH</span><span class="product-number">08</span></div>
-            <div class="product-icon">✺</div>
-            <div class="product-name">DASH<strong>SHINE</strong></div>
-            <h3>ტორპედოს საპრიალებელი</h3>
-            <p>მანქანის ტორპედოს საპრიალებლად.</p>
-            <div class="product-details">
-                <div><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</div>
-                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
-            </div>
-            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
-            <div class="volume-picker">
-                <label>რამდენი ლიტრის შეძენა გსურთ?</label>
-                <select class="volume-select" aria-label="ტორპედოს საპრიალებელი — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
-            </div>
-            <div class="product-volume"></div>
-            <button class="add-cart" data-name="ტორპედოს საპრიალებელი" data-price="5" data-volume="500 მლ">+ კალათაში</button>
-        </article>
-
-        <article class="product-card " data-unit-price="10">
-            <div class="product-top"><span class="product-tag">LEATHER</span><span class="product-number">09</span></div>
-            <div class="product-icon">◇</div>
-            <div class="product-name">LEATHER<strong>CARE</strong></div>
-            <h3>ტყავის მკვებავი</h3>
-            <p>მანქანის ტყავის საპრიალებლად; იცავს მზის პირდაპირი სხივებისგან; არ ჭიმავს და არ აუხეშებს ტყავს; არბილებს და უნარჩუნებს პირვანდელ იერს.</p>
-            <div class="product-details">
-                <div><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</div>
-                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა ან ბუბკა.</div>
-            </div>
-            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
-            <div class="volume-picker">
-                <label>რამდენი ლიტრის შეძენა გსურთ?</label>
-                <select class="volume-select" aria-label="ტყავის მკვებავი — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
-            </div>
-            <div class="product-volume"></div>
-            <button class="add-cart" data-name="ტყავის მკვებავი" data-price="5" data-volume="500 მლ">+ კალათაში</button>
-        </article>
-
-        <article class="product-card " data-unit-price="10">
-            <div class="product-top"><span class="product-tag">CAR</span><span class="product-number">10</span></div>
-            <div class="product-icon">✹</div>
-            <div class="product-name">CAR<strong>WAX</strong></div>
-            <h3>სანთელი მანქანის</h3>
-            <p>მანქანის გარე ზედაპირსა და კორპუსზე; იცავს წვიმიანი ტალახისგან, მტვრისგან და სხვადასხვა პირობების ზემოქმედებისგან.</p>
-            <div class="product-details">
-                <div><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</div>
-                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
-            </div>
-            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
-            <div class="volume-picker">
-                <label>რამდენი ლიტრის შეძენა გსურთ?</label>
-                <select class="volume-select" aria-label="სანთელი მანქანის — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
-            </div>
-            <div class="product-volume"></div>
-            <button class="add-cart" data-name="სანთელი მანქანის" data-price="5" data-volume="500 მლ">+ კალათაში</button>
-        </article>
-
-        <article class="product-card " data-unit-price="10">
-            <div class="product-top"><span class="product-tag">CAR</span><span class="product-number">11</span></div>
-            <div class="product-icon">✦</div>
-            <div class="product-name">CAR<strong>PERFUME</strong></div>
-            <h3>მანქანის სუნამო</h3>
-            <p>სახლში, მანქანის სალონში და კუბრიკებზე მოსაფრქვევად.</p>
-            <div class="product-details">
-                <div><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</div>
-                <div><b>მოხმარება:</b> ბოთლი ფშიკალკა.</div>
-            </div>
-            <div class="product-info"><strong class="selected-price">5 ₾</strong><span class="selected-volume">500 მლ</span></div>
-            <div class="volume-picker">
-                <label>რამდენი ლიტრის შეძენა გსურთ?</label>
-                <select class="volume-select" aria-label="მანქანის სუნამო — მოცულობა"><option value="0.5">500 მლ (0.5L) — 5 ₾</option><option value="1">1 ლიტრი — 10 ₾</option><option value="2">2 ლიტრი — 20 ₾</option><option value="3">3 ლიტრი — 30 ₾</option><option value="4">4 ლიტრი — 40 ₾</option><option value="5">5 ლიტრი — 50 ₾</option><option value="6">6 ლიტრი — 60 ₾</option><option value="7">7 ლიტრი — 70 ₾</option><option value="8">8 ლიტრი — 80 ₾</option><option value="9">9 ლიტრი — 90 ₾</option><option value="10">10 ლიტრი — 100 ₾</option><option value="20">20 ლიტრი — 200 ₾</option></select>
-            </div>
-            <div class="product-volume"></div>
-            <button class="add-cart" data-name="მანქანის სუნამო" data-price="5" data-volume="500 მლ">+ კალათაში</button>
-        </article>
-    </div>
+    <p>აირჩიე მოცულობა და დაამატე პროდუქტი კალათაში. ძირითადი ფასები: 500 მლ — 5 ₾, 1 ლ — 10 ₾, შემდეგ ყოველ ლიტრზე 10 ₾.</p>
+  </div>
+  <div class="pro-grid" id="productsGrid"></div>
 </section>
 
-<!-- ================= DILUTION & PRICES ================= -->
-<section class="section dark-section" id="dilution">
-<div class="section-heading"><div><h2>გაზავებები და <span>ფასები</span></h2></div></div>
-<div class="dilution-grid"><div class="dilution-card"><span>01</span><h3>ძრავის სარეცხი</h3><p><b>აღწერა:</b> ძრავის ბლოკი, ცილინდრები და სხვა ძირითადი მექანიზმები; მიმცხვარი ზეთი, ძლიერი ჩამჯდარი ჭუჭყი და ნაგარი.</p><p><b>გაზავება:</b> 1×1, 1×2 ან 1×3 — დასვრილი ზედაპირის მიხედვით.</p><p><b>მოხმარება:</b> ფშიკალკით რეცხვა, აპარატით რეცხვა და შესაბამისი პროფესიონალური რეცხვის მეთოდი.</p></div>
-<div class="dilution-card"><span>02</span><h3>ტყავის ქიმწმენდა</h3><p><b>აღწერა:</b> მანქანის ტყავის სიდენიები და სხვადასხვა ტყავის ზედაპირის რეცხვა-წმენდა.</p><p><b>გაზავება:</b> 1×1-დან 1×3-მდე — დასვრილიანობის მიხედვით.</p><p><b>მოხმარება:</b> ბოთლი ფშიკალკა.</p></div>
-<div class="dilution-card"><span>03</span><h3>ნაჭრის ქიმწმენდა</h3><p><b>აღწერა:</b> ნაჭრის ზედაპირები, მანქანის ნაჭრის სიდენიები, სახლის დივნები და სხვადასხვა ქსოვილები.</p><p><b>გაზავება:</b> 1×1-დან 1×10-მდე, გამოყენების მეთოდისა და საჭიროების მიხედვით.</p><p><b>მოხმარება:</b> კონცენტრატი 1×1-ში; აპარატით გამოყენებისთვის 1×10-მდე.</p></div>
-<div class="dilution-card"><span>04</span><h3>დისკების და ალუმინების სარეცხი საწმენდი</h3><p><b>აღწერა:</b> ალუმინი, მანქანის დისკები, კალოტკები და დისკებზე ძლიერი ჭუჭყისა და მიმცხვარი ნაგარების მოცილება.</p><p><b>გაზავება:</b> 1×1-დან 1×3-მდე — დასვრილიანობის მიხედვით.</p><p><b>მოხმარება:</b> ბოთლი ფშიკალკა.</p></div>
-<div class="dilution-card"><span>05</span><h3>რადიატორის და წყლის სისტემის გამოსარეცხი</h3><p><b>აღწერა:</b> რადიატორის და წყლის სისტემის სრულად გამოსარეცხად.</p><p><b>გაზავება:</b> 1×1-დან 1×3-მდე — დასვრილიანობის მიხედვით.</p><p><b>მოხმარება:</b> ბოთლი ფშიკალკა.</p></div>
-<div class="dilution-card"><span>06</span><h3>ჟანგის, ბეტონის, გუდრონის, კოროზიებისა და მარილების მოსაშორებელი</h3><p><b>აღწერა:</b> ჟანგის, ბეტონის მიმცხვარი მტვრის, კოროზიებისა და მარილების მოსაშორებლად.</p><p><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</p><p><b>მოხმარება:</b> ბოთლი ფშიკალკა.</p></div>
-<div class="dilution-card"><span>07</span><h3>საბურავის საპრიალებელი</h3><p><b>აღწერა:</b> საბურავების და რეზინების საშავებლად და საპრიალებლად.</p><p><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</p><p><b>მოხმარება:</b> ბოთლი ფშიკალკა.</p></div>
-<div class="dilution-card"><span>08</span><h3>ტორპედოს საპრიალებელი</h3><p><b>აღწერა:</b> მანქანის ტორპედოს საპრიალებლად.</p><p><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</p><p><b>მოხმარება:</b> ბოთლი ფშიკალკა.</p></div>
-<div class="dilution-card"><span>09</span><h3>ტყავის მკვებავი</h3><p><b>აღწერა:</b> მანქანის ტყავის საპრიალებლად; იცავს მზის პირდაპირი სხივებისგან; არ ჭიმავს და არ აუხეშებს ტყავს; არბილებს და უნარჩუნებს პირვანდელ იერს.</p><p><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</p><p><b>მოხმარება:</b> ბოთლი ფშიკალკა ან ბუბკა.</p></div>
-<div class="dilution-card"><span>10</span><h3>სანთელი მანქანის</h3><p><b>აღწერა:</b> მანქანის გარე ზედაპირსა და კორპუსზე; იცავს წვიმიანი ტალახისგან, მტვრისგან და სხვადასხვა პირობების ზემოქმედებისგან.</p><p><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</p><p><b>მოხმარება:</b> ბოთლი ფშიკალკა.</p></div>
-<div class="dilution-card"><span>11</span><h3>მანქანის სუნამო</h3><p><b>აღწერა:</b> სახლში, მანქანის სალონში და კუბრიკებზე მოსაფრქვევად.</p><p><b>გაზავება:</b> არ აქვს — გამოიყენება განზავების გარეშე.</p><p><b>მოხმარება:</b> ბოთლი ფშიკალკა.</p></div></div>
+<section class="section-wrap" id="dilution">
+  <div class="section-head">
+    <div>
+      <div class="section-label">MIX / DILUTION SYSTEM</div>
+      <h2>გაზავება <span>მარტივად</span></h2>
+    </div>
+    <p>პროდუქტის გამოყენებამდე ყოველთვის გაითვალისწინე ზედაპირი, დაბინძურების დონე და კონკრეტული პროდუქტის მითითებული გაზავება.</p>
+  </div>
+
+  <div class="info-panel">
+    <div class="guide-grid">
+      <article class="guide"><span>01 / LIGHT DIRT</span><h3>მსუბუქი დაბინძურება</h3><p>საჭიროების მიხედვით გამოიყენე უფრო მსუბუქი სამუშაო ხსნარი და ჯერ მცირე, შეუმჩნეველ ადგილზე გამოცადე.</p></article>
+      <article class="guide"><span>02 / MEDIUM</span><h3>საშუალო დაბინძურება</h3><p>საშუალო დაბინძურებისთვის გამოიყენე პროდუქტის მითითებული შუალედური გაზავება.</p></article>
+      <article class="guide"><span>03 / HEAVY DIRT</span><h3>ძლიერი დაბინძურება</h3><p>ძლიერი ჭუჭყისას იმუშავე უფრო კონცენტრირებული ხსნარით, მაგრამ არ გადააჭარბო პროდუქტის მითითებულ წესს.</p></article>
+    </div>
+  </div>
 </section>
 
-<!-- ================= SAFETY ================= -->
-
-<section class="section safety-section" id="safety">
-
-    <div class="safety-box">
-
-        <div class="safety-icon">
-            !
-        </div>
-
-        <div>
-
-            <div class="section-label">
-                SAFETY FIRST
-            </div>
-
-            <h2>
-                უსაფრთხოების წესები
-            </h2>
-
-            <p>
-                პროდუქციის გამოყენებამდე გაეცანი ეტიკეტზე მითითებულ
-                ინსტრუქციას. გამოიყენე დამცავი ხელთათმანები და
-                მოარიდე პროდუქტი თვალებსა და კანს.
-            </p>
-
-            <div class="safety-list">
-
-                <div>✓ გამოიყენე შესაბამისი დამცავი საშუალებები</div>
-                <div>✓ შეინახე ბავშვებისთვის მიუწვდომელ ადგილას</div>
-                <div>✓ არ შეურიო სხვადასხვა ქიმიური საშუალება ერთმანეთში</div>
-                <div>✓ გამოყენების შემდეგ კარგად ჩამოიბანე ზედაპირი</div>
-
-            </div>
-
-        </div>
-
+<section class="section-wrap" id="safety">
+  <div class="section-head">
+    <div>
+      <div class="section-label">SAFETY FIRST</div>
+      <h2>უსაფრთხოება <span>პირველ ადგილზე</span></h2>
     </div>
-
+    <p>ქიმიურ საშუალებებთან მუშაობისას დაიცავი ხელები და თვალები, გამოიყენე შესაბამისი დამცავი საშუალებები და შეინახე პროდუქტი ბავშვებისთვის მიუწვდომელ ადგილას.</p>
+  </div>
+  <div class="safety-list">
+    <div class="safety-item"><strong>🧤 კანის დაცვა</strong><p>მოერიდე კანთან ხანგრძლივ კონტაქტს და საჭიროების შემთხვევაში გამოიყენე დამცავი ხელთათმანი.</p></div>
+    <div class="safety-item"><strong>👁 თვალების დაცვა</strong><p>არ დაუშვა თვალში მოხვედრა. მოხვედრის შემთხვევაში ჩამოიბანე დიდი რაოდენობით წყლით.</p></div>
+    <div class="safety-item"><strong>😷 გადატანისას</strong><p>კონცენტრატის გადაღებისას/გადატანისას გამოიყენე შესაბამისი დამცავი საშუალებები და იმუშავე კარგად განიავებულ სივრცეში.</p></div>
+    <div class="safety-item"><strong>🔒 შენახვა</strong><p>შეინახე დახურულად, მშრალ ადგილას და ბავშვებისთვის მიუწვდომელ სივრცეში.</p></div>
+  </div>
 </section>
 
-
-<!-- ================= CONTACT ================= -->
-
-<section class="section contact-section" id="contact">
-
-    <div class="contact-content">
-
-        <div class="section-label">
-            CONTACT ECOMAX
-        </div>
-
-        <h2>
-            მზად ხარ
-            <span>დაიწყო?</span>
-        </h2>
-
-        <p>
-            შეკვეთისთვის გამოიყენე კალათა ან დაგვიკავშირდი.
-        </p>
-
-        <div class="contact-buttons">
-
-            <a href="mailto:info@ecomax.com.ge" class="primary-button">
-                ✉ დაგვიკავშირდი
-            </a>
-
-            <a href="#products" class="secondary-button">
-                პროდუქციის ნახვა
-            </a>
-
-        </div>
-
+<section class="section-wrap" id="contact">
+  <div class="section-head">
+    <div>
+      <div class="section-label">CONTACT / ECOMAX</div>
+      <h2>დაგვიკავშირდი <span>მარტივად</span></h2>
     </div>
-
+    <p>შეკვეთისთვის გამოიყენე კალათა და Checkout. ანგარიშით შესვლის შემდეგ შეკვეთის პროცესი უფრო სწრაფია.</p>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-card"><small>BRAND</small><strong>ECOMAX — Professional Auto Care</strong></div>
+    <div class="contact-card"><small>ORDER</small><strong>აირჩიე პროდუქტი → კალათა → Checkout</strong></div>
+  </div>
 </section>
 
 </main>
 
-
-<!-- ================= FOOTER ================= -->
-
-<footer class="footer">
-
-    <div class="footer-main">
-
-        <div class="footer-logo">
-            ECO<span>MAX</span>
-        </div>
-
-        <p>
-            Professional Auto Chemistry
-        </p>
-
+<footer class="pro-footer">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">ECO<span>MAX</span></div>
+      <div class="footer-sub">Professional automotive care.<br>პროფესიონალური ავტოქიმია და ავტომობილის მოვლა.</div>
     </div>
-
-    <div class="footer-bottom">
-
-        <span>
-            © 2026 ECOMAX. ყველა უფლება დაცულია.
-        </span>
-
-        <strong>
-            DEVELOPED BY BTCGAMER
-        </strong>
-
+    <div>
+      <div class="footer-title">NAVIGATION</div>
+      <div class="footer-links">
+        <a href="#products">პროდუქცია</a>
+        <a href="#dilution">გაზავებები</a>
+        <a href="#safety">უსაფრთხოება</a>
+      </div>
     </div>
-
+    <div>
+      <div class="footer-title">ACCOUNT</div>
+      <div class="footer-links">
+        <a href="login.html">შესვლა</a>
+        <a href="register.html">რეგისტრაცია</a>
+        <a href="admin.html">Admin Panel</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">© ყველა უფლება დაცულია შპს „ეკომაქსის“ მიერ — 2026 · <strong>DEVELOPED BY BTCGAMER</strong></div>
 </footer>
 
-
-<!-- ================= CART ================= -->
-
 <div class="cart-overlay" id="cartOverlay">
-
-    <div class="cart-panel">
-
-        <div class="cart-header">
-
-            <div>
-                <span class="section-label">YOUR CART</span>
-                <h2>შენი კალათა</h2>
-            </div>
-
-            <button id="closeCart" class="close-cart">
-                ×
-            </button>
-
-        </div>
-
-
-        <div id="cartItems" class="cart-items">
-
-            <div class="empty-cart">
-                <div>🛒</div>
-                <h3>კალათა ცარიელია</h3>
-                <p>დაამატე პროდუქტი კალათაში.</p>
-            </div>
-
-        </div>
-
-
-        <div class="cart-footer">
-
-            <div class="cart-total">
-                <span>ჯამი</span>
-                <strong id="cartTotal">0 ₾</strong>
-            </div>
-
-            <button class="checkout-button" id="checkoutButton">
-                შეკვეთის გაგრძელება →
-            </button>
-
-        </div>
-
+  <div class="cart-panel">
+    <div class="cart-head"><h3>ECOMAX • კალათა</h3><button class="cart-close" id="cartClose" type="button">×</button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-foot">
+      <div class="cart-total"><span>სულ</span><strong id="cartTotal">0 ₾</strong></div>
+      <button class="checkout-btn" id="checkoutButton" type="button">შეკვეთის გაგრძელება →</button>
     </div>
-
+  </div>
 </div>
-
-
-<!-- ================= MOBILE NAV ================= -->
-
-<div class="mobile-nav" id="mobileNav">
-
-    <a href="#home">მთავარი</a>
-    <a href="#products">პროდუქცია</a>
-    <a href="#dilution">გაზავებები</a>
-    <a href="#safety">უსაფრთხოება</a>
-    <a href="login.html">შესვლა</a>
-    <a href="register.html">რეგისტრაცია</a>
-
-</div>
-
-
-<script src="script.js"></script>
 
 <script>
-/* ECOMAX — keep homepage header in sync with Supabase Auth */
-(async function syncAuthHeader() {
-    try {
-        const client = window.supabase.createClient(
-            window.ECOMAX_SUPABASE.url,
-            window.ECOMAX_SUPABASE.key,
-            {
-                auth: {
-                    persistSession: true,
-                    autoRefreshToken: true,
-                    detectSessionInUrl: true
-                }
-            }
-        );
+"use strict";
 
-        const { data } = await client.auth.getSession();
-        const loggedIn = !!data?.session?.user;
+const SUPABASE_URL = "https://mkxkqdvtmfbxmldnvsef.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd";
 
-        const login = document.getElementById("loginLink");
-        const register = document.getElementById("registerLink");
-        const account = document.getElementById("authAccountLink");
+window.ECOMAX_SUPABASE = {url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
 
-        if (loggedIn) {
-            if (login) login.style.display = "none";
-            if (register) register.style.display = "none";
-            if (account) account.style.display = "inline-flex";
-        }
-    } catch (error) {
-        console.warn("ECOMAX auth header:", error);
+let sb = null;
+try{
+  if(window.supabase?.createClient){
+    sb = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{
+      auth:{storageKey:"ecomax-auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
+    });
+    window.ECOMAX_SUPABASE_CLIENT = sb;
+  }
+}catch(e){console.warn("Supabase init:",e)}
+
+const products = [
+  {key:"engine",tag:"ENGINE",a:"ENGINE",b:"CLEAN",name:"ძრავის სარეცხი",desc:"ძრავის ბლოკი, ცილინდრები და მექანიზმები; მიმცხვარი ზეთი, ძლიერი ჭუჭყი და ნაგარი.",dil:"1×1 / 1×2 / 1×3",use:"ფშიკალკა / აპარატი"},
+  {key:"wheel",tag:"WHEEL",a:"WHEEL",b:"CLEAN",name:"დისკების და ალუმინების სარეცხი საწმენდი",desc:"დისკების, ალუმინის და შესაბამისი მძიმე ჭუჭყის გასაწმენდად.",dil:"1×1 — 1×3",use:"ფშიკალკა / აპარატი"},
+  {key:"radiator",tag:"RADIATOR",a:"RADIATOR",b:"CLEAN",name:"რადიატორის და წყლის სისტემის გამოსარეცხი",desc:"რადიატორისა და წყლის სისტემის გამოსარეცხად.",dil:"1×1 — 1×3",use:"ფშიკალკა"},
+  {key:"fabric",tag:"FABRIC",a:"FABRIC",b:"CLEAN",name:"ნაჭრის ქიმწმენდა",desc:"მანქანის ნაჭრის სავარძლები, სახლის დივნები და ტექსტილის ზედაპირები. ტანსაცმლისთვის არა.",dil:"1×1; აპარატით 1×10",use:"ფშიკალკა / აპარატი",weight:true},
+  {key:"leather",tag:"LEATHER",a:"LEATHER",b:"CLEAN",name:"ტყავის ქიმწმენდა",desc:"მანქანის ტყავის სავარძლებისა და ტყავის ზედაპირების წმენდა. არ გამოიყენება ქსოვილზე.",dil:"1×1 — 1×3",use:"ფშიკალკა"},
+  {key:"foam",tag:"FOAM",a:"CAR WASH",b:"FOAM",name:"ავტომობილის სარეცხი ქაფი",desc:"პროფესიონალური ქაფი ავტომობილის გარე რეცხვისთვის.",dil:"2 ლ / 100 ლ წყალი",use:"ქაფის აპარატი",foam:true},
+  {key:"tire",tag:"TIRE",a:"TIRE",b:"SHINE",name:"საბურავის საპრიალებელი",desc:"საბურავებისა და რეზინის ზედაპირების გასაშავებლად და საპრიალებლად.",dil:"განზავების გარეშე",use:"ფშიკალკა"},
+  {key:"dash",tag:"DASHBOARD",a:"DASHBOARD",b:"POLISH",name:"ტორპედოს საპრიალებელი",desc:"ტორპედოსა და შესაბამისი პლასტმასის ზედაპირების მოვლისთვის.",dil:"განზავების გარეშე",use:"ფშიკალკა"},
+  {key:"plastic",tag:"PLASTIC",a:"PLASTIC",b:"BLACK",name:"პლასტმასის გამაშავებელი",desc:"პლასტმასის დეტალების ვიზუალური განახლებისა და გასაშავებლად.",dil:"განზავების გარეშე",use:"ფშიკალკა"},
+  {key:"conditioner",tag:"LEATHER",a:"LEATHER",b:"CARE",name:"ტყავის კონდიციონერი",desc:"ტყავის ზედაპირების მოვლისა და იერსახის შესანარჩუნებლად.",dil:"განზავების გარეშე",use:"ფშიკალკა / ტილო"},
+  {key:"perfume",tag:"PERFUME",a:"AUTO",b:"PERFUME",name:"ავტომობილის სუნამო",desc:"ავტომობილის სალონის სასიამოვნო არომატისთვის.",dil:"მზადაა გამოყენებისთვის",use:"შესაბამისი დოზით"},
+  {key:"rust",tag:"RUST / CONCRETE",a:"RUST",b:"REMOVER",name:"ჟანგის, ბეტონის, გუდრონისა და მარილების მოსაშორებელი",desc:"ჟანგის, ბეტონის მიმცხვარი მტვრის, კოროზიის, გუდრონისა და მარილების მოსაშორებლად.",dil:"განზავების გარეშე",use:"ფშიკალკა"},
+  {key:"candle",tag:"CANDLE",a:"CANDLE",b:"CARE",name:"სანთელი",desc:"სანთლის პროდუქტი შესაბამისი გამოყენებისთვის.",dil:"1×10",use:"ინსტრუქციის მიხედვით"}
+];
+
+const volumes = ["0.5","1","2","3","4","5","6","7","8","9","10","20"];
+let cart = [];
+try{cart=JSON.parse(localStorage.getItem("ecomax_cart")||"[]")}catch(e){cart=[]}
+if(!Array.isArray(cart))cart=[];
+
+const esc=v=>String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+function toast(text){
+  document.querySelector(".toast")?.remove();
+  const el=document.createElement("div");el.className="toast";el.textContent=text;
+  document.body.appendChild(el);setTimeout(()=>el.remove(),2200);
+}
+
+function standardOptions(p){
+  return volumes.map(v=>{
+    const label=v==="0.5"?"500 მლ (0.5L)":v+" ლიტრი";
+    const price=v==="0.5"?5:Number(v)*10;
+    return `<option value="${v}" data-price="${price}">${label} — ${price} ₾</option>`;
+  }).join("");
+}
+
+function renderProducts(){
+  const grid=document.getElementById("productsGrid"); if(!grid)return;
+  grid.innerHTML=products.map((p,i)=>{
+    let options="";
+    if(p.foam){
+      options=`<option value="1-medium" data-price="10">1 ლიტრი — საშუალო ქაფი — 10 ₾</option>
+               <option value="1-hard" data-price="15">1 ლიტრი — ძლიერი ქაფი — 15 ₾</option>
+               <option value="2" data-price="10">2 ლიტრი — 10 ₾</option>`;
+    }else{
+      options=standardOptions(p);
     }
-})();
+    const firstPrice=p.foam?10:5;
+    const firstVolume=p.foam?"1 ლიტრი — საშუალო ქაფი":"500 მლ";
+    return `<article class="pro-product-card ${i===0?"featured":""}" data-key="${p.key}">
+      <div class="pc-top"><span>${p.tag}</span><b>${String(i+1).padStart(2,"0")}</b></div>
+      <div class="pc-icon">${String(i+1).padStart(2,"0")}</div>
+      <div class="pc-code">${p.a}<strong>${p.b}</strong></div>
+      <h3>${p.name}</h3>
+      <p class="pc-desc">${p.desc}</p>
+      <div class="pc-detail"><span>გაზავება</span><b>${p.dil}</b></div>
+      <div class="pc-detail"><span>მოხმარება</span><b>${p.use}</b></div>
+      <div class="pc-buy">
+        <div><small>ფასი</small><strong class="selected-price">${firstPrice} ₾</strong><em class="selected-volume">${firstVolume}</em></div>
+        <select class="volume-select" aria-label="${esc(p.name)}">${options}</select>
+        <button type="button" class="add-cart" data-name="${esc(p.name)}" data-price="${firstPrice}" data-volume="${esc(firstVolume)}">+ კალათაში</button>
+      </div>
+    </article>`;
+  }).join("");
+}
+
+function updateVolume(card){
+  const select=card.querySelector(".volume-select");
+  const opt=select?.selectedOptions?.[0];
+  const price=Number(opt?.dataset.price||0);
+  let volume=opt?.textContent.split(" — ")[0]||"";
+  const priceEl=card.querySelector(".selected-price");
+  const volumeEl=card.querySelector(".selected-volume");
+  const btn=card.querySelector(".add-cart");
+  if(priceEl)priceEl.textContent=price+" ₾";
+  if(volumeEl)volumeEl.textContent=volume;
+  if(btn){btn.dataset.price=price;btn.dataset.volume=volume}
+}
+
+function saveCart(){localStorage.setItem("ecomax_cart",JSON.stringify(cart))}
+function cartTotal(){return cart.reduce((s,i)=>s+Number(i.price||0)*Number(i.quantity||0),0)}
+
+function renderCart(){
+  const el=document.getElementById("cartItems");if(!el)return;
+  if(!cart.length){
+    el.innerHTML='<div class="empty-cart"><div>🛒</div><h3>კალათა ცარიელია</h3><p>დაამატე პროდუქტი პროდუქციის ბლოკიდან.</p></div>';
+    return;
+  }
+  el.innerHTML=cart.map((i,n)=>`
+    <div class="cart-item">
+      <div><strong>${esc(i.name)}</strong><span>${esc(i.volume)} × ${i.quantity}</span></div>
+      <div class="cart-price">${Number(i.price)*Number(i.quantity)} ₾</div>
+      <button class="remove-item" type="button" data-index="${n}">×</button>
+    </div>`).join("");
+}
+
+function updateCart(){
+  const count=cart.reduce((s,i)=>s+Number(i.quantity||0),0);
+  document.getElementById("cartCount").textContent=count;
+  document.getElementById("cartTotal").textContent=cartTotal()+" ₾";
+  renderCart();saveCart();
+}
+
+function addToCart(name,price,volume){
+  price=Number(price);
+  if(!name||!Number.isFinite(price)||price<=0){toast("პროდუქტის დამატება ვერ მოხერხდა");return}
+  const old=cart.find(i=>i.name===name&&i.volume===volume);
+  if(old)old.quantity=Number(old.quantity||0)+1;
+  else cart.push({name,price,volume,quantity:1});
+  updateCart();toast(name+" დაემატა კალათაში");
+}
+
+function openCart(){
+  closeMobileMenu();
+  document.getElementById("cartOverlay").classList.add("active");
+  document.body.style.overflow="hidden";updateCart();
+}
+function closeCart(){document.getElementById("cartOverlay").classList.remove("active");document.body.style.overflow=""}
+function checkout(){
+  if(!cart.length){toast("კალათა ცარიელია");return}
+  saveCart();window.location.href="checkout.html";
+}
+function closeMobileMenu(){document.getElementById("mobileNav").classList.remove("active")}
+
+async function syncAuth(){
+  if(!sb)return;
+  try{
+    const {data}=await sb.auth.getSession();
+    applyAuth(!!data?.session?.user);
+    sb.auth.onAuthStateChange((_event,session)=>applyAuth(!!session?.user));
+  }catch(e){console.warn("Auth:",e)}
+}
+function applyAuth(logged){
+  const ids=["loginLink","registerLink"];
+  ids.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=logged?"none":"inline-flex"});
+  const account=document.getElementById("authAccountLink");if(account)account.style.display=logged?"inline-flex":"none";
+  const ml=document.getElementById("mobileLogin"),mr=document.getElementById("mobileRegister"),ma=document.getElementById("mobileAccount");
+  if(ml)ml.style.display=logged?"none":"block";
+  if(mr)mr.style.display=logged?"none":"block";
+  if(ma)ma.style.display=logged?"block":"none";
+}
+
+document.addEventListener("click",e=>{
+  const add=e.target.closest(".add-cart");
+  if(add){addToCart(add.dataset.name,add.dataset.price,add.dataset.volume);return}
+  const rem=e.target.closest(".remove-item");
+  if(rem){cart.splice(Number(rem.dataset.index),1);updateCart();return}
+  if(e.target.id==="cartButton"){openCart();return}
+  if(e.target.id==="cartClose"||e.target.id==="cartOverlay"){closeCart();return}
+  if(e.target.id==="checkoutButton"){checkout();return}
+  if(e.target.id==="menuButton"){document.getElementById("mobileNav").classList.toggle("active");return}
+  if(e.target.closest("#mobileNav a"))closeMobileMenu();
+});
+
+document.addEventListener("change",e=>{
+  if(e.target.matches(".volume-select"))updateVolume(e.target.closest(".pro-product-card"));
+});
+
+renderProducts();
+updateCart();
+syncAuth();
+
+window.addToCart=addToCart;
+window.openCart=openCart;
+window.closeCart=closeCart;
+window.goToCheckout=checkout;
+window.renderCart=renderCart;
 </script>
 </body>
 </html>
