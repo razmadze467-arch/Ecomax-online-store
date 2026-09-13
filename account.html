@@ -586,7 +586,10 @@
       }
     }
   </style>
+
+  <!-- SUPABASE CDN — მხოლოდ ერთხელ -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
 
 <body>
@@ -599,10 +602,12 @@
     </div>
   </div>
 
+
   <!-- TOP -->
   <div class="top-line">
     ECOMAX • MY ACCOUNT • SECURE AREA
   </div>
+
 
   <!-- HEADER -->
   <header class="header">
@@ -619,17 +624,24 @@
       </div>
 
       <div class="nav-actions">
+
         <a href="index.html" class="btn">
           🏠 მთავარი
         </a>
 
-        <button class="btn btn-primary" id="logoutTop">
+        <button
+          class="btn btn-primary"
+          id="logoutTop"
+          type="button"
+        >
           გასვლა
         </button>
+
       </div>
 
     </nav>
   </header>
+
 
   <!-- MAIN -->
   <main class="account-page">
@@ -640,6 +652,7 @@
       <section class="welcome">
 
         <div>
+
           <div class="eyebrow">
             <span class="eyebrow-dot"></span>
             ACCOUNT CENTER
@@ -647,7 +660,10 @@
 
           <h1>
             გამარჯობა,
-            <span class="gradient" id="welcomeName">
+            <span
+              class="gradient"
+              id="welcomeName"
+            >
               მომხმარებელო
             </span>
             👋
@@ -656,9 +672,11 @@
           <p>
             მართე შენი ECOMAX ანგარიში ერთ სივრცეში.
           </p>
+
         </div>
 
       </section>
+
 
       <!-- LAYOUT -->
       <div class="account-layout">
@@ -668,7 +686,10 @@
 
           <div class="profile-mini">
 
-            <div class="avatar" id="avatar">
+            <div
+              class="avatar"
+              id="avatar"
+            >
               E
             </div>
 
@@ -682,29 +703,49 @@
 
           </div>
 
+
           <div class="menu">
 
-            <button class="menu-item active">
+            <button
+              class="menu-item active"
+              type="button"
+            >
               👤 ჩემი პროფილი
             </button>
 
-            <button class="menu-item">
+            <button
+              class="menu-item"
+              type="button"
+            >
               🛍️ ჩემი შეკვეთები
             </button>
 
-            <button class="menu-item">
+            <button
+              class="menu-item"
+              type="button"
+            >
               ❤️ რჩეულები
             </button>
 
-            <button class="menu-item">
+            <button
+              class="menu-item"
+              type="button"
+            >
               📍 მისამართები
             </button>
 
-            <button class="menu-item">
+            <button
+              class="menu-item"
+              type="button"
+            >
               ⚙️ პარამეტრები
             </button>
 
-            <button class="menu-item logout-item" id="logoutSide">
+            <button
+              class="menu-item logout-item"
+              id="logoutSide"
+              type="button"
+            >
               ↪ გასვლა
             </button>
 
@@ -712,37 +753,66 @@
 
         </aside>
 
+
         <!-- CONTENT -->
         <section class="content">
+
 
           <!-- STATS -->
           <div class="stats">
 
             <div class="stat">
-              <div class="stat-icon">🛍️</div>
-              <span class="stat-number">0</span>
+
+              <div class="stat-icon">
+                🛍️
+              </div>
+
+              <span class="stat-number">
+                0
+              </span>
+
               <span class="stat-label">
                 შეკვეთა
               </span>
+
             </div>
 
+
             <div class="stat">
-              <div class="stat-icon">💰</div>
-              <span class="stat-number">0 ₾</span>
+
+              <div class="stat-icon">
+                💰
+              </div>
+
+              <span class="stat-number">
+                0 ₾
+              </span>
+
               <span class="stat-label">
                 დახარჯული თანხა
               </span>
+
             </div>
 
+
             <div class="stat">
-              <div class="stat-icon">❤️</div>
-              <span class="stat-number">0</span>
+
+              <div class="stat-icon">
+                ❤️
+              </div>
+
+              <span class="stat-number">
+                0
+              </span>
+
               <span class="stat-label">
                 რჩეული
               </span>
+
             </div>
 
           </div>
+
 
           <!-- PROFILE -->
           <section class="panel">
@@ -750,6 +820,7 @@
             <div class="panel-head">
 
               <div>
+
                 <div class="panel-title">
                   პროფილის ინფორმაცია
                 </div>
@@ -757,9 +828,11 @@
                 <div class="panel-subtitle">
                   შენი ანგარიშის ძირითადი მონაცემები
                 </div>
+
               </div>
 
             </div>
+
 
             <div class="security-box">
 
@@ -768,6 +841,7 @@
               </div>
 
               <div>
+
                 <strong>
                   ანგარიში დაცულია
                 </strong>
@@ -775,11 +849,13 @@
                 <span>
                   ავტორიზებული სესია აქტიურია
                 </span>
+
               </div>
 
             </div>
 
           </section>
+
 
           <!-- QUICK ACTIONS -->
           <section class="panel">
@@ -787,6 +863,7 @@
             <div class="panel-head">
 
               <div>
+
                 <div class="panel-title">
                   სწრაფი მოქმედებები
                 </div>
@@ -794,13 +871,20 @@
                 <div class="panel-subtitle">
                   ყველაზე ხშირად გამოყენებული ფუნქციები
                 </div>
+
               </div>
 
             </div>
 
+
             <div class="quick-grid">
 
-              <a href="index.html#products" class="quick">
+
+              <a
+                href="index.html#products"
+                class="quick"
+              >
+
                 <div class="quick-icon">
                   🛒
                 </div>
@@ -812,9 +896,15 @@
                 <span>
                   დაათვალიერე პროდუქტები
                 </span>
+
               </a>
 
-              <a href="index.html#safety" class="quick">
+
+              <a
+                href="index.html#safety"
+                class="quick"
+              >
+
                 <div class="quick-icon">
                   🛡️
                 </div>
@@ -826,9 +916,15 @@
                 <span>
                   იხილე მნიშვნელოვანი ინფორმაცია
                 </span>
+
               </a>
 
-              <a href="index.html" class="quick">
+
+              <a
+                href="index.html"
+                class="quick"
+              >
+
                 <div class="quick-icon">
                   🧪
                 </div>
@@ -840,9 +936,15 @@
                 <span>
                   პროდუქციის გამოყენების ინფორმაცია
                 </span>
+
               </a>
 
-              <a href="index.html" class="quick">
+
+              <a
+                href="index.html"
+                class="quick"
+              >
+
                 <div class="quick-icon">
                   💬
                 </div>
@@ -854,11 +956,14 @@
                 <span>
                   დაგვეკონტაქტე დახმარებისთვის
                 </span>
+
               </a>
+
 
             </div>
 
           </section>
+
 
           <!-- ORDERS -->
           <section class="panel">
@@ -866,6 +971,7 @@
             <div class="panel-head">
 
               <div>
+
                 <div class="panel-title">
                   ბოლო შეკვეთები
                 </div>
@@ -873,9 +979,11 @@
                 <div class="panel-subtitle">
                   შენი შეკვეთების ისტორია
                 </div>
+
               </div>
 
             </div>
+
 
             <div class="empty">
 
@@ -888,16 +996,21 @@
               </h3>
 
               <p>
-                როცა შეკვეთას გააკეთებ, ის აქ გამოჩნდება.
+                როცა შეკვეთას გააკეთებ,
+                ის აქ გამოჩნდება.
               </p>
 
-              <a href="index.html#products" class="btn btn-primary">
+              <a
+                href="index.html#products"
+                class="btn btn-primary"
+              >
                 პროდუქტების ნახვა →
               </a>
 
             </div>
 
           </section>
+
 
         </section>
 
@@ -907,96 +1020,425 @@
 
   </main>
 
+
   <!-- FOOTER -->
   <footer>
+
     <div class="container">
       © 2026 ECOMAX • ყველა უფლება დაცულია
     </div>
+
   </footer>
 
 
-  <!-- SUPABASE -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- =========================================
+       ECOMAX SHARED SUPABASE
+       ========================================= -->
+
   <script src="js/supabase.js"></script>
 
-  <script>
-    /* =========================
-       ECOMAX SUPABASE ACCOUNT AUTH
-       ========================= */
 
-    const ECOMAX_ACCOUNT_CLIENT = window.supabase.createClient(
-      window.ECOMAX_SUPABASE.url,
-      window.ECOMAX_SUPABASE.key,
-      {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true
-        }
-      }
-    );
+  <script>
+    /* =========================================
+       ECOMAX ACCOUNT
+       ONE SHARED SUPABASE AUTH CLIENT
+       ========================================= */
+
+
+    /*
+      ძალიან მნიშვნელოვანი:
+
+      account.html აღარ ქმნის ახალ Supabase client-ს.
+
+      იყენებს იმავე client-ს, რომელსაც
+      js/supabase.js ქმნის მთელი საიტისთვის.
+    */
+
+    const ECOMAX_ACCOUNT_CLIENT =
+      window.ECOMAX_SUPABASE_CLIENT;
+
+
+    /*
+      Client-ის არსებობის შემოწმება
+    */
+
+    if (!ECOMAX_ACCOUNT_CLIENT) {
+
+      console.error(
+        "ECOMAX: Shared Supabase client is not available."
+      );
+
+    }
+
+
+    /* =========================================
+       LOAD ACCOUNT
+       ========================================= */
 
     async function loadAccount() {
-      const loading = document.getElementById("loadingScreen");
+
+      const loading =
+        document.getElementById("loadingScreen");
+
 
       try {
-        const { data, error } = await ECOMAX_ACCOUNT_CLIENT.auth.getSession();
 
-        if (error) throw error;
+        /*
+          დაველოდოთ Supabase Auth-ის
+          session-ის აღდგენას.
+        */
 
-        const session = data?.session;
+        if (window.ECOMAX_AUTH_READY) {
 
-        if (!session?.user) {
-          window.location.replace("login.html?redirect=account.html");
-          return;
+          await window.ECOMAX_AUTH_READY;
+
         }
 
-        const user = session.user;
+
+        /*
+          მიმდინარე session
+        */
+
+        const {
+          data,
+          error
+        } =
+          await ECOMAX_ACCOUNT_CLIENT.auth.getSession();
+
+
+        /*
+          თუ Supabase აბრუნებს რეალურ შეცდომას,
+          მომხმარებელს Logout-ს არ ვუკეთებთ.
+        */
+
+        if (error) {
+
+          console.error(
+            "ECOMAX Auth Session Error:",
+            error
+          );
+
+          if (loading) {
+            loading.style.display = "none";
+          }
+
+          return;
+
+        }
+
+
+        const session =
+          data?.session;
+
+
+        /*
+          session საერთოდ არ არსებობს
+        */
+
+        if (!session?.user) {
+
+          window.location.replace(
+            "login.html?redirect=account.html"
+          );
+
+          return;
+
+        }
+
+
+        /*
+          ავტორიზებული მომხმარებელი
+        */
+
+        const user =
+          session.user;
+
+
+        /*
+          სახელის მიღება
+        */
 
         const name =
           user.user_metadata?.full_name ||
           user.user_metadata?.name ||
-          (user.email ? user.email.split("@")[0] : "მომხმარებელი");
+          (
+            user.email
+              ? user.email.split("@")[0]
+              : "მომხმარებელი"
+          );
 
-        const email = user.email || "";
 
-        document.getElementById("welcomeName").textContent = name;
-        document.getElementById("profileName").textContent = name;
-        document.getElementById("profileEmail").textContent = email;
-        document.getElementById("avatar").textContent =
-          name.charAt(0).toUpperCase();
+        /*
+          Email
+        */
 
-        loading.style.display = "none";
+        const email =
+          user.email || "";
+
+
+        /*
+          Welcome name
+        */
+
+        const welcomeName =
+          document.getElementById(
+            "welcomeName"
+          );
+
+
+        /*
+          Profile name
+        */
+
+        const profileName =
+          document.getElementById(
+            "profileName"
+          );
+
+
+        /*
+          Profile email
+        */
+
+        const profileEmail =
+          document.getElementById(
+            "profileEmail"
+          );
+
+
+        /*
+          Avatar
+        */
+
+        const avatar =
+          document.getElementById(
+            "avatar"
+          );
+
+
+        if (welcomeName) {
+
+          welcomeName.textContent =
+            name;
+
+        }
+
+
+        if (profileName) {
+
+          profileName.textContent =
+            name;
+
+        }
+
+
+        if (profileEmail) {
+
+          profileEmail.textContent =
+            email;
+
+        }
+
+
+        if (avatar) {
+
+          avatar.textContent =
+            name
+              .charAt(0)
+              .toUpperCase();
+
+        }
+
+
+        /*
+          Loading-ის დამალვა
+        */
+
+        if (loading) {
+
+          loading.style.display =
+            "none";
+
+        }
+
+
+        console.log(
+          "ECOMAX Account: authenticated",
+          user.email
+        );
+
 
       } catch (error) {
-        console.error("ECOMAX Account Error:", error);
-        await ECOMAX_ACCOUNT_CLIENT.auth.signOut();
-        window.location.replace("login.html?redirect=account.html");
+
+        /*
+          ძალიან მნიშვნელოვანია:
+
+          აქ აღარ ვაკეთებთ signOut()-ს.
+
+          თუ ქსელის ან სხვა დროებითი შეცდომა მოხდა,
+          მომხმარებლის session არ უნდა წაიშალოს.
+        */
+
+        console.error(
+          "ECOMAX Account Error:",
+          error
+        );
+
+
+        if (loading) {
+
+          loading.style.display =
+            "none";
+
+        }
+
       }
+
     }
 
-    /* Keep the account page synchronized with Supabase Auth.
-       IMPORTANT: do not redirect on INITIAL_SESSION with a null
-       session; getSession() below is the source of truth during
-       initial page load. */
-    ECOMAX_ACCOUNT_CLIENT.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_OUT") {
-        window.location.replace("login.html?redirect=account.html");
-      }
-    });
+
+    /* =========================================
+       AUTH STATE LISTENER
+       ========================================= */
+
+    ECOMAX_ACCOUNT_CLIENT.auth
+      .onAuthStateChange(
+        (event, session) => {
+
+          console.log(
+            "ECOMAX Auth Event:",
+            event
+          );
+
+
+          /*
+            მხოლოდ რეალური SIGNED_OUT-ის დროს
+            გადავდივართ Login-ზე.
+          */
+
+          if (event === "SIGNED_OUT") {
+
+            window.location.replace(
+              "login.html?redirect=account.html"
+            );
+
+            return;
+
+          }
+
+
+          /*
+            INITIAL_SESSION
+
+            SIGNED_IN
+
+            TOKEN_REFRESHED
+
+            USER_UPDATED
+
+            დროს Account გვერდიდან
+            არ გავდივართ.
+          */
+
+        }
+      );
+
+
+    /* =========================================
+       LOGOUT
+       ========================================= */
 
     async function logout() {
+
       try {
-        await ECOMAX_ACCOUNT_CLIENT.auth.signOut();
+
+        const {
+          error
+        } =
+          await ECOMAX_ACCOUNT_CLIENT
+            .auth
+            .signOut();
+
+
+        if (error) {
+
+          console.error(
+            "ECOMAX Logout Error:",
+            error
+          );
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "ECOMAX Logout Exception:",
+          error
+        );
+
+
       } finally {
-        window.location.replace("login.html");
+
+        /*
+          Login-ზე გადასვლა
+        */
+
+        window.location.replace(
+          "login.html"
+        );
+
       }
+
     }
 
-    document.getElementById("logoutTop")?.addEventListener("click", logout);
-    document.getElementById("logoutSide")?.addEventListener("click", logout);
+
+    /* =========================================
+       LOGOUT BUTTON — TOP
+       ========================================= */
+
+    const logoutTop =
+      document.getElementById(
+        "logoutTop"
+      );
+
+
+    if (logoutTop) {
+
+      logoutTop.addEventListener(
+        "click",
+        logout
+      );
+
+    }
+
+
+    /* =========================================
+       LOGOUT BUTTON — SIDEBAR
+       ========================================= */
+
+    const logoutSide =
+      document.getElementById(
+        "logoutSide"
+      );
+
+
+    if (logoutSide) {
+
+      logoutSide.addEventListener(
+        "click",
+        logout
+      );
+
+    }
+
+
+    /* =========================================
+       START ACCOUNT
+       ========================================= */
 
     loadAccount();
+
   </script>
 
 </body>
