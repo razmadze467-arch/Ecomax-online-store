@@ -177,17 +177,16 @@ function installBottomUI() {
     style.id = "ecomaxBottomUIStyle";
     style.textContent = `
       .ecomax-bottom-ui{position:relative;width:100%;height:105px;margin-top:10px;background:linear-gradient(180deg,rgba(2,8,18,0),#020812 55%);border-top:1px solid rgba(0,234,255,.18);overflow:hidden;z-index:20}
-      .ecomax-bottom-ui .copyright{position:absolute;left:22px;top:12px;color:#8da8b8;font:800 11px/1.5 Arial,sans-serif;letter-spacing:.2px;z-index:5}
       .ecomax-bottom-ui .road-line{position:absolute;left:0;right:0;top:67px;height:2px;background:repeating-linear-gradient(90deg,rgba(0,234,255,.7) 0 65px,transparent 65px 115px);box-shadow:0 0 12px rgba(0,234,255,.25);animation:ecomaxRoad 1.2s linear infinite}
       .ecomax-bottom-ui .car{position:absolute;left:-130px;top:48px;width:94px;height:30px;animation:ecomaxDrive 12s linear infinite;filter:drop-shadow(0 0 9px #00eaff);z-index:6}
       .ecomax-bottom-ui .car-body{position:absolute;left:8px;bottom:4px;width:78px;height:16px;border:1px solid #00eaff;border-radius:8px 15px 5px 5px;background:linear-gradient(180deg,rgba(0,234,255,.35),rgba(0,35,55,.95));box-shadow:inset 0 0 10px rgba(0,234,255,.25),0 0 12px rgba(0,234,255,.3)}
       .ecomax-bottom-ui .roof{position:absolute;left:27px;bottom:19px;width:43px;height:14px;border:1px solid #00eaff;border-bottom:0;border-radius:15px 18px 0 0;transform:skewX(-10deg);background:rgba(0,90,120,.3)}
       .ecomax-bottom-ui .wheel{position:absolute;bottom:0;width:12px;height:12px;border:2px solid #00eaff;border-radius:50%;background:#020812}
       .ecomax-bottom-ui .wheel.one{left:17px}.ecomax-bottom-ui .wheel.two{right:13px}
-      .ecomax-bottom-ui .credit{position:absolute;left:50%;top:28px;transform:translateX(-50%);white-space:nowrap;color:#00eaff;font:900 9px Arial,sans-serif;letter-spacing:1.4px;text-shadow:0 0 9px #00eaff;z-index:8}
+      .ecomax-bottom-ui .credit{position:absolute;left:50%;top:28px;transform:translateX(-50%);white-space:nowrap;color:#00eaff;font:900 9px Arial,sans-serif;letter-spacing:1.4px;text-shadow:0 0 9px #00eaff;z-index:8;transition:opacity .2s ease}
       @keyframes ecomaxDrive{0%{transform:translateX(0)}100%{transform:translateX(calc(100vw + 260px))}}
       @keyframes ecomaxRoad{from{background-position:0}to{background-position:-115px}}
-      @media(max-width:600px){.ecomax-bottom-ui{height:92px}.ecomax-bottom-ui .copyright{left:12px;top:10px;font-size:9px}.ecomax-bottom-ui .credit{font-size:7px;top:26px}.ecomax-bottom-ui .road-line{top:62px}.ecomax-bottom-ui .car{top:45px}}
+      @media(max-width:600px){.ecomax-bottom-ui{height:92px}.ecomax-bottom-ui .credit{font-size:7px;top:26px}.ecomax-bottom-ui .road-line{top:62px}.ecomax-bottom-ui .car{top:45px}}
     `;
     document.head.appendChild(style);
   }
@@ -196,14 +195,32 @@ function installBottomUI() {
     const ui = document.createElement("div");
     ui.className = "ecomax-bottom-ui";
     ui.innerHTML = `
-      <div class="copyright">© ყველა უფლება დაცულია შპს „ეკომაქსის“ მიერ — 2026</div>
-      <div class="credit">DEVELOPED BY BTCGAMER</div>
       <div class="road-line"></div>
       <div class="car" aria-hidden="true">
+        <div class="credit">DEVELOPED BY BTCGAMER</div>
         <div class="roof"></div><div class="car-body"></div>
         <div class="wheel one"></div><div class="wheel two"></div>
       </div>`;
     document.body.appendChild(ui);
+
+    const car = ui.querySelector(".car");
+    const credit = ui.querySelector(".credit");
+    const messages = [
+      "DEVELOPED BY BTCGAMER",
+      "© ყველა უფლება დაცულია შპს „ეკომაქსის“ მიერ — 2026"
+    ];
+    let pass = 0;
+
+    if (car && credit) {
+      car.addEventListener("animationiteration", () => {
+        pass = (pass + 1) % messages.length;
+        credit.style.opacity = "0";
+        setTimeout(() => {
+          credit.textContent = messages[pass];
+          credit.style.opacity = "1";
+        }, 180);
+      });
+    }
   }
 }
 
