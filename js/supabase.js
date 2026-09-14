@@ -97,3 +97,17 @@ window.ECOMAX_SUPABASE={url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});
   else load();
 })();
+(function(){
+  const path=window.location.pathname.toLowerCase();
+  if(!path.endsWith('/index.html')&&path!=='/'&&path!=='')return;
+  function load(){
+    if(document.getElementById('ecomaxMagicHomeJs'))return;
+    const s=document.createElement('script');
+    s.id='ecomaxMagicHomeJs';
+    s.src='js/magic-home.js?v=20260915-1';
+    s.defer=true;
+    document.head.appendChild(s);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});
+  else load();
+})();
