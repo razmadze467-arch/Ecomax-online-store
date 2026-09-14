@@ -11,6 +11,7 @@
   function start(){
     loadScript('ecomaxAuthBootstrap','js/auth-bootstrap.js?v=20260914-2');
     loadScript('ecomaxAuthRedirectFix','js/auth-redirect-fix.js?v=20260914-2');
+    loadScript('ecomaxAdminAccessGuard','js/admin-access-guard.js?v=20260914-1');
   }
   start();
 })();
