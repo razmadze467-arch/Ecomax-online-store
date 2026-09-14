@@ -10,7 +10,7 @@
 
   window.ECOMAX_ADMIN_ALLOWED=false;
 
-  // Keep the admin application hidden until the exact administrator is verified.
+  // Never log out a normal customer. Only block the Admin Panel and return to Home.
   const style=document.createElement('style');
   style.id='ecomaxAdminHardLockCss';
   style.textContent='#adminApp{display:none!important}#loginScreen{display:grid!important}';
@@ -32,10 +32,8 @@
 
   function deny(){
     window.ECOMAX_ADMIN_ALLOWED=false;
-    try{
-      const client=window.ECOMAX_SUPABASE_CLIENT||window.ECOMAX_AUTH_CLIENT;
-      if(client&&client.auth) client.auth.signOut().catch(function(){});
-    }catch(e){}
+    // IMPORTANT: keep the customer's Supabase session alive.
+    // Do NOT call signOut() here, otherwise the user would have to log in again.
     style.textContent='#adminApp{display:none!important}#loginScreen{display:none!important}';
     setTimeout(function(){ location.replace('/'); },30);
   }
@@ -62,7 +60,10 @@
           style.textContent='#adminApp{display:none!important}#loginScreen{display:grid!important}';
         }
       });
-    }catch(e){ deny(); }
+    }catch(e){
+      // On a temporary check failure, don't destroy the customer's session.
+      deny();
+    }
   }
 
   check();
