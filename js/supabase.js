@@ -111,3 +111,17 @@ window.ECOMAX_SUPABASE={url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});
   else load();
 })();
+(function(){
+  const path=window.location.pathname.toLowerCase();
+  if(!path.endsWith('/index.html')&&path!=='/'&&path!=='')return;
+  function load(){
+    if(document.getElementById('ecomaxCartPremiumJs'))return;
+    const s=document.createElement('script');
+    s.id='ecomaxCartPremiumJs';
+    s.src='js/cart-premium.js?v=20260915-1';
+    s.defer=true;
+    document.head.appendChild(s);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});
+  else load();
+})();
