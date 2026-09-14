@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ECOMAX • შეკვეთა</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js?v=20260914-11"></script>
+<script src="js/supabase.js?v=20260914-12"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#03101c;color:#e9fbff;font-family:Arial,sans-serif}a{text-decoration:none;color:inherit}.wrap{max-width:1050px;margin:auto;padding:30px 18px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.logo{font-size:28px;font-weight:900;letter-spacing:5px;color:#00eaff}.back{border:1px solid #15586b;padding:10px 15px;border-radius:10px}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}.box{background:rgba(5,25,40,.9);border:1px solid #12475a;border-radius:18px;padding:22px;box-shadow:0 0 30px rgba(0,234,255,.08)}h1{margin:5px 0 8px;font-size:32px}.muted{color:#8eb8c5}label{display:block;margin:14px 0 7px;font-weight:bold}input,select,textarea{width:100%;padding:13px;border-radius:10px;border:1px solid #15586b;background:#061d2b;color:#fff;font-size:15px}textarea{min-height:90px;resize:vertical}.item{display:flex;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid #123746}.total{display:flex;justify-content:space-between;font-size:21px;font-weight:bold;padding-top:18px}.submit{width:100%;margin-top:20px;padding:15px;border:0;border-radius:12px;background:#00d9ef;color:#00131c;font-size:17px;font-weight:900;cursor:pointer}.submit:disabled{opacity:.5}.msg{margin-top:15px;padding:12px;border-radius:10px;display:none}.success{display:block;background:#0b352c}.error{display:block;background:#4b1820}.hidden{display:none}.success-screen{text-align:center;padding:50px 20px}.order-id{font-size:18px;color:#00eaff;margin:20px 0}.errcode{display:block;margin-top:8px;font-size:12px;opacity:.85;word-break:break-word}
 @media(max-width:750px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;gap:15px}}
@@ -37,12 +37,19 @@ async function getClient(){if(window.ECOMAX_AUTH_READY)await window.ECOMAX_AUTH_
 async function loadUser(){try{const client=await getClient();const {data,error}=await client.auth.getUser();if(error)throw error;if(data?.user)document.getElementById('customerName').value=data.user.user_metadata?.full_name||data.user.user_metadata?.name||'';}catch(e){console.warn('ECOMAX checkout user load:',e);}}
 loadUser();
 form.addEventListener('submit',async e=>{e.preventDefault();if(!cart.length)return;btn.disabled=true;btn.textContent='იგზავნება...';msg.className='msg';msg.style.display='none';
-try{const client=await getClient();const {data:{user},error:userError}=await client.auth.getUser();if(userError)throw userError;if(!user){window.location.href='login.html?redirect=checkout.html';return;}
+try{
+const client=await getClient();
+const {data:{user},error:userError}=await client.auth.getUser();
+if(userError)throw userError;
+if(!user){window.location.href='login.html?redirect=checkout.html';return;}
 const payload={user_id:user.id,status:'new',customer_name:document.getElementById('customerName').value.trim(),phone:document.getElementById('phone').value.trim(),city:document.getElementById('city').value.trim(),address:document.getElementById('address').value.trim(),items:cart,total:total,payment_method:document.getElementById('payment').value,delivery_method:document.getElementById('delivery').value};
-const result=await client.from('orders').insert(payload).select('id').single();
-if(result.error)throw result.error;
-if(!result.data?.id)throw new Error('შეკვეთა ჩაიწერა, მაგრამ ID ვერ დაბრუნდა');
-localStorage.removeItem('ecomax_cart');document.getElementById('checkout').classList.add('hidden');document.getElementById('orderId').textContent='შეკვეთის ნომერი: '+result.data.id;document.getElementById('success').classList.remove('hidden');
+const {error}=await client.from('orders').insert(payload);
+if(error)throw error;
+const localOrderId='ECX-'+Date.now().toString(36).toUpperCase();
+localStorage.removeItem('ecomax_cart');
+document.getElementById('checkout').classList.add('hidden');
+document.getElementById('orderId').textContent='შეკვეთის კოდი: '+localOrderId;
+document.getElementById('success').classList.remove('hidden');
 }catch(err){console.error('ECOMAX checkout error:',err);const code=err?.code?' ['+err.code+']':'';const detail=err?.message||err?.details||err?.hint||String(err);msg.innerHTML='<b>შეკვეთის გაგზავნა ვერ მოხერხდა.</b><span class="errcode">'+String(detail).replaceAll('<','&lt;')+code+'</span>';msg.className='msg error';msg.style.display='block';btn.disabled=false;btn.textContent='შეკვეთის დადასტურება →';}});
 </script>
 </body></html>
