@@ -74,3 +74,17 @@ window.ECOMAX_SUPABASE={url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
   js('ecomaxFinalHomeJs','homepage-final.js?v=20260913-7',function(){if(window.ECOMAX_FINAL_INIT)window.ECOMAX_FINAL_INIT();});
   js('ecomaxFinalUiJs','ecomax-final-ui.js?v=20260913-1');
 })();
+(function(){
+  const path=window.location.pathname.toLowerCase();
+  if(!path.endsWith('/admin.html')&&!path.endsWith('admin.html'))return;
+  function load(){
+    if(document.getElementById('ecomaxAdminOrderFixJs'))return;
+    const s=document.createElement('script');
+    s.id='ecomaxAdminOrderFixJs';
+    s.src='js/admin-order-fix.js?v=20260914-1';
+    s.defer=true;
+    document.head.appendChild(s);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});
+  else load();
+})();
