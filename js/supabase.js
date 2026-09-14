@@ -15,7 +15,7 @@ window.ECOMAX_SUPABASE={url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
   }catch(e){}
   if(!window.supabase||typeof window.supabase.createClient!=="function")return;
   if(window.ECOMAX_SUPABASE_CLIENT)return;
-  const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{storageKey:ECOMAX_AUTH_STORAGE,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:"pkce"}});
+  const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{storageKey:ECOMAX_AUTH_STORAGE,storage:window.localStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:"pkce"}});
   window.ECOMAX_SUPABASE_CLIENT=client;
   window.ECOMAX_AUTH_CLIENT=client;
   window.supabase.createClient=function(){return window.ECOMAX_SUPABASE_CLIENT;};
