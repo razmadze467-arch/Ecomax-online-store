@@ -59,6 +59,15 @@ window.ECOMAX_SUPABASE={url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
   }
 })();
 (function(){
+  const path=window.location.pathname.toLowerCase();
+  if(path.endsWith('/admin.html')||path==='admin.html'){
+    const s=document.createElement('script');
+    s.id='ecomaxAdminHardLockJs';
+    s.src='js/admin-hard-lock.js?v=20260914-1';
+    document.head.appendChild(s);
+  }
+})();
+(function(){
   function load(){if(document.getElementById("ecomaxAuthFixJs"))return;const s=document.createElement("script");s.id="ecomaxAuthFixJs";s.src="js/auth-fix.js?v=20260914-8";s.defer=true;document.head.appendChild(s);}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",load);else load();
 })();
