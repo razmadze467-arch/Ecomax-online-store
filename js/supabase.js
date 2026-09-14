@@ -6,14 +6,21 @@ const ECOMAX_LEGACY_STORAGE="sb-mkxkqdvtmfbxmldnvsef-auth-token";
 window.ECOMAX_SUPABASE={url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
 (function(){
   if(!window.supabase||typeof window.supabase.createClient!=="function"){
-    document.write('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><\\/script>');
+    try{document.write('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><\\/script>');}catch(e){}
+  }
+  if(!window.supabase||typeof window.supabase.createClient!=="function"){
+    try{document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\\/script>');}catch(e){}
   }
   try{
     const shared=localStorage.getItem(ECOMAX_AUTH_STORAGE);
     const legacy=localStorage.getItem(ECOMAX_LEGACY_STORAGE);
     if(!shared&&legacy)localStorage.setItem(ECOMAX_AUTH_STORAGE,legacy);
   }catch(e){}
-  if(!window.supabase||typeof window.supabase.createClient!=="function")return;
+  if(!window.supabase||typeof window.supabase.createClient!=="function"){
+    console.error("ECOMAX: Supabase JS SDK ვერ ჩაიტვირთა");
+    window.ECOMAX_SUPABASE_ERROR="Supabase JS SDK ვერ ჩაიტვირთა";
+    return;
+  }
   if(window.ECOMAX_SUPABASE_CLIENT)return;
   const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{storageKey:ECOMAX_AUTH_STORAGE,storage:window.localStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:"pkce"}});
   window.ECOMAX_SUPABASE_CLIENT=client;
@@ -45,7 +52,7 @@ window.ECOMAX_SUPABASE={url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
   });
 })();
 (function(){
-  function load(){if(document.getElementById("ecomaxAuthFixJs"))return;const s=document.createElement("script");s.id="ecomaxAuthFixJs";s.src="js/auth-fix.js?v=20260914-6";s.defer=true;document.head.appendChild(s);}
+  function load(){if(document.getElementById("ecomaxAuthFixJs"))return;const s=document.createElement("script");s.id="ecomaxAuthFixJs";s.src="js/auth-fix.js?v=20260914-7";s.defer=true;document.head.appendChild(s);}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",load);else load();
 })();
 (function(){
