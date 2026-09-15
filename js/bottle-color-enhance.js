@@ -33,6 +33,29 @@
     .pro-product-card .ecomax-label-product{font-size:9px;font-weight:900;line-height:1.15;color:#fff;max-width:100%;text-align:center}
     .pro-product-card .ecomax-label-line{height:2px;width:72%;margin:4px auto;background:var(--card-accent);box-shadow:0 0 8px var(--card-accent);border-radius:99px}
     .pro-product-card .ecomax-five-liter{pointer-events:none}
+
+    /* FORCE the visible bottle pseudo-element to use the requested colors.
+       The homepage has an inline style block loaded after the external CSS,
+       so this style is injected by JS after the page is rendered. */
+    #productsGrid .pro-product-card:nth-child(1)::before{background:linear-gradient(90deg,#21050a 0%,#ff2638 18%,#5b1018 43%,#ff3c4d 66%,#160307 100%)!important;box-shadow:inset 10px 0 20px rgba(255,255,255,.10),inset -12px 0 20px rgba(0,0,0,.72),0 0 44px rgba(255,38,56,.30),0 26px 32px rgba(0,0,0,.45)!important}
+    #productsGrid .pro-product-card:nth-child(1)::after{border-color:#ff2638!important;color:#ff4b59!important;background:linear-gradient(145deg,#21060b,#4a0d16)!important;text-shadow:0 0 18px rgba(255,38,56,.85)!important}
+    #productsGrid .pro-product-card:nth-child(2)::before{background:linear-gradient(90deg,#b9c0c5 0%,#ffffff 20%,#dce3e8 45%,#ffffff 68%,#8f989f 100%)!important;box-shadow:inset 10px 0 20px rgba(255,255,255,.38),inset -12px 0 20px rgba(0,0,0,.24),0 0 42px rgba(255,255,255,.22),0 26px 32px rgba(0,0,0,.45)!important}
+    #productsGrid .pro-product-card:nth-child(2)::after{border-color:#ffffff!important;color:#ffffff!important;background:linear-gradient(145deg,#12202a,#30414b)!important;text-shadow:0 0 16px rgba(255,255,255,.85)!important}
+    #productsGrid .pro-product-card:nth-child(3)::before{background:linear-gradient(90deg,#3b2f02 0%,#d6b927 20%,#75650b 45%,#e4cf45 68%,#221c02 100%)!important;box-shadow:inset 10px 0 20px rgba(255,255,255,.15),inset -12px 0 20px rgba(0,0,0,.62),0 0 38px rgba(214,185,39,.20),0 26px 32px rgba(0,0,0,.45)!important}
+    #productsGrid .pro-product-card:nth-child(4)::before{background:linear-gradient(90deg,#073244 0%,#31c8ff 20%,#0a536c 45%,#58d7ff 68%,#05202b 100%)!important;box-shadow:inset 10px 0 20px rgba(255,255,255,.14),inset -12px 0 20px rgba(0,0,0,.60),0 0 42px rgba(49,200,255,.30),0 26px 32px rgba(0,0,0,.45)!important}
+    #productsGrid .pro-product-card:nth-child(4)::after{border-color:#31c8ff!important;color:#31c8ff!important}
+    #productsGrid .pro-product-card:nth-child(5)::before{background:linear-gradient(90deg,#4a3c02 0%,#ffd21f 20%,#a98e0d 45%,#ffe24a 68%,#292203 100%)!important;box-shadow:inset 10px 0 20px rgba(255,255,255,.16),inset -12px 0 20px rgba(0,0,0,.62),0 0 42px rgba(255,210,31,.26),0 26px 32px rgba(0,0,0,.45)!important}
+    #productsGrid .pro-product-card:nth-child(5)::after{border-color:#ffd21f!important;color:#ffd21f!important}
+    #productsGrid .pro-product-card:nth-child(6)::before{background:linear-gradient(90deg,#21050a 0%,#ff2638 18%,#5b1018 43%,#ff3c4d 66%,#160307 100%)!important;box-shadow:inset 10px 0 20px rgba(255,255,255,.10),inset -12px 0 20px rgba(0,0,0,.72),0 0 44px rgba(255,38,56,.30),0 26px 32px rgba(0,0,0,.45)!important}
+    #productsGrid .pro-product-card:nth-child(6)::after{border-color:#ff2638!important;color:#ff4b59!important}
+    #productsGrid .pro-product-card:nth-child(7)::before{background:linear-gradient(90deg,#21050a 0%,#ff2638 18%,#5b1018 43%,#ff3c4d 66%,#160307 100%)!important;box-shadow:inset 10px 0 20px rgba(255,255,255,.10),inset -12px 0 20px rgba(0,0,0,.72),0 0 44px rgba(255,38,56,.30),0 26px 32px rgba(0,0,0,.45)!important}
+    #productsGrid .pro-product-card:nth-child(7)::after{border-color:#ff2638!important;color:#ff4b59!important}
+    #productsGrid .pro-product-card:nth-child(8)::before{background:linear-gradient(90deg,#b9c0c5 0%,#ffffff 20%,#dce3e8 45%,#ffffff 68%,#8f989f 100%)!important;box-shadow:inset 10px 0 20px rgba(255,255,255,.38),inset -12px 0 20px rgba(0,0,0,.24),0 0 42px rgba(255,255,255,.22),0 26px 32px rgba(0,0,0,.45)!important}
+    #productsGrid .pro-product-card:nth-child(8)::after{border-color:#ffffff!important;color:#ffffff!important;background:linear-gradient(145deg,#12202a,#30414b)!important;text-shadow:0 0 16px rgba(255,255,255,.85)!important}
+    #productsGrid .pro-product-card:nth-child(9)::before{background:linear-gradient(90deg,#21050a 0%,#ff2638 18%,#5b1018 43%,#ff3c4d 66%,#160307 100%)!important;box-shadow:inset 10px 0 20px rgba(255,255,255,.10),inset -12px 0 20px rgba(0,0,0,.72),0 0 44px rgba(255,38,56,.30),0 26px 32px rgba(0,0,0,.45)!important}
+    #productsGrid .pro-product-card:nth-child(9)::after{border-color:#ff2638!important;color:#ff4b59!important}
+    #productsGrid .pro-product-card:nth-child(10)::before{background:linear-gradient(90deg,#43091d 0%,#ff65b8 20%,#8d214f 45%,#ff83c8 68%,#250510 100%)!important;box-shadow:inset 10px 0 20px rgba(255,255,255,.15),inset -12px 0 20px rgba(0,0,0,.62),0 0 42px rgba(255,101,184,.28),0 26px 32px rgba(0,0,0,.45)!important}
+    #productsGrid .pro-product-card:nth-child(10)::after{border-color:#ff65b8!important;color:#ff83c8!important}
   `;
   document.head.appendChild(css);
 
@@ -40,7 +63,6 @@
     const text=(card.textContent||'').toLowerCase();
     const foam=text.includes('ქაფ')||text.includes('foam');
     if(foam){
-      // White foam variant stays white when the product title/variant says white.
       if(text.includes('თეთ')||text.includes('white')){
         return {keys:[],color:'#f7f9fb',name:'ქაფი — თეთრი',icon:'✧'};
       }
