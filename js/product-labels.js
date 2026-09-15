@@ -1,4 +1,4 @@
-// ECOMAX — premium futuristic product bottles + bilingual labels
+// ECOMAX — premium futuristic product bottles + exact ECOMAX color palette
 // Visual-only layer. Existing product/cart/order behavior is untouched.
 (function(){
   'use strict';
@@ -17,11 +17,11 @@
     .ecomax-label-sub{display:block;margin-top:3px;font-size:8px;letter-spacing:1.8px;color:rgba(255,255,255,.72)}
     .ecomax-label-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--label-color,#00eaff);box-shadow:0 0 12px var(--label-color,#00eaff);margin-right:7px;vertical-align:middle}
 
-    .ecomax-label-bottle{position:relative;margin:9px auto 18px;width:86px;height:128px;border-radius:12px 12px 18px 18px;border:1px solid color-mix(in srgb,var(--label-color,#00eaff) 72%,white 8%);background:linear-gradient(105deg,#2a3239 0%,#0b1117 18%,#03070c 56%,color-mix(in srgb,var(--label-color,#00eaff) 30%,#020812) 100%);box-shadow:0 0 32px color-mix(in srgb,var(--label-color,#00eaff) 28%,transparent),inset 10px 0 18px rgba(255,255,255,.08),inset -10px 0 20px rgba(0,0,0,.42);display:flex;align-items:center;justify-content:center;overflow:visible;transform:perspective(320px) rotateY(-4deg);transition:transform .3s ease,filter .3s ease}
+    .ecomax-label-bottle{position:relative;margin:9px auto 18px;width:86px;height:128px;border-radius:12px 12px 18px 18px;border:2px solid color-mix(in srgb,var(--label-color,#00eaff) 86%,white 14%);background:linear-gradient(105deg,color-mix(in srgb,var(--label-color,#00eaff) 96%,white 4%) 0%,var(--label-color,#00eaff) 55%,color-mix(in srgb,var(--label-color,#00eaff) 78%,black 22%) 100%);box-shadow:0 0 34px color-mix(in srgb,var(--label-color,#00eaff) 45%,transparent),inset 10px 0 18px rgba(255,255,255,.22),inset -10px 0 20px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;overflow:visible;transform:perspective(320px) rotateY(-4deg);transition:transform .3s ease,filter .3s ease}
     .ecomax-label-bottle:hover{transform:perspective(320px) rotateY(4deg) translateY(-3px);filter:brightness(1.08)}
     .ecomax-label-bottle:before{content:"";position:absolute;top:-13px;left:50%;transform:translateX(-50%);width:38px;height:20px;border-radius:5px 5px 2px 2px;border:1px solid #66727d;background:linear-gradient(#394650,#0b1015);box-shadow:0 0 10px color-mix(in srgb,var(--label-color,#00eaff) 45%,transparent)}
-    .ecomax-label-bottle:after{content:"";position:absolute;top:10px;left:10px;width:9px;height:82px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.38),transparent);filter:blur(2px);opacity:.5}
-    .ecomax-bottle-panel{position:absolute;left:9px;right:9px;top:34px;bottom:17px;border:1px solid color-mix(in srgb,var(--label-color,#00eaff) 55%,transparent);border-radius:7px;background:linear-gradient(145deg,rgba(255,255,255,.1),color-mix(in srgb,var(--label-color,#00eaff) 13%,#05090e));box-shadow:inset 0 0 13px rgba(0,0,0,.4),0 0 10px color-mix(in srgb,var(--label-color,#00eaff) 16%,transparent);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2}
+    .ecomax-label-bottle:after{content:"";position:absolute;top:10px;left:10px;width:9px;height:82px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.52),transparent);filter:blur(2px);opacity:.65}
+    .ecomax-bottle-panel{position:absolute;left:9px;right:9px;top:34px;bottom:17px;border:1px solid rgba(255,255,255,.34);border-radius:7px;background:linear-gradient(145deg,rgba(2,8,15,.92),rgba(2,8,15,.72));box-shadow:inset 0 0 13px rgba(0,0,0,.5),0 0 10px rgba(0,0,0,.22);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2}
     .ecomax-bottle-logo{font-size:10px;font-weight:1000;letter-spacing:1.8px;color:#fff;text-shadow:0 0 9px var(--label-color,#00eaff)}
     .ecomax-bottle-ka{margin-top:7px;padding:3px 4px;text-align:center;font-size:7px;font-weight:1000;line-height:1.15;color:#fff}
     .ecomax-bottle-en{margin-top:3px;font-size:6px;font-weight:1000;letter-spacing:.8px;color:var(--label-color,#00eaff)}
@@ -36,34 +36,27 @@
 
   const TYPES=[
     {keys:['ძრავის','engine wash','engine cleaner'],ka:'ძრავის სარეცხი',en:'ENGINE WASH',color:'#ff2638'},
-    {keys:['ნაჭრის','fabric','ქიმწმენდა'],ka:'ნაჭრის ქიმწმენდა',en:'FABRIC CLEAN',color:'#31c8ff'},
-    {keys:['ტყავის ქიმ','leather cleaner','leather clean'],ka:'ტყავის ქიმწმენდა',en:'LEATHER CLEAN',color:'#ffd21f'},
-    {keys:['დისკების','დისკები','wheel','ალუმინ'],ka:'დისკების სარეცხი',en:'WHEEL CLEAN',color:'#f4f8ff'},
-    {keys:['რადიატორის','radiator'],ka:'რადიატორის სარეცხი',en:'RADIATOR CLEAN',color:'#ffe02b'},
-    {keys:['წყლის სისტემის','water system','გამოსარეცხი'],ka:'წყლის სისტემის გამორეცხვა',en:'SYSTEM FLUSH',color:'#ff2638'},
-    {keys:['საბურ','tire','tyre'],ka:'საბურავის მოვლა',en:'TIRE CARE',color:'#ff2638'},
-    {keys:['სუნამ','perfume','fragrance'],ka:'სუნამო',en:'FRAGRANCE',color:'#b86cff'},
-    {keys:['ტყავის მკვებ','leather conditioner','conditioner'],ka:'ტყავის კონდიციონერი',en:'LEATHER CARE',color:'#ff65b8'},
-    {keys:['ტორპედოს','dashboard','dash'],ka:'ტორპედოს საპრიალებელი',en:'DASHBOARD SHINE',color:'#f7fbff'},
-    {keys:['პლასტმას','plastic'],ka:'პლასტმასის შავი',en:'PLASTIC BLACK',color:'#00eaff'},
-    {keys:['საპრიალებელ','polish'],ka:'საპრიალებელი',en:'POLISH',color:'#8b5cff'},
-    {keys:['ფოსფორ','phosphor'],ka:'ფოსფორი',en:'PHOSPHOR',color:'#baff3b'},
+    {keys:['დისკების','დისკები','wheel','wheel cleaner','ალუმინ'],ka:'დისკების სარეცხი',en:'WHEEL CLEANER',color:'#f5f7fa'},
+    {keys:['ნაჭრის','fabric cleaner','fabric clean'],ka:'ნაჭრის ქიმწმენდა',en:'FABRIC CLEANER',color:'#28c9ff'},
+    {keys:['ტყავის ქიმ','leather cleaner','leather clean'],ka:'ტყავის ქიმწმენდა',en:'LEATHER CLEANER',color:'#ffd21f'},
+    {keys:['საბურავის საპრიალ','საბურავის','tire polish','tyre polish'],ka:'საბურავის საპრიალებელი',en:'TIRE POLISH',color:'#ff2638'},
+    {keys:['ტორპედოს','dashboard polish','dashboard','dash'],ka:'ტორპედოს საპრიალებელი',en:'DASHBOARD POLISH',color:'#f5f7fa'},
+    {keys:['ტყავის მკვებ','leather nourisher','leather conditioner','conditioner'],ka:'ტყავის მკვებავი',en:'LEATHER NOURISHER',color:'#ff65b8'},
+    {keys:['პლასმასების საშავ','პლასტმასების საშავ','პლასტმას','plastic restorer','plastic black'],ka:'პლასმასების საშავებელი',en:'PLASTIC BLACK',color:'#ff2638'},
+    {keys:['ქაფი','foam'],ka:'ქაფი',en:'FOAM',color:'#ff2638',priority:true},
+    {keys:['წითელი ქაფ','red foam','ქაფი წითელი'],ka:'ქაფი — წითელი',en:'RED FOAM',color:'#ff2638',priority:true},
+    {keys:['თეთრი ქაფ','white foam','ქაფი თეთრი'],ka:'ქაფი — თეთრი',en:'WHITE FOAM',color:'#f5f7fa',priority:true},
+    {keys:['რადიატორის','radiator'],ka:'რადიატორის სარეცხი',en:'RADIATOR CLEANER',color:'#28c9ff'},
     {keys:['ჟანგ','rust'],ka:'ჟანგის მოსაშორებელი',en:'RUST REMOVER',color:'#ff7a2f'},
-    {keys:['ცემენტ','tar','ბიტუმ'],ka:'ცემენტი / ბიტუმი',en:'CEMENT / TAR',color:'#ff9f43'}
+    {keys:['ცემენტ','tar','ბიტუმ'],ka:'ცემენტი / ბიტუმი',en:'CEMENT / TAR',color:'#ff9f43'},
+    {keys:['სუნამ','perfume','fragrance'],ka:'სუნამო',en:'FRAGRANCE',color:'#ff65b8'}
   ];
 
   function classify(card){
     const text=(card.textContent||'').toLowerCase();
-    return TYPES.find(t=>t.keys.some(k=>text.includes(k.toLowerCase())))||null;
-  }
-
-  function detectVolume(card){
-    const text=(card.textContent||'').toLowerCase();
-    const m=text.match(/(?:^|\\s)(\\d+(?:[.,]\\d+)?)\\s*(l|ლ|ლიტრი|liter|litre|კგ|kg|g|გრ|ml|მლ)\\b/i);
-    if(m) return m[1].replace(',','.')+' '+m[2].toUpperCase();
-    const select=card.querySelector('select');
-    if(select && select.value) return select.value;
-    return '1 L';
+    const foam=TYPES.filter(t=>t.priority&&t.keys.some(k=>text.includes(k.toLowerCase())));
+    if(foam.length)return foam.find(t=>t.en==='RED FOAM'&&t.keys.some(k=>text.includes(k.toLowerCase())))||foam.find(t=>t.en==='WHITE FOAM'&&t.keys.some(k=>text.includes(k.toLowerCase())))||foam[0];
+    return TYPES.find(t=>!t.priority&&t.keys.some(k=>text.includes(k.toLowerCase())))||null;
   }
 
   function apply(){
@@ -72,27 +65,20 @@
       card.style.setProperty('--label-color',type.color);
 
       let label=card.querySelector('.ecomax-product-label');
-      if(!label){
-        label=document.createElement('div');
-        label.className='ecomax-product-label';
-        card.insertBefore(label,card.firstChild);
-      }
-      label.innerHTML='<span class="ecomax-label-brand"><i class="ecomax-label-dot"></i>ECO-MAX</span><span class="ecomax-label-name">'+type.ka+'<b>'+type.en+'</b><span class="ecomax-label-sub">LVL-CHEMICAL • PROFESSIONAL FORMULA</span></span>';
+      if(!label){label=document.createElement('div');label.className='ecomax-product-label';card.insertBefore(label,card.firstChild);}
+      label.innerHTML='<span class="ecomax-label-brand"><i class="ecomax-label-dot"></i>ECOMAX</span><span class="ecomax-label-name">'+type.ka+'<b>'+type.en+'</b><span class="ecomax-label-sub">PROFESSIONAL FORMULA</span></span>';
 
       let bottle=card.querySelector('.ecomax-label-bottle');
       if(!bottle){
-        bottle=document.createElement('div');
-        bottle.className='ecomax-label-bottle';
+        bottle=document.createElement('div');bottle.className='ecomax-label-bottle';
         const icon=card.querySelector('.pc-icon');
-        if(icon && icon.parentNode) icon.parentNode.insertBefore(bottle,icon);
-        else card.insertBefore(bottle,label.nextSibling);
+        if(icon&&icon.parentNode)icon.parentNode.insertBefore(bottle,icon);else card.insertBefore(bottle,label.nextSibling);
       }
-      const volume=detectVolume(card);
-      bottle.innerHTML='<div class="ecomax-bottle-panel"><div class="ecomax-bottle-logo">ECO-MAX</div><div class="ecomax-bottle-ka">'+type.ka+'</div><div class="ecomax-bottle-en">'+type.en+'</div><div class="ecomax-bottle-size">'+volume+'</div><div class="ecomax-bottle-brand">LVL-CHEMICAL</div></div>';
+      bottle.innerHTML='<div class="ecomax-bottle-panel"><div class="ecomax-bottle-logo">ECOMAX</div><div class="ecomax-bottle-ka">'+type.ka+'</div><div class="ecomax-bottle-en">'+type.en+'</div><div class="ecomax-bottle-size">5L</div><div class="ecomax-bottle-brand">CLEAN • PROTECT • DRIVE</div></div>';
     });
   }
 
   function start(){apply();setTimeout(apply,500);setTimeout(apply,1500);}
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start,{once:true}); else start();
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
   new MutationObserver(apply).observe(document.documentElement,{childList:true,subtree:true});
 })();
