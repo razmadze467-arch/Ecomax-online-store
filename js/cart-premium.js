@@ -32,19 +32,44 @@
   function read(){
     try{const x=JSON.parse(localStorage.getItem('ecomax_cart')||'[]');return Array.isArray(x)?x:[];}catch(e){return []}
   }
-  function write(items){localStorage.setItem('ecomax_cart',JSON.stringify(items));}
+
   function refresh(){
     if(typeof window.updateCart==='function') window.updateCart();
     else if(typeof window.renderCart==='function') window.renderCart();
-    const overlay=document.getElementById('cartOverlay');
-    if(overlay) decorate(overlay);
+    setTimeout(()=>decorate(document.getElementById('cartOverlay')||document),0);
   }
+
+  /* Keep quantity changes inside script.js' in-memory cart.
+     Direct localStorage writes alone would be overwritten by updateCart(). */
   function change(index,delta){
     const items=read();
-    if(!items[index]) return;
-    items[index].quantity=Math.max(1,Number(items[index].quantity||1)+delta);
-    write(items);refresh();
+    const item=items[index];
+    if(!item) return;
+
+    const current=Math.max(1,Number(item.quantity||1));
+    const next=current+delta;
+
+    if(delta>0){
+      if(typeof window.addToCart==='function'){
+        window.addToCart(item.name,Number(item.price||0),item.volume||'');
+      }
+      return;
+    }
+
+    if(next<=0){
+      if(typeof window.removeFromCart==='function') window.removeFromCart(index);
+      return;
+    }
+
+    /* Existing public API has no decrement method, so rebuild this line
+       through the real cart functions rather than desynchronising storage. */
+    if(typeof window.removeFromCart==='function' && typeof window.addToCart==='function'){
+      window.removeFromCart(index);
+      for(let i=0;i<next;i++) window.addToCart(item.name,Number(item.price||0),item.volume||'');
+      decorate(document.getElementById('cartOverlay')||document);
+    }
   }
+
   function decorate(root){
     root.querySelectorAll('.cart-item').forEach((row,index)=>{
       if(row.querySelector('.mx-cart-qty')) return;
@@ -60,6 +85,7 @@
       info.appendChild(box);
     });
   }
+
   function install(){
     const original=window.renderCart;
     if(typeof original==='function'&&!original.__mxWrapped){
