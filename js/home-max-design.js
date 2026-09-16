@@ -1,71 +1,85 @@
 (() => {
   'use strict';
   const boot = () => {
-    if (document.documentElement.dataset.ecomaxMaxDesign === '1') return;
-    document.documentElement.dataset.ecomaxMaxDesign = '1';
+    if (document.documentElement.dataset.ecomaxMaxDesign === '2') return;
+    document.documentElement.dataset.ecomaxMaxDesign = '2';
 
     const style = document.createElement('style');
-    style.id = 'ecomax-max-design-style';
+    style.id = 'ecomax-max-design-style-v2';
     style.textContent = `
       :root{
-        --mx-cyan:#00eaff;--mx-blue:#168dff;--mx-deep:#020812;--mx-panel:rgba(5,18,31,.78);
+        --mx-cyan:#00eaff;--mx-blue:#1677ff;--mx-violet:#7a55ff;--mx-deep:#01060d;
+        --mx-glass:rgba(4,18,31,.68);--mx-line:rgba(0,234,255,.25);
       }
-      body{background:
-        radial-gradient(ellipse at 72% 17%,rgba(0,234,255,.12),transparent 22%),
-        radial-gradient(ellipse at 15% 40%,rgba(0,103,255,.12),transparent 30%),
-        linear-gradient(180deg,#020812 0%,#041526 38%,#020812 100%);
+      body{
+        background:
+          radial-gradient(circle at 82% 12%,rgba(0,234,255,.16),transparent 24%),
+          radial-gradient(circle at 18% 32%,rgba(20,82,255,.15),transparent 30%),
+          radial-gradient(circle at 50% 75%,rgba(122,85,255,.08),transparent 34%),
+          linear-gradient(180deg,#01060d 0%,#031321 42%,#01060d 100%)!important;
       }
-      .header{background:rgba(1,8,17,.82)!important;border-bottom:1px solid rgba(0,234,255,.25)!important;box-shadow:0 8px 40px rgba(0,0,0,.3)}
-      .nav{max-width:1440px;min-height:78px}
-      .logo{display:flex!important;flex-direction:column;gap:0;line-height:.9;letter-spacing:3px;font-size:25px;text-shadow:0 0 22px rgba(0,234,255,.14)}
-      .logo small{font-size:7px;letter-spacing:1.8px;color:#7f9eab;font-weight:700;margin-top:5px}
-      .links a{font-size:11px;color:#c0d2da}
-      .hero{max-width:1440px;min-height:720px;padding-top:55px;overflow:hidden}
-      .hero:after{content:"";position:absolute;right:-18%;top:8%;width:65%;height:90%;background:radial-gradient(ellipse,rgba(0,234,255,.12),transparent 55%);pointer-events:none}
-      .hero-copy{max-width:720px}
-      .eyebrow{background:rgba(0,234,255,.045);box-shadow:0 0 24px rgba(0,234,255,.08)}
-      h1{font-size:clamp(46px,6.3vw,88px)!important;line-height:.94!important;text-shadow:0 12px 55px rgba(0,0,0,.55)}
-      h1 span{text-shadow:0 0 38px rgba(0,234,255,.35)!important}
-      .hero-copy>p{font-size:15px;max-width:650px;color:#a1b5c0}
-      .primary{box-shadow:0 0 35px rgba(0,234,255,.18),inset 0 0 16px rgba(255,255,255,.18)}
-      .hero-visual{min-height:540px;perspective:1200px}
-      .hero-visual:before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(0,234,255,.18),rgba(0,103,255,.06) 35%,transparent 70%);filter:blur(10px)}
-      .halo{width:470px!important;height:470px!important;border-color:rgba(0,234,255,.28)!important;box-shadow:0 0 55px rgba(0,234,255,.13),inset 0 0 80px rgba(0,234,255,.05)!important;animation:mxOrbit 12s linear infinite}
-      .halo:before{inset:32px!important;border-color:rgba(0,234,255,.2)!important;transform:rotate(50deg) skewX(14deg)!important}
-      .halo:after{inset:78px!important;border-color:rgba(85,115,255,.22)!important;transform:rotate(-42deg) skewX(15deg)!important}
-      .hero-bottle{width:220px!important;height:360px!important;transform:rotateY(-9deg) rotate(2deg)!important;background:linear-gradient(90deg,#03070b,#0d202e 17%,#07131f 36%,#1c5a73 58%,#07121c 73%,#020609)!important;box-shadow:inset 18px 0 28px rgba(255,255,255,.09),inset -22px 0 30px rgba(0,0,0,.82),0 40px 100px rgba(0,0,0,.65),0 0 90px rgba(0,234,255,.22)!important;animation:mxBottle 5s ease-in-out infinite}
-      .hero-bottle:after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(115deg,transparent 25%,rgba(255,255,255,.15) 35%,transparent 43%);mix-blend-mode:screen;pointer-events:none}
-      .hero-label{left:14px!important;right:14px!important;top:82px!important;height:190px!important;border-radius:18px!important;background:radial-gradient(circle at 50% 25%,#123a50,#06121d 65%)!important;border:1px solid rgba(0,234,255,.7)!important;box-shadow:0 0 35px rgba(0,234,255,.18),inset 0 0 28px rgba(0,234,255,.07)!important}
-      .hero-label b{font-size:18px!important;letter-spacing:4px!important;color:#f5fbff;text-shadow:0 0 15px rgba(255,255,255,.35)}
-      .hero-label span{font-size:9px!important;letter-spacing:3px!important;color:var(--mx-cyan)!important}
-      .hero-label strong{font-size:40px!important;letter-spacing:2px;text-shadow:0 0 24px rgba(0,234,255,.45)}
-      .hero-visual:after{content:"LVL";position:absolute;z-index:3;font-size:54px;font-weight:900;letter-spacing:7px;color:#fff;top:50%;left:50%;transform:translate(-50%,-62%) translateZ(70px);pointer-events:none;text-shadow:1px 1px 0 #8ba1ae,3px 3px 0 #3c5664,6px 6px 0 #172a35,0 0 28px rgba(0,234,255,.8),0 0 70px rgba(0,234,255,.35);opacity:.96}
-      .float{backdrop-filter:blur(10px);box-shadow:0 0 28px rgba(0,234,255,.1),0 18px 45px rgba(0,0,0,.4)!important}
-      .float.one{top:58px;left:0}.float.two{right:-5px;top:190px}.float.three{bottom:45px;left:5%}
-      .metrics{margin-top:40px}.metric strong{font-size:23px;text-shadow:0 0 18px rgba(255,255,255,.14)}
-      .section{max-width:1440px}
-      .section[id="products"]{position:relative}.section[id="products"]:before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,234,255,.5),transparent)}
-      .card{background:linear-gradient(145deg,rgba(7,29,43,.94),rgba(2,9,16,.98))!important;border-color:rgba(0,234,255,.24)!important;box-shadow:0 25px 70px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.035)!important}
-      .card:hover{box-shadow:0 35px 90px rgba(0,0,0,.5),0 0 35px rgba(0,234,255,.1)!important}
-      .bottle-body{box-shadow:inset 10px 0 17px rgba(255,255,255,.1),inset -15px 0 20px rgba(0,0,0,.78),0 25px 45px rgba(0,0,0,.6)!important}
-      .footer{background:rgba(1,7,14,.8)}
-      @keyframes mxBottle{0%,100%{transform:rotateY(-9deg) rotate(2deg) translateY(0)}50%{transform:rotateY(5deg) rotate(-1deg) translateY(-9px)}}
+      body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(0,234,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,234,255,.035) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(#000,transparent 92%)}
+      .header{background:rgba(1,7,14,.72)!important;border-bottom:1px solid rgba(0,234,255,.28)!important;box-shadow:0 8px 45px rgba(0,0,0,.5),0 0 35px rgba(0,234,255,.05)!important;backdrop-filter:blur(22px)!important}
+      .nav{max-width:1480px!important;min-height:76px!important}
+      .logo{display:flex!important;flex-direction:column;gap:1px;line-height:.85;letter-spacing:4px;font-size:25px!important;text-shadow:0 0 25px rgba(0,234,255,.22)}
+      .logo small{font-size:6px!important;letter-spacing:1.5px;color:#8ba8b5;font-weight:700;margin-top:6px;white-space:nowrap}
+      .links a{font-size:11px!important;color:#c7d9e1!important;transition:.25s}.links a:hover{color:#00eaff!important;text-shadow:0 0 12px #00eaff}
+      .hero{max-width:1480px!important;min-height:760px!important;padding:60px 22px 70px!important;perspective:1400px;overflow:hidden}
+      .hero:before{background-size:38px 38px!important;opacity:.8;mask-image:radial-gradient(circle at 55% 40%,#000,transparent 80%)!important}
+      .hero:after{content:"";position:absolute;right:-12%;top:2%;width:70%;height:96%;background:radial-gradient(ellipse,rgba(0,234,255,.13),transparent 58%);filter:blur(4px);pointer-events:none}
+      .hero-copy{max-width:750px!important;transform:translateZ(35px)}
+      .eyebrow{background:rgba(0,234,255,.035)!important;box-shadow:0 0 35px rgba(0,234,255,.12),inset 0 0 18px rgba(0,234,255,.04)!important}
+      h1{font-size:clamp(46px,6.5vw,92px)!important;line-height:.93!important;letter-spacing:-4px!important;text-shadow:0 18px 70px rgba(0,0,0,.65)!important}
+      h1 span{color:#00eaff!important;text-shadow:0 0 18px rgba(0,234,255,.55),0 0 55px rgba(0,234,255,.22)!important}
+      .hero-copy>p{font-size:15px!important;color:#a7bdc8!important;max-width:670px!important}
+      .primary{box-shadow:0 0 35px rgba(0,234,255,.25),inset 0 0 18px rgba(255,255,255,.22)!important;position:relative;overflow:hidden}.primary:after{content:"";position:absolute;inset:-50%;background:linear-gradient(110deg,transparent 42%,rgba(255,255,255,.5) 50%,transparent 58%);animation:mxShine 3.2s linear infinite}
+      .hero-visual{min-height:570px!important;perspective:1600px;transform-style:preserve-3d}
+      .hero-visual:before{content:"";position:absolute;width:610px;height:610px;border-radius:50%;background:radial-gradient(circle,rgba(0,234,255,.19),rgba(20,80,255,.07) 34%,transparent 70%);filter:blur(13px);animation:mxPulse 4s ease-in-out infinite}
+      .hero-visual:after{content:"LVL-CHEMICAL";position:absolute;z-index:5;top:50%;left:50%;transform:translate(-50%,-58%) translateZ(170px);font-family:Arial,sans-serif;font-size:clamp(27px,4vw,52px);font-weight:900;letter-spacing:5px;color:#f8feff;white-space:nowrap;pointer-events:none;text-shadow:1px 1px 0 #b9d2dc,3px 3px 0 #56717f,6px 6px 0 #1d3340,0 0 16px #00eaff,0 0 42px rgba(0,234,255,.7);mix-blend-mode:screen;animation:mxLogoFloat 4.5s ease-in-out infinite}
+      .halo{width:510px!important;height:510px!important;border:1px solid rgba(0,234,255,.35)!important;box-shadow:0 0 65px rgba(0,234,255,.18),inset 0 0 100px rgba(0,234,255,.06)!important;animation:mxOrbit 15s linear infinite;transform-style:preserve-3d}
+      .halo:before{inset:38px!important;border-color:rgba(0,234,255,.25)!important;transform:rotateX(67deg) rotateZ(25deg)!important;box-shadow:0 0 22px rgba(0,234,255,.12)}
+      .halo:after{inset:88px!important;border-color:rgba(122,85,255,.3)!important;transform:rotateY(62deg) rotateZ(-35deg)!important;box-shadow:0 0 25px rgba(122,85,255,.12)}
+      .hero-bottle{width:225px!important;height:375px!important;transform:translateZ(70px) rotateY(-12deg) rotate(2deg)!important;background:linear-gradient(90deg,#020508,#0b1e2b 15%,#07131d 32%,#1c5d75 51%,#07131f 70%,#020507)!important;box-shadow:inset 20px 0 30px rgba(255,255,255,.1),inset -24px 0 34px rgba(0,0,0,.85),0 50px 120px rgba(0,0,0,.72),0 0 110px rgba(0,234,255,.28)!important;animation:mxBottle 5.5s ease-in-out infinite;transform-style:preserve-3d}
+      .hero-bottle:before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(115deg,transparent 22%,rgba(255,255,255,.17) 34%,transparent 43%);mix-blend-mode:screen;pointer-events:none;animation:mxReflection 3.4s linear infinite}
+      .hero-bottle:after{content:"";position:absolute;left:12px;right:12px;bottom:-24px;height:35px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,234,255,.32),transparent 68%);filter:blur(8px);pointer-events:none}
+      .hero-cap{box-shadow:0 0 18px rgba(0,234,255,.14)!important}
+      .hero-label{left:12px!important;right:12px!important;top:80px!important;height:205px!important;border-radius:19px!important;background:linear-gradient(145deg,rgba(7,24,36,.96),rgba(2,10,17,.98))!important;border:1px solid rgba(0,234,255,.78)!important;box-shadow:0 0 42px rgba(0,234,255,.2),inset 0 0 35px rgba(0,234,255,.09)!important;transform:translateZ(28px);overflow:hidden}
+      .hero-label:after{content:"";position:absolute;inset:-40%;background:linear-gradient(120deg,transparent 40%,rgba(0,234,255,.16) 48%,transparent 56%);animation:mxLabelSweep 3s linear infinite}
+      .hero-label b{font-size:20px!important;letter-spacing:4px!important;color:#fff!important;text-shadow:0 0 16px rgba(255,255,255,.5)!important;z-index:2}.hero-label span{font-size:9px!important;letter-spacing:3px!important;color:#00eaff!important;z-index:2}.hero-label strong{font-size:42px!important;z-index:2;text-shadow:0 0 28px rgba(0,234,255,.65)!important}
+      .float{backdrop-filter:blur(14px)!important;background:rgba(2,12,22,.74)!important;box-shadow:0 0 32px rgba(0,234,255,.12),0 20px 50px rgba(0,0,0,.5)!important;animation:mxFloat 4s ease-in-out infinite}
+      .float.one{top:50px;left:-1%;animation-delay:-1s}.float.two{right:-2px;top:190px;animation-delay:-2s}.float.three{bottom:35px;left:5%;animation-delay:-3s}
+      .metrics{margin-top:42px!important}.metric strong{text-shadow:0 0 20px rgba(255,255,255,.16)}
+      .section{max-width:1480px!important;position:relative}.section[id="products"]{border-top:1px solid rgba(0,234,255,.15);background:radial-gradient(ellipse at 50% 0%,rgba(0,234,255,.045),transparent 55%)}
+      .section-head{position:relative}.section-head:after{content:"";position:absolute;left:0;bottom:-15px;width:160px;height:1px;background:linear-gradient(90deg,#00eaff,transparent);box-shadow:0 0 12px #00eaff}
+      .card{transform-style:preserve-3d;background:linear-gradient(145deg,rgba(7,30,46,.9),rgba(1,8,14,.98))!important;border-color:rgba(0,234,255,.24)!important;box-shadow:0 28px 75px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.045)!important;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+      .card:hover{transform:translateY(-9px) rotateX(1deg) rotateY(-1deg)!important;border-color:rgba(0,234,255,.6)!important;box-shadow:0 38px 100px rgba(0,0,0,.58),0 0 45px rgba(0,234,255,.11)!important}
+      .card:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.04) 50%,transparent 65%);transform:translateX(-110%);transition:transform .7s}.card:hover:after{transform:translateX(110%)}
+      .bottle-body{box-shadow:inset 10px 0 18px rgba(255,255,255,.1),inset -15px 0 22px rgba(0,0,0,.8),0 28px 48px rgba(0,0,0,.65)!important;transform:translateZ(22px);transition:.3s}.card:hover .bottle-body{transform:translateZ(42px) rotateY(-4deg)}
+      .new-add-cart{box-shadow:0 0 18px rgba(0,234,255,.08);transition:.25s}.new-add-cart:hover{box-shadow:0 0 28px rgba(0,234,255,.22);transform:translateY(-2px)}
+      .footer{background:rgba(1,5,10,.88)!important;border-top-color:rgba(0,234,255,.25)!important}
+      @keyframes mxBottle{0%,100%{transform:translateZ(70px) rotateY(-12deg) rotate(2deg) translateY(0)}50%{transform:translateZ(95px) rotateY(8deg) rotate(-2deg) translateY(-12px)}}
       @keyframes mxOrbit{to{transform:rotate(360deg)}}
-      @media(max-width:950px){.hero{min-height:auto;padding-top:45px}.hero-visual{min-height:500px}.hero-visual:after{font-size:42px}.nav{min-height:68px}}
-      @media(max-width:620px){.nav{min-height:62px}.logo{font-size:20px}.logo small{font-size:6px}.hero{padding-top:35px}.hero-visual{min-height:390px}.halo{width:330px!important;height:330px!important}.hero-bottle{width:165px!important;height:275px!important}.hero-label{top:62px!important;height:145px!important}.hero-label strong{font-size:30px!important}.hero-visual:after{font-size:34px;letter-spacing:4px}.float{font-size:8px;padding:8px 10px}.float.one{top:38px}.float.two{top:160px}.float.three{bottom:20px}.metrics{gap:18px}}
-      @media(prefers-reduced-motion:reduce){.hero-bottle,.halo{animation:none!important}}
+      @keyframes mxFloat{0%,100%{translate:0 0}50%{translate:0 -9px}}
+      @keyframes mxPulse{0%,100%{opacity:.7;scale:1}50%{opacity:1;scale:1.06}}
+      @keyframes mxLogoFloat{0%,100%{transform:translate(-50%,-58%) translateZ(170px) rotateY(-2deg)}50%{transform:translate(-50%,-64%) translateZ(205px) rotateY(3deg)}}
+      @keyframes mxShine{0%{transform:translateX(-90%) rotate(10deg)}100%{transform:translateX(90%) rotate(10deg)}}
+      @keyframes mxReflection{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+      @keyframes mxLabelSweep{0%{transform:translateX(-55%) rotate(8deg)}100%{transform:translateX(55%) rotate(8deg)}}
+      @media(max-width:950px){.hero{min-height:auto!important;padding-top:45px!important}.hero-visual{min-height:510px!important}.hero-visual:after{font-size:34px}.halo{width:440px!important;height:440px!important}.nav{min-height:68px!important}}
+      @media(max-width:620px){.nav{min-height:62px!important}.logo{font-size:20px!important}.logo small{font-size:5px!important}.hero{padding:35px 15px 30px!important}.hero h1{font-size:42px!important;letter-spacing:-2px!important}.hero-visual{min-height:410px!important}.halo{width:315px!important;height:315px!important}.hero-bottle{width:165px!important;height:280px!important;transform:translateZ(45px) rotateY(-8deg)!important}.hero-label{top:60px!important;height:150px!important}.hero-label strong{font-size:30px!important}.hero-visual:after{font-size:21px;letter-spacing:2px;transform:translate(-50%,-58%) translateZ(110px)}.float{font-size:8px!important;padding:8px 10px!important}.float.one{top:38px}.float.two{top:155px}.float.three{bottom:18px}.metrics{gap:18px!important}}
+      @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
     `;
     document.head.appendChild(style);
 
     const logo = document.querySelector('.logo');
     if (logo) {
-      logo.innerHTML = 'ECO<span>MAX</span><small>შპს ეკო-მაქსი • PROFESSIONAL AUTOMOTIVE CARE</small>';
-      logo.setAttribute('aria-label','შპს ეკო-მაქსი ECOMAX');
+      logo.innerHTML = 'ECO<span>MAX</span><small>შპს ეკო-მაქსი • LVL-CHEMICAL • PROFESSIONAL AUTOMOTIVE CARE</small>';
+      logo.setAttribute('aria-label','შპს ეკო-მაქსი • LVL-CHEMICAL');
     }
 
     const heroLabel = document.querySelector('.hero-label');
     if (heroLabel) {
-      heroLabel.innerHTML = '<b>LVL</b><span>CHEMICAL • 3D SERIES</span><strong>5 L</strong>';
+      heroLabel.innerHTML = '<b>LVL-CHEMICAL</b><span>ECOMAX • PROFESSIONAL CHEMICAL SYSTEM</span><strong>5 L</strong>';
     }
 
     const eyebrow = document.querySelector('.eyebrow');
@@ -74,18 +88,21 @@
     const heroText = document.querySelector('.hero-copy > p');
     if (heroText) heroText.textContent = 'შპს ეკო-მაქსი — LVL-CHEMICAL-ის პროფესიონალური ავტოქიმია ავტომობილის მოვლისა და წმენდისთვის. ხარისხი, ეფექტურობა და პროფესიონალური შედეგი ერთ სისტემაში.';
 
-    const metrics = document.querySelectorAll('.metric small');
-    if (metrics.length >= 3) {
-      metrics[0].textContent = 'პროფესიონალური პროდუქტი';
-      metrics[1].textContent = 'მოცულობები';
-      metrics[2].textContent = 'წელი გამოცდილება';
-    }
-
     const title = document.querySelector('h1');
     if (title) title.innerHTML = 'სუფთა მანქანა.<br><span>პროფესიონალური</span><br>შედეგი.';
 
     const footer = document.querySelector('.footer');
-    if (footer) footer.innerHTML = '© 2026 <strong>შპს ეკო-მაქსი</strong> — ECOMAX • LVL-CHEMICAL • ყველა უფლება დაცულია';
+    if (footer) footer.innerHTML = '© 2026 <strong>შპს ეკო-მაქსი</strong> — <strong>LVL-CHEMICAL</strong> • ყველა უფლება დაცულია';
+
+    document.querySelectorAll('.card').forEach((card,index)=>{
+      card.style.setProperty('--mx-index', index);
+      card.addEventListener('pointermove',e=>{
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+        card.style.transform=`translateY(-8px) rotateX(${(-y*3).toFixed(2)}deg) rotateY(${(x*3).toFixed(2)}deg)`;
+      });
+      card.addEventListener('pointerleave',()=>card.style.transform='');
+    });
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, {once:true}); else boot();
 })();
