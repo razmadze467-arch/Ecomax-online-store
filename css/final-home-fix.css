@@ -1,0 +1,85 @@
+/* ECOMAX FINAL HOME FIX — desktop + mobile layout, LVL-CHEMICAL logo cleanup */
+html,body{width:100%;max-width:100%;overflow-x:hidden!important}
+body{min-width:0!important}
+.hero,.section{width:100%!important;max-width:1320px!important;margin-left:auto!important;margin-right:auto!important}
+.hero{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)!important}
+.hero-copy,.hero-visual,.section-head,.tools,.grid,.info{min-width:0!important}
+.hero-visual{overflow:visible!important}
+.hero-bottle{flex:none!important}
+/* Never let the decorative magic text sit over the product label. The real full logo is rendered on the bottle label. */
+.magic-sphere b{display:none!important}
+.hero-label b{font-weight:900!important;letter-spacing:2px!important;white-space:nowrap!important}
+.hero-label span{white-space:nowrap!important}
+/* Premium depth without changing the functional DOM */
+.card{transform-style:preserve-3d!important;will-change:transform!important}
+.card:hover{transform:translateY(-8px) rotateX(1deg) rotateY(-1deg)!important}
+.bottle{transform-style:preserve-3d!important}
+/* Desktop */
+@media(min-width:801px){
+ .hero{min-height:720px!important;padding-top:64px!important}
+ .hero-visual{min-height:560px!important}
+ .hero-bottle{width:205px!important;height:350px!important}
+ .hero-label{left:18px!important;right:18px!important;top:96px!important;height:164px!important}
+ .hero-label b{font-size:20px!important}
+ .hero-label strong{font-size:34px!important}
+ .grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+ .card{min-width:0!important}
+}
+/* Tablet + phone */
+@media(max-width:800px){
+ .header{position:sticky!important;top:0!important}
+ .nav{width:100%!important;min-height:64px!important;padding:8px 12px!important;gap:8px!important}
+ .logo{font-size:19px!important;letter-spacing:3px!important;flex:1 1 auto!important;min-width:0!important}
+ .links{display:none!important}
+ .actions{flex:0 0 auto!important}
+ .cart-button{padding:8px 10px!important;font-size:12px!important}
+ .menu{display:block!important}
+ .hero{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:0!important;min-height:auto!important;padding:38px 14px 28px!important;width:100%!important;max-width:none!important;overflow:hidden!important}
+ .hero:before{inset:0!important;background-size:30px 30px!important}
+ .hero-copy{width:100%!important;max-width:100%!important;transform:none!important;order:1!important}
+ .eyebrow{max-width:100%!important;font-size:8px!important;letter-spacing:1.4px!important;padding:7px 9px!important}
+ h1,.lvl5d-hero h1{font-size:clamp(36px,10vw,54px)!important;line-height:1.02!important;letter-spacing:-2px!important;margin:18px 0 14px!important;max-width:100%!important;overflow-wrap:anywhere!important}
+ .hero-copy>p{max-width:100%!important;font-size:12px!important;line-height:1.7!important}
+ .hero-actions{width:100%!important;gap:8px!important}
+ .primary,.secondary{padding:12px 13px!important;font-size:11px!important;min-width:0!important}
+ .metrics{gap:18px!important;margin-top:25px!important;flex-wrap:wrap!important}
+ .metric strong{font-size:18px!important}
+ .hero-visual,.lvl5d-stage{order:2!important;width:100%!important;min-height:390px!important;height:390px!important;display:grid!important;place-items:center!important;margin-top:8px!important;transform:none!important;overflow:visible!important}
+ .halo{width:min(340px,88vw)!important;height:min(340px,88vw)!important}
+ .hero-bottle{width:155px!important;height:270px!important;transform:rotate(2deg)!important}
+ .hero-cap{width:68px!important;height:25px!important;top:-17px!important}
+ .hero-label{left:14px!important;right:14px!important;top:76px!important;height:126px!important;border-radius:13px!important}
+ .hero-label b{font-size:15px!important;letter-spacing:2px!important}
+ .hero-label span{font-size:7px!important;letter-spacing:1.2px!important;margin-top:5px!important}
+ .hero-label strong{font-size:27px!important;margin-top:10px!important}
+ .float{font-size:7px!important;padding:8px 9px!important;max-width:90px!important}
+ .float.one{top:35px!important;left:1%!important}.float.two{top:150px!important;right:0!important}.float.three{bottom:25px!important;left:5%!important}
+ .magic-particles{display:none!important}
+ .magic-sphere{display:none!important}
+ .lvl5d-stage:before{width:min(340px,88vw)!important;height:min(340px,88vw)!important;margin:calc(min(340px,88vw)/-2)!important}
+ .section{padding:42px 14px!important;width:100%!important;max-width:none!important}
+ .section-head{display:block!important;margin-bottom:18px!important}
+ .section h2{font-size:34px!important;line-height:1.08!important}
+ .section-head p{max-width:100%!important;margin-top:12px!important;font-size:11px!important}
+ .tools{display:flex!important;flex-direction:column!important;width:100%!important}
+ .search,.filter{width:100%!important;min-width:0!important}
+ .grid{display:grid!important;grid-template-columns:1fr!important;gap:14px!important;width:100%!important}
+ .card{width:100%!important;min-width:0!important;min-height:0!important;padding:16px!important;border-radius:18px!important}
+ .bottle{height:245px!important}
+ .bottle-body{width:120px!important;height:198px!important}
+ .card h3{font-size:16px!important}
+ .desc{font-size:10px!important;min-height:auto!important;margin-bottom:8px!important}
+ .info{grid-template-columns:1fr!important}
+ .footer{padding:30px 14px!important}
+}
+@media(max-width:430px){
+ .hero{padding-left:12px!important;padding-right:12px!important}
+ .hero-visual,.lvl5d-stage{min-height:360px!important;height:360px!important}
+ .hero-bottle{width:145px!important;height:252px!important}
+ .hero-label{top:70px!important;height:118px!important}
+ .hero-label b{font-size:14px!important}
+ .hero-label strong{font-size:25px!important}
+ .float.two{right:-2px!important}
+ .section{padding-left:12px!important;padding-right:12px!important}
+}
+@media(prefers-reduced-motion:reduce){.card:hover{transform:none!important}}
