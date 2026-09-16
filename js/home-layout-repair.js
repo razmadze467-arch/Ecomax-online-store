@@ -1,73 +1,85 @@
-// ECOMAX — home layout + cart initial-state repair
+// ECOMAX — final home layout + cart initial-state repair
 (function(){
   'use strict';
   if(window.__ECOMAX_HOME_LAYOUT_REPAIR__) return;
   window.__ECOMAX_HOME_LAYOUT_REPAIR__=true;
 
-  const style=document.createElement('style');
-  style.id='ecomaxHomeLayoutRepairCss';
-  style.textContent=`
-    /* Remove the oversized empty hero area while keeping the 3D visual. */
-    .hero{min-height:560px!important;padding-top:38px!important;padding-bottom:42px!important;gap:28px!important}
-    .hero-visual{min-height:400px!important}
-    .hero-halo{width:min(430px,88%)!important}
-    .energy-ring{width:64%!important}
-    .hero-bottle{transform:scale(.88);transform-origin:center}
-    .metrics{margin-top:28px!important}
-    @media(max-width:900px){
-      .hero{min-height:auto!important;padding-top:30px!important;padding-bottom:28px!important;gap:8px!important}
-      .hero-visual{min-height:330px!important;margin-top:-4px!important}
-      .hero-bottle{transform:scale(.78);}
-    }
-    @media(max-width:600px){
-      .hero{padding-left:16px!important;padding-right:16px!important}
-      .hero h1{margin-top:18px!important;margin-bottom:14px!important}
-      .hero-description{font-size:13px!important;line-height:1.65!important}
-      .hero-actions{margin-top:18px!important}
-      .metrics{margin-top:20px!important;gap:20px!important}
-      .hero-visual{min-height:270px!important}
-      .hero-bottle{transform:scale(.66);}
-      .hero-halo{width:290px!important}
-      .energy-ring{width:220px!important}
-    }
+  function installCSS(){
+    let style=document.getElementById('ecomaxHomeLayoutRepairCss');
+    if(!style){ style=document.createElement('style'); style.id='ecomaxHomeLayoutRepairCss'; document.head.appendChild(style); }
+    style.textContent=`
+      /* FINAL COMPACT HERO — prevents the oversized blank area */
+      .hero{min-height:0!important;height:auto!important;padding:34px 24px 30px!important;gap:22px!important;align-items:center!important}
+      .hero-copy{max-width:720px!important}
+      .hero-visual{min-height:390px!important;height:390px!important}
+      .hero-halo{width:min(410px,82%)!important}
+      .energy-ring{width:62%!important}
+      .hero-bottle{transform:scale(.82)!important;transform-origin:center!important}
+      .metrics{margin-top:24px!important}
+      .section{padding-top:48px!important;padding-bottom:48px!important}
+      #products{padding-top:46px!important}
 
-    /* Cart must start closed. openCart() is the only intended way to show it. */
-    #cartOverlay.ecomax-start-closed{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
-  `;
-  document.head.appendChild(style);
+      /* CART: closed by default; only an actual cart-button click can open it */
+      #cartOverlay.ecomax-start-closed{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+      @media(max-width:900px){
+        .hero{min-height:0!important;height:auto!important;padding:26px 18px 24px!important;gap:0!important;display:grid!important}
+        .hero-visual{min-height:300px!important;height:300px!important;margin-top:0!important}
+        .hero-bottle{transform:scale(.72)!important}
+        .hero-halo{width:300px!important}
+      }
+      @media(max-width:600px){
+        .hero{padding:20px 14px 18px!important}
+        .hero h1{margin:16px 0 12px!important;font-size:clamp(34px,10vw,50px)!important}
+        .hero-description{font-size:12.5px!important;line-height:1.58!important}
+        .hero-actions{margin-top:15px!important}
+        .metrics{margin-top:17px!important;gap:16px!important}
+        .hero-visual{min-height:245px!important;height:245px!important;margin-top:0!important}
+        .hero-bottle{transform:scale(.60)!important}
+        .hero-halo{width:245px!important}
+        .energy-ring{width:190px!important}
+        .section{padding-top:34px!important;padding-bottom:34px!important}
+        #products{padding-top:32px!important}
+      }
+    `;
+  }
 
-  function closeInitialCart(){
+  function forceClosed(){
     const overlay=document.getElementById('cartOverlay');
-    if(!overlay) return;
+    if(!overlay)return;
+    if(window.__ECOMAX_CART_USER_OPENED__)return;
     overlay.classList.remove('active');
     overlay.classList.add('ecomax-start-closed');
-    overlay.style.display='none';
-    overlay.style.visibility='hidden';
-    overlay.style.opacity='0';
-    overlay.style.pointerEvents='none';
+    overlay.style.setProperty('display','none','important');
+    overlay.style.setProperty('visibility','hidden','important');
+    overlay.style.setProperty('opacity','0','important');
+    overlay.style.setProperty('pointer-events','none','important');
     document.body.style.overflow='';
   }
 
-  function allowCartOpen(){
+  function allowOpen(){
+    window.__ECOMAX_CART_USER_OPENED__=true;
     const overlay=document.getElementById('cartOverlay');
-    if(!overlay) return;
+    if(!overlay)return;
     overlay.classList.remove('ecomax-start-closed');
-    overlay.style.visibility='';
-    overlay.style.opacity='';
-    overlay.style.pointerEvents='';
+    overlay.style.removeProperty('display');
+    overlay.style.removeProperty('visibility');
+    overlay.style.removeProperty('opacity');
+    overlay.style.removeProperty('pointer-events');
   }
 
   function init(){
-    closeInitialCart();
+    installCSS();
+    forceClosed();
     document.addEventListener('click',function(e){
-      if(e.target.closest('#cartButton')){
-        allowCartOpen();
-      }
+      if(e.target.closest('#cartButton')) allowOpen();
     },true);
-    window.addEventListener('pageshow',closeInitialCart,{once:true});
-    setTimeout(closeInitialCart,250);
+    [100,500,1200,2500].forEach(t=>setTimeout(function(){installCSS();forceClosed()},t));
+    const observer=new MutationObserver(function(){
+      if(!window.__ECOMAX_CART_USER_OPENED__)forceClosed();
+      installCSS();
+    });
+    observer.observe(document.documentElement,{childList:true,subtree:true});
   }
 
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
-  else init();
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
