@@ -1,0 +1,36 @@
+/* ECOMAX — FINAL DEVICE LAYOUT / last CSS layer */
+html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important}
+@media (pointer:coarse), (max-width:1100px){
+  .header{width:100%!important;overflow:hidden!important}
+  .nav{width:100%!important;max-width:none!important;min-width:0!important;padding:8px 12px!important;gap:8px!important}
+  .links{display:none!important}
+  .menu{display:block!important}
+  .logo{min-width:0!important;max-width:125px!important;white-space:normal!important;line-height:.9!important}
+  .actions{margin-left:auto!important;min-width:0!important}
+  .cart-button{white-space:nowrap!important}
+  .hero{width:100%!important;max-width:none!important;min-height:0!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:16px!important;padding:38px 14px 34px!important;margin:0!important;overflow:hidden!important}
+  .hero-copy{width:100%!important;max-width:none!important;min-width:0!important}
+  .hero h1,h1{width:100%!important;max-width:none!important;font-size:clamp(34px,9vw,56px)!important;line-height:1.02!important;letter-spacing:-1.5px!important;overflow-wrap:anywhere!important}
+  .hero-copy>p{width:100%!important;max-width:none!important}
+  .hero-actions{width:100%!important;display:flex!important;flex-wrap:wrap!important}
+  .metrics{width:100%!important;display:flex!important;flex-wrap:wrap!important}
+  .hero-visual{width:100%!important;max-width:none!important;min-width:0!important;height:390px!important;min-height:390px!important;margin:0!important;overflow:hidden!important}
+  .halo{width:min(390px,88vw)!important;height:min(390px,88vw)!important}
+  .hero-bottle{width:155px!important;height:270px!important}
+  .section{width:100%!important;max-width:none!important;padding:48px 14px!important;margin:0!important;overflow:hidden!important}
+  .section-head{width:100%!important;display:block!important}
+  .section-head p{max-width:none!important}
+  .tools{width:100%!important;display:flex!important;flex-direction:column!important}
+  .search,.filter{width:100%!important;min-width:0!important}
+  .grid{width:100%!important;max-width:none!important;display:grid!important;grid-template-columns:1fr!important;gap:16px!important}
+  .card,.lvl-5d-card{width:100%!important;max-width:none!important;min-width:0!important;min-height:0!important;transform:none!important;overflow:hidden!important}
+  .card:hover{transform:translateY(-5px)!important}
+  .bottle{height:245px!important}
+  .bottle-body{transform:translateZ(22px)!important}
+  .card h3,.desc{max-width:100%!important;overflow-wrap:anywhere!important}
+}
+@media (min-width:1101px) and (pointer:fine){
+  .hero{max-width:1320px!important}
+  .section{max-width:1320px!important}
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
