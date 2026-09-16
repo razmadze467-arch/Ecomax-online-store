@@ -1,0 +1,208 @@
+/* =========================================================
+   ECOMAX FINAL RESPONSIVE SYSTEM
+   Android + Desktop
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* მთავარი კონტეინერები */
+
+main,
+section,
+header,
+footer,
+nav {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero,
+.hero-section,
+.home-hero,
+.home-hero-section,
+.hero-inner,
+.hero-grid {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.hero-content,
+.hero-text,
+.hero-copy {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* =========================================================
+   PRODUCTS
+   ========================================================= */
+
+.products-section,
+.store-section,
+.products,
+.product-section,
+.store-container {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.products-grid,
+.product-grid,
+.products-list {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* =========================================================
+   PRODUCT CARD
+   ========================================================= */
+
+.product-card,
+.pro-product-card {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.product-card img,
+.pro-product-card img {
+  max-width: 100%;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .products-grid,
+  .product-grid,
+  .products-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+/* =========================================================
+   ANDROID / MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .hero,
+  .hero-section,
+  .home-hero,
+  .home-hero-section {
+    width: 100%;
+    max-width: 100%;
+    min-height: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero-inner,
+  .hero-grid {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    display: block;
+  }
+
+  .hero-content,
+  .hero-text,
+  .hero-copy {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .hero h1,
+  .hero-section h1,
+  .home-hero h1 {
+    max-width: 100%;
+    font-size: clamp(32px, 9vw, 58px);
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+  }
+
+  .hero p,
+  .hero-section p {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .products-grid,
+  .product-grid,
+  .products-list {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .product-card,
+  .pro-product-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+}
+
+/* =========================================================
+   SMALL ANDROID
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .hero,
+  .hero-section,
+  .home-hero {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .hero h1,
+  .hero-section h1,
+  .home-hero h1 {
+    font-size: clamp(29px, 8.5vw, 42px);
+  }
+
+  .products-grid,
+  .product-grid,
+  .products-list {
+    grid-template-columns: 1fr;
+  }
+
+}
