@@ -1,0 +1,45 @@
+/* ECOMAX — VIEWPORT LAYOUT LOCK
+   Final geometry layer. Prevents any old visual layer from constraining the homepage. */
+html,body{width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;padding:0!important;overflow-x:hidden!important}
+*,*:before,*:after{box-sizing:border-box!important;min-width:0}
+
+/* Every normal page-level child must use the real viewport/container width. */
+body>header,body>main,body>section,body>div,body>.lvl5d-site,
+body>footer{width:100%!important;max-width:100%!important;min-width:0!important;margin-left:0!important;margin-right:0!important}
+
+.header{width:100%!important;max-width:none!important}
+.nav{width:min(1320px,100%)!important;max-width:1320px!important;margin-left:auto!important;margin-right:auto!important}
+
+.hero,.lvl5d-hero{width:100%!important;max-width:1320px!important;min-width:0!important;margin-left:auto!important;margin-right:auto!important}
+.hero-copy,.hero-visual,.lvl5d-stage{min-width:0!important;max-width:100%!important}
+
+.section{width:100%!important;max-width:1320px!important;min-width:0!important;margin-left:auto!important;margin-right:auto!important}
+.grid{width:100%!important;max-width:100%!important;min-width:0!important}
+.card,.lvl-5d-card{min-width:0!important;max-width:100%!important}
+
+/* Kill accidental transforms/positioning on the page shells only; keep 5D effects inside them. */
+body>.lvl5d-site,.lvl5d-site{width:100%!important;max-width:100%!important;min-width:0!important}
+
+@media(max-width:1100px){
+  .hero,.lvl5d-hero,.section{width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important}
+  .hero{display:flex!important;flex-direction:column!important;align-items:stretch!important}
+  .hero-copy,.hero-visual,.lvl5d-stage{width:100%!important;max-width:none!important;min-width:0!important}
+  .hero-copy{transform:none!important}
+  .lvl5d-stage{transform:none!important}
+  .grid{grid-template-columns:1fr!important}
+}
+
+@media(min-width:1101px){
+  .hero,.section{padding-left:22px!important;padding-right:22px!important}
+}
+
+@media(max-width:700px){
+  body>header,body>main,body>section,body>div,body>footer{width:100%!important;max-width:100%!important}
+  .hero,.lvl5d-hero{width:100%!important;max-width:none!important;padding-left:12px!important;padding-right:12px!important}
+  .hero-copy h1,.hero h1,.lvl5d-hero h1{width:100%!important;max-width:100%!important;white-space:normal!important;overflow-wrap:anywhere!important}
+  .hero-visual,.lvl5d-stage{width:100%!important;max-width:none!important;height:360px!important;min-height:360px!important;overflow:hidden!important}
+  .lvl5d-stage:before{width:min(340px,86vw)!important;height:min(340px,86vw)!important;margin:calc(min(340px,86vw)/-2)!important}
+  .lvl-logo-3d{width:min(330px,82vw)!important;max-width:82vw!important}
+  .section{width:100%!important;max-width:none!important;padding-left:12px!important;padding-right:12px!important}
+  .grid{grid-template-columns:1fr!important}
+}
