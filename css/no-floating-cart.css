@@ -1,0 +1,12 @@
+/* ECOMAX — remove the extra floating/mobile cart shortcut.
+   The normal header cart + checkout remain untouched. */
+.ecomax-mobile-cart,
+.ecomax-mobile-cart.show,
+.ecomax-bottom-cart,
+.ecomax-floating-cart,
+.ecomax-cart-float {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
