@@ -1,0 +1,81 @@
+/* =========================================================
+   ECOMAX — FINAL CART STARTUP LOCK
+   ========================================================= */
+
+/*
+   DEFAULT:
+   CART IS ALWAYS HIDDEN.
+*/
+
+#cartOverlay {
+  display: none !important;
+
+  visibility: hidden !important;
+
+  opacity: 0 !important;
+
+  pointer-events: none !important;
+}
+
+
+/*
+   Even if another script adds:
+   active / open / show / visible
+   the cart stays hidden.
+*/
+
+#cartOverlay.active:not(.ecomax-user-cart-open),
+#cartOverlay.open:not(.ecomax-user-cart-open),
+#cartOverlay.show:not(.ecomax-user-cart-open),
+#cartOverlay.visible:not(.ecomax-user-cart-open) {
+
+  display: none !important;
+
+  visibility: hidden !important;
+
+  opacity: 0 !important;
+
+  pointer-events: none !important;
+}
+
+
+/*
+   ONLY OUR USER-OPEN CLASS
+   CAN SHOW THE CART.
+*/
+
+#cartOverlay.ecomax-user-cart-open {
+
+  display: flex !important;
+
+  visibility: visible !important;
+
+  opacity: 1 !important;
+
+  pointer-events: auto !important;
+
+  z-index: 99999 !important;
+}
+
+
+/*
+   MOBILE SAFETY
+*/
+
+@media (max-width: 600px) {
+
+  #cartOverlay {
+    width: 100vw !important;
+
+    max-width: 100vw !important;
+
+    min-width: 0 !important;
+
+    left: 0 !important;
+
+    right: 0 !important;
+
+    overflow-x: hidden !important;
+  }
+
+}
