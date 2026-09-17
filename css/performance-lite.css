@@ -1,13 +1,28 @@
 /* ECOMAX — PERFORMANCE LITE
-   Keep the layout and cart functional while removing expensive visual effects. */
+   Keep the site fast without disabling the ECOMAX car advertisement animation. */
 
 html{scroll-behavior:auto!important}
-*,*::before,*::after{
+
+/* Disable expensive global effects. The car/road animation is explicitly excluded. */
+*:not(.ecomax-final-car):not(.ecomax-final-car *):not(.ecomax-final-stage .road),
+*:not(.ecomax-final-car):not(.ecomax-final-car *)::before,
+*:not(.ecomax-final-car):not(.ecomax-final-car *)::after{
   animation-duration:.001s!important;
   animation-iteration-count:1!important;
   transition:none!important;
   backdrop-filter:none!important;
   -webkit-backdrop-filter:none!important;
+}
+
+/* Restore the lightweight advertising animation. */
+.ecomax-final-car{
+  animation:ecomaxDrive 12s linear infinite,ecomaxZig 1.15s ease-in-out infinite!important;
+  will-change:left,transform;
+}
+
+.ecomax-final-stage .road{
+  animation:ecomaxRoad 1.1s linear infinite!important;
+  will-change:background-position;
 }
 
 body::before,body::after{display:none!important}
@@ -31,4 +46,6 @@ img{content-visibility:auto}
 
 @media(max-width:760px){
   *{box-shadow:none!important}
+  .ecomax-final-car{animation:ecomaxDrive 12s linear infinite,ecomaxZig 1.15s ease-in-out infinite!important}
+  .ecomax-final-stage .road{animation:ecomaxRoad 1.1s linear infinite!important}
 }
