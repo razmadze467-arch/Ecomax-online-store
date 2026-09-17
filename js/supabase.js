@@ -23,7 +23,7 @@ window.ECOMAX_SUPABASE={url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
   js("ecomaxStoreUiJs","store-ui.js?v=20260913-7");
   js("ecomaxFinalHomeJs","homepage-final.js?v=20260913-7",function(){if(window.ECOMAX_FINAL_INIT)window.ECOMAX_FINAL_INIT()});
   js("ecomaxFinalUiJs","ecomax-final-ui.js?v=20260913-1");
-  js("ecomaxCartEmergencyFixJs","js/cart-emergency-fix.js?v=20260917-2");
+  js("ecomaxCartEmergencyFixJs","js/cart-emergency-fix.js?v=20260917-3");
   js("ecomaxMobileHardFixJs","js/mobile-hardfix.js?v=20260916-2");
   js("ecomaxFinalHomeFixJs","js/final-home-fix.js?v=20260916-2");
 })();
