@@ -27,4 +27,5 @@ window.ECOMAX_SUPABASE={url:SUPABASE_URL,key:SUPABASE_ANON_KEY};
   js("ecomaxCartEmergencyFixJs","js/cart-emergency-fix.js?v=20260917-6");
   js("ecomaxMobileHardFixJs","js/mobile-hardfix.js?v=20260916-2");
   js("ecomaxFinalHomeFixJs","js/final-home-fix.js?v=20260916-2");
+  js("ecomaxModalHardFixJs","js/modal-hardfix.js?v=20260917-1");
 })();
