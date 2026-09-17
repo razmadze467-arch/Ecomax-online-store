@@ -1,66 +1,388 @@
-// ECOMAX — cart startup guard (no MutationObserver)
-(function(){
-  'use strict';
-  if(window.__ECOMAX_CART_STARTUP_GUARD_V5__) return;
-  window.__ECOMAX_CART_STARTUP_GUARD_V5__=true;
+// ECOMAX — FINAL CART CONTROLLER
+// Prevents automatic cart opening.
+// Cart opens only after a real user click.
 
-  function overlay(){ return document.getElementById('cartOverlay'); }
-  function hide(){
-    var el=overlay();
-    if(!el) return;
-    el.classList.remove('active','open','show','ecomax-user-cart-open');
-    el.hidden=true;
-    el.setAttribute('aria-hidden','true');
-    el.style.setProperty('display','none','important');
-    el.style.setProperty('visibility','hidden','important');
-    el.style.setProperty('opacity','0','important');
-    el.style.setProperty('pointer-events','none','important');
-    if(document.body) document.body.style.overflow='';
-  }
-  function show(){
-    var el=overlay();
-    if(!el) return;
-    el.hidden=false;
-    el.removeAttribute('aria-hidden');
-    el.classList.add('active','ecomax-user-cart-open');
-    el.style.setProperty('display','flex','important');
-    el.style.setProperty('visibility','visible','important');
-    el.style.setProperty('opacity','1','important');
-    el.style.setProperty('pointer-events','auto','important');
-    if(document.body) document.body.style.overflow='hidden';
-    if(typeof window.renderCart==='function') window.renderCart();
+(function () {
+  "use strict";
+
+  if (window.__ECOMAX_FINAL_CART_CONTROLLER_V1__) return;
+
+  window.__ECOMAX_FINAL_CART_CONTROLLER_V1__ = true;
+
+  let userGesture = false;
+
+  function getCartOverlay() {
+    return document.getElementById("cartOverlay");
   }
 
-  // Never use a DOM mutation observer here: changing the overlay's own
-  // attributes from an observer creates an endless mutation loop on mobile.
-  var css=document.createElement('style');
-  css.id='ecomaxCartStartupGuardV5';
-  css.textContent='#cartOverlay{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}#cartOverlay.ecomax-user-cart-open{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}';
-  (document.head||document.documentElement).appendChild(css);
+  function hideCart() {
+    const overlay = getCartOverlay();
 
-  function bind(){
-    hide();
-    document.addEventListener('click',function(e){
-      var t=e.target;
-      if(!t||!t.closest) return;
-      var cartBtn=t.closest('#cartButton,.cart-button,[data-cart-button]');
-      if(cartBtn){
-        e.preventDefault();
-        e.stopPropagation();
-        show();
-        return;
+    if (!overlay) return;
+
+    overlay.classList.remove(
+      "active",
+      "open",
+      "show",
+      "visible",
+      "ecomax-user-cart-open"
+    );
+
+    overlay.hidden = true;
+
+    overlay.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    overlay.style.setProperty(
+      "display",
+      "none",
+      "important"
+    );
+
+    overlay.style.setProperty(
+      "visibility",
+      "hidden",
+      "important"
+    );
+
+    overlay.style.setProperty(
+      "opacity",
+      "0",
+      "important"
+    );
+
+    overlay.style.setProperty(
+      "pointer-events",
+      "none",
+      "important"
+    );
+
+    if (document.body) {
+      document.body.style.overflow = "";
+    }
+  }
+
+  function openCartByUser() {
+    const overlay = getCartOverlay();
+
+    if (!overlay) return false;
+
+    window.__ECOMAX_CART_USER_OPENED__ = true;
+
+    overlay.hidden = false;
+
+    overlay.removeAttribute(
+      "aria-hidden"
+    );
+
+    overlay.classList.add(
+      "active",
+      "ecomax-user-cart-open"
+    );
+
+    overlay.style.setProperty(
+      "display",
+      "flex",
+      "important"
+    );
+
+    overlay.style.setProperty(
+      "visibility",
+      "visible",
+      "important"
+    );
+
+    overlay.style.setProperty(
+      "opacity",
+      "1",
+      "important"
+    );
+
+    overlay.style.setProperty(
+      "pointer-events",
+      "auto",
+      "important"
+    );
+
+    overlay.style.setProperty(
+      "z-index",
+      "99999",
+      "important"
+    );
+
+    if (document.body) {
+      document.body.style.overflow = "hidden";
+    }
+
+    if (
+      typeof window.renderCart ===
+      "function"
+    ) {
+      try {
+        window.renderCart();
+      } catch (error) {
+        console.warn(
+          "ECOMAX renderCart error:",
+          error
+        );
       }
-      var closeBtn=t.closest('#cartClose,#closeCart,.cart-close,[data-cart-close],[data-close-cart]');
-      if(closeBtn || (t.closest('#cartOverlay') && t===overlay())){
-        e.preventDefault();
-        e.stopPropagation();
-        hide();
-      }
-    },true);
-    document.addEventListener('keydown',function(e){
-      if(e.key==='Escape') hide();
-    },true);
+    }
+
+    return false;
   }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind,{once:true});
-  else bind();
+
+  /*
+   * ABSOLUTE STARTUP LOCK
+   */
+  const style =
+    document.createElement("style");
+
+  style.id =
+    "ecomax-final-cart-startup-lock";
+
+  style.textContent = `
+    #cartOverlay {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    #cartOverlay.active:not(.ecomax-user-cart-open),
+    #cartOverlay.open:not(.ecomax-user-cart-open),
+    #cartOverlay.show:not(.ecomax-user-cart-open),
+    #cartOverlay.visible:not(.ecomax-user-cart-open) {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    #cartOverlay.ecomax-user-cart-open {
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      z-index: 99999 !important;
+    }
+  `;
+
+  (
+    document.head ||
+    document.documentElement
+  ).appendChild(style);
+
+  /*
+   * IMPORTANT:
+   * Any programmatic openCart() call is blocked.
+   * Only a user gesture can open it.
+   */
+  window.openCart = function () {
+
+    if (!userGesture) {
+      hideCart();
+      return false;
+    }
+
+    userGesture = false;
+
+    return openCartByUser();
+  };
+
+  /*
+   * Close API
+   */
+  window.closeCart = function () {
+
+    userGesture = false;
+
+    window.__ECOMAX_CART_USER_OPENED__ =
+      false;
+
+    hideCart();
+  };
+
+  /*
+   * Initial state
+   */
+  window.__ECOMAX_CART_USER_OPENED__ =
+    false;
+
+  function install() {
+
+    hideCart();
+
+    /*
+     * CAPTURE PHASE
+     *
+     * This runs before normal onclick handlers.
+     */
+    document.addEventListener(
+      "click",
+      function (event) {
+
+        const target =
+          event.target;
+
+        if (
+          !target ||
+          !target.closest
+        ) {
+          return;
+        }
+
+        /*
+         * CART BUTTON
+         */
+        const cartButton =
+          target.closest(
+            "#cartButton," +
+            ".cart-button," +
+            "[data-cart-button]"
+          );
+
+        if (cartButton) {
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          userGesture = true;
+
+          /*
+           * Directly open here.
+           * We do not depend on another JS file.
+           */
+          openCartByUser();
+
+          userGesture = false;
+
+          return;
+        }
+
+        /*
+         * CLOSE BUTTON
+         */
+        const closeButton =
+          target.closest(
+            "#cartClose," +
+            "#closeCart," +
+            ".cart-close," +
+            "[data-cart-close]," +
+            "[data-close-cart]"
+          );
+
+        if (closeButton) {
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          window.__ECOMAX_CART_USER_OPENED__ =
+            false;
+
+          hideCart();
+
+          return;
+        }
+
+        /*
+         * CLICK OUTSIDE CART
+         */
+        const overlay =
+          getCartOverlay();
+
+        if (
+          overlay &&
+          target === overlay
+        ) {
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          window.__ECOMAX_CART_USER_OPENED__ =
+            false;
+
+          hideCart();
+        }
+
+      },
+      true
+    );
+
+    /*
+     * ESC
+     */
+    document.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (
+          event.key ===
+          "Escape"
+        ) {
+
+          window.__ECOMAX_CART_USER_OPENED__ =
+            false;
+
+          hideCart();
+        }
+
+      },
+      true
+    );
+
+    /*
+     * If some other JS tries to open
+     * the overlay later, close it.
+     *
+     * NO MutationObserver.
+     */
+    let checks = 0;
+
+    const timer =
+      setInterval(
+        function () {
+
+          checks++;
+
+          const overlay =
+            getCartOverlay();
+
+          if (overlay) {
+
+            if (
+              !window.__ECOMAX_CART_USER_OPENED__
+            ) {
+              hideCart();
+            }
+
+          }
+
+          if (checks >= 40) {
+            clearInterval(timer);
+          }
+
+        },
+        250
+      );
+  }
+
+  if (
+    document.readyState ===
+    "loading"
+  ) {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      install,
+      { once: true }
+    );
+
+  } else {
+
+    install();
+
+  }
+
 })();
