@@ -1,27 +1,30 @@
-// ECOMAX — clean cart controller
+// ECOMAX — cart visibility guard
 (function(){
   'use strict';
-  if(window.__ECOMAX_CLEAN_CART_CONTROLLER__) return;
-  window.__ECOMAX_CLEAN_CART_CONTROLLER__=true;
+  if(window.__ECOMAX_CART_VISIBILITY_GUARD_V2__) return;
+  window.__ECOMAX_CART_VISIBILITY_GUARD_V2__=true;
 
-  function overlay(){ return document.getElementById('cartOverlay'); }
-
-  function closed(){
-    const el=overlay();
-    if(!el) return;
-    el.classList.remove('active');
+  var userOpened=false;
+  function overlays(){return document.querySelectorAll('#cartOverlay');}
+  function hide(el){
+    if(!el)return;
+    el.classList.remove('active','open','show');
     el.hidden=true;
     el.setAttribute('aria-hidden','true');
     el.style.setProperty('display','none','important');
     el.style.setProperty('visibility','hidden','important');
     el.style.setProperty('opacity','0','important');
     el.style.setProperty('pointer-events','none','important');
-    if(document.body) document.body.style.overflow='';
+    el.style.removeProperty('position');
+    el.style.removeProperty('inset');
   }
-
-  function opened(){
-    const el=overlay();
-    if(!el) return;
+  function hideAll(){
+    if(!userOpened){overlays().forEach(hide);if(document.body)document.body.style.overflow='';}
+  }
+  function show(){
+    var el=overlays()[0];
+    if(!el)return false;
+    userOpened=true;
     el.hidden=false;
     el.removeAttribute('aria-hidden');
     el.classList.add('active');
@@ -32,25 +35,40 @@
     el.style.setProperty('position','fixed','important');
     el.style.setProperty('inset','0','important');
     el.style.setProperty('z-index','99999','important');
-    if(document.body) document.body.style.overflow='hidden';
-    if(typeof window.renderCart==='function') window.renderCart();
-    if(typeof window.updateCart==='function') window.updateCart();
+    if(document.body)document.body.style.overflow='hidden';
+    if(typeof window.renderCart==='function')window.renderCart();
+    return false;
   }
-
-  window.openCart=function(){ opened(); return false; };
-  window.closeCart=function(){ closed(); return false; };
+  function close(){userOpened=false;hideAll();return false;}
+  window.openCart=show;
+  window.closeCart=close;
 
   function bind(){
-    closed();
+    hideAll();
     document.addEventListener('click',function(e){
-      const el=overlay();
-      if(!el) return;
-      if(e.target===el) closed();
-      if(e.target.closest && e.target.closest('#closeCart,.cart-close,[data-close-cart]')) closed();
+      var target=e.target;
+      if(target&&target.closest){
+        if(target.closest('#cartButton,.cart-button,[data-cart-button]')){e.preventDefault();e.stopPropagation();show();return;}
+        if(target.closest('#closeCart,.cart-close,[data-close-cart]')){e.preventDefault();e.stopPropagation();close();return;}
+      }
+      var el=overlays()[0];
+      if(el&&target===el)close();
     },true);
-    document.addEventListener('keydown',function(e){ if(e.key==='Escape') closed(); });
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')close();},true);
+    var observer=new MutationObserver(function(){
+      if(!userOpened)hideAll();
+    });
+    function watch(){
+      overlays().forEach(function(el){
+        if(!el.__ecomaxWatched){
+          el.__ecomaxWatched=true;
+          observer.observe(el,{attributes:true,attributeFilter:['class','style','hidden','aria-hidden']});
+        }
+      });
+      hideAll();
+    }
+    watch();
+    setTimeout(watch,50);setTimeout(watch,250);setTimeout(watch,800);setTimeout(watch,1500);setTimeout(watch,3000);
   }
-
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind,{once:true});
-  else bind();
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
 })();
