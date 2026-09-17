@@ -34,18 +34,71 @@
   }
   function change(i,d){const c=getCart();if(!c[i])return;c[i].quantity=Math.max(0,Number(c[i].quantity||1)+d);if(c[i].quantity===0)c.splice(i,1);setCart(c);setTimeout(render,0)}
   function remove(i){const c=getCart();c.splice(i,1);setCart(c);render()}
+
+  // IMPORTANT: the cart must start closed. Only a real user click may open it.
+  function hideOverlay(){
+    const overlay=document.getElementById('cartOverlay');
+    if(!overlay)return;
+    overlay.classList.remove('active','open','show');
+    overlay.hidden=true;
+    overlay.setAttribute('aria-hidden','true');
+    overlay.style.setProperty('display','none','important');
+    overlay.style.setProperty('visibility','hidden','important');
+    overlay.style.setProperty('opacity','0','important');
+    overlay.style.setProperty('pointer-events','none','important');
+    if(document.body)document.body.style.overflow='';
+  }
+  function allowOverlay(){
+    window.__ECOMAX_CART_USER_OPENED__=true;
+    const overlay=document.getElementById('cartOverlay');
+    if(!overlay)return;
+    overlay.hidden=false;
+    overlay.removeAttribute('aria-hidden');
+    overlay.classList.add('active');
+    overlay.style.removeProperty('display');
+    overlay.style.removeProperty('visibility');
+    overlay.style.removeProperty('opacity');
+    overlay.style.removeProperty('pointer-events');
+    render();
+  }
+
   function hook(){
-    // Do not render or rebuild the cart on page load.
-    // Rendering is triggered only when the user opens the cart or changes cart data.
+    // Close immediately on startup, and whenever the DOM creates/activates the overlay
+    // without a user click on the cart button.
+    window.__ECOMAX_CART_USER_OPENED__=false;
+    hideOverlay();
+
     document.addEventListener('click',e=>{
-      if(e.target.closest('#cartButton')) setTimeout(render,30);
-    });
-    window.addEventListener('storage',e=>{
-      if(e.key==='ecomax_cart'){
-        const overlay=document.getElementById('cartOverlay');
-        if(overlay && (overlay.classList.contains('active') || !overlay.hidden)) render();
+      const target=e.target;
+      const cartBtn=target&&target.closest&&target.closest('#cartButton,.cart-button,[data-cart-button]');
+      const closeBtn=target&&target.closest&&target.closest('#cartClose,.cart-close,[data-cart-close]');
+      if(cartBtn){
+        window.__ECOMAX_CART_USER_OPENED__=true;
+        setTimeout(allowOverlay,0);
+        return;
+      }
+      if(closeBtn || target===document.getElementById('cartOverlay')){
+        window.__ECOMAX_CART_USER_OPENED__=false;
+        hideOverlay();
+      }
+    },true);
+
+    document.addEventListener('keydown',e=>{
+      if(e.key==='Escape'){
+        window.__ECOMAX_CART_USER_OPENED__=false;
+        hideOverlay();
+      }
+    },true);
+
+    const observer=new MutationObserver(()=>{
+      const overlay=document.getElementById('cartOverlay');
+      if(overlay && !window.__ECOMAX_CART_USER_OPENED__){
+        hideOverlay();
       }
     });
+    observer.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style','hidden','aria-hidden']});
+    window.__ECOMAX_CART_PRO_OBSERVER__=observer;
   }
+
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook,{once:true});else hook();
 })();
