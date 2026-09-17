@@ -35,17 +35,18 @@
   function change(i,d){const c=getCart();if(!c[i])return;c[i].quantity=Math.max(0,Number(c[i].quantity||1)+d);if(c[i].quantity===0)c.splice(i,1);setCart(c);setTimeout(render,0)}
   function remove(i){const c=getCart();c.splice(i,1);setCart(c);render()}
 
-  // IMPORTANT: the cart must start closed. Only a real user click may open it.
   function hideOverlay(){
     const overlay=document.getElementById('cartOverlay');
     if(!overlay)return;
-    overlay.classList.remove('active','open','show');
-    overlay.hidden=true;
-    overlay.setAttribute('aria-hidden','true');
-    overlay.style.setProperty('display','none','important');
-    overlay.style.setProperty('visibility','hidden','important');
-    overlay.style.setProperty('opacity','0','important');
-    overlay.style.setProperty('pointer-events','none','important');
+    if(overlay.classList.contains('active') || !overlay.hidden || getComputedStyle(overlay).display!=='none'){
+      overlay.classList.remove('active','open','show');
+      overlay.hidden=true;
+      overlay.setAttribute('aria-hidden','true');
+      overlay.style.setProperty('display','none','important');
+      overlay.style.setProperty('visibility','hidden','important');
+      overlay.style.setProperty('opacity','0','important');
+      overlay.style.setProperty('pointer-events','none','important');
+    }
     if(document.body)document.body.style.overflow='';
   }
   function allowOverlay(){
@@ -63,8 +64,6 @@
   }
 
   function hook(){
-    // Close immediately on startup, and whenever the DOM creates/activates the overlay
-    // without a user click on the cart button.
     window.__ECOMAX_CART_USER_OPENED__=false;
     hideOverlay();
 
@@ -92,7 +91,7 @@
 
     const observer=new MutationObserver(()=>{
       const overlay=document.getElementById('cartOverlay');
-      if(overlay && !window.__ECOMAX_CART_USER_OPENED__){
+      if(overlay && !window.__ECOMAX_CART_USER_OPENED__ && (overlay.classList.contains('active') || !overlay.hidden || getComputedStyle(overlay).display!=='none')){
         hideOverlay();
       }
     });
