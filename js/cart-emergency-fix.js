@@ -5,8 +5,8 @@
 (function () {
   "use strict";
 
-  if (window.__ECOMAX_FINAL_OVERLAY_GUARD_V2__) return;
-  window.__ECOMAX_FINAL_OVERLAY_GUARD_V2__ = true;
+  if (window.__ECOMAX_FINAL_OVERLAY_GUARD_V3__) return;
+  window.__ECOMAX_FINAL_OVERLAY_GUARD_V3__ = true;
 
   let cartUserOpen = false;
   let productUserOpen = false;
@@ -122,6 +122,88 @@
   }
 
   /* =========================================================
+     REMOVE ONLY THE EXTRA FLOATING CART SHORTCUT
+     The real cart overlay (#cartOverlay) and checkout remain.
+     ========================================================= */
+
+  function removeFloatingCartShortcut() {
+    if (!document.body) return;
+
+    const explicitSelectors = [
+      ".ecomax-cart-float",
+      ".ecomax-floating-cart",
+      ".ecomax-cart-widget",
+      ".floating-cart",
+      ".floating-cart-widget",
+      ".mini-cart-widget",
+      ".cart-preview",
+      ".cart-preview-widget",
+      ".cart-sticky",
+      ".cart-bar",
+      "[data-floating-cart]",
+      "[data-cart-preview]"
+    ];
+
+    explicitSelectors.forEach(function (selector) {
+      document.querySelectorAll(selector).forEach(function (el) {
+        if (el.id !== "cartOverlay") el.remove();
+      });
+    });
+
+    /*
+      The old shortcut does not have a stable class in every version.
+      Detect its exact visible wording and remove only its small/floating
+      container. Never touch #cartOverlay or the real header cart button.
+    */
+    const nodes = Array.from(document.body.querySelectorAll("*"));
+
+    nodes.forEach(function (el) {
+      if (!el || el.id === "cartOverlay" || el.closest("#cartOverlay")) return;
+
+      const text = String(el.textContent || "")
+        .replace(/\s+/g, " ")
+        .trim();
+
+      const isShortcutText =
+        text === "ECOMAX CART" ||
+        (text.includes("ECOMAX CART") &&
+         text.includes("კალათა ცარიელია") &&
+         text.includes("კალათის ნახვა"));
+
+      if (!isShortcutText) return;
+
+      let node = el;
+
+      for (let i = 0; i < 7 && node && node !== document.body; i++) {
+        if (node.id === "cartOverlay") return;
+
+        const style = window.getComputedStyle(node);
+        const rect = node.getBoundingClientRect();
+        const key = (
+          String(node.id || "") + " " +
+          String(typeof node.className === "string" ? node.className : "")
+        ).toLowerCase();
+
+        const floating =
+          style.position === "fixed" ||
+          style.position === "sticky" ||
+          /floating|preview|mini-cart|cart-widget|cart-bar|cart-sticky/.test(key);
+
+        const smallEnough =
+          rect.width > 0 &&
+          rect.width < Math.max(700, window.innerWidth * 0.9);
+
+        if (floating && smallEnough) {
+          node.remove();
+          return;
+        }
+
+        node = node.parentElement;
+      }
+    });
+  }
+
+  /* =========================================================
      STARTUP CSS LOCK
      ========================================================= */
 
@@ -157,6 +239,23 @@
       pointer-events: auto !important;
       z-index: 99998 !important;
     }
+
+    .ecomax-cart-float,
+    .ecomax-floating-cart,
+    .ecomax-cart-widget,
+    .floating-cart,
+    .floating-cart-widget,
+    .mini-cart-widget,
+    .cart-preview,
+    .cart-preview-widget,
+    .cart-sticky,
+    .cart-bar,
+    [data-floating-cart],
+    [data-cart-preview] {
+      display: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
   `;
 
   (document.head || document.documentElement).appendChild(style);
@@ -180,6 +279,7 @@
     /* ALWAYS START CLOSED */
     hideCart();
     hideProductModal();
+    removeFloatingCartShortcut();
 
     /* =======================================================
        USER CLICK CONTROL
@@ -221,7 +321,6 @@
       );
 
       if (detailButton) {
-        /* Tell the guard this modal was intentionally requested. */
         productUserOpen = true;
         window.__ECOMAX_PRODUCT_USER_OPENED__ = true;
         allowProductModal();
@@ -261,12 +360,7 @@
       hideProductModal();
     }, true);
 
-    /* =======================================================
-       TARGETED OBSERVER
-       Only watches the two modal elements.
-       It does NOT touch the rest of the page.
-       ======================================================= */
-
+    /* Targeted modal observer only. */
     const observer = new MutationObserver(function () {
       const c = cart();
       if (c && !cartUserOpen) {
@@ -302,7 +396,12 @@
 
     window.__ECOMAX_OVERLAY_OBSERVER__ = observer;
 
-    /* Extra startup checks for scripts that load asynchronously. */
+    /* Catch the legacy floating shortcut if another script injects it later. */
+    [0, 150, 400, 800, 1500, 3000].forEach(function (delay) {
+      setTimeout(removeFloatingCartShortcut, delay);
+    });
+
+    /* Extra modal startup checks for asynchronously loaded scripts. */
     [0, 100, 300, 700, 1500, 3000, 5000].forEach(function (delay) {
       setTimeout(function () {
         if (!cartUserOpen) hideCart();
