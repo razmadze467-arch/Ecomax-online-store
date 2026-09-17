@@ -1,12 +1,35 @@
-/* ECOMAX — remove the extra floating/mobile cart shortcut.
-   The normal header cart + checkout remain untouched. */
+/* ECOMAX — block only the extra floating cart UI.
+   The real #cartOverlay and #cartButton remain available. */
+
 .ecomax-mobile-cart,
-.ecomax-mobile-cart.show,
 .ecomax-bottom-cart,
 .ecomax-floating-cart,
-.ecomax-cart-float {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
+.ecomax-cart-float,
+.mobile-cart,
+.bottom-cart,
+.floating-cart,
+.cart-float,
+.cart-floating,
+.cart-dock,
+.cart-widget,
+.cart-mini,
+.cart-bar,
+.cart-shortcut,
+.quick-cart,
+.mobile-cart-bar,
+.mobile-cart-widget,
+.ecomax-cart-widget,
+.ecomax-quick-cart {
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* Hide fixed-position cart-like elements, but NEVER the real cart modal/button. */
+body [class*="cart-"]:not(#cartOverlay):not(.cart-button),
+body [class*="-cart"]:not(#cartOverlay):not(.cart-button),
+body [id*="cart-"]:not(#cartOverlay):not(#cartButton),
+body [id*="-cart"]:not(#cartOverlay):not(#cartButton) {
+  /* Only fixed overlays/docks are affected by the companion JS guard. */
 }
