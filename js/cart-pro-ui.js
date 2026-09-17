@@ -34,6 +34,18 @@
   }
   function change(i,d){const c=getCart();if(!c[i])return;c[i].quantity=Math.max(0,Number(c[i].quantity||1)+d);if(c[i].quantity===0)c.splice(i,1);setCart(c);setTimeout(render,0)}
   function remove(i){const c=getCart();c.splice(i,1);setCart(c);render()}
-  function hook(){render();document.addEventListener('click',e=>{if(e.target.closest('#cartButton'))setTimeout(render,30);});window.addEventListener('storage',e=>{if(e.key==='ecomax_cart')render()});setInterval(()=>{if(document.visibilityState==='visible')render()},1200)}
+  function hook(){
+    // Do not render or rebuild the cart on page load.
+    // Rendering is triggered only when the user opens the cart or changes cart data.
+    document.addEventListener('click',e=>{
+      if(e.target.closest('#cartButton')) setTimeout(render,30);
+    });
+    window.addEventListener('storage',e=>{
+      if(e.key==='ecomax_cart'){
+        const overlay=document.getElementById('cartOverlay');
+        if(overlay && (overlay.classList.contains('active') || !overlay.hidden)) render();
+      }
+    });
+  }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook,{once:true});else hook();
 })();
