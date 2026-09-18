@@ -24,7 +24,30 @@ button:hover,.primary-button:hover,.secondary-button:hover,.cart-button:hover,.b
 }
 a:hover{ text-shadow:0 0 8px rgba(0,234,255,.35)}
 @media(prefers-reduced-motion:reduce){h1,h2,h3,h4,.logo,.brand,.section-title,.product-name,.product-title,.price,.hero-badge,.tag,.eyebrow{animation:none!important}}
-</style></head>
+</style><style id="ECOMAX-ACCOUNT-FIX-HUD">
+.loading[hidden]{display:none!important}
+.loading{min-height:0!important}
+main{min-height:calc(100vh - 70px)!important}
+.card{
+ position:relative;overflow:hidden;
+ border-color:rgba(25,230,255,.28)!important;
+ box-shadow:0 20px 70px rgba(0,0,0,.45),0 0 35px rgba(25,230,255,.07),inset 0 0 30px rgba(25,230,255,.025)!important;
+}
+.card::after{
+ content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+ background:linear-gradient(120deg,transparent 7%,#19e6ff 25%,#48a9ff 43%,#8b5cff 60%,#ff25d9 78%,transparent 93%);
+ background-size:220% 100%;animation:accountLine 5s linear infinite;opacity:.7;
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+ -webkit-mask-composite:xor;mask-composite:exclude;
+}
+.card>*{position:relative;z-index:2}
+.email{border-color:rgba(25,230,255,.18)!important;box-shadow:inset 0 0 18px rgba(25,230,255,.03)}
+.btn{box-shadow:0 0 12px rgba(25,230,255,.07)!important}
+.btn.primary{box-shadow:0 0 20px rgba(25,230,255,.2)!important}
+@keyframes accountLine{0%{background-position:220% 0}100%{background-position:-20% 0}}
+@media(prefers-reduced-motion:reduce){.card::after{animation:none!important}}
+</style>
+</head>
 <body><div class="bg"></div>
 <header><nav class="nav"><div class="logo">ECOMAX</div><div class="links"><a href="index.html">მთავარი</a><a href="checkout.html">შეკვეთა</a><a href="index.html">პროდუქცია</a></div></nav></header>
 <main><div id="loading" class="loading">ანგარიში იტვირთება...</div><section id="account" class="card" hidden><div class="eyebrow">ECOMAX ACCOUNT</div><h1>ჩემი ანგარიში.</h1><p>შენ შესული ხარ ECOMAX ანგარიშში.</p><div class="email"><small>ელფოსტა</small><strong id="email"></strong></div><div class="actions"><a class="btn primary" href="index.html">მთავარ გვერდზე</a><a class="btn" href="checkout.html">შეკვეთაზე გადასვლა</a><button id="logout" class="btn danger" type="button">გამოსვლა</button></div><div id="msg" class="msg"></div></section></main>
