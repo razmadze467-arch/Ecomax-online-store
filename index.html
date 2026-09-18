@@ -3708,41 +3708,71 @@ radial-gradient(circle at 80% 65%,rgba(255,43,214,.05),transparent 25%)!importan
 
   </script>
 
-<script id="ecomax-neon-letter-engine">
-(function(){
- const skipTags=new Set(["SCRIPT","STYLE","NOSCRIPT","TEXTAREA","INPUT","SELECT","OPTION"]);
- const skipCls="ecomax-neon-skip";
- const colors=["#00f5ff","#7c3cff","#ff2bd6","#ff4d4d","#ffd43b","#42ff9b"];
- let done=false;
- function paint(){
-   if(done)return;
-   done=true;
-   const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
-   const nodes=[];let n;
-   while(n=walker.nextNode()){
-     const p=n.parentElement;
-     if(!p||skipTags.has(p.tagName)||p.closest("."+skipCls)||p.dataset.neonDone==="1"||!n.nodeValue.trim())continue;
-     if(n.nodeValue.trim().length>1)nodes.push(n);
-   }
-   nodes.forEach(node=>{
-     const frag=document.createDocumentFragment(), text=node.nodeValue;
-     let i=0;
-     for(const ch of text){
-       if(/\s/.test(ch)){frag.appendChild(document.createTextNode(ch));continue}
-       const s=document.createElement("span");
-       s.className="ecomax-neon-letter";
-       s.textContent=ch;
-       s.style.color=colors[i%colors.length];
-       s.style.textShadow="0 0 5px "+colors[i%colors.length]+"88";
-       s.style.animationDelay=((i%8)*0.06)+"s";
-       frag.appendChild(s);i++;
-     }
-     node.parentNode.replaceChild(frag,node);
-     if(frag.previousSibling&&frag.previousSibling.nodeType===1)frag.previousSibling.dataset.neonDone="1";
-   });
- }
- function init(){requestAnimationFrame(paint)}
- if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
-})();
-</script></body>
+<style id="ecomax-full-neon-cyan-white">
+/* Full-site cyan/white neon typography — visual only */
+:root{
+  --ecomax-neon-cyan:#00eaff;
+  --ecomax-neon-blue:#45cfff;
+  --ecomax-neon-white:#f5fcff;
+}
+body{
+  color:var(--ecomax-neon-white);
+  text-shadow:0 0 4px rgba(0,234,255,.16);
+}
+body *{
+  text-shadow:0 0 4px rgba(0,234,255,.18);
+}
+h1,h2,h3,h4,h5,h6,
+.logo,.brand,.section-title,.product-name,.product-title,
+.product-card h3,.price,.hero-badge,.tag,.eyebrow,
+.metric strong,.section-label,.product-number,
+.product-top,.product-info b,.price-row strong,
+.footer strong,.cart-head h3,.cart-total-row strong{
+  color:var(--ecomax-neon-white)!important;
+  text-shadow:
+    0 0 5px rgba(0,234,255,.72),
+    0 0 14px rgba(0,180,255,.34);
+}
+p,small,.muted,.hero-description,.section-head p,
+.product-description,.product-info span,.metric small,
+.float-card,.footer{
+  color:#bfeeff!important;
+  text-shadow:0 0 5px rgba(0,234,255,.28);
+}
+a,.links a,.auth-link,.cart-button,
+.add-cart,.primary,.secondary,.menu,
+button,.section-label,.product-number,
+.product-label span,.float-card b{
+  color:var(--ecomax-neon-cyan)!important;
+  text-shadow:
+    0 0 5px rgba(0,234,255,.8),
+    0 0 15px rgba(0,180,255,.35);
+}
+.product-card,.info-card,.cart-panel,.search,.filter,
+.hero-label,.float-card{
+  border-color:rgba(0,234,255,.32);
+  box-shadow:
+    0 0 18px rgba(0,234,255,.08),
+    inset 0 0 16px rgba(0,234,255,.025);
+}
+.product-card:hover,.info-card:hover{
+  border-color:rgba(0,234,255,.68);
+  box-shadow:
+    0 0 26px rgba(0,234,255,.15),
+    0 25px 65px rgba(0,0,0,.36);
+}
+.primary,.add-cart,.cart-button{
+  border-color:rgba(0,234,255,.55)!important;
+}
+@keyframes ecomaxCyanWhitePulse{
+  0%,100%{text-shadow:0 0 5px rgba(0,234,255,.55),0 0 14px rgba(0,180,255,.22)}
+  50%{text-shadow:0 0 8px rgba(245,252,255,.9),0 0 20px rgba(0,234,255,.42)}
+}
+h1,h2,h3,.logo,.section-label,.product-number,.price{
+  animation:ecomaxCyanWhitePulse 3.2s ease-in-out infinite;
+}
+@media(prefers-reduced-motion:reduce){
+  h1,h2,h3,.logo,.section-label,.product-number,.price{animation:none!important}
+}
+</style></body>
 </html>
