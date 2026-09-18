@@ -9,7 +9,22 @@
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js?v=20260918-1"></script>
-</head>
+<style id="ecomax-global-neon-boost">
+/* Lightweight global blue/cyan neon polish — visual only */
+@keyframes ecomaxNeonBreath{0%,100%{text-shadow:0 0 4px rgba(0,234,255,.25),0 0 12px rgba(0,140,255,.12)}50%{text-shadow:0 0 8px rgba(0,234,255,.55),0 0 20px rgba(0,140,255,.22)}}
+@keyframes ecomaxLineFlow{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+body{background-image:radial-gradient(circle at 15% 10%,rgba(0,234,255,.09),transparent 28%),radial-gradient(circle at 88% 22%,rgba(50,140,255,.09),transparent 30%),linear-gradient(rgba(0,234,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(50,140,255,.022) 1px,transparent 1px);background-size:auto,auto,44px 44px,44px 44px}
+h1,h2,h3,h4,.logo,.brand,.section-title,.product-name,.product-title,.price,.hero-badge,.tag,.eyebrow{animation:ecomaxNeonBreath 3.2s ease-in-out infinite}
+button,.primary-button,.secondary-button,.cart-button,.back,.login-link,.register-link,.iconbtn,.primary,.ghost{
+ transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease!important;
+}
+button:hover,.primary-button:hover,.secondary-button:hover,.cart-button:hover,.back:hover,.login-link:hover,.register-link:hover,.iconbtn:hover,.primary:hover,.ghost:hover{
+ box-shadow:0 0 12px rgba(0,234,255,.28),0 0 28px rgba(50,140,255,.13)!important;
+ border-color:rgba(0,234,255,.7)!important;
+}
+a:hover{ text-shadow:0 0 8px rgba(0,234,255,.35)}
+@media(prefers-reduced-motion:reduce){h1,h2,h3,h4,.logo,.brand,.section-title,.product-name,.product-title,.price,.hero-badge,.tag,.eyebrow{animation:none!important}}
+</style></head>
 <body><div class="bg"></div>
 <header><nav class="nav"><div class="logo">ECOMAX</div><div class="links"><a href="index.html">მთავარი</a><a href="checkout.html">შეკვეთა</a><a href="index.html">პროდუქცია</a></div></nav></header>
 <main><div id="loading" class="loading">ანგარიში იტვირთება...</div><section id="account" class="card" hidden><div class="eyebrow">ECOMAX ACCOUNT</div><h1>ჩემი ანგარიში.</h1><p>შენ შესული ხარ ECOMAX ანგარიშში.</p><div class="email"><small>ელფოსტა</small><strong id="email"></strong></div><div class="actions"><a class="btn primary" href="index.html">მთავარ გვერდზე</a><a class="btn" href="checkout.html">შეკვეთაზე გადასვლა</a><button id="logout" class="btn danger" type="button">გამოსვლა</button></div><div id="msg" class="msg"></div></section></main>
