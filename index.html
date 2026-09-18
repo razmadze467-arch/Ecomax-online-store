@@ -2134,8 +2134,8 @@ body::after{background:
 radial-gradient(circle at 20% 35%,rgba(0,245,255,.06),transparent 22%),
 radial-gradient(circle at 80% 65%,rgba(255,43,214,.05),transparent 25%)!important}
 </style><style id="ecomax-neon-letter-text">
-@keyframes ecomaxLetterGlow{0%,100%{opacity:.94}50%{opacity:1}}
-.ecomax-neon-letter{display:inline-block;animation:ecomaxLetterGlow 2.8s ease-in-out infinite;will-change:opacity}
+@keyframes ecomaxBlueCyanGlow{0%,100%{color:#00eaff;text-shadow:0 0 5px #00eaff88,0 0 12px #008cff44}50%{color:#238cff;text-shadow:0 0 6px #238cffaa,0 0 16px #00eaff55}}
+.ecomax-neon-letter{display:inline-block;animation:ecomaxBlueCyanGlow 2.8s ease-in-out infinite;will-change:color,text-shadow}
 </style></head>
 
 <body>
@@ -3712,11 +3712,9 @@ radial-gradient(circle at 80% 65%,rgba(255,43,214,.05),transparent 25%)!importan
 (function(){
  const skipTags=new Set(["SCRIPT","STYLE","NOSCRIPT","TEXTAREA","INPUT","SELECT","OPTION"]);
  const skipCls="ecomax-neon-skip";
- const colors=["#00f5ff","#7c3cff","#ff2bd6","#ff4d4d","#ffd43b","#42ff9b"];
  let done=false;
  function paint(){
-   if(done)return;
-   done=true;
+   if(done)return; done=true;
    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
    const nodes=[];let n;
    while(n=walker.nextNode()){
@@ -3725,24 +3723,21 @@ radial-gradient(circle at 80% 65%,rgba(255,43,214,.05),transparent 25%)!importan
      if(n.nodeValue.trim().length>1)nodes.push(n);
    }
    nodes.forEach(node=>{
-     const frag=document.createDocumentFragment(), text=node.nodeValue;
+     const frag=document.createDocumentFragment();
      let i=0;
-     for(const ch of text){
+     for(const ch of node.nodeValue){
        if(/\s/.test(ch)){frag.appendChild(document.createTextNode(ch));continue}
-       const s=document.createElement("span");
-       s.className="ecomax-neon-letter";
-       s.textContent=ch;
-       s.style.color=colors[i%colors.length];
-       s.style.textShadow="0 0 5px "+colors[i%colors.length]+"88";
-       s.style.animationDelay=((i%8)*0.06)+"s";
-       frag.appendChild(s);i++;
+       const span=document.createElement("span");
+       span.className="ecomax-neon-letter";
+       span.textContent=ch;
+       span.style.animationDelay=((i%7)*.08)+"s";
+       frag.appendChild(span); i++;
      }
      node.parentNode.replaceChild(frag,node);
-     if(frag.previousSibling&&frag.previousSibling.nodeType===1)frag.previousSibling.dataset.neonDone="1";
    });
  }
- function init(){requestAnimationFrame(paint)}
- if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>requestAnimationFrame(paint),{once:true});
+ else requestAnimationFrame(paint);
 })();
 </script></body>
 </html>
