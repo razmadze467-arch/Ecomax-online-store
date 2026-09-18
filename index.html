@@ -2090,7 +2090,7 @@ input,select,textarea{
  background:conic-gradient(from var(--nrdeg,0deg),#00f5ff,#7c3cff,#ff2bd6,#ff4d4d,#ffd43b,#42ff9b,#00f5ff);
  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
  -webkit-mask-composite:xor;mask-composite:exclude;
- opacity:.75;animation:nrSpin 8s linear infinite;pointer-events:none;
+ opacity:.75;animation:none;pointer-events:none;
 }
 @keyframes nrSpin{to{transform:rotate(360deg)}}
 .primary-button,.cart-button{
@@ -2105,7 +2105,7 @@ body::before{
  linear-gradient(rgba(0,245,255,.045) 1px,transparent 1px),
  linear-gradient(90deg,rgba(255,43,214,.035) 1px,transparent 1px)!important;
  background-size:36px 36px!important;
- animation:nrGrid 12s linear infinite;
+ animation:none;
 }
 @keyframes nrGrid{to{background-position:36px 36px}}
 @media(prefers-reduced-motion:reduce){
@@ -2117,12 +2117,12 @@ body::before{
 @keyframes ultraPulse{0%,100%{box-shadow:0 0 8px rgba(0,245,255,.18),0 0 24px rgba(124,60,255,.12)}50%{box-shadow:0 0 18px rgba(255,43,214,.34),0 0 45px rgba(0,245,255,.22)}}
 @keyframes ultraText{0%,100%{text-shadow:0 0 8px rgba(0,245,255,.3)}50%{text-shadow:0 0 18px rgba(255,43,214,.55),0 0 35px rgba(124,60,255,.25)}}
 .header{border-bottom:1px solid rgba(0,245,255,.35)!important;box-shadow:0 0 25px rgba(0,245,255,.08),0 8px 35px rgba(124,60,255,.08)}
-.logo{animation:nrFlow 4s ease infinite,nrGlow 2s ease-in-out infinite,ultraText 3s ease-in-out infinite!important}
-.hero h1{animation:nrFlow 5s ease infinite,nrGlow 2.5s ease-in-out infinite,ultraText 3s ease-in-out infinite!important}
-.hero-badge{box-shadow:0 0 15px rgba(0,245,255,.15),inset 0 0 15px rgba(124,60,255,.08);animation:ultraPulse 3s ease-in-out infinite}
+.logo{animation:nrFlow 4s ease infinite!important}
+.hero h1{animation:nrFlow 5s ease infinite!important}
+.hero-badge{box-shadow:0 0 15px rgba(0,245,255,.15),inset 0 0 15px rgba(124,60,255,.08);animation:none}
 .product-card,.product,.card{box-shadow:0 0 18px rgba(0,245,255,.05);overflow:hidden}
 .product-card:hover,.product:hover,.card:hover{transform:translateY(-7px)!important;box-shadow:0 0 22px rgba(0,245,255,.22),0 0 48px rgba(255,43,214,.13)!important}
-.primary-button,.cart-button{animation:ultraPulse 3s ease-in-out infinite}
+.primary-button,.cart-button{animation:none}
 .primary-button:hover,.cart-button:hover{transform:translateY(-3px) scale(1.02)!important}
 .hero-visual,.product-core{box-shadow:0 0 35px rgba(0,245,255,.18),0 0 80px rgba(124,60,255,.12),inset 0 0 35px rgba(255,43,214,.06)!important}
 body{background:
@@ -2133,9 +2133,6 @@ linear-gradient(180deg,#01050d 0%,#030b17 48%,#01050d 100%)!important}
 body::after{background:
 radial-gradient(circle at 20% 35%,rgba(0,245,255,.06),transparent 22%),
 radial-gradient(circle at 80% 65%,rgba(255,43,214,.05),transparent 25%)!important}
-</style><style id="ecomax-neon-letter-text">
-@keyframes ecomaxBlueCyanGlow{0%,100%{color:#00eaff;text-shadow:0 0 5px #00eaff88,0 0 12px #008cff44}50%{color:#238cff;text-shadow:0 0 6px #238cffaa,0 0 16px #00eaff55}}
-.ecomax-neon-letter{display:inline-block;animation:ecomaxBlueCyanGlow 2.8s ease-in-out infinite;will-change:color,text-shadow}
 </style><style id="ecomax-global-neon-boost">
 /* Lightweight global blue/cyan neon polish — visual only */
 @keyframes ecomaxNeonBreath{0%,100%{text-shadow:0 0 4px rgba(0,234,255,.25),0 0 12px rgba(0,140,255,.12)}50%{text-shadow:0 0 8px rgba(0,234,255,.55),0 0 20px rgba(0,140,255,.22)}}
@@ -2184,41 +2181,7 @@ input:focus,select:focus,textarea:focus{
  .product-card:hover,.product:hover,.card:hover{transform:translateY(-3px)!important}
 }
 @media(prefers-reduced-motion:reduce){.header::after,.nav::after{animation:none}}
-<style id="ecomax-ui-boost-v3">
-/* ECOMAX UI BOOST V3 — stronger depth, still CSS-only */
-@keyframes ecomaxSheen{0%{transform:translateX(-120%)}55%,100%{transform:translateX(120%)}}
-@keyframes ecomaxHalo{0%,100%{opacity:.45}50%{opacity:.9}}
-.product-card,.info-card,.cart-panel,.hero-visual{
- isolation:isolate;
-}
-.product-card::after,.info-card::after{
- content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
- background:linear-gradient(110deg,transparent 0%,rgba(0,234,255,.08) 46%,rgba(255,255,255,.07) 50%,transparent 56%);
- transform:translateX(-120%);
- animation:ecomaxSheen 9s ease-in-out infinite;
-}
-.product-card:nth-child(3n+2)::after{animation-delay:2.5s}
-.product-card:nth-child(3n)::after{animation-delay:5s}
-.product-card:hover::after{animation-play-state:paused;opacity:.45}
-.info-card{position:relative;overflow:hidden;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
-.info-card:hover{transform:translateY(-4px);border-color:rgba(0,234,255,.38)!important;box-shadow:0 14px 35px rgba(0,0,0,.25),0 0 22px rgba(0,234,255,.09)!important}
-.product-visual{filter:drop-shadow(0 0 14px rgba(0,234,255,.07))}
-.product-bottle{transition:transform .25s ease,filter .25s ease}
-.product-card:hover .product-bottle{transform:perspective(600px) rotateY(-5deg) translateY(-4px) scale(1.025);filter:brightness(1.08) drop-shadow(0 0 16px rgba(0,234,255,.12))}
-.hero-halo{animation:ecomaxHalo 4s ease-in-out infinite}
-.hero-bottle{transition:filter .25s ease,transform .25s ease}
-.hero-bottle:hover{filter:brightness(1.08) drop-shadow(0 0 28px rgba(0,234,255,.2))}
-.primary,.secondary,.add-cart,#checkoutButton,.cart-button{will-change:transform}
-.primary:active,.secondary:active,.add-cart:active,#checkoutButton:active,.cart-button:active{transform:translateY(1px) scale(.985)!important}
-.search:hover,.filter:hover{border-color:rgba(0,234,255,.35)!important}
-@media(max-width:700px){
- .product-card:hover .product-bottle{transform:perspective(600px) rotateY(-5deg) translateY(-2px) scale(1.01)}
- .info-card:hover{transform:none}
-}
-@media(prefers-reduced-motion:reduce){
- .product-card::after,.info-card::after,.hero-halo{animation:none!important}
-}
-</style></style></head>
+</style></head>
 
 <body>
 
@@ -3771,10 +3734,7 @@ input:focus,select:focus,textarea:focus{
         finalLayoutFix
       );
 
-      window.addEventListener(
-        "resize",
-        finalLayoutFix
-      );
+      
 
       window.addEventListener(
         "orientationchange",
@@ -3790,36 +3750,5 @@ input:focus,select:focus,textarea:focus{
 
   </script>
 
-<script id="ecomax-neon-letter-engine">
-(function(){
- const skipTags=new Set(["SCRIPT","STYLE","NOSCRIPT","TEXTAREA","INPUT","SELECT","OPTION"]);
- const skipCls="ecomax-neon-skip";
- let done=false;
- function paint(){
-   if(done)return; done=true;
-   const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
-   const nodes=[];let n;
-   while(n=walker.nextNode()){
-     const p=n.parentElement;
-     if(!p||skipTags.has(p.tagName)||p.closest("."+skipCls)||p.dataset.neonDone==="1"||!n.nodeValue.trim())continue;
-     if(n.nodeValue.trim().length>1)nodes.push(n);
-   }
-   nodes.forEach(node=>{
-     const frag=document.createDocumentFragment();
-     let i=0;
-     for(const ch of node.nodeValue){
-       if(/\s/.test(ch)){frag.appendChild(document.createTextNode(ch));continue}
-       const span=document.createElement("span");
-       span.className="ecomax-neon-letter";
-       span.textContent=ch;
-       span.style.animationDelay=((i%7)*.08)+"s";
-       frag.appendChild(span); i++;
-     }
-     node.parentNode.replaceChild(frag,node);
-   });
- }
- if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>requestAnimationFrame(paint),{once:true});
- else requestAnimationFrame(paint);
-})();
-</script></body>
+</body>
 </html>
