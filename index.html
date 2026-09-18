@@ -2184,7 +2184,41 @@ input:focus,select:focus,textarea:focus{
  .product-card:hover,.product:hover,.card:hover{transform:translateY(-3px)!important}
 }
 @media(prefers-reduced-motion:reduce){.header::after,.nav::after{animation:none}}
-</style></head>
+<style id="ecomax-ui-boost-v3">
+/* ECOMAX UI BOOST V3 — stronger depth, still CSS-only */
+@keyframes ecomaxSheen{0%{transform:translateX(-120%)}55%,100%{transform:translateX(120%)}}
+@keyframes ecomaxHalo{0%,100%{opacity:.45}50%{opacity:.9}}
+.product-card,.info-card,.cart-panel,.hero-visual{
+ isolation:isolate;
+}
+.product-card::after,.info-card::after{
+ content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+ background:linear-gradient(110deg,transparent 0%,rgba(0,234,255,.08) 46%,rgba(255,255,255,.07) 50%,transparent 56%);
+ transform:translateX(-120%);
+ animation:ecomaxSheen 9s ease-in-out infinite;
+}
+.product-card:nth-child(3n+2)::after{animation-delay:2.5s}
+.product-card:nth-child(3n)::after{animation-delay:5s}
+.product-card:hover::after{animation-play-state:paused;opacity:.45}
+.info-card{position:relative;overflow:hidden;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.info-card:hover{transform:translateY(-4px);border-color:rgba(0,234,255,.38)!important;box-shadow:0 14px 35px rgba(0,0,0,.25),0 0 22px rgba(0,234,255,.09)!important}
+.product-visual{filter:drop-shadow(0 0 14px rgba(0,234,255,.07))}
+.product-bottle{transition:transform .25s ease,filter .25s ease}
+.product-card:hover .product-bottle{transform:perspective(600px) rotateY(-5deg) translateY(-4px) scale(1.025);filter:brightness(1.08) drop-shadow(0 0 16px rgba(0,234,255,.12))}
+.hero-halo{animation:ecomaxHalo 4s ease-in-out infinite}
+.hero-bottle{transition:filter .25s ease,transform .25s ease}
+.hero-bottle:hover{filter:brightness(1.08) drop-shadow(0 0 28px rgba(0,234,255,.2))}
+.primary,.secondary,.add-cart,#checkoutButton,.cart-button{will-change:transform}
+.primary:active,.secondary:active,.add-cart:active,#checkoutButton:active,.cart-button:active{transform:translateY(1px) scale(.985)!important}
+.search:hover,.filter:hover{border-color:rgba(0,234,255,.35)!important}
+@media(max-width:700px){
+ .product-card:hover .product-bottle{transform:perspective(600px) rotateY(-5deg) translateY(-2px) scale(1.01)}
+ .info-card:hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .product-card::after,.info-card::after,.hero-halo{animation:none!important}
+}
+</style></style></head>
 
 <body>
 
