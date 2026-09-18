@@ -25,7 +25,22 @@ button:hover,.primary-button:hover,.secondary-button:hover,.cart-button:hover,.b
 }
 a:hover{ text-shadow:0 0 8px rgba(0,234,255,.35)}
 @media(prefers-reduced-motion:reduce){h1,h2,h3,h4,.logo,.brand,.section-title,.product-name,.product-title,.price,.hero-badge,.tag,.eyebrow{animation:none!important}}
-</style></head>
+</style><style id="ECOMAX-UNIFIED-HUD-V3">
+:root{--e-cyan:#00f6ff;--e-blue:#168dff;--e-violet:#7b4dff;--e-pink:#ff25d9;--e-white:#efffff}
+body{background-color:#020812!important}
+body:after{content:"";position:fixed;left:0;right:0;top:0;height:2px;z-index:9998;pointer-events:none;background:linear-gradient(90deg,transparent,#00f6ff 18%,#7b4dff 48%,#ff25d9 72%,transparent);background-size:220% 100%;box-shadow:0 0 12px #00f6ff,0 0 28px rgba(123,77,255,.45);animation:ecomaxTopScan 6s linear infinite;opacity:.8}
+a,button,input,select,textarea{font-family:inherit}
+button,.btn,.submit,.back{position:relative;overflow:hidden}
+button:before,.btn:before,.submit:before,.back:before{content:"";position:absolute;top:0;bottom:0;width:28%;left:-40%;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),rgba(0,246,255,.28),transparent);transform:skewX(-18deg);animation:ecomaxButtonScan 4.8s ease-in-out infinite}
+.card,.box,.info-card,.product-card{
+ box-shadow:0 0 0 1px rgba(0,246,255,.035),0 18px 65px rgba(0,0,0,.42),0 0 28px rgba(0,246,255,.07),inset 0 0 28px rgba(0,246,255,.025)!important
+}
+input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08),0 0 18px rgba(0,246,255,.22),inset 0 0 18px rgba(0,246,255,.04)!important}
+@keyframes ecomaxTopScan{0%{background-position:220% 0}100%{background-position:-20% 0}}
+@keyframes ecomaxButtonScan{0%,62%{left:-40%;opacity:0}70%{opacity:1}90%,100%{left:125%;opacity:0}}
+@media(prefers-reduced-motion:reduce){body:after,button:before,.btn:before,.submit:before,.back:before{animation:none!important}}
+</style>
+</head>
 <body><div class="bg"></div>
 <main class="wrap">
 <section class="intro"><div class="brand">ECOMAX</div><div class="tag">PROFESSIONAL AUTO CARE</div><h1>კეთილი იყოს შენი <span>დაბრუნება.</span></h1><p>შედი შენს ECOMAX ანგარიშში და გააგრძელე შეკვეთა.</p></section>
