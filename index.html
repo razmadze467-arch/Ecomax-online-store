@@ -4106,5 +4106,74 @@ main,.footer{position:relative;z-index:1}
 @media(prefers-reduced-motion:reduce){
   body::after{display:none}
 }
+</style><style id="ecomax-electric-neon-system">
+/* ELECTRIC NEON LINES — premium visual layer, no layout changes */
+:root{--electric:#00eaff;--electric2:#8b5cff;--electric3:#ff2bd6}
+.product-card,.info-card,.tools,.search,.filter,.hero-label,.float-card{
+  position:relative;
+  isolation:isolate;
+}
+.product-card::after,.info-card::after,.hero-label::after,.float-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border-radius:inherit;
+  padding:1px;
+  background:linear-gradient(120deg,transparent 8%,var(--electric) 22%,var(--electric2) 48%,var(--electric3) 72%,transparent 92%);
+  background-size:220% 100%;
+  animation:ecomaxElectricLine 4.8s linear infinite;
+  opacity:.9;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+}
+.product-card::before,.info-card::before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  pointer-events:none;
+  border-radius:inherit;
+  background:
+    linear-gradient(125deg,transparent 0 22%,rgba(0,234,255,.22) 22.2%,transparent 22.5%),
+    linear-gradient(125deg,transparent 0 58%,rgba(139,92,255,.2) 58.2%,transparent 58.5%),
+    linear-gradient(125deg,transparent 0 79%,rgba(255,43,214,.18) 79.2%,transparent 79.5%);
+  opacity:.75;
+  z-index:0;
+}
+.product-card > *,.info-card > *{position:relative;z-index:2}
+.product-card:hover::after,.info-card:hover::after{
+  opacity:1;
+  filter:drop-shadow(0 0 5px var(--electric)) drop-shadow(0 0 12px var(--electric2));
+}
+.product-label,.hero-label{
+  border-color:rgba(0,234,255,.72)!important;
+  box-shadow:
+    0 0 12px rgba(0,234,255,.42),
+    0 0 30px rgba(0,234,255,.18),
+    inset 0 0 18px rgba(0,234,255,.09)!important;
+}
+.product-bottle{
+  filter:drop-shadow(0 0 7px rgba(0,234,255,.25));
+}
+.section-label,.product-top,.product-number{
+  text-shadow:0 0 5px #00eaff,0 0 14px rgba(0,234,255,.55)!important;
+}
+.section h2,.info-card h3{
+  text-shadow:0 0 6px #fff,0 0 17px rgba(0,234,255,.65),0 0 32px rgba(139,92,255,.25)!important;
+}
+.tools{
+  border-radius:14px;
+}
+.search,.filter{
+  box-shadow:0 0 16px rgba(0,234,255,.08),inset 0 0 12px rgba(0,234,255,.04);
+}
+@keyframes ecomaxElectricLine{
+  0%{background-position:220% 0}
+  100%{background-position:-20% 0}
+}
+@media(prefers-reduced-motion:reduce){
+  .product-card::after,.info-card::after{animation:none!important}
+}
 </style></body>
 </html>
