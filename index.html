@@ -3346,7 +3346,7 @@ radial-gradient(circle at 80% 65%,rgba(255,43,214,.05),transparent 25%)!importan
 
         <article class="info-card">
 
-          <span><span class="hud-index"><b>01</b><i> / QUALITY</i></span></span>
+          <span class="hud-index"><b>01</b><i> / QUALITY</i></span>
 
           <h3>ხარისხი</h3>
 
@@ -3359,7 +3359,7 @@ radial-gradient(circle at 80% 65%,rgba(255,43,214,.05),transparent 25%)!importan
 
         <article class="info-card">
 
-          <span><span class="hud-index"><b>02</b><i> / EXPERIENCE</i></span></span>
+          <span class="hud-index"><b>02</b><i> / EXPERIENCE</i></span>
 
           <h3>12+ წელი გამოცდილება</h3>
 
@@ -3372,7 +3372,7 @@ radial-gradient(circle at 80% 65%,rgba(255,43,214,.05),transparent 25%)!importan
 
         <article class="info-card">
 
-          <span><span class="hud-index"><b>03</b><i> / CARE</i></span></span>
+          <span class="hud-index"><b>03</b><i> / CARE</i></span>
 
           <h3>სწორი მოვლა</h3>
 
@@ -3423,7 +3423,7 @@ radial-gradient(circle at 80% 65%,rgba(255,43,214,.05),transparent 25%)!importan
 
         <article class="info-card">
 
-          <span><span class="hud-index"><b>01</b><i> / PROTECTION</i></span></span>
+          <span class="hud-index"><b>01</b><i> / PROTECTION</i></span>
 
           <h3>დამცავი საშუალებები</h3>
 
@@ -3436,7 +3436,7 @@ radial-gradient(circle at 80% 65%,rgba(255,43,214,.05),transparent 25%)!importan
 
         <article class="info-card">
 
-          <span><span class="hud-index"><b>02</b><i> / STORAGE</i></span></span>
+          <span class="hud-index"><b>02</b><i> / STORAGE</i></span>
 
           <h3>შენახვა</h3>
 
@@ -3449,7 +3449,7 @@ radial-gradient(circle at 80% 65%,rgba(255,43,214,.05),transparent 25%)!importan
 
         <article class="info-card">
 
-          <span><span class="hud-index"><b>03</b><i> / CONTACT</i></span></span>
+          <span class="hud-index"><b>03</b><i> / CONTACT</i></span>
 
           <h3>კონტაქტი კანთან/თვალთან</h3>
 
@@ -3944,6 +3944,48 @@ h1,h2,h3,.logo,.section-label,.product-number,.price{
 }
 @media(prefers-reduced-motion:reduce){
   .info-card .hud-index b::before,.info-card .hud-index b::after{transition:none!important}
+}
+</style><style id="ecomax-product-hud-premium">
+/* Premium HUD numbers for product cards */
+.product-top .product-number{
+  position:relative;
+  display:inline-grid!important;
+  place-items:center;
+  width:34px;
+  height:34px;
+  margin:-5px -4px 0 0;
+  border:1px solid rgba(0,234,255,.72);
+  border-radius:50%;
+  color:#f7fdff!important;
+  background:radial-gradient(circle,rgba(0,234,255,.18),rgba(2,12,21,.9) 62%);
+  box-shadow:0 0 8px rgba(0,234,255,.42),0 0 18px rgba(0,234,255,.16),inset 0 0 10px rgba(0,234,255,.12);
+  text-shadow:0 0 6px #fff,0 0 14px rgba(0,234,255,.9)!important;
+  letter-spacing:0!important;
+}
+.product-top .product-number::before,
+.product-top .product-number::after{
+  content:"";
+  position:absolute;
+  inset:-5px;
+  border:1px solid rgba(0,234,255,.28);
+  border-radius:50%;
+  pointer-events:none;
+}
+.product-top .product-number::before{
+  border-top-color:#00eaff;
+  border-bottom-color:transparent;
+  transform:rotate(25deg);
+}
+.product-top .product-number::after{
+  inset:-8px;
+  border-left-color:#fff;
+  border-right-color:transparent;
+  opacity:.55;
+  transform:rotate(-38deg);
+}
+.product-card:hover .product-top .product-number{
+  border-color:#fff;
+  box-shadow:0 0 12px rgba(0,234,255,.72),0 0 26px rgba(0,234,255,.28),inset 0 0 13px rgba(0,234,255,.16);
 }
 </style></body>
 </html>
