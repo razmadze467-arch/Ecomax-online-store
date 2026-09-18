@@ -3987,5 +3987,124 @@ h1,h2,h3,.logo,.section-label,.product-number,.price{
   border-color:#fff;
   box-shadow:0 0 12px rgba(0,234,255,.72),0 0 26px rgba(0,234,255,.28),inset 0 0 13px rgba(0,234,255,.16);
 }
+</style><style id="ecomax-premium-full-design">
+/* ECOMAX PREMIUM HUD — visual enhancement only */
+body{
+  background:
+    radial-gradient(circle at 15% 8%,rgba(0,234,255,.14),transparent 25%),
+    radial-gradient(circle at 85% 20%,rgba(122,92,255,.14),transparent 27%),
+    linear-gradient(118deg,transparent 0%,rgba(0,234,255,.035) 25%,transparent 26%,transparent 49%,rgba(255,43,214,.028) 50%,transparent 51%),
+    repeating-linear-gradient(135deg,transparent 0,transparent 78px,rgba(0,234,255,.045) 79px,transparent 80px),
+    linear-gradient(180deg,#020812 0%,#03111c 48%,#020812 100%)!important;
+}
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  opacity:.5;
+  background:
+    linear-gradient(135deg,transparent 0 18%,rgba(0,234,255,.13) 18.1%,transparent 18.25%),
+    linear-gradient(135deg,transparent 0 56%,rgba(122,92,255,.10) 56.1%,transparent 56.25%),
+    linear-gradient(25deg,transparent 0 76%,rgba(255,43,214,.08) 76.1%,transparent 76.22%);
+}
+main,.footer{position:relative;z-index:1}
+.hero{
+  isolation:isolate;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:8% -12% 10% 32%;
+  pointer-events:none;
+  z-index:-1;
+  background:
+    linear-gradient(135deg,transparent 0 31%,rgba(0,234,255,.14) 31.1%,transparent 31.3%),
+    linear-gradient(135deg,transparent 0 54%,rgba(122,92,255,.13) 54.1%,transparent 54.3%),
+    linear-gradient(135deg,transparent 0 73%,rgba(255,43,214,.11) 73.1%,transparent 73.3%);
+  opacity:.85;
+}
+.hero-copy{z-index:40!important}
+.hero h1{
+  position:relative;
+  z-index:41;
+  color:#f8fdff!important;
+  text-shadow:0 0 5px #fff,0 0 18px rgba(0,234,255,.72),0 0 42px rgba(0,234,255,.3)!important;
+}
+.hero h1 span{
+  color:#00eaff!important;
+  text-shadow:0 0 7px #fff,0 0 20px rgba(0,234,255,.9),0 0 48px rgba(0,234,255,.38)!important;
+}
+.hero-description{position:relative;z-index:42}
+.hero-visual{z-index:1}
+.section{
+  position:relative;
+  isolation:isolate;
+}
+.section::before{
+  content:"";
+  position:absolute;
+  left:3%;
+  right:3%;
+  top:0;
+  height:1px;
+  pointer-events:none;
+  background:linear-gradient(90deg,transparent,#00eaff 18%,#7a5cff 50%,#ff2bd6 78%,transparent);
+  box-shadow:0 0 12px rgba(0,234,255,.5),0 0 28px rgba(122,92,255,.18);
+  opacity:.65;
+}
+.product-card{
+  background:
+    linear-gradient(145deg,rgba(10,30,45,.97),rgba(3,12,21,.99)),
+    repeating-linear-gradient(135deg,transparent 0 42px,rgba(0,234,255,.08) 43px,transparent 44px)!important;
+}
+.product-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border-radius:inherit;
+  background:
+    linear-gradient(135deg,transparent 0 28%,rgba(0,234,255,.18) 28.1%,transparent 28.35%),
+    linear-gradient(135deg,transparent 0 62%,rgba(122,92,255,.16) 62.1%,transparent 62.35%),
+    linear-gradient(135deg,transparent 0 82%,rgba(255,43,214,.12) 82.1%,transparent 82.3%);
+  opacity:.75;
+}
+.product-card > *{position:relative;z-index:2}
+.product-bottle{
+  box-shadow:
+    inset 12px 0 17px rgba(255,255,255,.12),
+    inset -15px 0 20px rgba(0,0,0,.72),
+    0 25px 45px rgba(0,0,0,.5),
+    0 0 28px var(--accent-glow),
+    0 0 55px color-mix(in srgb,var(--accent) 22%,transparent);
+}
+.product-label{
+  background:linear-gradient(145deg,rgba(2,12,20,.94),rgba(5,24,35,.88))!important;
+  box-shadow:0 0 18px var(--accent-glow),inset 0 0 15px rgba(0,234,255,.08)!important;
+}
+.product-label strong{
+  color:#fff;
+  text-shadow:0 0 6px #fff,0 0 14px var(--accent);
+}
+@media(max-width:768px){
+  .hero-copy{
+    position:relative;
+    z-index:50!important;
+  }
+  .hero-visual{
+    position:relative;
+    z-index:2!important;
+  }
+  .hero h1{
+    max-width:calc(100vw - 28px)!important;
+    overflow:visible!important;
+  }
+  .hero-label,.float-card{z-index:3!important}
+}
+@media(prefers-reduced-motion:reduce){
+  body::after{display:none}
+}
 </style></body>
 </html>
