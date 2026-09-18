@@ -20,16 +20,49 @@ function note(text) {
 
 async function syncAuthUI() {
   try {
-    if (!window.supabase || !window.ECOMAX_SUPABASE) return;
-    const client = window.supabase.createClient(window.ECOMAX_SUPABASE.url, window.ECOMAX_SUPABASE.key, { auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:true } });
-    const login=document.getElementById("loginLink"), register=document.getElementById("registerLink"), account=document.getElementById("authAccountLink"), mobileNav=document.getElementById("mobileNav");
-    let mobileLogin=mobileNav?.querySelector('a[href="login.html"]'), mobileRegister=mobileNav?.querySelector('a[href="register.html"]'), mobileAccount=mobileNav?.querySelector('a[data-auth-account]');
-    if (mobileNav && !mobileAccount) { mobileAccount=document.createElement("a"); mobileAccount.href="account.html"; mobileAccount.textContent="ჩემი ანგარიში"; mobileAccount.dataset.authAccount="true"; mobileNav.appendChild(mobileAccount); }
-    const apply=session=>{ const loggedIn=!!session?.user; if(login)login.style.display=loggedIn?"none":"inline-flex"; if(register)register.style.display=loggedIn?"none":"inline-flex"; if(account)account.style.display=loggedIn?"inline-flex":"none"; if(mobileLogin)mobileLogin.style.display=loggedIn?"none":"block"; if(mobileRegister)mobileRegister.style.display=loggedIn?"none":"block"; if(mobileAccount)mobileAccount.style.display=loggedIn?"block":"none"; };
-    const {data,error}=await client.auth.getSession(); if(!error)apply(data?.session||null); client.auth.onAuthStateChange((_event,session)=>apply(session||null));
-  } catch(error){ console.warn("ECOMAX auth UI:",error); }
-}
+    const client = window.ECOMAX_SUPABASE_CLIENT || window.ECOMAX_AUTH_CLIENT;
+    if (!client || !client.auth) return;
 
+    const login = document.getElementById("loginLink");
+    const register = document.getElementById("registerLink");
+    const account = document.getElementById("authAccountLink");
+
+    const mobileNav = document.getElementById("mobileNav");
+    const mobileLogin = mobileNav?.querySelector('a[href="login.html"]');
+    const mobileRegister = mobileNav?.querySelector('a[href="register.html"]');
+    let mobileAccount = mobileNav?.querySelector("[data-auth-account]");
+
+    if (mobileNav && !mobileAccount) {
+      mobileAccount = document.createElement("a");
+      mobileAccount.href = "account.html";
+      mobileAccount.textContent = "ჩემი ანგარიში";
+      mobileAccount.dataset.authAccount = "true";
+      mobileNav.appendChild(mobileAccount);
+    }
+
+    function apply(session) {
+      const loggedIn = !!session?.user;
+
+      if (login) login.style.display = loggedIn ? "none" : "inline-flex";
+      if (register) register.style.display = loggedIn ? "none" : "inline-flex";
+      if (account) account.style.display = loggedIn ? "inline-flex" : "none";
+
+      if (mobileLogin) mobileLogin.style.display = loggedIn ? "none" : "block";
+      if (mobileRegister) mobileRegister.style.display = loggedIn ? "none" : "block";
+      if (mobileAccount) mobileAccount.style.display = loggedIn ? "block" : "none";
+    }
+
+    const { data } = await client.auth.getSession();
+    apply(data?.session || null);
+
+    if (!window.__ECOMAX_AUTH_UI_LISTENER__) {
+      window.__ECOMAX_AUTH_UI_LISTENER__ = true;
+      client.auth.onAuthStateChange((_event, session) => apply(session || null));
+    }
+  } catch (error) {
+    console.warn("ECOMAX auth UI:", error);
+  }
+}
 function renderCart(){ const el=document.getElementById("cartItems"); if(!el)return; if(!cart.length){el.innerHTML='<div class="empty-cart"><div>🛒</div><h3>კალათა ცარიელია</h3><p>დაამატე პროდუქტი კალათაში.</p></div>';return;} el.innerHTML=cart.map((i,n)=>`<div class="cart-item"><div class="cart-item-info"><strong>${esc(i.name)}</strong><span>${esc(i.volume)} × ${i.quantity}</span></div><div class="cart-item-price">${Number(i.price)*Number(i.quantity)} ₾</div><button type="button" class="remove-item" data-index="${n}">×</button></div>`).join(""); }
 function updateCart(){ const count=cart.reduce((s,i)=>s+Number(i.quantity||0),0), countEl=document.getElementById("cartCount"), totalEl=document.getElementById("cartTotal"); if(countEl)countEl.textContent=count; if(totalEl)totalEl.textContent=total()+" ₾"; renderCart(); save(); }
 function addToCart(name,price,volume){ price=Number(price); if(!name||!Number.isFinite(price)||price<=0){note("პროდუქტის დამატება ვერ მოხერხდა");return;} const old=cart.find(i=>i.name===name&&i.volume===volume); if(old)old.quantity=Number(old.quantity||0)+1; else cart.push({name,price,volume:volume||"",quantity:1}); updateCart(); note(name+" დაემატა კალათაში"); }
