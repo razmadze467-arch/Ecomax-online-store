@@ -3774,5 +3774,90 @@ h1,h2,h3,.logo,.section-label,.product-number,.price{
 @media(prefers-reduced-motion:reduce){
   h1,h2,h3,.logo,.section-label,.product-number,.price{animation:none!important}
 }
+</style>
+<style id="ecomax-info-cards-neon">
+/* PROFESSIONAL / CARE / SAFETY cards — stronger cyan/white neon, layout preserved */
+.info-grid{
+  position:relative;
+}
+.info-card{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  border:1px solid rgba(0,234,255,.46)!important;
+  background:
+    linear-gradient(145deg,rgba(7,30,45,.96),rgba(2,12,22,.98))!important;
+  box-shadow:
+    0 0 0 1px rgba(0,234,255,.06),
+    0 0 24px rgba(0,234,255,.12),
+    inset 0 0 28px rgba(0,234,255,.045),
+    0 22px 55px rgba(0,0,0,.32)!important;
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+}
+.info-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:
+    linear-gradient(120deg,transparent 0%,rgba(0,234,255,.09) 45%,transparent 62%);
+  transform:translateX(-115%);
+  transition:transform .65s ease;
+  pointer-events:none;
+}
+.info-card::after{
+  content:"";
+  position:absolute;
+  left:12%;
+  right:12%;
+  top:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,#00eaff,#fff,#00eaff,transparent);
+  box-shadow:0 0 12px rgba(0,234,255,.8),0 0 28px rgba(0,234,255,.35);
+  pointer-events:none;
+}
+.info-card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(0,234,255,.9)!important;
+  box-shadow:
+    0 0 0 1px rgba(0,234,255,.12),
+    0 0 35px rgba(0,234,255,.22),
+    0 0 70px rgba(0,180,255,.10),
+    inset 0 0 35px rgba(0,234,255,.06),
+    0 28px 65px rgba(0,0,0,.4)!important;
+}
+.info-card:hover::before{
+  transform:translateX(115%);
+}
+.info-card > span{
+  color:#00eaff!important;
+  font-weight:900;
+  letter-spacing:2.5px;
+  text-shadow:
+    0 0 5px rgba(0,234,255,.95),
+    0 0 15px rgba(0,234,255,.55),
+    0 0 28px rgba(0,180,255,.25)!important;
+}
+.info-card > h3{
+  color:#f5fcff!important;
+  text-shadow:
+    0 0 6px rgba(255,255,255,.72),
+    0 0 16px rgba(0,234,255,.65),
+    0 0 30px rgba(0,180,255,.28)!important;
+}
+.info-card > p{
+  color:#c9f2ff!important;
+  text-shadow:0 0 6px rgba(0,234,255,.3)!important;
+}
+.info-card:hover > h3{
+  text-shadow:
+    0 0 8px rgba(255,255,255,.9),
+    0 0 20px rgba(0,234,255,.8),
+    0 0 38px rgba(0,180,255,.38)!important;
+}
+@media(prefers-reduced-motion:reduce){
+  .info-card,.info-card::before{transition:none!important}
+  .info-card:hover{transform:none}
+}
 </style></body>
 </html>
