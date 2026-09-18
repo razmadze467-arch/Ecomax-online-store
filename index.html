@@ -2112,7 +2112,28 @@ body::before{
  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}
 }
 </style>
-</head>
+<style id="ecomax-neon-ultra">
+/* ULTRA CYBERPUNK BOOST */
+@keyframes ultraPulse{0%,100%{box-shadow:0 0 8px rgba(0,245,255,.18),0 0 24px rgba(124,60,255,.12)}50%{box-shadow:0 0 18px rgba(255,43,214,.34),0 0 45px rgba(0,245,255,.22)}}
+@keyframes ultraText{0%,100%{text-shadow:0 0 8px rgba(0,245,255,.3)}50%{text-shadow:0 0 18px rgba(255,43,214,.55),0 0 35px rgba(124,60,255,.25)}}
+.header{border-bottom:1px solid rgba(0,245,255,.35)!important;box-shadow:0 0 25px rgba(0,245,255,.08),0 8px 35px rgba(124,60,255,.08)}
+.logo{animation:nrFlow 4s ease infinite,nrGlow 2s ease-in-out infinite,ultraText 3s ease-in-out infinite!important}
+.hero h1{animation:nrFlow 5s ease infinite,nrGlow 2.5s ease-in-out infinite,ultraText 3s ease-in-out infinite!important}
+.hero-badge{box-shadow:0 0 15px rgba(0,245,255,.15),inset 0 0 15px rgba(124,60,255,.08);animation:ultraPulse 3s ease-in-out infinite}
+.product-card,.product,.card{box-shadow:0 0 18px rgba(0,245,255,.05);overflow:hidden}
+.product-card:hover,.product:hover,.card:hover{transform:translateY(-7px)!important;box-shadow:0 0 22px rgba(0,245,255,.22),0 0 48px rgba(255,43,214,.13)!important}
+.primary-button,.cart-button{animation:ultraPulse 3s ease-in-out infinite}
+.primary-button:hover,.cart-button:hover{transform:translateY(-3px) scale(1.02)!important}
+.hero-visual,.product-core{box-shadow:0 0 35px rgba(0,245,255,.18),0 0 80px rgba(124,60,255,.12),inset 0 0 35px rgba(255,43,214,.06)!important}
+body{background:
+radial-gradient(circle at 10% 10%,rgba(0,245,255,.14),transparent 25%),
+radial-gradient(circle at 90% 20%,rgba(255,43,214,.12),transparent 27%),
+radial-gradient(circle at 50% 80%,rgba(124,60,255,.11),transparent 30%),
+linear-gradient(180deg,#01050d 0%,#030b17 48%,#01050d 100%)!important}
+body::after{background:
+radial-gradient(circle at 20% 35%,rgba(0,245,255,.06),transparent 22%),
+radial-gradient(circle at 80% 65%,rgba(255,43,214,.05),transparent 25%)!important}
+</style></head>
 
 <body>
 
