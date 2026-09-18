@@ -2059,6 +2059,59 @@
  .ecomax-color-text,.hero h1,.hero h2,.section-title,.product-name,.product-title,.price,.brand-title,.logo,.site-logo{animation:none}
 }
 </style>
+<style id="ecomax-neon-rainbow">
+/* ECOMAX NEON RAINBOW / CYBERPUNK THEME */
+:root{
+ --nr1:#00f5ff;--nr2:#7c3cff;--nr3:#ff2bd6;--nr4:#ff4d4d;--nr5:#ffd43b;--nr6:#42ff9b;
+ --rainbow:linear-gradient(90deg,var(--nr1),var(--nr2),var(--nr3),var(--nr4),var(--nr5),var(--nr6),var(--nr1));
+}
+@keyframes nrFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes nrGlow{0%,100%{filter:drop-shadow(0 0 5px #00f5ff66)}50%{filter:drop-shadow(0 0 15px #ff2bd666)}}
+@keyframes nrBorder{0%{--nrdeg:0deg}100%{--nrdeg:360deg}}
+body:after{
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;
+ background:radial-gradient(circle at 50% 0%,rgba(0,245,255,.07),transparent 35%);
+ mix-blend-mode:screen;
+}
+.logo,.hero h1,.hero h1 strong,.section-title,.product-name,.product-title,.price,.brand-title,.ecomax-color-text{
+ background:var(--rainbow)!important;background-size:500% 100%!important;
+ -webkit-background-clip:text!important;background-clip:text!important;
+ -webkit-text-fill-color:transparent!important;color:transparent!important;
+ animation:nrFlow 6s ease infinite,nrGlow 3s ease-in-out infinite!important;
+}
+.hero-badge,.cart-button,.primary-button,.secondary-button,.links a,.auth-link,
+.product-card,.product,.card,.section,.hero-visual,.product-core,.cart-overlay,.cart-panel,
+input,select,textarea{
+ position:relative;
+}
+.hero-badge:before,.cart-button:before,.primary-button:before,.secondary-button:before,
+.product-card:before,.product:before,.card:before{
+ content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;
+ background:conic-gradient(from var(--nrdeg,0deg),#00f5ff,#7c3cff,#ff2bd6,#ff4d4d,#ffd43b,#42ff9b,#00f5ff);
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+ -webkit-mask-composite:xor;mask-composite:exclude;
+ opacity:.75;animation:nrSpin 8s linear infinite;pointer-events:none;
+}
+@keyframes nrSpin{to{transform:rotate(360deg)}}
+.primary-button,.cart-button{
+ box-shadow:0 0 18px #00f5ff22,0 0 35px #7c3cff18;
+}
+.primary-button:hover,.cart-button:hover{
+ box-shadow:0 0 20px #00f5ff66,0 0 45px #ff2bd644;
+}
+.links a:hover,.auth-link:hover{color:#fff!important;text-shadow:0 0 12px #00f5ff}
+body::before{
+ background-image:
+ linear-gradient(rgba(0,245,255,.045) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,43,214,.035) 1px,transparent 1px)!important;
+ background-size:36px 36px!important;
+ animation:nrGrid 12s linear infinite;
+}
+@keyframes nrGrid{to{background-position:36px 36px}}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+</style>
 </head>
 
 <body>
