@@ -2034,6 +2034,31 @@
       }
     }
   </style>
+<style id="ecomax-rainbow-text">
+/* ECOMAX — animated multicolor text */
+@keyframes ecomaxColorFlow{
+  0%{background-position:0% 50%}
+  25%{background-position:50% 50%}
+  50%{background-position:100% 50%}
+  75%{background-position:50% 50%}
+  100%{background-position:0% 50%}
+}
+.ecomax-color-text,
+.hero h1,.hero h2,.section-title,.product-name,.product-title,.price,
+.brand-title,.logo,.site-logo{
+  background:linear-gradient(90deg,#20e7ff,#7b61ff,#ff4fd8,#ffcc66,#65f2aa,#20e7ff);
+  background-size:300% 100%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:ecomaxColorFlow 7s ease-in-out infinite;
+}
+.product-name,.product-title,.section-title{animation-duration:9s}
+.price{animation-duration:5s}
+@media (prefers-reduced-motion:reduce){
+ .ecomax-color-text,.hero h1,.hero h2,.section-title,.product-name,.product-title,.price,.brand-title,.logo,.site-logo{animation:none}
+}
+</style>
 </head>
 
 <body>
