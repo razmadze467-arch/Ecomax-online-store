@@ -1608,6 +1608,20 @@
     #mobileNav {
       display: none;
 
+      position: relative;
+      z-index: 6000;
+
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+
+      transition:
+        max-height .25s ease,
+        opacity .2s ease,
+        transform .25s ease;
+
       width: 100%;
 
       padding: 10px 15px 18px;
@@ -1623,6 +1637,11 @@
       display: flex;
 
       flex-direction: column;
+
+      max-height: 520px;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
     #mobileNav a {
@@ -2082,7 +2101,8 @@
           type="button"
           class="menu"
           id="menuButton"
-          onclick="document.getElementById('mobileNav').classList.toggle('active')"
+          aria-label="მენიუს გახსნა"
+          aria-expanded="false"
         >
           ☰
         </button>
@@ -3485,6 +3505,69 @@
     })();
   </script>
 
+
+  <!-- =====================================================
+       ECOMAX MOBILE MENU FIX
+       ===================================================== -->
+  <script>
+    (function () {
+      function initEcomaxMenu() {
+        const button = document.getElementById("menuButton");
+        const nav = document.getElementById("mobileNav");
+
+        if (!button || !nav || button.dataset.menuReady === "1") return;
+
+        button.dataset.menuReady = "1";
+
+        function openMenu() {
+          nav.classList.add("active");
+          button.setAttribute("aria-expanded", "true");
+          button.setAttribute("aria-label", "მენიუს დახურვა");
+        }
+
+        function closeMenu() {
+          nav.classList.remove("active");
+          button.setAttribute("aria-expanded", "false");
+          button.setAttribute("aria-label", "მენიუს გახსნა");
+        }
+
+        button.addEventListener("click", function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+
+          if (nav.classList.contains("active")) {
+            closeMenu();
+          } else {
+            openMenu();
+          }
+        });
+
+        nav.querySelectorAll("a").forEach(function (link) {
+          link.addEventListener("click", function () {
+            closeMenu();
+          });
+        });
+
+        document.addEventListener("click", function (event) {
+          if (!nav.classList.contains("active")) return;
+
+          if (!nav.contains(event.target) && !button.contains(event.target)) {
+            closeMenu();
+          }
+        });
+
+        window.addEventListener("resize", function () {
+          if (window.innerWidth > 768) closeMenu();
+        });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initEcomaxMenu);
+      } else {
+        initEcomaxMenu();
+      }
+    })();
+  </script>
 
   <!-- =====================================================
        MAIN SITE SCRIPTS
