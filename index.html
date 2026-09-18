@@ -3507,75 +3507,12 @@
 
 
   <!-- =====================================================
-       ECOMAX MOBILE MENU FIX
-       ===================================================== -->
-  <script>
-    (function () {
-      function initEcomaxMenu() {
-        const button = document.getElementById("menuButton");
-        const nav = document.getElementById("mobileNav");
-
-        if (!button || !nav || button.dataset.menuReady === "1") return;
-
-        button.dataset.menuReady = "1";
-
-        function openMenu() {
-          nav.classList.add("active");
-          button.setAttribute("aria-expanded", "true");
-          button.setAttribute("aria-label", "მენიუს დახურვა");
-        }
-
-        function closeMenu() {
-          nav.classList.remove("active");
-          button.setAttribute("aria-expanded", "false");
-          button.setAttribute("aria-label", "მენიუს გახსნა");
-        }
-
-        button.addEventListener("click", function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-
-          if (nav.classList.contains("active")) {
-            closeMenu();
-          } else {
-            openMenu();
-          }
-        });
-
-        nav.querySelectorAll("a").forEach(function (link) {
-          link.addEventListener("click", function () {
-            closeMenu();
-          });
-        });
-
-        document.addEventListener("click", function (event) {
-          if (!nav.classList.contains("active")) return;
-
-          if (!nav.contains(event.target) && !button.contains(event.target)) {
-            closeMenu();
-          }
-        });
-
-        window.addEventListener("resize", function () {
-          if (window.innerWidth > 768) closeMenu();
-        });
-      }
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initEcomaxMenu);
-      } else {
-        initEcomaxMenu();
-      }
-    })();
-  </script>
-
-  <!-- =====================================================
        MAIN SITE SCRIPTS
        ===================================================== -->
 
-  <script src="script.js?v=20260916-10"></script>
+  <script src="js/supabase.js?v=20260918-1"></script>
 
-  <script src="js/supabase.js?v=20260916-10"></script>
+  <script src="script.js?v=20260918-1"></script>
 
   <script src="js/store-search.js?v=20260916-10"></script>
 
