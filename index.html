@@ -4564,5 +4564,103 @@ main,.footer{position:relative;z-index:1}
 }
 @media(prefers-reduced-motion:reduce){.info-card::after{animation:none!important}}
 </style>
+<style id="ECOMAX-MULTICOLOR-EDGE-ENERGY-V6">
+/* MULTI-COLOR ENERGY EDGES — each card gets its own neon spectrum */
+.product-card{
+  --edge-a:#00f6ff;
+  --edge-b:#168dff;
+  --edge-c:#7b4dff;
+  --edge-glow:rgba(0,246,255,.42);
+}
+.product-card:nth-child(2n){
+  --edge-a:#ff25d9;--edge-b:#7b4dff;--edge-c:#00f6ff;--edge-glow:rgba(255,37,217,.42);
+}
+.product-card:nth-child(3n){
+  --edge-a:#ff9d00;--edge-b:#ff2f67;--edge-c:#ffd43b;--edge-glow:rgba(255,157,0,.4);
+}
+.product-card:nth-child(4n){
+  --edge-a:#42ff9b;--edge-b:#00f6ff;--edge-c:#168dff;--edge-glow:rgba(66,255,155,.38);
+}
+.product-card:nth-child(5n){
+  --edge-a:#ff3f81;--edge-b:#ff25d9;--edge-c:#7b4dff;--edge-glow:rgba(255,63,129,.4);
+}
+.product-card:nth-child(6n){
+  --edge-a:#00f6ff;--edge-b:#42ff9b;--edge-c:#7b4dff;--edge-glow:rgba(0,246,255,.42);
+}
+
+/* Moving spectrum is isolated to the border pseudo-element, not the card content */
+.product-card::after{
+  background:linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 8%,
+    var(--edge-a) 18%,
+    var(--edge-b) 35%,
+    var(--edge-c) 52%,
+    #fff 61%,
+    var(--edge-a) 72%,
+    var(--edge-b) 88%,
+    transparent 100%
+  )!important;
+  background-size:320% 100%!important;
+  animation:ecomaxEdgeEnergy 3.8s linear infinite!important;
+  box-shadow:0 0 12px var(--edge-glow);
+}
+
+/* Second, thinner moving energy filament */
+.product-card::before{
+  background:
+    linear-gradient(105deg,transparent 0 17%,var(--edge-a) 18%,transparent 19% 47%,var(--edge-c) 48%,transparent 49% 78%,var(--edge-b) 79%,transparent 80%)!important;
+  background-size:240% 100%!important;
+  animation:ecomaxEdgeFilament 5.5s linear infinite!important;
+  opacity:.72!important;
+}
+
+/* Corner HUD cuts */
+.product-card{
+  clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb,var(--edge-a) 30%,transparent),
+    0 18px 60px rgba(0,0,0,.44),
+    0 0 24px var(--edge-glow),
+    inset 0 0 28px color-mix(in srgb,var(--edge-a) 6%,transparent)!important;
+}
+
+/* Tiny edge status lights */
+.product-card .product-top::after{
+  content:"";
+  width:5px;height:5px;border-radius:50%;
+  margin-left:auto;
+  background:var(--edge-a);
+  box-shadow:0 0 6px var(--edge-a),0 0 14px var(--edge-b);
+  animation:ecomaxEdgePulse 1.8s ease-in-out infinite;
+  pointer-events:none;
+}
+
+/* Make each number inherit its card's energy color */
+.product-card .product-number{
+  border-color:var(--edge-a)!important;
+  box-shadow:0 0 8px var(--edge-a),0 0 20px var(--edge-glow),inset 0 0 12px color-mix(in srgb,var(--edge-a) 18%,transparent)!important;
+  text-shadow:0 0 5px #fff,0 0 14px var(--edge-a)!important;
+}
+.product-card .product-number::before{border-top-color:var(--edge-a)!important}
+.product-card .product-number::after{border-left-color:var(--edge-b)!important}
+
+@keyframes ecomaxEdgeEnergy{
+  0%{background-position:320% 0}
+  100%{background-position:-40% 0}
+}
+@keyframes ecomaxEdgeFilament{
+  0%{background-position:-40% 0}
+  100%{background-position:240% 0}
+}
+@keyframes ecomaxEdgePulse{
+  0%,100%{opacity:.45;transform:scale(.8)}
+  50%{opacity:1;transform:scale(1.25)}
+}
+@media(prefers-reduced-motion:reduce){
+  .product-card::after,.product-card::before,.product-card .product-top::after{animation:none!important}
+}
+</style>
 </body>
 </html>
