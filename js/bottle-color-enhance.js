@@ -25,47 +25,47 @@
   const css=document.createElement('style');
   css.id='ecomaxBottleColorCss';
   css.textContent=`
-    .pro-product-card .ecomax-bottle{position:relative!important;overflow:visible!important}
-    .pro-product-card .ecomax-bottle-body{
+    .product-card .ecomax-bottle{position:relative!important;overflow:visible!important}
+    .product-card .ecomax-bottle-body{
       background:linear-gradient(90deg,#07111a 0%,color-mix(in srgb,var(--card-accent) 42%,#193545) 22%,#06101a 43%,color-mix(in srgb,var(--card-accent) 52%,#244655) 67%,#050c14 100%)!important;
       box-shadow:inset 8px 0 16px rgba(255,255,255,.08),inset -9px 0 16px rgba(0,0,0,.5),0 0 34px var(--card-accent-soft)!important;
     }
-    .pro-product-card .ecomax-bottle-label{
+    .product-card .ecomax-bottle-label{
       background:linear-gradient(145deg,rgba(3,13,22,.98),color-mix(in srgb,var(--card-accent) 20%,#0a1c2a))!important;
       overflow:hidden!important;
       border:1px solid color-mix(in srgb,var(--card-accent) 60%,#fff 8%)!important;
     }
-    .pro-product-card .ecomax-label-brand{font-weight:1000;letter-spacing:2px;line-height:1;color:#fff;text-shadow:0 0 8px var(--card-accent);font-size:12px}
-    .pro-product-card .ecomax-label-icon{font-size:18px;line-height:1;margin:3px 0;color:var(--card-accent);filter:drop-shadow(0 0 5px var(--card-accent))}
-    .pro-product-card .ecomax-label-product{font-size:9px;font-weight:900;line-height:1.15;color:#fff;max-width:100%;text-align:center}
-    .pro-product-card .ecomax-label-line{height:2px;width:72%;margin:4px auto;background:var(--card-accent);box-shadow:0 0 8px var(--card-accent);border-radius:99px}
-    .pro-product-card .ecomax-five-liter{pointer-events:none}
-    .pro-product-card .ecomax-product-art{
+    .product-card .ecomax-label-brand{font-weight:1000;letter-spacing:2px;line-height:1;color:#fff;text-shadow:0 0 8px var(--card-accent);font-size:12px}
+    .product-card .ecomax-label-icon{font-size:18px;line-height:1;margin:3px 0;color:var(--card-accent);filter:drop-shadow(0 0 5px var(--card-accent))}
+    .product-card .ecomax-label-product{font-size:9px;font-weight:900;line-height:1.15;color:#fff;max-width:100%;text-align:center}
+    .product-card .ecomax-label-line{height:2px;width:72%;margin:4px auto;background:var(--card-accent);box-shadow:0 0 8px var(--card-accent);border-radius:99px}
+    .product-card .ecomax-five-liter{pointer-events:none}
+    .product-card .ecomax-product-art{
       position:absolute;left:50%;top:50%;width:42px;height:42px;transform:translate(-50%,-50%);
       opacity:.18;pointer-events:none;z-index:1;filter:drop-shadow(0 0 6px var(--card-accent));
     }
-    .pro-product-card .ecomax-bottle-art{
+    .product-card .ecomax-bottle-art{
       position:absolute;left:50%;bottom:7px;width:24px;height:24px;transform:translateX(-50%);
       opacity:.55;pointer-events:none;z-index:8;filter:drop-shadow(0 0 5px var(--card-accent));
     }
-    .pro-product-card .ecomax-product-art svg,.pro-product-card .ecomax-bottle-art svg{width:100%;height:100%;display:block}
-    .pro-product-card .ecomax-product-art path,.pro-product-card .ecomax-product-art circle,.pro-product-card .ecomax-product-art rect,.pro-product-card .ecomax-product-art line,.pro-product-card .ecomax-product-art polyline,.pro-product-card .ecomax-product-art polygon,
-    .pro-product-card .ecomax-bottle-art path,.pro-product-card .ecomax-bottle-art circle,.pro-product-card .ecomax-bottle-art rect,.pro-product-card .ecomax-bottle-art line,.pro-product-card .ecomax-bottle-art polyline,.pro-product-card .ecomax-bottle-art polygon{
+    .product-card .ecomax-product-art svg,.product-card .ecomax-bottle-art svg{width:100%;height:100%;display:block}
+    .product-card .ecomax-product-art path,.product-card .ecomax-product-art circle,.product-card .ecomax-product-art rect,.product-card .ecomax-product-art line,.product-card .ecomax-product-art polyline,.product-card .ecomax-product-art polygon,
+    .product-card .ecomax-bottle-art path,.product-card .ecomax-bottle-art circle,.product-card .ecomax-bottle-art rect,.product-card .ecomax-bottle-art line,.product-card .ecomax-bottle-art polyline,.product-card .ecomax-bottle-art polygon{
       stroke:var(--card-accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round
     }
 
-    #productsGrid .pro-product-card:nth-child(1)::before{background:linear-gradient(90deg,#21050a 0%,#ff2638 18%,#5b1018 43%,#ff3c4d 66%,#160307 100%)!important;box-shadow:inset 10px 0 20px rgba(255,255,255,.10),inset -12px 0 20px rgba(0,0,0,.72),0 0 44px rgba(255,38,56,.30),0 26px 32px rgba(0,0,0,.45)!important}
-    #productsGrid .pro-product-card:nth-child(1)::after{border-color:#ff2638!important;color:#ff4b59!important;background:linear-gradient(145deg,#21060b,#4a0d16)!important;text-shadow:0 0 18px rgba(255,38,56,.85)!important}
-    #productsGrid .pro-product-card:nth-child(2)::before{background:linear-gradient(90deg,#b9c0c5 0%,#ffffff 20%,#dce3e8 45%,#ffffff 68%,#8f989f 100%)!important;box-shadow:inset 10px 0 20px rgba(255,255,255,.38),inset -12px 0 20px rgba(0,0,0,.24),0 0 42px rgba(255,255,255,.22),0 26px 32px rgba(0,0,0,.45)!important}
-    #productsGrid .pro-product-card:nth-child(2)::after{border-color:#ffffff!important;color:#ffffff!important;background:linear-gradient(145deg,#12202a,#30414b)!important;text-shadow:0 0 16px rgba(255,255,255,.85)!important}
-    #productsGrid .pro-product-card:nth-child(3)::before{background:linear-gradient(90deg,#3b2f02 0%,#d6b927 20%,#75650b 45%,#e4cf45 68%,#221c02 100%)!important}
-    #productsGrid .pro-product-card:nth-child(4)::before{background:linear-gradient(90deg,#073244 0%,#31c8ff 20%,#0a536c 45%,#58d7ff 68%,#05202b 100%)!important}
-    #productsGrid .pro-product-card:nth-child(5)::before{background:linear-gradient(90deg,#4a3c02 0%,#ffd21f 20%,#a98e0d 45%,#ffe24a 68%,#292203 100%)!important}
-    #productsGrid .pro-product-card:nth-child(6)::before{background:linear-gradient(90deg,#21050a 0%,#ff2638 18%,#5b1018 43%,#ff3c4d 66%,#160307 100%)!important}
-    #productsGrid .pro-product-card:nth-child(7)::before{background:linear-gradient(90deg,#21050a 0%,#ff2638 18%,#5b1018 43%,#ff3c4d 66%,#160307 100%)!important}
-    #productsGrid .pro-product-card:nth-child(8)::before{background:linear-gradient(90deg,#b9c0c5 0%,#ffffff 20%,#dce3e8 45%,#ffffff 68%,#8f989f 100%)!important}
-    #productsGrid .pro-product-card:nth-child(9)::before{background:linear-gradient(90deg,#21050a 0%,#ff2638 18%,#5b1018 43%,#ff3c4d 66%,#160307 100%)!important}
-    #productsGrid .pro-product-card:nth-child(10)::before{background:linear-gradient(90deg,#43091d 0%,#ff65b8 20%,#8d214f 45%,#ff83c8 68%,#250510 100%)!important}
+    #productsGrid .product-card:nth-child(1)::before{background:linear-gradient(90deg,#21050a 0%,#ff2638 18%,#5b1018 43%,#ff3c4d 66%,#160307 100%)!important;box-shadow:inset 10px 0 20px rgba(255,255,255,.10),inset -12px 0 20px rgba(0,0,0,.72),0 0 44px rgba(255,38,56,.30),0 26px 32px rgba(0,0,0,.45)!important}
+    #productsGrid .product-card:nth-child(1)::after{border-color:#ff2638!important;color:#ff4b59!important;background:linear-gradient(145deg,#21060b,#4a0d16)!important;text-shadow:0 0 18px rgba(255,38,56,.85)!important}
+    #productsGrid .product-card:nth-child(2)::before{background:linear-gradient(90deg,#b9c0c5 0%,#ffffff 20%,#dce3e8 45%,#ffffff 68%,#8f989f 100%)!important;box-shadow:inset 10px 0 20px rgba(255,255,255,.38),inset -12px 0 20px rgba(0,0,0,.24),0 0 42px rgba(255,255,255,.22),0 26px 32px rgba(0,0,0,.45)!important}
+    #productsGrid .product-card:nth-child(2)::after{border-color:#ffffff!important;color:#ffffff!important;background:linear-gradient(145deg,#12202a,#30414b)!important;text-shadow:0 0 16px rgba(255,255,255,.85)!important}
+    #productsGrid .product-card:nth-child(3)::before{background:linear-gradient(90deg,#3b2f02 0%,#d6b927 20%,#75650b 45%,#e4cf45 68%,#221c02 100%)!important}
+    #productsGrid .product-card:nth-child(4)::before{background:linear-gradient(90deg,#073244 0%,#31c8ff 20%,#0a536c 45%,#58d7ff 68%,#05202b 100%)!important}
+    #productsGrid .product-card:nth-child(5)::before{background:linear-gradient(90deg,#4a3c02 0%,#ffd21f 20%,#a98e0d 45%,#ffe24a 68%,#292203 100%)!important}
+    #productsGrid .product-card:nth-child(6)::before{background:linear-gradient(90deg,#21050a 0%,#ff2638 18%,#5b1018 43%,#ff3c4d 66%,#160307 100%)!important}
+    #productsGrid .product-card:nth-child(7)::before{background:linear-gradient(90deg,#21050a 0%,#ff2638 18%,#5b1018 43%,#ff3c4d 66%,#160307 100%)!important}
+    #productsGrid .product-card:nth-child(8)::before{background:linear-gradient(90deg,#b9c0c5 0%,#ffffff 20%,#dce3e8 45%,#ffffff 68%,#8f989f 100%)!important}
+    #productsGrid .product-card:nth-child(9)::before{background:linear-gradient(90deg,#21050a 0%,#ff2638 18%,#5b1018 43%,#ff3c4d 66%,#160307 100%)!important}
+    #productsGrid .product-card:nth-child(10)::before{background:linear-gradient(90deg,#43091d 0%,#ff65b8 20%,#8d214f 45%,#ff83c8 68%,#250510 100%)!important}
   `;
   document.head.appendChild(css);
 
@@ -98,12 +98,12 @@
   }
 
   function apply(){
-    document.querySelectorAll('.pro-product-card').forEach(card=>{
+    document.querySelectorAll('.product-card').forEach(card=>{
       const type=findType(card); if(!type)return;
       card.style.setProperty('--card-accent',type.color);
       card.style.setProperty('--card-accent-soft',type.color+'55');
 
-      const bottle=card.querySelector('.ecomax-bottle');
+      const bottle=card.querySelector('.ecomax-bottle,.product-bottle');
       if(bottle){
         bottle.setAttribute('aria-label','ECOMAX 5 ლიტრი — '+type.name+' / '+type.en);
         bottle.title='ECOMAX 5 ლიტრი — '+type.name+' / '+type.en;
@@ -117,7 +117,7 @@
         art.innerHTML=svgArt(type.art);
       }
 
-      const label=card.querySelector('.ecomax-bottle-label');
+      const label=card.querySelector('.ecomax-bottle-label,.product-label');
       if(!label)return;
 
       let content=label.querySelector('.ecomax-premium-label-content');
