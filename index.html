@@ -4756,5 +4756,168 @@ main,.footer{position:relative;z-index:1}
   .product-card .product-top::before,.product-card .product-info::after{animation:none!important}
 }
 </style>
+<style id="ECOMAX-CARD-INNER-LUXURY-V8">
+/* LUXURY INNER CARD — HUD / CHEMICAL LAB INTERFACE */
+.product-card{
+  --inner:#00f6ff;
+  --inner2:#7b4dff;
+}
+.product-card.red{--inner:#ff315d;--inner2:#ff25d9}
+.product-card.white{--inner:#00eaff;--inner2:#7b4dff}
+.product-card.yellow{--inner:#ffd21a;--inner2:#ff8a00}
+.product-card.cyan{--inner:#00f6ff;--inner2:#42ff9b}
+.product-card.blue{--inner:#168dff;--inner2:#7b4dff}
+
+.product-card::after{
+  box-shadow:0 0 14px var(--inner),0 0 28px color-mix(in srgb,var(--inner2) 55%,transparent)!important;
+}
+
+/* Inner technical frame */
+.product-visual{
+  position:relative;
+  isolation:isolate;
+  border-radius:14px;
+  background:
+    radial-gradient(circle at 50% 48%,color-mix(in srgb,var(--inner) 12%,transparent),transparent 40%),
+    linear-gradient(180deg,rgba(0,246,255,.035),transparent 65%);
+}
+.product-visual::before{
+  border-color:color-mix(in srgb,var(--inner) 35%,transparent)!important;
+  box-shadow:
+    0 0 20px color-mix(in srgb,var(--inner) 12%,transparent),
+    inset 0 0 20px color-mix(in srgb,var(--inner) 5%,transparent)!important;
+}
+.product-visual .product-glow{
+  background:radial-gradient(circle,color-mix(in srgb,var(--inner) 28%,transparent),transparent 68%)!important;
+  filter:blur(14px);
+  opacity:.7;
+  animation:ecomaxInnerGlow 4s ease-in-out infinite;
+}
+
+/* Four HUD corner brackets inside the visual */
+.product-visual{
+  --corner:14px;
+}
+.product-visual .product-bottle{
+  filter:drop-shadow(0 0 13px color-mix(in srgb,var(--inner) 35%,transparent));
+}
+.product-visual::after{
+  background:linear-gradient(90deg,transparent,var(--inner),#fff,var(--inner2),transparent)!important;
+  box-shadow:0 0 12px var(--inner),0 0 24px color-mix(in srgb,var(--inner2) 35%,transparent)!important;
+}
+.product-label{
+  border:1px solid color-mix(in srgb,var(--inner) 42%,transparent)!important;
+  background:linear-gradient(145deg,rgba(2,14,24,.88),rgba(2,8,16,.74))!important;
+  box-shadow:
+    0 0 12px color-mix(in srgb,var(--inner) 18%,transparent),
+    inset 0 0 18px color-mix(in srgb,var(--inner) 5%,transparent)!important;
+}
+.product-label::after{
+  border-top-color:var(--inner)!important;
+  border-left-color:#fff!important;
+  box-shadow:-3px -3px 10px color-mix(in srgb,var(--inner) 35%,transparent)!important;
+}
+
+/* Information area becomes a premium control panel */
+.product-info{
+  margin-top:4px;
+  padding:13px 12px 12px;
+  border:1px solid rgba(0,246,255,.10);
+  border-radius:13px;
+  background:
+    linear-gradient(145deg,rgba(7,25,38,.58),rgba(2,10,17,.38));
+  box-shadow:inset 0 0 22px rgba(0,246,255,.025);
+}
+.product-info::before{
+  color:color-mix(in srgb,var(--inner) 55%,transparent)!important;
+  text-shadow:0 0 8px color-mix(in srgb,var(--inner) 40%,transparent)!important;
+}
+.product-info h3,.product-description{
+  position:relative;
+  z-index:2;
+}
+.product-info h3{
+  letter-spacing:.15px;
+  text-shadow:0 0 8px rgba(255,255,255,.72),0 0 18px color-mix(in srgb,var(--inner) 40%,transparent)!important;
+}
+.product-description{
+  color:rgba(225,250,255,.76)!important;
+}
+
+/* Price becomes a separate HUD module */
+.product-info .price-row{
+  position:relative;
+  margin-top:12px;
+  padding:10px 8px;
+  border:1px solid color-mix(in srgb,var(--inner) 22%,transparent)!important;
+  border-radius:10px;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--inner) 7%,transparent),rgba(0,0,0,.16));
+  box-shadow:inset 0 0 15px color-mix(in srgb,var(--inner) 4%,transparent);
+}
+.product-info .price-row::before{
+  content:"PRICE // GEL";
+  position:absolute;
+  left:8px;top:-6px;
+  padding:0 5px;
+  font-size:5px;
+  letter-spacing:1.4px;
+  color:color-mix(in srgb,var(--inner) 75%,white);
+  background:#03111b;
+}
+.product-info .price-row strong{
+  color:#fff!important;
+  text-shadow:0 0 7px #fff,0 0 17px var(--inner)!important;
+}
+
+/* Quantity selector / controls */
+.product-info select{
+  border-color:color-mix(in srgb,var(--inner) 25%,transparent)!important;
+  box-shadow:inset 0 0 12px color-mix(in srgb,var(--inner) 4%,transparent),0 0 7px color-mix(in srgb,var(--inner) 4%,transparent)!important;
+  transition:border-color .25s ease,box-shadow .25s ease;
+}
+.product-info select:focus{
+  border-color:var(--inner)!important;
+  box-shadow:0 0 10px color-mix(in srgb,var(--inner) 28%,transparent),inset 0 0 14px color-mix(in srgb,var(--inner) 5%,transparent)!important;
+}
+
+/* Premium add-to-cart control */
+.product-info .add-to-cart,
+.product-info button{
+  position:relative;
+  overflow:hidden;
+}
+.product-info .add-to-cart::before,
+.product-info button::before{
+  content:"";
+  position:absolute;
+  top:0;bottom:0;left:-45%;
+  width:30%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);
+  transform:skewX(-18deg);
+  animation:ecomaxButtonSweep 4.6s ease-in-out infinite;
+  pointer-events:none;
+}
+.product-info .add-to-cart:hover,
+.product-info button:hover{
+  box-shadow:0 0 14px color-mix(in srgb,var(--inner) 25%,transparent),0 0 26px color-mix(in srgb,var(--inner2) 12%,transparent)!important;
+}
+
+@keyframes ecomaxInnerGlow{
+  0%,100%{opacity:.42;transform:scale(.94)}
+  50%{opacity:.82;transform:scale(1.05)}
+}
+@keyframes ecomaxButtonSweep{
+  0%,60%{left:-45%;opacity:0}
+  72%{opacity:1}
+  92%,100%{left:125%;opacity:0}
+}
+@media(max-width:768px){
+  .product-info{padding:11px 9px 10px}
+  .product-visual{border-radius:11px}
+}
+@media(prefers-reduced-motion:reduce){
+  .product-visual .product-glow,.product-info .add-to-cart::before,.product-info button::before{animation:none!important}
+}
+</style>
 </body>
 </html>
