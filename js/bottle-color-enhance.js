@@ -106,5 +106,10 @@
 
   function start(){apply();setTimeout(apply,400);setTimeout(apply,1200);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
-  new MutationObserver(apply).observe(document.documentElement,{childList:true,subtree:true});
+  const productsRoot=document.getElementById('productsGrid')||document.querySelector('.products-grid');
+  if(productsRoot&&'MutationObserver' in window){
+    let applyTimer=0;
+    const observer=new MutationObserver(function(){clearTimeout(applyTimer);applyTimer=setTimeout(apply,120);});
+    observer.observe(productsRoot,{childList:true});
+  }
 })();
