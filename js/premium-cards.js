@@ -104,5 +104,10 @@
   }
   function scan(){document.querySelectorAll('.pro-product-card').forEach(enhance)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scan,{once:true});else scan();
-  new MutationObserver(scan).observe(document.body,{childList:true,subtree:true});
+  const productsRoot=document.getElementById('productsGrid')||document.querySelector('.products-grid');
+  if(productsRoot&&'MutationObserver' in window){
+    let scanTimer=0;
+    const observer=new MutationObserver(function(){clearTimeout(scanTimer);scanTimer=setTimeout(scan,80);});
+    observer.observe(productsRoot,{childList:true});
+  }
 })();
