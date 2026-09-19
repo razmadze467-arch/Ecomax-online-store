@@ -4662,5 +4662,99 @@ main,.footer{position:relative;z-index:1}
   .product-card::after,.product-card::before,.product-card .product-top::after{animation:none!important}
 }
 </style>
+<style id="ECOMAX-FOUR-DIRECTION-NEON-TRACKS-V7">
+/* FOUR-DIRECTION NEON TRACKS — energy visibly travels around every card edge */
+@property --ecomax-edge-angle{
+  syntax:"<angle>";
+  initial-value:0deg;
+  inherits:false;
+}
+.product-card{
+  --ecomax-edge-angle:0deg;
+  border:1px solid transparent!important;
+  background:
+    linear-gradient(145deg,rgba(7,27,41,.98),rgba(2,10,18,.99)) padding-box,
+    conic-gradient(
+      from var(--ecomax-edge-angle),
+      transparent 0deg,
+      transparent 24deg,
+      var(--edge-a) 42deg,
+      #fff 52deg,
+      var(--edge-b) 62deg,
+      transparent 82deg,
+      transparent 112deg,
+      var(--edge-c) 132deg,
+      #fff 142deg,
+      var(--edge-a) 154deg,
+      transparent 176deg,
+      transparent 205deg,
+      var(--edge-b) 224deg,
+      #fff 234deg,
+      var(--edge-c) 246deg,
+      transparent 270deg,
+      transparent 300deg,
+      var(--edge-a) 318deg,
+      #fff 328deg,
+      var(--edge-b) 338deg,
+      transparent 360deg
+    ) border-box!important;
+  animation:ecomaxFourWayEdge 4.2s linear infinite!important;
+  position:relative;
+  overflow:hidden;
+}
+.product-card::after{
+  /* existing glow filament remains, while the border itself makes the full loop */
+  opacity:.5!important;
+}
+.product-card::before{
+  /* fine secondary track */
+  opacity:.45!important;
+}
+.product-card .product-top{
+  position:relative;
+  z-index:6;
+}
+.product-card .product-top::before{
+  content:"";
+  position:absolute;
+  left:0;right:0;top:-7px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--edge-a),#fff,var(--edge-b),transparent);
+  box-shadow:0 0 8px var(--edge-a),0 0 14px var(--edge-b);
+  background-size:220% 100%;
+  animation:ecomaxHorizontalTrack 2.7s linear infinite;
+  pointer-events:none;
+}
+.product-card .product-info{
+  position:relative;
+}
+.product-card .product-info::after{
+  content:"";
+  position:absolute;
+  left:-1px;right:-1px;bottom:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--edge-c),#fff,var(--edge-a),transparent);
+  background-size:220% 100%;
+  box-shadow:0 0 8px var(--edge-c);
+  animation:ecomaxHorizontalTrackReverse 3.3s linear infinite;
+  pointer-events:none;
+}
+@keyframes ecomaxFourWayEdge{
+  to{--ecomax-edge-angle:360deg}
+}
+@keyframes ecomaxHorizontalTrack{
+  from{background-position:220% 0}
+  to{background-position:-20% 0}
+}
+@keyframes ecomaxHorizontalTrackReverse{
+  from{background-position:-20% 0}
+  to{background-position:220% 0}
+}
+@media(max-width:768px){
+  .product-card{animation-duration:5.2s!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .product-card{animation:none!important}
+  .product-card .product-top::before,.product-card .product-info::after{animation:none!important}
+}
+</style>
 </body>
 </html>
