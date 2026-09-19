@@ -4919,5 +4919,156 @@ main,.footer{position:relative;z-index:1}
   .product-visual .product-glow,.product-info .add-to-cart::before,.product-info button::before{animation:none!important}
 }
 </style>
+<style id="ECOMAX-INNER-FRAME-MASTER-V9">
+/* OUTER EDGE OFF — INNER FRAME IS NOW THE HERO */
+.product-card{
+  animation:none!important;
+  clip-path:none!important;
+  border:1px solid rgba(0,246,255,.14)!important;
+  background:linear-gradient(145deg,rgba(7,27,41,.98),rgba(2,10,18,.99))!important;
+  box-shadow:0 18px 55px rgba(0,0,0,.42),inset 0 0 35px rgba(0,246,255,.025)!important;
+}
+.product-card::before,
+.product-card::after{
+  animation:none!important;
+  opacity:0!important;
+  box-shadow:none!important;
+}
+
+/* INNER VISUAL FRAME */
+.product-visual{
+  margin:10px!important;
+  min-height:260px;
+  border:1px solid color-mix(in srgb,var(--inner) 35%,transparent)!important;
+  border-radius:16px!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--inner) 13%,transparent),transparent 42%),
+    linear-gradient(145deg,rgba(0,246,255,.055),rgba(3,12,21,.72))!important;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.025),
+    0 0 22px color-mix(in srgb,var(--inner) 12%,transparent),
+    inset 0 0 30px color-mix(in srgb,var(--inner) 8%,transparent)!important;
+}
+.product-visual::before{
+  content:"";
+  position:absolute!important;
+  inset:14px!important;
+  width:auto!important;
+  height:auto!important;
+  border:1px solid color-mix(in srgb,var(--inner) 22%,transparent)!important;
+  border-radius:12px!important;
+  transform:none!important;
+  box-shadow:inset 0 0 22px color-mix(in srgb,var(--inner) 5%,transparent)!important;
+  animation:none!important;
+}
+.product-visual::after{
+  width:72%!important;
+  height:1px!important;
+  opacity:.65!important;
+  transform:translateY(-105px)!important;
+  animation:ecomaxInnerScan 4.8s ease-in-out infinite!important;
+  z-index:5!important;
+}
+
+/* Four luminous corner brackets */
+.product-visual .product-glow::before,
+.product-visual .product-glow::after{
+  content:"";
+  position:absolute;
+  width:34px;height:34px;
+  border-color:var(--inner);
+  opacity:.7;
+  z-index:6;
+}
+.product-visual .product-glow::before{
+  left:17px;top:17px;
+  border-left:1px solid;border-top:1px solid;
+}
+.product-visual .product-glow::after{
+  right:17px;bottom:17px;
+  border-right:1px solid;border-bottom:1px solid;
+}
+
+/* Bottle becomes the premium centerpiece */
+.product-bottle{
+  filter:
+    drop-shadow(0 0 8px rgba(255,255,255,.10))
+    drop-shadow(0 0 22px color-mix(in srgb,var(--inner) 30%,transparent))!important;
+  transform:translateZ(20px);
+}
+.product-label{
+  border-radius:10px!important;
+  backdrop-filter:blur(5px);
+}
+
+/* Inner technical status bar */
+.product-visual .product-label::before{
+  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--inner) 24%,transparent),rgba(255,255,255,.12),transparent)!important;
+  animation:ecomaxLabelPass 3.8s ease-in-out infinite!important;
+}
+
+/* Information panel separated from visual */
+.product-info{
+  margin:8px 10px 10px!important;
+  border:1px solid rgba(0,246,255,.13)!important;
+  border-radius:14px!important;
+  background:
+    linear-gradient(145deg,rgba(7,25,38,.82),rgba(2,10,17,.72))!important;
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.25),
+    inset 0 0 25px color-mix(in srgb,var(--inner) 4%,transparent)!important;
+}
+.product-info::after{
+  content:"";
+  position:absolute;
+  top:0;left:12%;right:12%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--inner),#fff,var(--inner2),transparent);
+  box-shadow:0 0 8px var(--inner);
+  opacity:.6;
+}
+
+/* Premium price/control modules */
+.product-info .price-row{
+  background:linear-gradient(100deg,color-mix(in srgb,var(--inner) 8%,transparent),rgba(1,8,14,.42),color-mix(in srgb,var(--inner2) 5%,transparent))!important;
+  border-color:color-mix(in srgb,var(--inner) 25%,transparent)!important;
+}
+.product-info select{
+  background:rgba(1,10,17,.72)!important;
+  border-color:color-mix(in srgb,var(--inner) 24%,transparent)!important;
+}
+.product-info .add-to-cart,
+.product-info button{
+  border:1px solid color-mix(in srgb,var(--inner) 38%,transparent)!important;
+  background:linear-gradient(100deg,color-mix(in srgb,var(--inner) 13%,transparent),rgba(3,12,21,.78),color-mix(in srgb,var(--inner2) 10%,transparent))!important;
+  box-shadow:0 0 12px color-mix(in srgb,var(--inner) 9%,transparent),inset 0 0 15px rgba(255,255,255,.025)!important;
+}
+
+/* Small inner telemetry marks */
+.product-info h3::after{
+  content:"  ● LIVE";
+  font-size:6px;
+  letter-spacing:1px;
+  color:color-mix(in srgb,var(--inner) 75%,white);
+  text-shadow:0 0 8px var(--inner);
+  vertical-align:middle;
+  margin-left:5px;
+}
+@keyframes ecomaxInnerScan{
+  0%,100%{transform:translateY(-105px);opacity:.05}
+  50%{transform:translateY(105px);opacity:.8}
+}
+@keyframes ecomaxLabelPass{
+  0%,55%{background-position:-180% 0}
+  90%,100%{background-position:180% 0}
+}
+@media(max-width:768px){
+  .product-visual{margin:7px!important;min-height:230px}
+  .product-info{margin:6px 7px 7px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .product-visual::after,.product-visual .product-label::before{animation:none!important}
+}
+</style>
 </body>
 </html>
