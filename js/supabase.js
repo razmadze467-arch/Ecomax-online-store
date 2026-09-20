@@ -6,10 +6,7 @@
   const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd';
   const STORAGE_KEY = 'ecomax-auth';
 
-  window.ECOMAX_SUPABASE = {
-    url: SUPABASE_URL,
-    key: SUPABASE_PUBLISHABLE_KEY
-  };
+  window.ECOMAX_SUPABASE = { url: SUPABASE_URL, key: SUPABASE_PUBLISHABLE_KEY };
 
   function boot() {
     if (!window.supabase || typeof window.supabase.createClient !== 'function') {
@@ -20,6 +17,7 @@
     if (window.ECOMAX_SUPABASE_CLIENT) {
       window.ECOMAX_AUTH_CLIENT = window.ECOMAX_SUPABASE_CLIENT;
       window.ECOMAX_AUTH_READY = Promise.resolve(window.ECOMAX_SUPABASE_CLIENT);
+      loadOrderUX();
       return;
     }
 
@@ -41,7 +39,6 @@
 
       window.ECOMAX_SUPABASE_CLIENT = client;
       window.ECOMAX_AUTH_CLIENT = client;
-
       window.ECOMAX_AUTH_READY = Promise.resolve(client);
 
       client.auth.getSession()
@@ -55,11 +52,22 @@
         window.ECOMAX_CURRENT_SESSION = session || null;
         window.ECOMAX_CURRENT_USER = session?.user || null;
       });
+
+      loadOrderUX();
     } catch (error) {
-      window.ECOMAX_SUPABASE_ERROR =
-        error?.message || String(error);
+      window.ECOMAX_SUPABASE_ERROR = error?.message || String(error);
       console.error('ECOMAX Supabase error:', error);
     }
+  }
+
+  function loadOrderUX() {
+    if (!/(^|\/)(account|admin)\.html$/i.test(location.pathname)) return;
+    if (document.querySelector('script[data-ecomax-order-ux]')) return;
+    const s = document.createElement('script');
+    s.src = 'js/order-tracking-ux.js?v=20260920-1';
+    s.async = false;
+    s.dataset.ecomaxOrderUx = '1';
+    (document.head || document.documentElement).appendChild(s);
   }
 
   boot();
