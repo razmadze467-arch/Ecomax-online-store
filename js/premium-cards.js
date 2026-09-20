@@ -1,18 +1,18 @@
-// ECOMAX — Premium Product Cards
-// Stable full-card neon racing circuit.
+// ECOMAX — Premium Product Cards V3
+// Cars run on the actual product-card border, not an inner/offset frame.
 // Visual layer only: does not replace cart, checkout or auth logic.
 
 (function () {
   "use strict";
 
-  if (window.__ECOMAX_PREMIUM_CARDS_V2__) return;
+  if (window.__ECOMAX_PREMIUM_CARDS_V3__) return;
   window.__ECOMAX_PREMIUM_CARDS_V2__ = true;
 
   const css = document.createElement("style");
-  css.id = "ecomaxPremiumCardsV2";
+  css.id = "ecomaxPremiumCardsV3";
 
   css.textContent = `
-    .pro-product-card{
+    .product-card, .pro-product-card{
       position:relative!important;
       isolation:isolate!important;
       overflow:visible!important;
@@ -33,7 +33,7 @@
     /* Full-card circuit container. */
     .ecomax-perimeter-cars{
       position:absolute!important;
-      inset:-24px!important;
+      inset:0!important;
       z-index:999999!important;
       display:block!important;
       visibility:visible!important;
@@ -111,18 +111,18 @@
     }
 
     /* Keep existing card contents above decorative layers. */
-    .pro-product-card > *:not(.ecomax-perimeter-cars){
+    .product-card, .pro-product-card > *:not(.ecomax-perimeter-cars){
       position:relative;
       z-index:2;
     }
 
     @media(max-width:700px){
-      .pro-product-card{
+      .product-card, .pro-product-card{
         border-radius:18px!important;
       }
 
       .ecomax-perimeter-cars{
-        inset:-16px!important;
+        inset:0!important;
       }
 
       .ecomax-perimeter-cars::before{
@@ -148,7 +148,7 @@
 
     @media(max-width:400px){
       .ecomax-perimeter-cars{
-        inset:-13px!important;
+        inset:0!important;
       }
 
       .ecomax-perimeter-car{
@@ -228,7 +228,7 @@
 
     let raf = 0;
     const speed = 72; // px/sec
-    const inset = 13;
+    const inset = 1;
     const radius = 22;
     const started = performance.now();
 
@@ -329,7 +329,7 @@
   }
 
   function scan(){
-    document.querySelectorAll(".pro-product-card").forEach(enhance);
+    document.querySelectorAll(".product-card, .pro-product-card").forEach(enhance);
   }
 
   function start(){
@@ -337,7 +337,8 @@
 
     const root =
       document.getElementById("productsGrid") ||
-      document.querySelector(".products-grid");
+      document.querySelector(".products-grid") ||
+      document.querySelector(".grid");
 
     if (root && "MutationObserver" in window && !root.dataset.ecomaxCircuitObserver){
       root.dataset.ecomaxCircuitObserver = "1";
