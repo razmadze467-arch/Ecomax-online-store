@@ -5,8 +5,8 @@
 (function () {
   "use strict";
 
-  if (window.__ECOMAX_PREMIUM_CARDS_V3__) return;
-  window.__ECOMAX_PREMIUM_CARDS_V2__ = true;
+  if (window.__ECOMAX_PREMIUM_CARDS_V4__) return;
+  window.__ECOMAX_PREMIUM_CARDS_V4__ = true;
 
   const css = document.createElement("style");
   css.id = "ecomaxPremiumCardsV3";
@@ -43,64 +43,30 @@
       overflow:visible!important;
     }
 
-    /* Two neon rails around the whole card. */
+    /* ONE race rail exactly on the product-card frame. */
     .ecomax-perimeter-cars::before{
       content:"";
       position:absolute;
-      inset:12px;
-      border:2px solid rgba(0,234,255,.58);
-      border-radius:32px;
+      inset:0;
+      border:2px solid rgba(0,234,255,.78);
+      border-radius:22px;
       box-shadow:
-        0 0 7px rgba(0,234,255,.95),
-        0 0 20px rgba(0,234,255,.52),
-        0 0 34px rgba(255,45,154,.28);
-      animation:ecomaxTrackGlow 2.4s ease-in-out infinite;
+        0 0 7px rgba(0,234,255,1),
+        0 0 18px rgba(0,234,255,.65),
+        0 0 30px rgba(255,45,154,.30);
+      animation:ecomaxTrackGlow 2.2s ease-in-out infinite;
+      box-sizing:border-box;
     }
 
     .ecomax-perimeter-cars::after{
       content:"";
       position:absolute;
-      inset:17px;
-      border:1px dashed rgba(255,45,154,.52);
-      border-radius:27px;
-      box-shadow:0 0 12px rgba(255,45,154,.25);
-      animation:ecomaxTrackDash 2s linear infinite;
+      inset:0;
+      border:1px solid rgba(255,45,154,.35);
+      border-radius:22px;
+      box-sizing:border-box;
+      pointer-events:none;
     }
-
-    .ecomax-perimeter-car{
-      position:absolute!important;
-      width:78px!important;
-      height:40px!important;
-      display:block!important;
-      visibility:visible!important;
-      opacity:1!important;
-      pointer-events:none!important;
-      will-change:left,top,transform;
-      transform-origin:center center;
-    }
-
-    .ecomax-perimeter-car svg{
-      display:block!important;
-      width:78px!important;
-      height:40px!important;
-      overflow:visible!important;
-      filter:
-        drop-shadow(0 0 4px currentColor)
-        drop-shadow(0 0 11px currentColor)
-        drop-shadow(0 0 22px currentColor);
-    }
-
-    .ecomax-perimeter-car.cyan{
-      color:#00f6ff;
-      /* position is driven by the perimeter runner below */
-    }
-
-    .ecomax-perimeter-car.pink{
-      color:#ff2d9a;
-      /* position is driven by the perimeter runner below */
-    }
-
-    /* Cars follow the real rounded card frame; JS calculates the path from the live card size. */
 
     @keyframes ecomaxTrackGlow{
       0%,100%{opacity:.62}
@@ -127,13 +93,13 @@
       }
 
       .ecomax-perimeter-cars::before{
-        inset:10px;
-        border-radius:25px;
+        inset:0;
+        border-radius:18px;
       }
 
       .ecomax-perimeter-cars::after{
-        inset:14px;
-        border-radius:21px;
+        inset:0;
+        border-radius:18px;
       }
 
       .ecomax-perimeter-car{
@@ -228,7 +194,7 @@
     ];
 
     let raf = 0;
-    const speed = 72; // px/sec
+    const speed = 58; // px/sec
     const inset = 1;
     const radius = 22;
     const started = performance.now();
@@ -241,7 +207,8 @@
         return;
       }
 
-      const r = Math.min(radius, Math.max(8, Math.min((w - inset*2)/2 - 1, (h - inset*2)/2 - 1)));
+      const cardRadius = parseFloat(getComputedStyle(card).borderTopLeftRadius) || radius;
+      const r = Math.min(cardRadius, Math.max(8, Math.min((w - inset*2)/2 - 1, (h - inset*2)/2 - 1)));
       const left = inset + r;
       const right = w - inset - r;
       const top = inset;
@@ -302,6 +269,7 @@
         if (!car.el) return;
         const direction = car.el.classList.contains("pink") ? -1 : 1;
         const p = pointAt((elapsed*speed*direction) + car.phase*perimeter);
+        // The car center is placed directly on the card frame; no inner orbit.
         car.el.style.left = p.x + "px";
         car.el.style.top = p.y + "px";
         car.el.style.transform = "translate(-50%,-50%) rotate("+((p.angle*180/Math.PI)+90)+"deg)";
