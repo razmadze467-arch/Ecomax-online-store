@@ -5144,7 +5144,7 @@ main,.footer{position:relative;z-index:1}
     opacity:1!important;
     animation-timing-function:linear!important;
     animation-iteration-count:infinite!important;
-    will-change:left,right!important;
+    will-change:translate,transform!important;
     filter:drop-shadow(0 0 6px currentColor) drop-shadow(0 0 14px currentColor)!important;
   }
   .ecomax-guaranteed-car.car1{
@@ -5225,26 +5225,29 @@ main,.footer{position:relative;z-index:1}
     transform:scaleX(-1)!important;
     animation:ecomaxRealCarB 6.2s ease-in-out infinite!important;
   }
-  /* Full 3D roaming: forward/back + left/right + up/down */
+  /* Each car sweeps across the FULL card.
+     Car 1: left -> right. Car 2: right -> left.
+     Up/down + forward/back are handled with translate/scale/rotate
+     so the facing transform never cancels the movement. */
   @keyframes ecomaxRealCarA{
-    0%{transform:translate3d(0,0,0) rotateZ(0deg) rotateY(0deg) scale(1)}
-    12%{transform:translate3d(42px,-10px,0) rotateZ(-3deg) rotateY(8deg) scale(1.03)}
-    25%{transform:translate3d(105px,8px,18px) rotateZ(4deg) rotateY(18deg) scale(1.08)}
-    38%{transform:translate3d(170px,-18px,5px) rotateZ(-4deg) rotateY(-12deg) scale(.98)}
-    52%{transform:translate3d(235px,12px,28px) rotateZ(5deg) rotateY(15deg) scale(1.12)}
-    66%{transform:translate3d(165px,25px,8px) rotateZ(-5deg) rotateY(-18deg) scale(1.02)}
-    80%{transform:translate3d(80px,-14px,22px) rotateZ(3deg) rotateY(12deg) scale(1.1)}
-    100%{transform:translate3d(0,0,0) rotateZ(0deg) rotateY(0deg) scale(1)}
+    0%{translate:0 0;scale:1;rotate:0deg}
+    10%{translate:12% -10px;scale:1.02;rotate:-3deg}
+    24%{translate:30% 8px;scale:1.10;rotate:4deg}
+    40%{translate:50% -18px;scale:.96;rotate:-4deg}
+    55%{translate:70% 12px;scale:1.14;rotate:5deg}
+    70%{translate:84% -12px;scale:1.02;rotate:-4deg}
+    88%{translate:94% 7px;scale:1.08;rotate:3deg}
+    100%{translate:calc(100% - 0px) 0;scale:1;rotate:0deg}
   }
   @keyframes ecomaxRealCarB{
-    0%{transform:scaleX(-1) translate3d(0,0,0) rotateZ(0deg) rotateY(0deg) scale(1)}
-    15%{transform:scaleX(-1) translate3d(-48px,14px,12px) rotateZ(4deg) rotateY(-10deg) scale(1.05)}
-    30%{transform:scaleX(-1) translate3d(-120px,-16px,26px) rotateZ(-5deg) rotateY(-18deg) scale(1.12)}
-    45%{transform:scaleX(-1) translate3d(-190px,8px,4px) rotateZ(4deg) rotateY(14deg) scale(.97)}
-    60%{transform:scaleX(-1) translate3d(-245px,-22px,30px) rotateZ(-4deg) rotateY(-15deg) scale(1.1)}
-    76%{transform:scaleX(-1) translate3d(-150px,20px,8px) rotateZ(5deg) rotateY(18deg) scale(1.02)}
-    88%{transform:scaleX(-1) translate3d(-70px,-10px,20px) rotateZ(-3deg) rotateY(-10deg) scale(1.08)}
-    100%{transform:scaleX(-1) translate3d(0,0,0) rotateZ(0deg) rotateY(0deg) scale(1)}
+    0%{translate:0 0;scale:1;rotate:0deg}
+    12%{translate:-12% 9px;scale:1.03;rotate:3deg}
+    27%{translate:-32% -12px;scale:1.10;rotate:-4deg}
+    43%{translate:-52% 15px;scale:.97;rotate:4deg}
+    58%{translate:-72% -18px;scale:1.14;rotate:-5deg}
+    73%{translate:-86% 10px;scale:1.02;rotate:4deg}
+    89%{translate:-95% -6px;scale:1.08;rotate:-3deg}
+    100%{translate:calc(-100% + 0px) 0;scale:1;rotate:0deg}
   }
 </style>
 <script>
