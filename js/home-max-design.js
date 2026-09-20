@@ -1089,7 +1089,7 @@
       const mo =
         new MutationObserver(() => {
           document
-            .querySelectorAll('.card')
+            .querySelectorAll('.card,.product-card')
             .forEach(addCardCars);
         });
 
@@ -1106,7 +1106,7 @@
        ========================================= */
 
     document
-      .querySelectorAll('.card')
+      .querySelectorAll('.card,.product-card')
       .forEach((card, index) => {
 
         card.style.setProperty(
