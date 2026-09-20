@@ -911,6 +911,14 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       </button>
 
       <button
+        onclick="showSection('couriers',this)"
+        type="button"
+      >
+        <span class="nav-icon">🚚</span>
+        <span class="nav-text">კურიერები</span>
+      </button>
+
+      <button
         onclick="showSection('analytics',this)"
         type="button"
       >
@@ -1298,6 +1306,35 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
     </section>
 
+
+    <!-- COURIERS -->
+    <section id="section-couriers" class="section">
+      <div class="card">
+        <div class="section-header">
+          <div>
+            <h2>🚚 კურიერების მართვა</h2>
+            <p style="color:var(--muted);font-size:12px;margin:6px 0 0">ახალი კურიერის განაცხადები და ECOMAX LINE-ზე დაშვება.</p>
+          </div>
+          <button class="small-btn" onclick="loadCourierApplications()" type="button">🔄 განახლება</button>
+        </div>
+        <div class="toolbar">
+          <select id="courierStatusFilter" class="field" onchange="renderCourierApplications()">
+            <option value="">ყველა განაცხადი</option>
+            <option value="pending">მოლოდინში</option>
+            <option value="approved">დამტკიცებული</option>
+            <option value="rejected">უარყოფილი</option>
+          </select>
+        </div>
+        <div class="table-scroll">
+          <table style="min-width:900px">
+            <thead><tr>
+              <th>კურიერი</th><th>ტელეფონი</th><th>ელფოსტა</th><th>სტატუსი</th><th>განაცხადი</th><th>მართვა</th>
+            </tr></thead>
+            <tbody id="courierApplicationsTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
     <!-- ANALYTICS -->
 
@@ -1866,13 +1903,12 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
 
     const titles = {
-
       dashboard: "Dashboard",
       orders: "შეკვეთები",
       products: "პროდუქტები",
       customers: "მომხმარებლები",
+      couriers: "კურიერები",
       analytics: "ანალიტიკა"
-
     };
 
 
@@ -1912,6 +1948,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       "orders",
       "products",
       "customers",
+      "couriers",
       "analytics"
     ];
 
@@ -1943,7 +1980,8 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       await Promise.all([
         loadOrders(),
         loadCustomers(),
-        loadProducts()
+        loadProducts(),
+        loadCourierApplications()
       ]);
 
 
@@ -1976,6 +2014,71 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
   }
 
+
+  /* ==========================================
+     COURIER MANAGEMENT
+  ========================================== */
+
+  let courierApplications = [];
+
+  async function loadCourierApplications() {
+    if (!db || !currentUser) return;
+    const {data,error} = await db.from("courier_applications")
+      .select("*").order("created_at",{ascending:false});
+    if(error){ console.error("Courier applications:",error); toast("კურიერების მონაცემები ვერ ჩაიტვირთა"); return; }
+    courierApplications = data || [];
+    renderCourierApplications();
+  }
+
+  function courierStatusName(s){
+    return {pending:"მოლოდინში",approved:"დამტკიცებული",rejected:"უარყოფილი"}[s] || s || "—";
+  }
+
+  function renderCourierApplications(){
+    const table=$("courierApplicationsTable");
+    if(!table) return;
+    const filter=$("courierStatusFilter")?.value || "";
+    const rows=courierApplications.filter(x=>!filter || x.status===filter);
+    if(!rows.length){
+      table.innerHTML='<tr><td colspan="6" style="text-align:center;color:#8da8b0;padding:30px">კურიერის განაცხადები ვერ მოიძებნა.</td></tr>';
+      return;
+    }
+    table.innerHTML=rows.map(app=>`
+      <tr>
+        <td><b>${esc(app.full_name)}</b><div style="color:#5f7b84;font-size:9px;margin-top:4px">${esc(app.user_id)}</div></td>
+        <td>${esc(app.phone)}</td>
+        <td>${esc(app.email)}</td>
+        <td><span class="badge ${app.status==='approved'?'completed':app.status==='rejected'?'cancelled':'processing'}">${esc(courierStatusName(app.status))}</span></td>
+        <td>${date(app.created_at)}</td>
+        <td>
+          ${app.status==='pending' ? `
+            <button class="small-btn" onclick="reviewCourier('${esc(app.id)}','approve')" type="button">✓ დამტკიცება</button>
+            <button class="small-btn danger" onclick="reviewCourier('${esc(app.id)}','reject')" type="button">× უარყოფა</button>
+          ` : app.status==='approved' ? '<span style="color:#65f2aa;font-size:11px">ECOMAX LINE დაშვებულია ✓</span>' : '<span style="color:#ff7188;font-size:11px">დახურული განაცხადი</span>'}
+        </td>
+      </tr>`).join("");
+  }
+
+  async function reviewCourier(applicationId,action){
+    const app=courierApplications.find(x=>x.id===applicationId);
+    if(!app) return;
+    const question=action==="approve"
+      ? "დავუშვათ ეს კურიერი ECOMAX LINE-ზე?"
+      : "უარვყოთ ეს კურიერის განაცხადი?";
+    if(!confirm(question+"\n\n"+app.full_name+"\n"+app.email)) return;
+    try{
+      const {data,error}=await db.functions.invoke("ecomax-courier-admin",{
+        body:{application_id:applicationId,action}
+      });
+      if(error) throw error;
+      if(!data?.ok) throw new Error(data?.error || "ოპერაცია ვერ შესრულდა");
+      toast(action==="approve" ? "კურიერი დამტკიცებულია ✓" : "განაცხადი უარყოფილია");
+      await loadCourierApplications();
+    }catch(error){
+      console.error("Courier review:",error);
+      toast("კურიერის მართვა ვერ მოხერხდა: "+(error.message||"უცნობი შეცდომა"));
+    }
+  }
 
   /* ==========================================
      ORDERS
