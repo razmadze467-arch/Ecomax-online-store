@@ -136,6 +136,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
   }
 
   function renderOrders(list){
+    window.__ECOMAX_ORDER_DATA=Object.fromEntries((list||[]).map(o=>[String(o.order_number||('ECX-'+String(o.id||'').slice(0,8).toUpperCase())),o]));
     if(!list.length){ordersEl.innerHTML='<div class="empty">შეკვეთები ჯერ არ გაქვს.</div>';return;}
     ordersEl.innerHTML=list.map(o=>{
       const items=Array.isArray(o.items)?o.items.map(i=>esc(i.name||i.product_name||'პროდუქტი')+' × '+esc(i.quantity||1)).join(' • '):'';
