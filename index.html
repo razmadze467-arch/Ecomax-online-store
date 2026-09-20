@@ -5151,6 +5151,7 @@ main,.footer{position:relative;z-index:1}
     left:0!important;
     top:6px!important;
     color:#00eaff!important;
+    translate:0 0;
     animation:ecomaxRealCarA 5.5s linear infinite!important;
   }
   .ecomax-guaranteed-car.car2{
@@ -5158,6 +5159,7 @@ main,.footer{position:relative;z-index:1}
     top:22px!important;
     color:#ff2bd6!important;
     transform:scaleX(-1)!important;
+    translate:0 0;
     animation:ecomaxRealCarB 6.2s linear infinite!important;
   }
   .ecomax-car-svg{
@@ -5190,20 +5192,38 @@ main,.footer{position:relative;z-index:1}
     filter:drop-shadow(0 0 3px #fff);
   }
   @keyframes ecomaxRealCarA{
-    0%{left:0}50%{left:calc(100% - 94px)}100%{left:0}
+    0%,100%{translate:0 0}
+    50%{translate:calc(100% - 94px) 0}
   }
   @keyframes ecomaxRealCarB{
-    0%{right:0}50%{right:calc(100% - 94px)}100%{right:0}
+    0%,100%{translate:0 0}
+    50%{translate:calc(100% - 94px) 0}
   }
   @media(max-width:620px){
     .ecomax-guaranteed-cars{top:136px!important;height:62px!important}
     .ecomax-guaranteed-car{width:76px!important;height:40px!important}
     @keyframes ecomaxRealCarA{
-      0%{left:0}50%{left:calc(100% - 78px)}100%{left:0}
+      0%,100%{translate:0 0}
+      50%{translate:calc(100% - 78px) 0}
     }
     @keyframes ecomaxRealCarB{
-      0%{right:0}50%{right:calc(100% - 78px)}100%{right:0}
+      0%,100%{translate:0 0}
+      50%{translate:calc(100% - 78px) 0}
     }
+  }
+</style>
+<style id="ecomax-car-motion-override">
+  .ecomax-guaranteed-car{
+    animation-play-state:running!important;
+  }
+  .ecomax-guaranteed-car.car1{
+    left:0!important;
+    animation:ecomaxRealCarA 5.5s linear infinite!important;
+  }
+  .ecomax-guaranteed-car.car2{
+    right:0!important;
+    transform:scaleX(-1)!important;
+    animation:ecomaxRealCarB 6.2s linear infinite!important;
   }
 </style>
 <script>
