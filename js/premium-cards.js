@@ -45,8 +45,11 @@
     .ecomax-mini-car .body:before{content:"";position:absolute;left:10px;top:-6px;width:19px;height:7px;border:1px solid var(--card-accent);border-bottom:0;border-radius:7px 7px 0 0;background:rgba(0,234,255,.08)}
     .ecomax-mini-car .wheel{position:absolute;bottom:0;width:5px;height:5px;border:1px solid #d9fbff;border-radius:50%;background:#02080d}.ecomax-mini-car .w1{left:8px}.ecomax-mini-car .w2{right:8px}
     .ecomax-mini-car .light{position:absolute;right:1px;bottom:6px;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px var(--card-accent)}
-    .ecomax-mini-car.one{left:-70px;top:4px;animation:ecomaxCardCarForward 4.2s linear infinite!important}
-    .ecomax-mini-car.two{left:calc(100% + 8px);bottom:3px;animation:ecomaxCardCarBackward 4.8s linear infinite!important}
+    .ecomax-mini-car.one{left:8px;top:4px;animation:ecomaxCardCarForward 4.2s linear infinite!important}
+    .ecomax-mini-car.two{left:auto;right:8px;bottom:3px;animation:ecomaxCardCarBackward 4.8s linear infinite!important}
+    /* STATIC FALLBACK — always visible even if animation is paused */
+    .ecomax-card-cars .one::after{content:"";position:absolute;left:2px;right:2px;bottom:-5px;height:2px;background:var(--card-accent);box-shadow:0 0 8px var(--card-accent);opacity:.7}
+    .ecomax-card-cars .two::after{content:"";position:absolute;left:2px;right:2px;bottom:-5px;height:2px;background:var(--card-accent);box-shadow:0 0 8px var(--card-accent);opacity:.7}
     @keyframes ecomaxCardCarForward{0%{left:-70px;opacity:1}8%{opacity:1}92%{opacity:1}100%{left:calc(100% + 8px);opacity:1}}
     @keyframes ecomaxCardCarBackward{0%{left:calc(100% + 8px);opacity:1}8%{opacity:1}92%{opacity:1}100%{left:-70px;opacity:1}}
 
