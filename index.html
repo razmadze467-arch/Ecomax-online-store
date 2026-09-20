@@ -5121,111 +5121,42 @@ main,.footer{position:relative;z-index:1}
 
 <!-- ECOMAX GUARANTEED PRODUCT CARD CARS -->
 <style id="ecomax-guaranteed-card-cars">
-  .product-card{position:relative!important}
-  .ecomax-guaranteed-cars{
-    position:absolute!important;
-    left:8px!important;right:8px!important;top:150px!important;
-    height:82px!important;z-index:999999!important;
-    pointer-events:none!important;display:block!important;
-    visibility:visible!important;opacity:1!important;overflow:visible!important;
-  }
-  .ecomax-guaranteed-car{
-    position:absolute!important;
-    width:82px!important;height:44px!important;
-    display:block!important;visibility:visible!important;opacity:1!important;
-    animation-iteration-count:infinite!important;
-    animation-timing-function:linear!important;
-    animation-play-state:running!important;
-    will-change:translate,scale!important;
-    filter:drop-shadow(0 0 5px currentColor) drop-shadow(0 0 12px currentColor)!important;
-  }
-  /* 4 cars go left -> right */
-  .ecomax-guaranteed-car.out{left:-90px!important;transform:none!important;animation-name:ecomaxConvoyOut!important;animation-duration:5.8s!important}
-  .ecomax-guaranteed-car.out.o1{top:2px!important;animation-delay:0s!important}
-  .ecomax-guaranteed-car.out.o2{top:18px!important;animation-delay:.16s!important}
-  .ecomax-guaranteed-car.out.o3{top:34px!important;animation-delay:.32s!important}
-  .ecomax-guaranteed-car.out.o4{top:50px!important;animation-delay:.48s!important}
-
-  /* 4 cars then come right -> left, so the flow never stops */
-  .ecomax-guaranteed-car.back{right:-90px!important;transform:scaleX(-1)!important;animation-name:ecomaxConvoyBack!important;animation-duration:5.8s!important}
-  .ecomax-guaranteed-car.back.b1{top:2px!important;animation-delay:2.9s!important}
-  .ecomax-guaranteed-car.back.b2{top:18px!important;animation-delay:3.06s!important}
-  .ecomax-guaranteed-car.back.b3{top:34px!important;animation-delay:3.22s!important}
-  .ecomax-guaranteed-car.back.b4{top:50px!important;animation-delay:3.38s!important}
-
-  .ecomax-car-svg{width:100%!important;height:100%!important;overflow:visible!important}
-  .ecomax-car-svg .body{fill:rgba(2,12,22,.94);stroke:currentColor;stroke-width:2}
-  .ecomax-car-svg .glass{fill:rgba(50,220,255,.18);stroke:currentColor;stroke-width:1.5}
-  .ecomax-car-svg .wheel{fill:#02060b;stroke:#fff;stroke-width:1.5}
-  .ecomax-car-svg .rim{fill:none;stroke:currentColor;stroke-width:1.5}
-  .ecomax-car-svg .light{fill:#fff;filter:drop-shadow(0 0 3px #fff)}
-
-  @keyframes ecomaxConvoyOut{
-    0%{translate:0 0;scale:.92;rotate:0deg;opacity:0}
-    7%{opacity:1}
-    22%{translate:25% -7px;scale:1.02;rotate:-2deg}
-    43%{translate:55% 7px;scale:1.10;rotate:2deg}
-    64%{translate:82% -6px;scale:1.00;rotate:-2deg}
-    93%{translate:calc(100vw - 120px) 4px;scale:.94;rotate:1deg;opacity:1}
-    100%{translate:calc(100vw - 10px) 0;scale:.88;rotate:0deg;opacity:0}
-  }
-  @keyframes ecomaxConvoyBack{
-    0%{translate:0 0;scale:.88;rotate:0deg;opacity:0}
-    7%{opacity:1}
-    22%{translate:-25% 7px;scale:1.02;rotate:2deg}
-    43%{translate:-55% -7px;scale:1.10;rotate:-2deg}
-    64%{translate:-82% 6px;scale:1.00;rotate:2deg}
-    93%{translate:calc(-100vw + 120px) -4px;scale:.94;rotate:-1deg;opacity:1}
-    100%{translate:calc(-100vw + 10px) 0;scale:.88;rotate:0deg;opacity:0}
-  }
-
-  @media(max-width:620px){
-    .ecomax-guaranteed-cars{top:132px!important;height:72px!important}
-    .ecomax-guaranteed-car{width:66px!important;height:36px!important}
-    .ecomax-guaranteed-car.out{left:-72px!important}
-    .ecomax-guaranteed-car.back{right:-72px!important}
-  }
+.product-card{position:relative!important}
+.ecomax-guaranteed-cars{position:absolute!important;inset:0!important;z-index:999999!important;pointer-events:none!important;overflow:hidden!important}
+.ecomax-guaranteed-car{position:absolute!important;width:54px!important;height:30px!important;display:block!important;visibility:visible!important;opacity:1!important;will-change:offset-distance!important;offset-rotate:auto!important;animation:emCarRound 8s linear infinite!important}
+.ecomax-guaranteed-car.out{left:0!important;top:0!important}
+.ecomax-guaranteed-car.back{left:0!important;top:0!important;animation-delay:4s!important}
+.ecomax-car-svg{width:100%!important;height:100%!important;overflow:visible!important}
+.ecomax-car-svg .body{fill:rgba(3,12,22,.95);stroke:currentColor;stroke-width:2}
+.ecomax-car-svg .glass{fill:rgba(50,220,255,.2);stroke:currentColor;stroke-width:1.4}
+.ecomax-car-svg .wheel{fill:#02060b;stroke:#fff;stroke-width:1.4}
+.ecomax-car-svg .rim{fill:none;stroke:currentColor;stroke-width:1.3}
+.ecomax-car-svg .light{fill:#fff;filter:drop-shadow(0 0 3px #fff)}
+.ecomax-guaranteed-car.out{color:#00f6ff;filter:drop-shadow(0 0 5px #00f6ff) drop-shadow(0 0 13px #7b4dff)!important}
+.ecomax-guaranteed-car.back{color:#ff2bd6;filter:drop-shadow(0 0 5px #ff2bd6) drop-shadow(0 0 13px #7b4dff)!important}
+@keyframes emCarRound{
+  0%{offset-distance:0%;opacity:0}
+  4%{opacity:1}
+  25%{offset-distance:25%;opacity:1}
+  50%{offset-distance:50%;opacity:1}
+  75%{offset-distance:75%;opacity:1}
+  96%{opacity:1}
+  100%{offset-distance:100%;opacity:0}
+}
+.ecomax-guaranteed-car.out{offset-path:inset(3px round 20px)}
+.ecomax-guaranteed-car.back{offset-path:inset(3px round 20px);animation-direction:reverse}
+@media(max-width:620px){
+ .ecomax-guaranteed-car{width:44px!important;height:25px!important}
+ .ecomax-guaranteed-car.out,.ecomax-guaranteed-car.back{offset-path:inset(2px round 16px)}
+}
 </style>
 <script>
 (function(){
-  function carSvg(color){
-    return '<svg class="ecomax-car-svg" viewBox="0 0 120 60" aria-hidden="true">' +
-      '<path class="body" d="M10 38 L16 29 Q20 27 29 27 L42 13 Q45 10 51 10 L79 10 Q85 10 89 15 L101 28 Q108 29 111 34 L113 43 L106 43 Q104 50 97 50 Q90 50 88 43 L34 43 Q32 50 25 50 Q18 50 16 43 L9 43 Z"/>' +
-      '<path class="glass" d="M45 13 L54 13 L54 26 L34 26 L42 15 Q43 13 45 13 Z"/>' +
-      '<path class="glass" d="M58 13 L78 13 Q83 13 87 18 L94 26 L58 26 Z"/>' +
-      '<path class="light" d="M102 32 L110 34 L111 38 L103 38 Z"/>' +
-      '<circle class="wheel" cx="25" cy="42" r="7"/><circle class="rim" cx="25" cy="42" r="3"/>' +
-      '<circle class="wheel" cx="97" cy="42" r="7"/><circle class="rim" cx="97" cy="42" r="3"/>' +
-      '<path d="M14 34 L23 34" stroke="currentColor" stroke-width="2"/>' +
-      '<path d="M89 30 L99 30" stroke="currentColor" stroke-width="2"/>' +
-      '</svg>';
-  }
-  function mount(){
-    document.querySelectorAll('.product-card').forEach(function(card){
-      if(card.querySelector(':scope > .ecomax-guaranteed-cars')) return;
-      var wrap=document.createElement('div');
-      wrap.className='ecomax-guaranteed-cars';
-      wrap.setAttribute('aria-hidden','true');
-      ['o1','o2','o3','o4'].forEach(function(n,i){
-        var a=document.createElement('span');
-        a.className='ecomax-guaranteed-car out '+n;
-        a.innerHTML=carSvg();
-        wrap.appendChild(a);
-      });
-      ['b1','b2','b3','b4'].forEach(function(n,i){
-        var b=document.createElement('span');
-        b.className='ecomax-guaranteed-car back '+n;
-        b.innerHTML=carSvg();
-        wrap.appendChild(b);
-      });
-      card.appendChild(wrap);
-    });
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',mount,{once:true});
-  else mount();
-  [200,700,1500,3000].forEach(function(t){window.setTimeout(mount,t);});
-  var grid=document.getElementById('productsGrid');
-  if(grid && window.MutationObserver) new MutationObserver(mount).observe(grid,{childList:true,subtree:true});
+function carSvg(){return '<svg class="ecomax-car-svg" viewBox="0 0 120 60" aria-hidden="true"><path class="body" d="M10 38 L16 29 Q20 27 29 27 L42 13 Q45 10 51 10 L79 10 Q85 10 89 15 L101 28 Q108 29 111 34 L113 43 L106 43 Q104 50 97 50 Q90 50 88 43 L34 43 Q32 50 25 50 Q18 50 16 43 L9 43 Z"/><path class="glass" d="M45 13 L54 13 L54 26 L34 26 L42 15 Q43 13 45 13 Z"/><path class="glass" d="M58 13 L78 13 Q83 13 87 18 L94 26 L58 26 Z"/><path class="light" d="M102 32 L110 34 L111 38 L103 38 Z"/><circle class="wheel" cx="25" cy="42" r="7"/><circle class="rim" cx="25" cy="42" r="3"/><circle class="wheel" cx="97" cy="42" r="7"/><circle class="rim" cx="97" cy="42" r="3"/></svg>'}
+function mount(){document.querySelectorAll('.product-card').forEach(function(card){if(card.querySelector(':scope > .ecomax-guaranteed-cars'))return;var w=document.createElement('div');w.className='ecomax-guaranteed-cars';['out','back'].forEach(function(n){var s=document.createElement('span');s.className='ecomax-guaranteed-car '+n;s.innerHTML=carSvg();w.appendChild(s)});card.appendChild(w)})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
+[200,700,1500,3000].forEach(function(t){setTimeout(mount,t)});
+var g=document.getElementById('productsGrid');if(g&&window.MutationObserver)new MutationObserver(mount).observe(g,{childList:true,subtree:true});
 })();
 </script>
 
