@@ -2706,6 +2706,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
             <option value="">კურიერის არჩევა...</option>
           </select>
           <button class="primary" type="button" onclick="assignOrderCourier('${esc(order.id)}')">🚚 მინიჭება</button>
+          <button class="small-btn danger" type="button" onclick="unassignOrderCourier('${esc(order.id)}')">✕ მოხსნა</button>
         </div>
         <div id="orderCourierCurrent" style="margin-top:8px;color:var(--muted);font-size:11px"></div>
       </div>
@@ -2770,6 +2771,27 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       toast("კურიერის მინიჭება ვერ მოხერხდა: " + (error.message || "უცნობი შეცდომა"));
     }
   }
+
+  async function unassignOrderCourier(orderId) {
+    if (!confirm("ამ შეკვეთიდან კურიერი მოვხსნათ?")) return;
+    try {
+      const { data, error } = await db.rpc("ecomax_unassign_order_courier", { p_order_id: orderId });
+      if (error) throw error;
+      const updated = Array.isArray(data) ? data[0] : data;
+      const order = orders.find(x => String(x.id) === String(orderId));
+      if (order && updated) Object.assign(order, updated);
+      renderOrders();
+      renderRecentOrders();
+      updateDashboard();
+      const current = $("orderCourierCurrent");
+      if (current) current.textContent = "კურიერი მოხსნილია";
+      toast("კურიერი შეკვეთიდან მოიხსნა ✓");
+    } catch (error) {
+      console.error("Unassign courier:", error);
+      toast("კურიერის მოხსნა ვერ მოხერხდა: " + (error.message || "უცნობი შეცდომა"));
+    }
+  }
+
 
   /* ==========================================
      ORDER MODAL
