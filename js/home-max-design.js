@@ -512,6 +512,7 @@
       .ecomax-real-car.car-a{
         left:8px !important;
         top:4px !important;
+        animation:mxCardCarA 6s linear infinite !important;
       }
 
       .ecomax-real-car.car-b{
@@ -519,6 +520,7 @@
         bottom:2px !important;
         color:#ff2d9a !important;
         transform:scaleX(-1) !important;
+        animation:mxCardCarB 6.8s linear infinite !important;
       }
 
       .ecomax-real-car .rc-body{
@@ -685,6 +687,22 @@
       /* =========================================
          ANIMATIONS
          ========================================= */
+
+      @keyframes mxCardCarA{
+        0%{left:8px;opacity:.15}
+        8%{opacity:1}
+        50%{left:calc(100% - 78px);opacity:1}
+        92%{opacity:1}
+        100%{left:8px;opacity:.15}
+      }
+
+      @keyframes mxCardCarB{
+        0%{right:8px;opacity:.15}
+        8%{opacity:1}
+        50%{right:calc(100% - 78px);opacity:1}
+        92%{opacity:1}
+        100%{right:8px;opacity:.15}
+      }
 
       @keyframes mxBottle{
         0%,100%{
