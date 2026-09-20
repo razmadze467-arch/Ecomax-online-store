@@ -1,174 +1,281 @@
-// ECOMAX — Premium Product Cards V5
-// Cars run on the actual product-card border, not an inner/offset frame.
-// Visual layer only: does not replace cart, checkout or auth logic.
+/* =========================================================
+   ECOMAX — PREMIUM CARD PERIMETER CARS
+   Version: 2026-09-21-FINAL
+   ========================================================= */
 
-(function () {
+(() => {
   "use strict";
 
-  if (window.__ECOMAX_PREMIUM_CARDS_V5__) return;
-  window.__ECOMAX_PREMIUM_CARDS_V4__ = true;
+  if (window.__ECOMAX_PREMIUM_PERIMETER_CARS__) return;
+  window.__ECOMAX_PREMIUM_PERIMETER_CARS__ = true;
 
-  const css = document.createElement("style");
-  css.id = "ecomaxPremiumCardsV5";
+  /* ---------------------------------------------------------
+     CSS
+     --------------------------------------------------------- */
 
-  css.textContent = `
-    .product-card, .pro-product-card{
-      position:relative!important;
-      isolation:isolate!important;
-      overflow:visible!important;
-      border-radius:22px!important;
-    }
-
-    /* Disable every previous small/old car system. */
+  const css = `
+    /* Hide all old car systems */
     .ecomax-orbit-cars,
     .ecomax-static-cars,
     .ecomax-card-cars,
     .ecomax-static-car,
     .ecomax-mini-car,
-    .ecomax-card-road{
-      display:none!important;
-      visibility:hidden!important;
-      opacity:0!important;
+    .ecomax-card-road {
+      display:none !important;
+      visibility:hidden !important;
+      pointer-events:none !important;
     }
 
-    /* Full-card circuit container. */
-    .ecomax-perimeter-cars{
-      position:absolute!important;
-      inset:0!important;
-      z-index:999999!important;
-      display:block!important;
-      visibility:visible!important;
-      opacity:1!important;
-      pointer-events:none!important;
-      overflow:visible!important;
+    /* Card itself */
+    .product-card,
+    .pro-product-card {
+      position:relative !important;
+      overflow:hidden !important;
+      isolation:isolate !important;
     }
 
-    /* ONE race rail exactly on the product-card frame. */
-    .ecomax-perimeter-cars::before{
+    /* Neon frame */
+    .product-card::before,
+    .pro-product-card::before {
       content:"";
       position:absolute;
       inset:0;
-      border:2px solid rgba(0,234,255,.78);
+      border:1.5px solid rgba(0,245,255,.72);
       border-radius:22px;
-      box-shadow:
-        0 0 7px rgba(0,234,255,1),
-        0 0 18px rgba(0,234,255,.65),
-        0 0 30px rgba(255,45,154,.30);
-      animation:ecomaxTrackGlow 2.2s ease-in-out infinite;
-      box-sizing:border-box;
-    }
-
-    .ecomax-perimeter-cars::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      border:1px solid rgba(255,45,154,.35);
-      border-radius:22px;
-      box-sizing:border-box;
       pointer-events:none;
+      z-index:20;
+      box-shadow:
+        0 0 7px rgba(0,245,255,.25),
+        inset 0 0 7px rgba(0,245,255,.08);
     }
 
-    @keyframes ecomaxTrackGlow{
-      0%,100%{opacity:.62}
-      50%{opacity:1}
+    .product-card::after,
+    .pro-product-card::after {
+      content:"";
+      position:absolute;
+      inset:0;
+      border:1px solid rgba(255,45,180,.18);
+      border-radius:22px;
+      pointer-events:none;
+      z-index:19;
+      box-shadow:
+        0 0 18px rgba(255,45,180,.08);
     }
 
-    @keyframes ecomaxTrackDash{
-      to{transform:rotate(360deg)}
+    /* Car track layer */
+    .ecomax-perimeter-cars {
+      position:absolute !important;
+      inset:0 !important;
+      width:100% !important;
+      height:100% !important;
+      pointer-events:none !important;
+      z-index:999999 !important;
+      overflow:visible !important;
     }
 
-    /* Keep existing card contents above decorative layers. */
-    .product-card > *:not(.ecomax-perimeter-cars), .pro-product-card > *:not(.ecomax-perimeter-cars){
-      position:relative;
-      z-index:2;
+    /* Individual car */
+    .ecomax-perimeter-car {
+      position:absolute !important;
+      left:0 !important;
+      top:0 !important;
+
+      width:34px !important;
+      height:18px !important;
+
+      transform-origin:50% 50% !important;
+
+      pointer-events:none !important;
+      user-select:none !important;
+
+      will-change:transform;
+
+      filter:
+        drop-shadow(0 0 3px currentColor)
+        drop-shadow(0 0 7px currentColor);
+
+      z-index:999999 !important;
     }
 
-    @media(max-width:700px){
-      .product-card, .pro-product-card{
-        border-radius:18px!important;
-      }
+    .ecomax-perimeter-car.cyan {
+      color:#00f5ff;
+    }
 
-      .ecomax-perimeter-cars{
-        inset:0!important;
-      }
+    .ecomax-perimeter-car.pink {
+      color:#ff35d0;
+    }
 
-      .ecomax-perimeter-cars::before{
-        inset:0;
+    @media (max-width:700px){
+
+      .product-card::before,
+      .pro-product-card::before {
         border-radius:18px;
       }
 
-      .ecomax-perimeter-cars::after{
-        inset:0;
+      .product-card::after,
+      .pro-product-card::after {
         border-radius:18px;
       }
 
-      .ecomax-perimeter-car{
-        width:58px!important;
-        height:32px!important;
-      }
-
-      .ecomax-perimeter-car svg{
-        width:58px!important;
-        height:32px!important;
-      }
-    }
-
-    @media(max-width:400px){
-      .ecomax-perimeter-cars{
-        inset:0!important;
-      }
-
-      .ecomax-perimeter-car{
-        width:50px!important;
-        height:28px!important;
-      }
-
-      .ecomax-perimeter-car svg{
-        width:50px!important;
-        height:28px!important;
-      }
-    }
-
-    @media(prefers-reduced-motion:reduce){
-      .ecomax-perimeter-car,
-      .ecomax-perimeter-cars::before,
-      .ecomax-perimeter-cars::after{
-        animation:none!important;
+      .ecomax-perimeter-car {
+        width:30px !important;
+        height:16px !important;
       }
     }
   `;
 
-  (document.head || document.documentElement).appendChild(css);
+  const style = document.createElement("style");
+  style.id = "ecomax-premium-perimeter-style";
+  style.textContent = css;
+  document.head.appendChild(style);
 
-  function carSVG(type){
-    const pink = type === "pink";
-    const body = pink ? "rgba(28,3,18,.98)" : "rgba(3,18,27,.98)";
-    const glass = pink ? "rgba(255,45,154,.22)" : "rgba(0,246,255,.22)";
+
+  /* ---------------------------------------------------------
+     SVG CAR
+     --------------------------------------------------------- */
+
+  function carSVG(type) {
+
+    const color =
+      type === "pink"
+        ? "#ff35d0"
+        : "#00f5ff";
 
     return `
-      <svg viewBox="0 0 164 84" aria-hidden="true" focusable="false">
-        <path d="M14 52H150c6 0 9-4 9-9v-6h-20l-17-20H61L43 37H14C8 37 4 42 4 47v2c0 2 2 3 5 3Z"
-          fill="${body}" stroke="currentColor" stroke-width="4"/>
-        <path d="M55 36h62l-13-15H68Z"
-          fill="${glass}" stroke="currentColor" stroke-width="3"/>
-        <path d="M87 22v13" stroke="currentColor" stroke-width="2"/>
-        <path d="M150 32h8" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-        <path d="M8 43h16" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-        <circle cx="43" cy="55" r="12" fill="#03080d" stroke="#fff" stroke-width="3"/>
-        <circle cx="122" cy="55" r="12" fill="#03080d" stroke="#fff" stroke-width="3"/>
-        <circle cx="43" cy="55" r="4" fill="currentColor"/>
-        <circle cx="122" cy="55" r="4" fill="currentColor"/>
-        <path d="M28 65h110" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 100 52"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+
+        <!-- glow body -->
+        <path
+          d="
+            M7 31
+            L15 22
+            L31 22
+            L42 12
+            L70 12
+            L83 22
+            L91 24
+            L95 32
+            L93 38
+            L7 38
+            Z
+          "
+          fill="${color}"
+          fill-opacity=".13"
+          stroke="${color}"
+          stroke-width="2.4"
+          stroke-linejoin="round"
+        />
+
+        <!-- windshield -->
+        <path
+          d="
+            M43 14
+            L53 14
+            L53 22
+            L36 22
+            Z
+          "
+          fill="${color}"
+          fill-opacity=".28"
+          stroke="${color}"
+          stroke-width="1"
+        />
+
+        <path
+          d="
+            M56 14
+            L69 14
+            L78 22
+            L56 22
+            Z
+          "
+          fill="${color}"
+          fill-opacity=".22"
+          stroke="${color}"
+          stroke-width="1"
+        />
+
+        <!-- headlights -->
+        <circle
+          cx="91"
+          cy="29"
+          r="2"
+          fill="#ffffff"
+        />
+
+        <circle
+          cx="91"
+          cy="29"
+          r="4"
+          fill="${color}"
+          fill-opacity=".25"
+        />
+
+        <!-- wheels -->
+        <circle
+          cx="26"
+          cy="38"
+          r="7"
+          fill="#050810"
+          stroke="${color}"
+          stroke-width="2"
+        />
+
+        <circle
+          cx="26"
+          cy="38"
+          r="2.2"
+          fill="${color}"
+        />
+
+        <circle
+          cx="76"
+          cy="38"
+          r="7"
+          fill="#050810"
+          stroke="${color}"
+          stroke-width="2"
+        />
+
+        <circle
+          cx="76"
+          cy="38"
+          r="2.2"
+          fill="${color}"
+        />
+
+        <!-- neon underglow -->
+        <path
+          d="M17 43 L84 43"
+          stroke="${color}"
+          stroke-width="2"
+          stroke-linecap="round"
+          opacity=".8"
+        />
+
       </svg>
     `;
   }
 
-  function addCircuit(card){
-    if (!card || card.querySelector(".ecomax-perimeter-cars")) return;
 
-    const circuit = document.createElement("div");
-    circuit.className = "ecomax-perimeter-cars";
-    circuit.setAttribute("aria-hidden","true");
+  /* ---------------------------------------------------------
+     CREATE CARS
+     --------------------------------------------------------- */
+
+  function createCars(card) {
+
+    if (!card || card.dataset.ecomaxCarsReady === "1") {
+      return;
+    }
+
+    card.dataset.ecomaxCarsReady = "1";
+
+    const layer = document.createElement("div");
+    layer.className = "ecomax-perimeter-cars";
 
     const cyan = document.createElement("div");
     cyan.className = "ecomax-perimeter-car cyan";
@@ -178,228 +285,451 @@
     pink.className = "ecomax-perimeter-car pink";
     pink.innerHTML = carSVG("pink");
 
-    circuit.appendChild(cyan);
-    circuit.appendChild(pink);
-    card.appendChild(circuit);
+    layer.appendChild(cyan);
+    layer.appendChild(pink);
+
+    card.appendChild(layer);
+
+    startPerimeterAnimation(card, cyan, pink);
   }
 
-  function runPerimeter(card){
-    const circuit = card && card.querySelector(".ecomax-perimeter-cars");
-    if (!circuit || circuit.dataset.runnerStarted) return;
-    circuit.dataset.runnerStarted = "1";
 
-    const cars = [
-      { el: circuit.querySelector(".ecomax-perimeter-car.cyan"), phase: 0 },
-      { el: circuit.querySelector(".ecomax-perimeter-car.pink"), phase: .5 }
-    ];
+  /* ---------------------------------------------------------
+     BORDER RADIUS
+     --------------------------------------------------------- */
 
-    let raf = 0;
-    const speed = 55; // px/sec
-    const inset = 1;
-    const radius = 22;
-    const started = performance.now();
+  function getRadius(card, width, height) {
 
-    function frame(now){
-      const w = circuit.clientWidth;
-      const h = circuit.clientHeight;
+    const style = getComputedStyle(card);
 
-      if (w < 40 || h < 40){
-        raf = requestAnimationFrame(frame);
+    let radius = parseFloat(style.borderTopLeftRadius);
+
+    if (!Number.isFinite(radius)) {
+      radius = 20;
+    }
+
+    /*
+      Keep radius inside valid bounds.
+    */
+    const maxRadius = Math.min(width, height) / 2;
+
+    return Math.max(
+      4,
+      Math.min(radius, maxRadius - 1)
+    );
+  }
+
+
+  /* ---------------------------------------------------------
+     ROUNDED RECTANGLE PATH
+     --------------------------------------------------------- */
+
+  function pointAt(card, distance) {
+
+    const rect = card.getBoundingClientRect();
+
+    const width = rect.width;
+    const height = rect.height;
+
+    if (width < 10 || height < 10) {
+      return {
+        x: width / 2,
+        y: height / 2,
+        angle: 0,
+        length: 1
+      };
+    }
+
+    /*
+      Border centerline.
+
+      The CSS border is around the card.
+      We use a 1px inset so the car sits
+      directly on the visible neon frame.
+    */
+
+    const inset = 1.2;
+
+    const left = inset;
+    const top = inset;
+    const right = width - inset;
+    const bottom = height - inset;
+
+    const radius = getRadius(card, width, height);
+
+    const r = Math.min(
+      radius,
+      (right - left) / 2 - 1,
+      (bottom - top) / 2 - 1
+    );
+
+    const straightTop = right - left - 2 * r;
+    const straightRight = bottom - top - 2 * r;
+
+    const arcLength = Math.PI * r / 2;
+
+    /*
+      Total perimeter:
+      top straight
+      top-right arc
+      right straight
+      bottom-right arc
+      bottom straight
+      bottom-left arc
+      left straight
+      top-left arc
+    */
+
+    const perimeter =
+      straightTop +
+      arcLength +
+      straightRight +
+      arcLength +
+      straightTop +
+      arcLength +
+      straightRight +
+      arcLength;
+
+    let d =
+      ((distance % perimeter) + perimeter) %
+      perimeter;
+
+
+    /* =========================
+       1. TOP
+       ========================= */
+
+    if (d <= straightTop) {
+
+      return {
+        x: left + r + d,
+        y: top,
+        angle: 0,
+        length: perimeter
+      };
+    }
+
+    d -= straightTop;
+
+
+    /* =========================
+       2. TOP RIGHT CORNER
+       ========================= */
+
+    if (d <= arcLength) {
+
+      const a =
+        -Math.PI / 2 +
+        d / r;
+
+      const cx = right - r;
+      const cy = top + r;
+
+      return {
+        x: cx + Math.cos(a) * r,
+        y: cy + Math.sin(a) * r,
+        angle: a + Math.PI / 2,
+        length: perimeter
+      };
+    }
+
+    d -= arcLength;
+
+
+    /* =========================
+       3. RIGHT
+       ========================= */
+
+    if (d <= straightRight) {
+
+      return {
+        x: right,
+        y: top + r + d,
+        angle: Math.PI / 2,
+        length: perimeter
+      };
+    }
+
+    d -= straightRight;
+
+
+    /* =========================
+       4. BOTTOM RIGHT CORNER
+       ========================= */
+
+    if (d <= arcLength) {
+
+      const a =
+        d / r;
+
+      const cx = right - r;
+      const cy = bottom - r;
+
+      return {
+        x: cx + Math.cos(a) * r,
+        y: cy + Math.sin(a) * r,
+        angle: a + Math.PI / 2,
+        length: perimeter
+      };
+    }
+
+    d -= arcLength;
+
+
+    /* =========================
+       5. BOTTOM
+       ========================= */
+
+    if (d <= straightTop) {
+
+      return {
+        x: right - r - d,
+        y: bottom,
+        angle: Math.PI,
+        length: perimeter
+      };
+    }
+
+    d -= straightTop;
+
+
+    /* =========================
+       6. BOTTOM LEFT CORNER
+       ========================= */
+
+    if (d <= arcLength) {
+
+      const a =
+        Math.PI / 2 +
+        d / r;
+
+      const cx = left + r;
+      const cy = bottom - r;
+
+      return {
+        x: cx + Math.cos(a) * r,
+        y: cy + Math.sin(a) * r,
+        angle: a + Math.PI / 2,
+        length: perimeter
+      };
+    }
+
+    d -= arcLength;
+
+
+    /* =========================
+       7. LEFT
+       ========================= */
+
+    if (d <= straightRight) {
+
+      return {
+        x: left,
+        y: bottom - r - d,
+        angle: -Math.PI / 2,
+        length: perimeter
+      };
+    }
+
+    d -= straightRight;
+
+
+    /* =========================
+       8. TOP LEFT CORNER
+       ========================= */
+
+    const a =
+      Math.PI +
+      d / r;
+
+    const cx = left + r;
+    const cy = top + r;
+
+    return {
+      x: cx + Math.cos(a) * r,
+      y: cy + Math.sin(a) * r,
+      angle: a + Math.PI / 2,
+      length: perimeter
+    };
+  }
+
+
+  /* ---------------------------------------------------------
+     ANIMATION
+     --------------------------------------------------------- */
+
+  function startPerimeterAnimation(card, cyan, pink) {
+
+    let startTime = performance.now();
+
+    /*
+      Speed in pixels/second.
+      Lower = slower.
+    */
+    const speed = 48;
+
+    /*
+      Second car is offset by roughly half
+      of the perimeter so they remain separated.
+    */
+
+    function animate(now) {
+
+      if (!document.documentElement.contains(card)) {
         return;
       }
 
-      /*
-       * True rounded-rectangle track:
-       * the car center follows the exact centerline of the card border.
-       * No diagonal shortcuts, no inner orbit, no jumping at corners.
-       */
-      const cs = getComputedStyle(card);
-      const cardRadius = parseFloat(cs.borderTopLeftRadius) || 22;
+      const rect = card.getBoundingClientRect();
 
-      const x0 = 1;
-      const y0 = 1;
-      const x1 = w - 1;
-      const y1 = h - 1;
-
-      const maxR = Math.min((x1-x0)/2, (y1-y0)/2);
-      const r = Math.min(cardRadius, Math.max(6, maxR - 1));
-
-      const topY = y0;
-      const rightX = x1;
-      const bottomY = y1;
-      const leftX = x0;
-
-      const cxL = leftX + r;
-      const cxR = rightX - r;
-      const cyT = topY + r;
-      const cyB = bottomY - r;
-
-      const topLen = Math.max(0, cxR - cxL);
-      const sideLen = Math.max(0, cyB - cyT);
-      const cornerLen = Math.PI * r / 2;
-      const perimeter = 2 * topLen + 2 * sideLen + 4 * cornerLen;
-
-      function pointAt(distance){
-        let d = ((distance % perimeter) + perimeter) % perimeter;
-
-        // TOP — left to right
-        if (d < topLen){
-          return {
-            x: cxL + d,
-            y: topY,
-            angle: 0
-          };
-        }
-        d -= topLen;
-
-        // TOP-RIGHT rounded corner
-        if (d < cornerLen){
-          const a = -Math.PI/2 + d/r;
-          return {
-            x: cxR + r*Math.cos(a),
-            y: cyT + r*Math.sin(a),
-            angle: a + Math.PI/2
-          };
-        }
-        d -= cornerLen;
-
-        // RIGHT — top to bottom
-        if (d < sideLen){
-          return {
-            x: rightX,
-            y: cyT + d,
-            angle: Math.PI/2
-          };
-        }
-        d -= sideLen;
-
-        // BOTTOM-RIGHT rounded corner
-        if (d < cornerLen){
-          const a = d/r;
-          return {
-            x: cxR + r*Math.cos(a),
-            y: cyB + r*Math.sin(a),
-            angle: a + Math.PI/2
-          };
-        }
-        d -= cornerLen;
-
-        // BOTTOM — right to left
-        if (d < topLen){
-          return {
-            x: cxR - d,
-            y: bottomY,
-            angle: Math.PI
-          };
-        }
-        d -= topLen;
-
-        // BOTTOM-LEFT rounded corner
-        if (d < cornerLen){
-          const a = Math.PI/2 + d/r;
-          return {
-            x: cxL + r*Math.cos(a),
-            y: cyB + r*Math.sin(a),
-            angle: a + Math.PI/2
-          };
-        }
-        d -= cornerLen;
-
-        // LEFT — bottom to top
-        if (d < sideLen){
-          return {
-            x: leftX,
-            y: cyB - d,
-            angle: -Math.PI/2
-          };
-        }
-        d -= sideLen;
-
-        // TOP-LEFT rounded corner
-        const a = Math.PI + d/r;
-        return {
-          x: cxL + r*Math.cos(a),
-          y: cyT + r*Math.sin(a),
-          angle: a + Math.PI/2
-        };
+      if (rect.width < 20 || rect.height < 20) {
+        requestAnimationFrame(animate);
+        return;
       }
 
-      const elapsed = (now - started) / 1000;
+      const elapsed =
+        (now - startTime) / 1000;
 
-      cars.forEach(car => {
-        if (!car.el) return;
+      const perimeterInfo =
+        pointAt(card, 0);
 
-        const direction =
-          car.el.classList.contains("pink") ? -1 : 1;
+      const perimeter =
+        perimeterInfo.length;
 
-        const p = pointAt(
-          elapsed * speed * direction +
-          car.phase * perimeter
+      /*
+        Cyan:
+        clockwise
+      */
+      const cyanDistance =
+        (elapsed * speed) % perimeter;
+
+      /*
+        Pink:
+        counter-clockwise
+        with approximately half-track offset
+      */
+      const pinkDistance =
+        perimeter -
+        (
+          (elapsed * speed * 0.82 +
+            perimeter * 0.50) %
+          perimeter
         );
 
-        car.el.style.left = p.x + "px";
-        car.el.style.top = p.y + "px";
+      const c =
+        pointAt(card, cyanDistance);
 
-        // Keep the car tangent to the track while it rounds corners.
-        car.el.style.transform =
-          "translate(-50%,-50%) rotate(" +
-          ((p.angle * 180 / Math.PI) + 90) +
-          "deg)";
+      const p =
+        pointAt(card, pinkDistance);
+
+
+      /*
+        Car SVG points to the RIGHT by default.
+        Therefore rotate according to tangent.
+      */
+
+      cyan.style.transform =
+        `translate3d(
+          ${c.x}px,
+          ${c.y}px,
+          0
+        )
+        translate(-50%, -50%)
+        rotate(${c.angle}rad)`;
+
+
+      pink.style.transform =
+        `translate3d(
+          ${p.x}px,
+          ${p.y}px,
+          0
+        )
+        translate(-50%, -50%)
+        rotate(${p.angle}rad)`;
+
+
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+
+  /* ---------------------------------------------------------
+     SCAN CARDS
+     --------------------------------------------------------- */
+
+  function scanCards() {
+
+    const cards =
+      document.querySelectorAll(
+        ".product-card, .pro-product-card"
+      );
+
+    cards.forEach(createCars);
+  }
+
+
+  /* ---------------------------------------------------------
+     INITIAL LOAD
+     --------------------------------------------------------- */
+
+  function init() {
+
+    scanCards();
+
+    /*
+      Product cards may be rendered later
+      by JavaScript, so observe DOM changes.
+    */
+
+    const observer =
+      new MutationObserver(() => {
+
+        scanCards();
+
       });
 
-      raf = requestAnimationFrame(frame);
-    }
-    const stop = () => {
-      if (document.hidden){
-        cancelAnimationFrame(raf);
-      } else {
-        raf = requestAnimationFrame(frame);
+    observer.observe(
+      document.body,
+      {
+        childList:true,
+        subtree:true
       }
-    };
+    );
 
-    window.addEventListener("resize", stop, {passive:true});
-    document.addEventListener("visibilitychange", stop, {passive:true});
-    raf = requestAnimationFrame(frame);
+
+    /*
+      Recalculate naturally after resize.
+      No need to restart animation because
+      pointAt() reads current dimensions.
+    */
+
+    window.addEventListener(
+      "resize",
+      () => {
+        scanCards();
+      },
+      { passive:true }
+    );
   }
 
-  function enhance(card){
-    if (!card) return;
-    addCircuit(card);
-    runPerimeter(card);
-  }
 
-  function scan(){
-    document.querySelectorAll(".product-card, .pro-product-card").forEach(enhance);
-  }
+  /* ---------------------------------------------------------
+     START
+     --------------------------------------------------------- */
 
-  function start(){
-    scan();
+  if (document.readyState === "loading") {
 
-    const root =
-      document.getElementById("productsGrid") ||
-      document.querySelector(".products-grid") ||
-      document.querySelector(".grid");
+    document.addEventListener(
+      "DOMContentLoaded",
+      init,
+      { once:true }
+    );
 
-    if (root && "MutationObserver" in window && !root.dataset.ecomaxCircuitObserver){
-      root.dataset.ecomaxCircuitObserver = "1";
-
-      let timer = 0;
-      const observer = new MutationObserver(function(){
-        clearTimeout(timer);
-        timer = setTimeout(scan, 120);
-      });
-
-      observer.observe(root,{childList:true,subtree:true});
-    }
-  }
-
-  if (document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded",start,{once:true});
   } else {
-    start();
+
+    init();
+
   }
 
-  setTimeout(scan,500);
-  setTimeout(scan,1500);
-  setTimeout(scan,3000);
 })();
