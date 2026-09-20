@@ -41,13 +41,13 @@
     style.id='ecomax-moving-cars-style';
     style.textContent=`
       .hero{position:relative;overflow:hidden}
-      #ecomaxMovingCars{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+      #ecomaxMovingCars{position:absolute;inset:0;z-index:20;pointer-events:none;overflow:hidden}
       #ecomaxMovingCars~*{position:relative}
       .ecomax-road-line{position:absolute;left:7%;right:7%;height:1px;background:linear-gradient(90deg,transparent,#00eaff 18%,#b44cff 50%,#00eaff 82%,transparent);opacity:.24;box-shadow:0 0 10px #00eaff}
       .ecomax-road-top{top:17%}.ecomax-road-bottom{bottom:15%}
       .ecomax-car{position:absolute;width:112px;height:48px;filter:drop-shadow(0 0 9px rgba(0,234,255,.48));will-change:transform}
-      .ecomax-car-left{left:-130px;top:21%;animation:ecomaxCarLeft 8s linear infinite}
-      .ecomax-car-right{right:-130px;bottom:20%;transform:scaleX(-1);animation:ecomaxCarRight 9s linear infinite}
+      .ecomax-car-left{left:-130px;top:11%;animation:ecomaxCarLeft 8s linear infinite}
+      .ecomax-car-right{right:-130px;bottom:11%;transform:scaleX(-1);animation:ecomaxCarRight 9s linear infinite}
       .ecomax-car-body{position:absolute;left:8px;right:8px;bottom:7px;height:25px;border:1px solid #00eaff;border-radius:15px 22px 7px 7px;background:linear-gradient(180deg,rgba(35,242,255,.34),rgba(4,19,29,.98) 65%);box-shadow:0 0 15px rgba(0,234,255,.35),inset 0 0 12px rgba(0,234,255,.16)}
       .ecomax-car-body:before{content:"";position:absolute;left:27px;top:-13px;width:52px;height:17px;border:1px solid #6e8cff;border-bottom:0;border-radius:18px 18px 0 0;background:linear-gradient(135deg,rgba(0,234,255,.23),rgba(126,70,255,.16))}
       .ecomax-car-body:after{content:"ECOMAX";position:absolute;left:39px;top:6px;font:900 6px Arial;letter-spacing:1px;color:#dffcff;text-shadow:0 0 6px #00eaff}
@@ -58,7 +58,7 @@
       @keyframes ecomaxCarRight{0%{transform:translate3d(0,0,0) scale(.82)}50%{transform:translate3d(-45vw,-10px,0) scale(.94)}100%{transform:translate3d(calc(-100vw - 150px),5px,0) scale(1.03)}}
       @media(max-width:650px){
         .ecomax-car{width:82px;height:37px}
-        .ecomax-car-left{top:16%}.ecomax-car-right{bottom:16%}
+        .ecomax-car-left{top:9%}.ecomax-car-right{bottom:9%}
         .ecomax-car-body{height:19px;bottom:5px;border-radius:11px 15px 5px 5px}
         .ecomax-car-body:before{left:20px;top:-10px;width:39px;height:13px}
         .ecomax-car-body:after{left:29px;top:5px;font-size:4.5px}
@@ -154,7 +154,7 @@
       fix();
       addMovingCars();
       addMovingCars();
-    addBottleCatalog();
+      addBottleCatalog();
     },{once:true});
   }else{
     fix();
