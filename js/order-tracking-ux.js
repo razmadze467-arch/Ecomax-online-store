@@ -30,10 +30,10 @@
     .ecx-status-box{width:min(620px,100%);max-height:92vh;overflow:auto;padding:22px;border:1px solid rgba(0,246,255,.3);border-radius:22px;background:linear-gradient(145deg,#07151d,#03090e);box-shadow:0 0 80px rgba(0,246,255,.13),inset 0 0 35px rgba(0,246,255,.025)}
     .ecx-status-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}.ecx-status-head h2{margin:0}.ecx-status-sub{margin-top:5px;color:#7e98a2;font-size:11px}
     .ecx-x{width:36px;height:36px;border-radius:10px;border:1px solid rgba(0,246,255,.2);background:#07131a;color:#fff;font-size:20px}
-    .ecx-status-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}.ecx-field{padding:12px;border:1px solid rgba(0,246,255,.14);border-radius:12px;background:#061119}.ecx-field label{display:block;color:#7e98a2;font-size:10px;margin-bottom:6px}.ecx-field select,.ecx-field input{width:100%;padding:10px;border-radius:9px;border:1px solid rgba(0,246,255,.2);background:#02090e;color:#fff;outline:none}.ecx-field input:focus,.ecx-field select:focus{border-color:#00f6ff;box-shadow:0 0 15px rgba(0,246,255,.12)}
+    .ecx-status-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}.ecx-status-buttons{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.ecx-status-choice{padding:10px 8px;border-radius:9px;border:1px solid rgba(0,246,255,.12);background:#031016;color:#8ea6af;font-size:10px;font-weight:800;cursor:pointer}.ecx-status-choice.active{color:#001015;background:linear-gradient(135deg,#00f6ff,#168dff);border-color:#00f6ff;box-shadow:0 0 16px rgba(0,246,255,.2)}.ecx-status-choice.danger-choice{color:#ff9aaa;border-color:rgba(255,100,125,.2)}.ecx-status-choice.danger-choice.active{color:#fff;background:linear-gradient(135deg,#ff647d,#b83d59);border-color:#ff647d}.ecx-field{padding:12px;border:1px solid rgba(0,246,255,.14);border-radius:12px;background:#061119}.ecx-field label{display:block;color:#7e98a2;font-size:10px;margin-bottom:6px}.ecx-field select,.ecx-field input{width:100%;padding:10px;border-radius:9px;border:1px solid rgba(0,246,255,.2);background:#02090e;color:#fff;outline:none}.ecx-field input:focus,.ecx-field select:focus{border-color:#00f6ff;box-shadow:0 0 15px rgba(0,246,255,.12)}
     .ecx-status-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.ecx-btn{padding:11px 15px;border-radius:10px;border:1px solid rgba(0,246,255,.22);background:#071820;color:#eaffff;font-weight:800}.ecx-btn.primary{background:linear-gradient(135deg,#00cfe3,#168dff);color:#001015;border:0}.ecx-history{margin-top:18px;border-top:1px solid rgba(0,246,255,.1);padding-top:14px}.ecx-history-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:10px;color:#91a7b0}.ecx-history-row b{color:#eaffff}.ecx-history-row span{color:#00f6ff;text-align:right}
     .ecx-admin-times{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:14px}.ecx-admin-time{padding:9px;border:1px solid rgba(0,246,255,.1);border-radius:9px;background:#061119}.ecx-admin-time small{display:block;color:#718891;font-size:8px}.ecx-admin-time b{display:block;margin-top:4px;font-size:9px;color:#dffcff}
-    @media(max-width:650px){.ecx-status-grid{grid-template-columns:1fr}.ecx-admin-times{grid-template-columns:1fr 1fr}.ecx-status-actions{flex-direction:column}.ecx-btn{width:100%}}
+    @media(max-width:650px){.ecx-status-grid{grid-template-columns:1fr}.ecx-status-buttons{grid-template-columns:1fr 1fr}.ecx-admin-times{grid-template-columns:1fr 1fr}.ecx-status-actions{flex-direction:column}.ecx-btn{width:100%}}
   \`;
   document.head.appendChild(style);
 
@@ -100,9 +100,8 @@
       '<div class="ecx-admin-time"><small>გასვლა</small><b>'+esc(dt(o.departed_at))+'</b></div>'+
       '<div class="ecx-admin-time"><small>ETA</small><b>'+esc(dt(o.estimated_arrival_at))+'</b></div>'+
       '<div class="ecx-admin-time"><small>ჩაბარდა</small><b>'+esc(dt(o.delivered_at))+'</b></div></div>'+
-      '<div class="ecx-status-grid">'+
-      '<div class="ecx-field"><label>სტატუსი</label><select id="ecxStatus">'+steps.map(s=>'<option value="'+s+'">'+labels[s]+'</option>').join('')+'<option value="cancelled">გაუქმებული</option></select></div>'+
-      '<div class="ecx-field"><label>სავარაუდო ჩამოსვლა</label><input id="ecxEta" type="datetime-local" value="'+esc(isoLocal(o.estimated_arrival_at))+'"></div>'+
+      '<div class="ecx-field ecx-status-picker"><label>სტატუსი</label><div class="ecx-status-buttons">'+steps.map(s=>'<button type="button" class="ecx-status-choice '+(s===(o.status||'new')?'active':'')+'" data-status="'+s+'">'+labels[s]+'</button>').join('')+'<button type="button" class="ecx-status-choice danger-choice '+(o.status==='cancelled'?'active':'')+'" data-status="cancelled">გაუქმებული</button></div><input id="ecxStatus" type="hidden" value="'+esc(o.status||'new')+'"></div>'+
+      '<div class="ecx-field"><label>🕐 სავარაუდო ჩამოსვლა</label><input id="ecxEta" type="datetime-local" value="'+esc(isoLocal(o.estimated_arrival_at))+'"></div>'+
       '<div class="ecx-field"><label>ტვირთის დატვირთვის დრო</label><input id="ecxLoaded" type="datetime-local" value="'+esc(isoLocal(o.cargo_loaded_at))+'"></div>'+
       '<div class="ecx-field"><label>კურიერის აღების დრო</label><input id="ecxPicked" type="datetime-local" value="'+esc(isoLocal(o.cargo_picked_up_at))+'"></div>'+
       '<div class="ecx-field"><label>გასვლის დრო</label><input id="ecxDeparted" type="datetime-local" value="'+esc(isoLocal(o.departed_at))+'"></div>'+
@@ -112,7 +111,11 @@
       '<div class="ecx-history"><b>📜 სტატუსის ისტორია</b><div id="ecxHistoryRows" style="margin-top:7px;color:#7e98a2;font-size:10px">იტვირთება...</div></div>'+
       '</div>';
     document.body.appendChild(m);
-    m.querySelector('#ecxStatus').value=o.status||'new';
+    m.querySelectorAll('.ecx-status-choice').forEach(b=>b.addEventListener('click',()=>{
+      m.querySelectorAll('.ecx-status-choice').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      m.querySelector('#ecxStatus').value=b.dataset.status;
+    }));
     const close=()=>m.remove();
     m.querySelector('.ecx-x').onclick=close;m.querySelector('#ecxCancel').onclick=close;
     m.addEventListener('click',e=>{if(e.target===m)close();});
