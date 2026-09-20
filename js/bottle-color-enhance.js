@@ -43,56 +43,63 @@
   const css=document.createElement('style');
   css.id='ecomaxBottlePremiumCss';
   css.textContent=`
-    .product-card{--mx-accent:var(--accent,#00eaff);--mx-glow:var(--accent-glow,rgba(0,234,255,.22))}
-    .product-card .product-visual{perspective:900px}
+    .product-card{--mx-accent:var(--accent,#00eaff);--mx-glow:var(--accent-glow,rgba(0,234,255,.22));overflow:hidden}
+    .product-card .product-visual{perspective:900px;display:flex;align-items:center;justify-content:center;min-height:270px}
     .product-card .product-bottle{
-      width:138px!important;height:220px!important;
+      position:relative!important;isolation:isolate;width:138px!important;height:220px!important;
       border-radius:20px 20px 30px 30px!important;
-      background:
-        linear-gradient(105deg,rgba(255,255,255,.22) 0 5%,transparent 12% 32%,rgba(255,255,255,.10) 43%,transparent 58%),
-        var(--bottle)!important;
+      background:linear-gradient(105deg,rgba(255,255,255,.22) 0 5%,transparent 12% 32%,rgba(255,255,255,.10) 43%,transparent 58%),var(--bottle)!important;
       border:1px solid rgba(255,255,255,.38)!important;
       transform:perspective(700px) rotateY(-7deg) rotateX(1deg)!important;
-      box-shadow:
-        inset 14px 0 18px rgba(255,255,255,.12),
-        inset -17px 0 23px rgba(0,0,0,.62),
-        0 22px 34px rgba(0,0,0,.48),
-        0 0 34px var(--mx-glow)!important;
+      box-shadow:inset 14px 0 18px rgba(255,255,255,.12),inset -17px 0 23px rgba(0,0,0,.62),0 22px 34px rgba(0,0,0,.48),0 0 34px var(--mx-glow)!important;
     }
-    .product-card .product-bottle::before{
-      width:62px!important;height:21px!important;top:-15px!important;
-      background:linear-gradient(#263f4c,#071019)!important;
-      border:1px solid rgba(0,246,255,.38)!important;
-      box-shadow:0 -3px 12px var(--mx-glow)!important;
-    }
-    .product-card .product-bottle::after{
-      content:"";position:absolute;left:10px;top:18px;width:8px;height:72%;
-      border-radius:99px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.25),transparent);
-      filter:blur(2px);pointer-events:none;
-    }
+    .product-card .product-bottle::before{width:62px!important;height:21px!important;top:-15px!important;background:linear-gradient(#263f4c,#071019)!important;border:1px solid rgba(0,246,255,.38)!important;box-shadow:0 -3px 12px var(--mx-glow)!important}
+    .product-card .product-bottle::after{content:"";position:absolute;left:10px;top:18px;width:8px;height:72%;border-radius:99px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.25),transparent);filter:blur(2px);pointer-events:none;z-index:1}
     .product-card .product-label{
-      left:9px!important;right:9px!important;top:57px!important;height:108px!important;
-      border-radius:12px!important;overflow:hidden!important;
-      background:
-        radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--mx-accent) 16%,transparent),transparent 58%),
-        linear-gradient(145deg,rgba(2,10,17,.98),rgba(4,25,38,.94))!important;
-      border:1px solid var(--mx-accent)!important;
-      box-shadow:0 0 18px var(--mx-glow),inset 0 0 20px rgba(0,246,255,.04)!important;
+      left:9px!important;right:9px!important;top:57px!important;height:108px!important;box-sizing:border-box!important;
+      border-radius:12px!important;overflow:hidden!important;padding:0!important;
+      background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--mx-accent) 16%,transparent),transparent 58%),linear-gradient(145deg,rgba(2,10,17,.99),rgba(4,25,38,.96))!important;
+      border:1px solid var(--mx-accent)!important;box-shadow:0 0 18px var(--mx-glow),inset 0 0 20px rgba(0,246,255,.04)!important;
     }
-    .ecomax-premium-label-content{font-family:Arial,sans-serif!important}
-    .ecomax-label-brand{font-size:11px!important;letter-spacing:2.5px!important;color:#fff!important;text-shadow:0 0 8px var(--mx-accent)!important}
-    .ecomax-label-icon{font-size:20px!important;line-height:1!important;margin:5px 0!important;color:var(--mx-accent)!important;filter:drop-shadow(0 0 7px var(--mx-accent))}
-    .ecomax-label-product{font-size:8px!important;line-height:1.25!important;font-weight:900!important;color:#fff!important;text-shadow:0 0 5px var(--mx-accent)}
-    .ecomax-label-line{height:1px!important;width:70%!important;background:var(--mx-accent)!important;box-shadow:0 0 8px var(--mx-accent)!important}
-    .ecomax-product-art{opacity:.13!important;width:48px!important;height:48px!important;filter:drop-shadow(0 0 6px var(--mx-accent))!important}
-    .ecomax-bottle-art{width:27px!important;height:27px!important;bottom:8px!important;opacity:.75!important;filter:drop-shadow(0 0 7px var(--mx-accent))!important}
-    .ecomax-bottle-art svg *,.ecomax-product-art svg *{stroke:var(--mx-accent)!important}
-    .ecomax-five-liter{font-family:Arial,sans-serif!important;font-size:8px!important}
+    .ecomax-premium-label-content{
+      position:absolute!important;inset:7px 7px 21px!important;z-index:5!important;
+      display:grid!important;grid-template-rows:auto 28px minmax(22px,auto) 1px!important;
+      align-content:center!important;justify-items:center!important;gap:3px!important;
+      text-align:center!important;pointer-events:none!important;font-family:"Noto Sans Georgian","Noto Sans",Arial,sans-serif!important;
+    }
+    .ecomax-label-brand{font-family:Arial,sans-serif!important;font-size:8px!important;line-height:1!important;letter-spacing:2px!important;color:#fff!important;text-shadow:0 0 8px var(--mx-accent)!important;white-space:nowrap!important}
+    .ecomax-label-icon{width:28px!important;height:28px!important;display:grid!important;place-items:center!important;margin:0!important;color:var(--mx-accent)!important;filter:drop-shadow(0 0 7px var(--mx-accent))!important}
+    .ecomax-label-icon svg{width:25px!important;height:25px!important;display:block!important}
+    .ecomax-label-icon svg *{fill:none!important;stroke:currentColor!important;stroke-width:2!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+    .ecomax-label-product{max-width:100%!important;font-size:9px!important;line-height:1.25!important;font-weight:900!important;color:#fff!important;text-shadow:0 0 5px var(--mx-accent)!important;overflow-wrap:anywhere!important}
+    .ecomax-label-line{height:1px!important;width:68%!important;background:var(--mx-accent)!important;box-shadow:0 0 8px var(--mx-accent)!important}
+    .ecomax-product-art{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;opacity:.09!important;width:55px!important;height:55px!important;z-index:1!important;filter:drop-shadow(0 0 6px var(--mx-accent))!important;pointer-events:none!important}
+    .ecomax-product-art svg{width:100%!important;height:100%!important}.ecomax-product-art svg *{fill:none!important;stroke:var(--mx-accent)!important;stroke-width:1.5!important}
+    .ecomax-bottle-art{position:absolute!important;left:50%!important;width:27px!important;height:27px!important;bottom:8px!important;transform:translateX(-50%)!important;z-index:4!important;opacity:.78!important;filter:drop-shadow(0 0 7px var(--mx-accent))!important;pointer-events:none!important}
+    .ecomax-bottle-art svg{width:100%!important;height:100%!important}.ecomax-bottle-art svg *{fill:none!important;stroke:var(--mx-accent)!important;stroke-width:2.1!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+    .ecomax-five-liter{position:absolute!important;right:6px!important;bottom:6px!important;z-index:6!important;padding:3px 5px!important;border-radius:99px!important;font-family:Arial,sans-serif!important;font-size:7px!important;line-height:1!important;font-weight:900!important;letter-spacing:.7px!important;color:#041018!important}
     @media(max-width:768px){
-      .product-card .product-bottle{width:124px!important;height:204px!important}
-      .product-card .product-label{top:53px!important;height:101px!important}
+      .product-card .product-visual{min-height:245px}
+      .product-card .product-bottle{width:116px!important;height:190px!important}
+      .product-card .product-label{left:8px!important;right:8px!important;top:49px!important;height:96px!important}
+      .ecomax-premium-label-content{inset:6px 5px 19px!important;grid-template-rows:auto 25px minmax(21px,auto) 1px!important;gap:2px!important}
+      .ecomax-label-brand{font-size:7px!important;letter-spacing:1.6px!important}
+      .ecomax-label-icon,.ecomax-label-icon svg{width:23px!important;height:23px!important}
+      .ecomax-label-product{font-size:8px!important}
+      .ecomax-bottle-art{width:23px!important;height:23px!important;bottom:7px!important}
+      .ecomax-five-liter{font-size:6px!important;right:5px!important;bottom:5px!important}
+    }
+    @media(max-width:420px){
+      .product-card .product-visual{min-height:225px}
+      .product-card .product-bottle{width:104px!important;height:174px!important}
+      .product-card .product-label{top:45px!important;height:88px!important}
+      .ecomax-premium-label-content{inset:5px 4px 17px!important;grid-template-rows:auto 22px minmax(19px,auto) 1px!important}
+      .ecomax-label-brand{font-size:6.5px!important}
+      .ecomax-label-icon,.ecomax-label-icon svg{width:20px!important;height:20px!important}
+      .ecomax-label-product{font-size:7px!important}
     }
   `;
+
   document.head.appendChild(css);
 
   function findType(card){
