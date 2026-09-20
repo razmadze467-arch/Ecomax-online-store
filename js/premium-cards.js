@@ -1,6 +1,6 @@
 /* =========================================================
    ECOMAX — PREMIUM CARD PERIMETER CARS
-   Version: 2026-09-21-FINAL
+   Version: 2026-09-21-FINAL3
    ========================================================= */
 
 (() => {
@@ -560,99 +560,47 @@
 
   function startPerimeterAnimation(card, cyan, pink) {
 
-    let startTime = performance.now();
+    const speed = 72;
+    const started = performance.now();
 
-    /*
-      Speed in pixels/second.
-      Lower = slower.
-    */
-    const speed = 48;
-
-    /*
-      Second car is offset by roughly half
-      of the perimeter so they remain separated.
-    */
-
-    function animate(now) {
-
-      if (!document.documentElement.contains(card)) {
-        return;
-      }
-
-      const rect = card.getBoundingClientRect();
-
-      if (rect.width < 20 || rect.height < 20) {
-        requestAnimationFrame(animate);
-        return;
-      }
-
-      const elapsed =
-        (now - startTime) / 1000;
-
-      const perimeterInfo =
-        pointAt(card, 0);
-
-      const perimeter =
-        perimeterInfo.length;
-
-      /*
-        Cyan:
-        clockwise
-      */
-      const cyanDistance =
-        (elapsed * speed) % perimeter;
-
-      /*
-        Pink:
-        counter-clockwise
-        with approximately half-track offset
-      */
-      const pinkDistance =
-        perimeter -
-        (
-          (elapsed * speed * 0.82 +
-            perimeter * 0.50) %
-          perimeter
-        );
-
-      const c =
-        pointAt(card, cyanDistance);
-
-      const p =
-        pointAt(card, pinkDistance);
-
-
-      /*
-        Car SVG points to the RIGHT by default.
-        Therefore rotate according to tangent.
-      */
-
-      cyan.style.transform =
-        `translate3d(
-          ${c.x}px,
-          ${c.y}px,
-          0
-        )
-        translate(-50%, -50%)
-        rotate(${c.angle}rad)`;
-
-
-      pink.style.transform =
-        `translate3d(
-          ${p.x}px,
-          ${p.y}px,
-          0
-        )
-        translate(-50%, -50%)
-        rotate(${p.angle}rad)`;
-
-
-      requestAnimationFrame(animate);
+    function place(el, pt) {
+      // Use left/top for position — this avoids conflicts with
+      // other transform rules on the product cards.
+      el.style.setProperty("left", pt.x + "px", "important");
+      el.style.setProperty("top", pt.y + "px", "important");
+      el.style.setProperty(
+        "transform",
+        "translate(-50%, -50%) rotate(" + pt.angle + "rad)",
+        "important"
+      );
     }
 
-    requestAnimationFrame(animate);
-  }
+    function frame(now) {
+      if (!card.isConnected) return;
 
+      const r = card.getBoundingClientRect();
+      if (r.width < 30 || r.height < 30) {
+        requestAnimationFrame(frame);
+        return;
+      }
+
+      const perimeter = pointAt(card, 0).length;
+      const t = (now - started) / 1000;
+
+      // Two cars, opposite directions, always on the same rounded track.
+      const cyanDistance = (t * speed) % perimeter;
+      const pinkDistance =
+        (perimeter - ((t * speed * 0.82) + perimeter * 0.5) % perimeter)
+        % perimeter;
+
+      place(cyan, pointAt(card, cyanDistance));
+      place(pink, pointAt(card, pinkDistance));
+
+      requestAnimationFrame(frame);
+    }
+
+    requestAnimationFrame(frame);
+  }
 
   /* ---------------------------------------------------------
      SCAN CARDS
