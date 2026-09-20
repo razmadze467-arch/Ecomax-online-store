@@ -103,7 +103,7 @@ function installBottomUI(){
 function forceMaxHomeDesign(){
   const isHome=/(^|\/)index\.html$/.test(location.pathname)||location.pathname==="/"||location.pathname==="";
   if(!isHome||document.getElementById("ecomaxMaxDesignJs"))return;
-  const s=document.createElement("script");s.id="ecomaxMaxDesignJs";s.src="js/home-max-design.js?v=20260916-3";s.defer=false;document.head.appendChild(s);
+  const s=document.createElement("script");s.id="ecomaxMaxDesignJs";s.src="js/home-max-design.js?v=20260920-4";s.defer=false;document.head.appendChild(s);
 }
 
 function init(){
