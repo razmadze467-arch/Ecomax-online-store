@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ka">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ECOMAX LINE — Courier Registration</title>
+<style>
+:root{--bg:#02060a;--card:#08131d;--cyan:#19e6ff;--blue:#4aa8ff;--violet:#8b5cff;--red:#ff647d;--muted:#8da5b0;--text:#effcff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,sans-serif;color:var(--text);background:var(--bg)}
+body{display:grid;place-items:center;padding:20px;overflow:auto;background:radial-gradient(circle at 15% 10%,#063845 0,transparent 35%),radial-gradient(circle at 85% 85%,#24114b 0,transparent 38%),#02060a}
+body:before,body:after{content:"";position:fixed;pointer-events:none;border:1px solid #19e6ff18;border-radius:50%;width:430px;height:430px;animation:spin 18s linear infinite}
+body:after{width:680px;height:680px;animation-direction:reverse;animation-duration:28s}
+@keyframes spin{to{transform:rotate(360deg)}}
+.card{position:relative;width:min(500px,100%);padding:30px;border:1px solid #19e6ff35;border-radius:28px;background:linear-gradient(145deg,#0c1b27f2,#050b11f5);box-shadow:0 30px 100px #000b,0 0 55px #19e6ff0d;backdrop-filter:blur(18px)}
+.logo{text-align:center;color:var(--cyan);font-weight:1000;letter-spacing:6px;font-size:28px;text-shadow:0 0 20px #19e6ff66}.line{text-align:center;color:#819aa5;font-size:10px;letter-spacing:3px;margin-top:7px}
+.icon{width:76px;height:76px;margin:20px auto 16px;border-radius:22px;display:grid;place-items:center;border:1px solid #8b5cff55;background:#0b1020;box-shadow:0 0 35px #8b5cff20;font-size:34px}
+h1{text-align:center;font-size:26px;margin:0 0 7px}.desc{text-align:center;color:var(--muted);font-size:12px;line-height:1.7;margin:0 0 21px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px} .full{grid-column:1/-1}
+label{display:block;color:#9bb0b9;font-size:10px;margin:4px 0 7px;font-weight:800;letter-spacing:.5px}
+input{width:100%;height:48px;border-radius:12px;border:1px solid #ffffff18;background:#040b11;color:#fff;padding:0 14px;outline:none;font-size:14px}
+input:focus{border-color:#19e6ff88;box-shadow:0 0 18px #19e6ff18}
+.check{display:flex;gap:9px;align-items:flex-start;margin-top:15px;color:#819aa5;font-size:10px;line-height:1.55}.check input{width:16px;height:16px;margin:0;accent-color:#19e6ff}
+button{width:100%;height:51px;margin-top:18px;border:0;border-radius:13px;background:linear-gradient(135deg,var(--cyan),var(--blue),var(--violet));color:#001016;font-weight:1000;cursor:pointer;box-shadow:0 10px 30px #19e6ff18}button:disabled{opacity:.55;cursor:wait}
+.msg{display:none;margin-top:14px;padding:13px;border-radius:11px;font-size:11px;line-height:1.6}.error{border:1px solid #ff647d38;background:#190a0e;color:#ffabb8}.ok{border:1px solid #19e6ff38;background:#061a20;color:#a9f7ff}
+.links{text-align:center;margin-top:18px;font-size:11px;color:#6f8790}.links a{color:#19e6ff;text-decoration:none}.links a:hover{text-decoration:underline}.hint{text-align:center;color:#4e666f;font-size:9px;margin-top:17px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.card{padding:24px 18px}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js?v=20260920-1"></script>
+</head>
+<body>
+<main class="card">
+<div class="logo">ECOMAX</div><div class="line">LINE • COURIER REGISTRATION</div>
+<div class="icon">🚚</div>
+<h1>კურიერის რეგისტრაცია</h1>
+<p class="desc">შექმენი ECOMAX LINE-ის სამუშაო ანგარიში. რეგისტრაციის შემდეგ ანგარიში გაივლის ადმინისტრატორის ავტორიზაციას.</p>
+
+<form id="form">
+<div class="grid">
+<div><label>სახელი და გვარი</label><input id="name" autocomplete="name" required placeholder="მაგ. გიორგი ბერიძე"></div>
+<div><label>ტელეფონი</label><input id="phone" type="tel" autocomplete="tel" required placeholder="+995 5XX XX XX XX"></div>
+<div class="full"><label>ელფოსტა</label><input id="email" type="email" autocomplete="email" required placeholder="courier@example.com"></div>
+<div><label>პაროლი</label><input id="password" type="password" autocomplete="new-password" minlength="8" required placeholder="მინ. 8 სიმბოლო"></div>
+<div><label>გაიმეორე პაროლი</label><input id="password2" type="password" autocomplete="new-password" minlength="8" required placeholder="გაიმეორე პაროლი"></div>
+</div>
+<label class="check"><input id="terms" type="checkbox" required><span>ვადასტურებ, რომ მოწოდებული მონაცემები სწორია და ვეთანხმები ECOMAX LINE-ის სამუშაო ანგარიშის წესებს.</span></label>
+<button id="submit" type="submit">კურიერის ანგარიშის შექმნა</button>
+</form>
+<div id="error" class="msg error"></div>
+<div id="ok" class="msg ok"></div>
+<div class="links">უკვე გაქვს ანგარიში? <a href="line-login.html">შესვლა ECOMAX LINE-ში</a><br><a href="/">← მთავარ გვერდზე</a></div>
+<div class="hint">ECOMAX LINE • SECURE DELIVERY CONTROL</div>
+</main>
+
+<script>
+(async function(){
+const db=window.ECOMAX_SUPABASE_CLIENT;
+const form=document.getElementById('form'),btn=document.getElementById('submit'),err=document.getElementById('error'),ok=document.getElementById('ok');
+function showErr(t){err.textContent=t;err.style.display='block';ok.style.display='none'}
+function showOk(t){ok.textContent=t;ok.style.display='block';err.style.display='none'}
+if(!db){showErr('Supabase ვერ ჩაიტვირთა. გვერდი განაახლე.');return}
+const {data:{session}}=await db.auth.getSession();
+if(session){location.replace('line.html');return}
+form.addEventListener('submit',async e=>{
+ e.preventDefault();err.style.display='none';ok.style.display='none';
+ const name=document.getElementById('name').value.trim();
+ const phone=document.getElementById('phone').value.trim();
+ const email=document.getElementById('email').value.trim();
+ const password=document.getElementById('password').value;
+ const password2=document.getElementById('password2').value;
+ if(password!==password2){showErr('პაროლები ერთმანეთს არ ემთხვევა.');return}
+ if(password.length<8){showErr('პაროლი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს.');return}
+ btn.disabled=true;btn.textContent='ანგარიში იქმნება...';
+ const {data,error}=await db.auth.signUp({
+   email,password,
+   options:{data:{full_name:name,phone,courier_application:true}}
+ });
+ if(error){showErr('რეგისტრაცია ვერ შესრულდა: '+error.message);btn.disabled=false;btn.textContent='კურიერის ანგარიშის შექმნა';return}
+ if(data.session){
+   await db.auth.signOut();
+   showOk('რეგისტრაცია დასრულებულია. თქვენი კურიერის ანგარიში ჯერ ადმინისტრატორმა უნდა დაადასტუროს. შემდეგ შეძლებთ ECOMAX LINE-ში შესვლას.');
+ }else{
+   showOk('რეგისტრაცია მიღებულია. შეამოწმე ელფოსტა და დაადასტურე ანგარიში. შემდეგ დაელოდე ადმინისტრატორის ავტორიზაციას.');
+ }
+ form.reset();btn.disabled=false;btn.textContent='კურიერის ანგარიშის შექმნა';
+});
+})();
+</script>
+</body>
+</html>
