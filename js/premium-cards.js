@@ -91,92 +91,15 @@
 
     .ecomax-perimeter-car.cyan{
       color:#00f6ff;
-      animation:ecomaxCardRaceCW 8s linear infinite;
+      /* position is driven by the perimeter runner below */
     }
 
     .ecomax-perimeter-car.pink{
       color:#ff2d9a;
-      animation:ecomaxCardRaceCCW 8s linear infinite;
+      /* position is driven by the perimeter runner below */
     }
 
-    /* Full rectangle: top -> right -> bottom -> left -> top. */
-    @keyframes ecomaxCardRaceCW{
-      0%{
-        left:14px; top:0;
-        transform:rotate(0deg);
-      }
-      22%{
-        left:calc(100% - 92px); top:0;
-        transform:rotate(0deg);
-      }
-      25%{
-        left:calc(100% - 76px); top:12px;
-        transform:rotate(90deg);
-      }
-      47%{
-        left:calc(100% - 76px); top:calc(100% - 52px);
-        transform:rotate(90deg);
-      }
-      50%{
-        left:calc(100% - 92px); top:calc(100% - 40px);
-        transform:rotate(180deg);
-      }
-      72%{
-        left:14px; top:calc(100% - 40px);
-        transform:rotate(180deg);
-      }
-      75%{
-        left:-2px; top:calc(100% - 52px);
-        transform:rotate(270deg);
-      }
-      97%{
-        left:-2px; top:12px;
-        transform:rotate(270deg);
-      }
-      100%{
-        left:14px; top:0;
-        transform:rotate(360deg);
-      }
-    }
-
-    @keyframes ecomaxCardRaceCCW{
-      0%{
-        left:calc(100% - 92px); top:calc(100% - 40px);
-        transform:rotate(180deg);
-      }
-      22%{
-        left:14px; top:calc(100% - 40px);
-        transform:rotate(180deg);
-      }
-      25%{
-        left:-2px; top:calc(100% - 52px);
-        transform:rotate(270deg);
-      }
-      47%{
-        left:-2px; top:12px;
-        transform:rotate(270deg);
-      }
-      50%{
-        left:14px; top:0;
-        transform:rotate(360deg);
-      }
-      72%{
-        left:calc(100% - 92px); top:0;
-        transform:rotate(360deg);
-      }
-      75%{
-        left:calc(100% - 76px); top:12px;
-        transform:rotate(450deg);
-      }
-      97%{
-        left:calc(100% - 76px); top:calc(100% - 52px);
-        transform:rotate(450deg);
-      }
-      100%{
-        left:calc(100% - 92px); top:calc(100% - 40px);
-        transform:rotate(540deg);
-      }
-    }
+    /* Cars follow the real rounded card frame; JS calculates the path from the live card size. */
 
     @keyframes ecomaxTrackGlow{
       0%,100%{opacity:.62}
@@ -293,9 +216,116 @@
     card.appendChild(circuit);
   }
 
+  function runPerimeter(card){
+    const circuit = card && card.querySelector(".ecomax-perimeter-cars");
+    if (!circuit || circuit.dataset.runnerStarted) return;
+    circuit.dataset.runnerStarted = "1";
+
+    const cars = [
+      { el: circuit.querySelector(".ecomax-perimeter-car.cyan"), phase: 0 },
+      { el: circuit.querySelector(".ecomax-perimeter-car.pink"), phase: .5 }
+    ];
+
+    let raf = 0;
+    const speed = 72; // px/sec
+    const inset = 13;
+    const radius = 22;
+    const started = performance.now();
+
+    function frame(now){
+      const w = circuit.clientWidth;
+      const h = circuit.clientHeight;
+      if (w < 20 || h < 20){
+        raf = requestAnimationFrame(frame);
+        return;
+      }
+
+      const r = Math.min(radius, Math.max(8, Math.min((w - inset*2)/2 - 1, (h - inset*2)/2 - 1)));
+      const left = inset + r;
+      const right = w - inset - r;
+      const top = inset;
+      const bottom = h - inset;
+      const cxL = left;
+      const cxR = right;
+      const cyT = top + r;
+      const cyB = bottom - r;
+
+      const straightTop = Math.max(0, right-left);
+      const straightSide = Math.max(0, cyB-cyT);
+      const corner = Math.PI*r/2;
+      const perimeter = 2*straightTop + 2*straightSide + 4*corner;
+
+      function pointAt(distance){
+        let d = ((distance % perimeter) + perimeter) % perimeter;
+
+        if (d < straightTop)
+          return {x:left+d,y:top,angle:0};
+        d -= straightTop;
+
+        if (d < corner){
+          const a = -Math.PI/2 + d/r;
+          return {x:cxR + r*Math.cos(a),y:cyT + r*Math.sin(a),angle:a+Math.PI/2};
+        }
+        d -= corner;
+
+        if (d < straightSide)
+          return {x:right,y:cyT+d,angle:Math.PI/2};
+        d -= straightSide;
+
+        if (d < corner){
+          const a = d/r;
+          return {x:cxR + r*Math.cos(a),y:cyB + r*Math.sin(a),angle:a+Math.PI/2};
+        }
+        d -= corner;
+
+        if (d < straightTop)
+          return {x:right-d,y:bottom,angle:Math.PI};
+        d -= straightTop;
+
+        if (d < corner){
+          const a = Math.PI/2 + d/r;
+          return {x:cxL + r*Math.cos(a),y:cyB + r*Math.sin(a),angle:a+Math.PI/2};
+        }
+        d -= corner;
+
+        if (d < straightSide)
+          return {x:left,y:cyB-d,angle:-Math.PI/2};
+        d -= straightSide;
+
+        const a = Math.PI + d/r;
+        return {x:cxL + r*Math.cos(a),y:cyT + r*Math.sin(a),angle:a+Math.PI/2};
+      }
+
+      const elapsed = (now-started)/1000;
+      cars.forEach(car=>{
+        if (!car.el) return;
+        const direction = car.el.classList.contains("pink") ? -1 : 1;
+        const p = pointAt((elapsed*speed*direction) + car.phase*perimeter);
+        car.el.style.left = p.x + "px";
+        car.el.style.top = p.y + "px";
+        car.el.style.transform = "translate(-50%,-50%) rotate("+((p.angle*180/Math.PI)+90)+"deg)";
+      });
+
+      raf = requestAnimationFrame(frame);
+    }
+
+    const stop = () => {
+      if (document.hidden){
+        cancelAnimationFrame(raf);
+      } else {
+        raf = requestAnimationFrame(frame);
+      }
+    };
+
+    window.addEventListener("resize", stop, {passive:true});
+    document.addEventListener("visibilitychange", stop, {passive:true});
+    raf = requestAnimationFrame(frame);
+  }
+
   function enhance(card){
     if (!card) return;
     addCircuit(card);
+    runPerimeter(card);
   }
 
   function scan(){
