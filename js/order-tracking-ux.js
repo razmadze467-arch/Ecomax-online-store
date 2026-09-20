@@ -99,12 +99,14 @@
       '<div class="ecx-admin-time"><small>კურიერი</small><b>'+esc(dt(o.cargo_picked_up_at))+'</b></div>'+
       '<div class="ecx-admin-time"><small>გასვლა</small><b>'+esc(dt(o.departed_at))+'</b></div>'+
       '<div class="ecx-admin-time"><small>ETA</small><b>'+esc(dt(o.estimated_arrival_at))+'</b></div>'+
+      '<div class="ecx-admin-time"><small>ადგილზე</small><b>'+esc(dt(o.arrived_at))+'</b></div>'+
       '<div class="ecx-admin-time"><small>ჩაბარდა</small><b>'+esc(dt(o.delivered_at))+'</b></div></div>'+
       '<div class="ecx-field ecx-status-picker"><label>სტატუსი</label><div class="ecx-status-buttons">'+steps.map(s=>'<button type="button" class="ecx-status-choice '+(s===(o.status||'new')?'active':'')+'" data-status="'+s+'">'+labels[s]+'</button>').join('')+'<button type="button" class="ecx-status-choice danger-choice '+(o.status==='cancelled'?'active':'')+'" data-status="cancelled">გაუქმებული</button></div><input id="ecxStatus" type="hidden" value="'+esc(o.status||'new')+'"></div>'+
       '<div class="ecx-field"><label>🕐 სავარაუდო ჩამოსვლა</label><input id="ecxEta" type="datetime-local" value="'+esc(isoLocal(o.estimated_arrival_at))+'"></div>'+
       '<div class="ecx-field"><label>ტვირთის დატვირთვის დრო</label><input id="ecxLoaded" type="datetime-local" value="'+esc(isoLocal(o.cargo_loaded_at))+'"></div>'+
       '<div class="ecx-field"><label>კურიერის აღების დრო</label><input id="ecxPicked" type="datetime-local" value="'+esc(isoLocal(o.cargo_picked_up_at))+'"></div>'+
       '<div class="ecx-field"><label>გასვლის დრო</label><input id="ecxDeparted" type="datetime-local" value="'+esc(isoLocal(o.departed_at))+'"></div>'+
+      '<div class="ecx-field"><label>ადგილზე მისვლის დრო</label><input id="ecxArrived" type="datetime-local" value="'+esc(isoLocal(o.arrived_at))+'"></div>'+
       '<div class="ecx-field"><label>ჩაბარების დრო</label><input id="ecxDelivered" type="datetime-local" value="'+esc(isoLocal(o.delivered_at))+'"></div>'+
       '</div>'+
       '<div class="ecx-status-actions"><button class="ecx-btn" id="ecxCancel" type="button">გაუქმება</button><button class="ecx-btn primary" id="ecxSave" type="button">💾 შენახვა</button></div>'+
@@ -122,12 +124,11 @@
     m.querySelector('#ecxSave').onclick=async()=>{
       const status=m.querySelector('#ecxStatus').value;
       const val=id=>{const x=m.querySelector(id).value;return x?new Date(x).toISOString():null;};
-      const patch={status,updated_at:new Date().toISOString(),cargo_loaded_at:val('#ecxLoaded'),cargo_picked_up_at:val('#ecxPicked'),departed_at:val('#ecxDeparted'),estimated_arrival_at:val('#ecxEta'),delivered_at:val('#ecxDelivered')};
+      const patch={status,updated_at:new Date().toISOString(),cargo_loaded_at:val('#ecxLoaded'),cargo_picked_up_at:val('#ecxPicked'),departed_at:val('#ecxDeparted'),arrived_at:val('#ecxArrived'),estimated_arrival_at:val('#ecxEta'),delivered_at:val('#ecxDelivered')};
       const btn=m.querySelector('#ecxSave');btn.disabled=true;btn.textContent='ინახება...';
       const up=await db.from('orders').update(patch).eq('id',id);
       if(up.error){btn.disabled=false;btn.textContent='💾 შენახვა';alert(up.error.message);return;}
-      const hist=await db.from('order_status_history').insert({order_id:id,old_status:o.status||'new',new_status:status,changed_by:(await db.auth.getUser()).data?.user?.id||null});
-      if(hist.error) console.warn('history insert:',hist.error.message);
+      /* Status history is recorded automatically by the database trigger. */
       close();
       if(typeof window.refreshAll==='function') await window.refreshAll(); else location.reload();
     };
