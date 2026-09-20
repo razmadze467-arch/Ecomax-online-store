@@ -38,17 +38,17 @@
     .ecomax-bottle-label .brand{font-size:8px;font-weight:1000;letter-spacing:2px;color:#fff}.ecomax-bottle-label .ka{font-size:12px;font-weight:1000;color:#fff;line-height:1.05;margin-top:8px}.ecomax-bottle-label .en{font-size:8px;font-weight:1000;letter-spacing:1.1px;color:var(--card-accent);margin-top:4px}.ecomax-bottle-label .size{display:inline-block;margin-top:7px;padding:3px 7px;border-radius:999px;background:var(--card-accent);color:#001018;font-size:9px;font-weight:1000;box-shadow:0 0 12px var(--card-accent-soft)}
     .ecomax-bottle-ground{position:absolute;bottom:13px;width:150px;height:18px;border-radius:50%;background:var(--card-accent-soft);filter:blur(9px);animation:ecomaxGround 4.8s ease-in-out infinite}
     .ecomax-volume-chip{position:absolute;right:12px;top:12px;z-index:4;padding:7px 10px;border-radius:999px;background:rgba(1,9,16,.82);border:1px solid color-mix(in srgb,var(--card-accent) 45%,transparent);color:var(--card-accent);font-size:9px;font-weight:1000;letter-spacing:1px;box-shadow:0 0 18px var(--card-accent-soft)}
-    .ecomax-card-cars{position:absolute;left:0;right:0;bottom:8px;height:42px;z-index:30;pointer-events:none;overflow:hidden;opacity:1}
+    .ecomax-card-cars{position:absolute;left:0;right:0;bottom:0;height:64px;z-index:999;pointer-events:none;overflow:hidden!important;opacity:1!important;display:block!important;visibility:visible!important}
     .ecomax-card-road{position:absolute;left:8%;right:8%;top:50%;height:1px;background:linear-gradient(90deg,transparent,var(--card-accent),transparent);opacity:.28;box-shadow:0 0 8px var(--card-accent)}
-    .ecomax-mini-car{position:absolute;width:72px;height:27px;filter:drop-shadow(0 0 10px var(--card-accent));will-change:left,opacity;z-index:3}
+    .ecomax-mini-car{position:absolute!important;width:76px;height:30px;filter:drop-shadow(0 0 12px var(--card-accent));will-change:transform;z-index:1000!important;display:block!important;visibility:visible!important;opacity:1}
     .ecomax-mini-car .body{position:absolute;left:3px;right:3px;bottom:2px;height:12px;border:1px solid var(--card-accent);border-radius:6px 8px 3px 3px;background:linear-gradient(180deg,var(--card-accent-soft),#06121c);box-shadow:0 0 6px var(--card-accent-soft)}
     .ecomax-mini-car .body:before{content:"";position:absolute;left:10px;top:-6px;width:19px;height:7px;border:1px solid var(--card-accent);border-bottom:0;border-radius:7px 7px 0 0;background:rgba(0,234,255,.08)}
     .ecomax-mini-car .wheel{position:absolute;bottom:0;width:5px;height:5px;border:1px solid #d9fbff;border-radius:50%;background:#02080d}.ecomax-mini-car .w1{left:8px}.ecomax-mini-car .w2{right:8px}
     .ecomax-mini-car .light{position:absolute;right:1px;bottom:6px;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px var(--card-accent)}
-    .ecomax-mini-car.one{left:-80px;top:2px;animation:ecomaxCardCarForward 4.5s linear infinite!important}
-    .ecomax-mini-car.two{left:calc(100% + 80px);bottom:1px;animation:ecomaxCardCarBackward 5.2s linear infinite!important}
-    @keyframes ecomaxCardCarForward{0%{left:-80px;opacity:0}8%{opacity:1}92%{opacity:1}100%{left:calc(100% + 80px);opacity:0}}
-    @keyframes ecomaxCardCarBackward{0%{left:calc(100% + 80px);opacity:0}8%{opacity:1}92%{opacity:1}100%{left:-80px;opacity:0}}
+    .ecomax-mini-car.one{left:0;top:6px;animation:ecomaxCardCarForward 4s linear infinite!important}
+    .ecomax-mini-car.two{left:0;bottom:6px;animation:ecomaxCardCarBackward 4.8s linear infinite!important}
+    @keyframes ecomaxCardCarForward{0%{transform:translateX(-90px);opacity:1}100%{transform:translateX(calc(100vw + 90px));opacity:1}}
+    @keyframes ecomaxCardCarBackward{0%{transform:translateX(calc(100vw + 90px));opacity:1}100%{transform:translateX(-90px);opacity:1}}
 
     .pro-product-card .pc-icon{display:none!important}
     .pro-product-card .pc-code{font-size:10px!important;letter-spacing:2.5px;color:#78909d!important}.pro-product-card .pc-code strong{font-size:18px!important;color:#fff!important}
@@ -108,7 +108,7 @@
     cars.className='ecomax-card-cars';
     cars.setAttribute('aria-hidden','true');
     cars.innerHTML='<div class="ecomax-card-road"></div><div class="ecomax-mini-car one"><span class="body"></span><i class="wheel w1"></i><i class="wheel w2"></i><b class="light"></b></div><div class="ecomax-mini-car two"><span class="body"></span><i class="wheel w1"></i><i class="wheel w2"></i><b class="light"></b></div>';
-    zone.appendChild(cars);
+    card.appendChild(cars);
     const top=card.querySelector('.pc-top');
     if(top) top.insertAdjacentElement('afterend',zone); else card.insertAdjacentElement('afterbegin',zone);
 
