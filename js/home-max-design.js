@@ -1070,7 +1070,7 @@
           '<i></i>' +
         '</div>';
 
-      card.appendChild(wrap);
+      const visual = card.querySelector('.product-visual');\n      (visual || card).appendChild(wrap);
     };
 
     document
