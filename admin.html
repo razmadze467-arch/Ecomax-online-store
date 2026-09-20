@@ -2172,6 +2172,16 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
                   ⚙ სტატუსი
                 </button>
 
+                <button
+                  class="small-btn ecx-delete-order"
+                  onclick="deleteOrder('${esc(order.id)}')"
+                  type="button"
+                  title="შეკვეთის წაშლა"
+                  aria-label="შეკვეთის წაშლა"
+                >
+                  × წაშლა
+                </button>
+
               </td>
 
             </tr>
@@ -2280,6 +2290,43 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
   }
 
+
+  async function deleteOrder(id) {
+    const order = orders.find(item => String(item.id) === String(id));
+    if (!order) return;
+
+    const number = order.order_number || "ამ შეკვეთას";
+    const ok = confirm(
+      "⚠️ ნამდვილად გინდა შეკვეთის წაშლა?\n\n" +
+      "შეკვეთა: " + number + "\n" +
+      "მომხმარებელი: " + (order.customer_name || "—") + "\n" +
+      "თანხა: " + money(order.total) + "\n\n" +
+      "ეს მოქმედება წაშლის შეკვეთას და მის სტატუსის ისტორიასაც."
+    );
+    if (!ok) return;
+
+    try {
+      const history = await db.from("order_status_history").delete().eq("order_id", id);
+      if (history.error) throw history.error;
+
+      const result = await db.from("orders").delete().eq("id", id);
+      if (result.error) throw result.error;
+
+      orders = orders.filter(item => String(item.id) !== String(id));
+      renderOrders();
+      renderRecentOrders();
+      updateDashboard();
+      renderAnalytics();
+
+      const modal = $("orderModal");
+      if (modal) modal.style.display = "none";
+
+      toast("შეკვეთა წაიშალა ✓");
+    } catch (error) {
+      console.error("Delete order:", error);
+      toast("შეკვეთის წაშლა ვერ მოხერხდა: " + (error.message || "უცნობი შეცდომა"));
+    }
+  }
 
   async function changeOrderStatus(id) {
 
