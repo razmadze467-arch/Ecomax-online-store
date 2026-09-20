@@ -45,17 +45,17 @@
       #ecomaxMovingCars~*{position:relative}
       .ecomax-road-line{position:absolute;left:7%;right:7%;height:1px;background:linear-gradient(90deg,transparent,#00eaff 18%,#b44cff 50%,#00eaff 82%,transparent);opacity:.24;box-shadow:0 0 10px #00eaff}
       .ecomax-road-top{top:17%}.ecomax-road-bottom{bottom:15%}
-      .ecomax-car{position:absolute;width:112px;height:48px;filter:drop-shadow(0 0 9px rgba(0,234,255,.48));will-change:transform}
-      .ecomax-car-left{left:-130px;top:12%;animation:ecomaxCarLeft 8s linear infinite}
-      .ecomax-car-right{left:-130px;bottom:12%;transform:scaleX(-1);animation:ecomaxCarRight 8.8s linear infinite}
+      .ecomax-car{position:absolute;width:112px;height:48px;filter:drop-shadow(0 0 9px rgba(0,234,255,.48));will-change:left,opacity}
+      .ecomax-car-left{left:-150px;top:12%;animation:ecomaxCarLeft 8s linear infinite}
+      .ecomax-car-right{left:calc(100% + 150px);bottom:12%;animation:ecomaxCarRight 8.8s linear infinite}
       .ecomax-car-body{position:absolute;left:8px;right:8px;bottom:7px;height:25px;border:1px solid #00eaff;border-radius:15px 22px 7px 7px;background:linear-gradient(180deg,rgba(35,242,255,.34),rgba(4,19,29,.98) 65%);box-shadow:0 0 15px rgba(0,234,255,.35),inset 0 0 12px rgba(0,234,255,.16)}
       .ecomax-car-body:before{content:"";position:absolute;left:27px;top:-13px;width:52px;height:17px;border:1px solid #6e8cff;border-bottom:0;border-radius:18px 18px 0 0;background:linear-gradient(135deg,rgba(0,234,255,.23),rgba(126,70,255,.16))}
       .ecomax-car-body:after{content:"ECOMAX";position:absolute;left:39px;top:6px;font:900 6px Arial;letter-spacing:1px;color:#dffcff;text-shadow:0 0 6px #00eaff}
       .ecomax-wheel{position:absolute;bottom:0;width:15px;height:15px;border:2px solid #8eefff;border-radius:50%;background:#020910;box-shadow:0 0 7px #00eaff}
       .ecomax-car .w1{left:19px}.ecomax-car .w2{right:19px}
       .ecomax-car-light{position:absolute;right:3px;bottom:18px;width:6px;height:7px;border-radius:2px;background:#fff;box-shadow:0 0 12px 4px #00eaff}
-      @keyframes ecomaxCarLeft{0%{transform:translate3d(-160px,0,0) scale(.72);opacity:0}8%{opacity:1}50%{transform:translate3d(0,10px,0) scale(.9);opacity:1}92%{opacity:1}100%{transform:translate3d(calc(100vw + 160px),-4px,0) scale(1.02);opacity:0}}
-      @keyframes ecomaxCarRight{0%{transform:translate3d(calc(100vw + 160px),0,0) scaleX(-1) scale(.72);opacity:0}8%{opacity:1}50%{transform:translate3d(0,-10px,0) scaleX(-1) scale(.9);opacity:1}92%{opacity:1}100%{transform:translate3d(-160px,5px,0) scaleX(-1) scale(1.02);opacity:0}}100%{transform:translate3d(calc(-100vw - 150px),5px,0) scale(1.03)}}
+      @keyframes ecomaxCarLeft{0%{left:-150px;opacity:0}8%{opacity:1}50%{left:50%;opacity:1}92%{opacity:1}100%{left:calc(100% + 150px);opacity:0}}
+      @keyframes ecomaxCarRight{0%{left:calc(100% + 150px);opacity:0}8%{opacity:1}50%{left:50%;opacity:1}92%{opacity:1}100%{left:-150px;opacity:0}}
       @media(max-width:650px){
         .ecomax-car{width:82px;height:37px}
         .ecomax-car-left{top:9%}.ecomax-car-right{bottom:9%}
@@ -64,7 +64,7 @@
         .ecomax-car-body:after{left:29px;top:5px;font-size:4.5px}
         .ecomax-wheel{width:11px;height:11px;bottom:0;border-width:1px}
         .ecomax-car .w1{left:14px}.ecomax-car .w2{right:14px}
-        .ecomax-car-left{left:-100px} .ecomax-car-right{left:-100px}
+        .ecomax-car-left{left:-110px}.ecomax-car-right{left:calc(100% + 110px)}
       }
       @media(prefers-reduced-motion:reduce){
         .ecomax-car{animation:none!important}
@@ -152,7 +152,6 @@
   if(document.readyState==='loading'){
     document.addEventListener('DOMContentLoaded',function(){
       fix();
-      addMovingCars();
       addMovingCars();
       addBottleCatalog();
     },{once:true});
