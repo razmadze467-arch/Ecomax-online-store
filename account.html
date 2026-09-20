@@ -130,6 +130,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     if(o.cargo_loaded_at) rows.push('<div>📦 ტვირთი დაიტვირთა: <b>'+esc(date(o.cargo_loaded_at))+'</b></div>');
     if(o.cargo_picked_up_at) rows.push('<div>🚚 კურიერმა ტვირთი აიღო: <b>'+esc(date(o.cargo_picked_up_at))+'</b></div>');
     if(o.departed_at) rows.push('<div>🛣️ გამოსვლის დრო: <b>'+esc(date(o.departed_at))+'</b></div>');
+    if(o.arrived_at) rows.push('<div>📍 ადგილზე მისვლა: <b>'+esc(date(o.arrived_at))+'</b></div>');
     if(o.estimated_arrival_at) rows.push('<div>🕐 სავარაუდო ჩამოსვლა: <b>'+esc(date(o.estimated_arrival_at))+'</b></div>');
     if(o.delivered_at) rows.push('<div>✅ ჩაბარების დრო: <b>'+esc(date(o.delivered_at))+'</b></div>');
     return rows.length ? '<div class="items-mini">'+rows.join('')+'</div>' : '';
