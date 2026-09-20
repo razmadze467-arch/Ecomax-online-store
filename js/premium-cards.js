@@ -20,6 +20,7 @@
     }
 
     /* Disable every previous small/old car system. */
+    .ecomax-orbit-cars,
     .ecomax-static-cars,
     .ecomax-card-cars,
     .ecomax-static-car,
