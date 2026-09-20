@@ -9,7 +9,7 @@
   style.textContent=`
     .pro-product-card{
       --card-accent:#00eaff;--card-accent-soft:rgba(0,234,255,.16);
-      position:relative;isolation:isolate;overflow:hidden!important;
+      position:relative;isolation:isolate;overflow:visible!important;
       min-height:560px!important;padding:20px!important;
       background:
         radial-gradient(circle at 80% 18%,var(--card-accent-soft),transparent 28%),
@@ -45,6 +45,45 @@
     .ecomax-bottle-zone .ecomax-static-cars{z-index:999!important}
     .ecomax-bottle-zone .ecomax-static-car svg path{stroke:currentColor!important}
     
+    .ecomax-perimeter-cars{position:absolute!important;inset:-12px;z-index:9999!important;pointer-events:none!important;overflow:visible!important;display:block!important}
+    .ecomax-perimeter-car{position:absolute!important;width:48px;height:22px;left:0;top:0;display:block!important;visibility:visible!important;opacity:1!important;filter:drop-shadow(0 0 5px currentColor) drop-shadow(0 0 12px currentColor);will-change:left,top,transform}
+    .ecomax-perimeter-car .body{position:absolute;left:4px;right:4px;bottom:3px;height:9px;border:2px solid currentColor;border-radius:6px 9px 3px 3px;background:rgba(3,12,20,.92);box-shadow:0 0 8px currentColor}
+    .ecomax-perimeter-car .roof{position:absolute;left:14px;top:4px;width:19px;height:7px;border:2px solid currentColor;border-bottom:0;border-radius:7px 7px 0 0}
+    .ecomax-perimeter-car .wheel{position:absolute;bottom:0;width:6px;height:6px;border:1px solid #fff;border-radius:50%;background:#02080d}
+    .ecomax-perimeter-car .w1{left:9px}.ecomax-perimeter-car .w2{right:9px}
+    .ecomax-perimeter-car.cyan{color:#00eaff;animation:ecomaxPerimeterCW 7s linear infinite}
+    .ecomax-perimeter-car.pink{color:#ff2d9a;animation:ecomaxPerimeterCCW 7s linear infinite}
+    @keyframes ecomaxPerimeterCW{
+      0%{left:-2px;top:-12px;transform:rotate(0)}
+      23%{left:calc(100% - 46px);top:-12px;transform:rotate(0)}
+      25%{left:calc(100% - 36px);top:-2px;transform:rotate(90deg)}
+      48%{left:calc(100% - 36px);top:calc(100% - 20px);transform:rotate(90deg)}
+      50%{left:calc(100% - 46px);top:calc(100% - 10px);transform:rotate(180deg)}
+      73%{left:-2px;top:calc(100% - 10px);transform:rotate(180deg)}
+      75%{left:-12px;top:calc(100% - 20px);transform:rotate(270deg)}
+      98%{left:-12px;top:-2px;transform:rotate(270deg)}
+      100%{left:-2px;top:-12px;transform:rotate(360deg)}
+    }
+    @keyframes ecomaxPerimeterCCW{
+      0%{left:calc(100% - 46px);top:-12px;transform:rotate(180deg)}
+      23%{left:-2px;top:-12px;transform:rotate(180deg)}
+      25%{left:-12px;top:-2px;transform:rotate(270deg)}
+      48%{left:-12px;top:calc(100% - 20px);transform:rotate(270deg)}
+      50%{left:-2px;top:calc(100% - 10px);transform:rotate(360deg)}
+      73%{left:calc(100% - 46px);top:calc(100% - 10px);transform:rotate(360deg)}
+      75%{left:calc(100% - 36px);top:calc(100% - 20px);transform:rotate(450deg)}
+      98%{left:calc(100% - 36px);top:-2px;transform:rotate(450deg)}
+      100%{left:calc(100% - 46px);top:-12px;transform:rotate(540deg)}
+    }
+    @media(max-width:700px){
+      .ecomax-perimeter-cars{inset:-9px}
+      .ecomax-perimeter-car{width:38px;height:18px}
+      .ecomax-perimeter-car .body{height:7px;left:3px;right:3px}
+      .ecomax-perimeter-car .roof{left:11px;top:4px;width:15px;height:5px}
+      .ecomax-perimeter-car .wheel{width:5px;height:5px}
+      .ecomax-perimeter-car .w1{left:7px}.ecomax-perimeter-car .w2{right:7px}
+    }
+    @media(prefers-reduced-motion:reduce){.ecomax-perimeter-car{animation:none!important}}
     .ecomax-card-cars{position:absolute!important;left:0;right:0;bottom:6px;height:54px;z-index:40;pointer-events:none;overflow:hidden!important;opacity:1!important;display:block!important;visibility:visible!important}
     .ecomax-card-road{position:absolute;left:5%;right:5%;bottom:12px;height:1px;background:linear-gradient(90deg,transparent,var(--card-accent),transparent);opacity:.5;box-shadow:0 0 8px var(--card-accent)}
     .ecomax-mini-car{position:absolute!important;width:62px;height:25px;filter:drop-shadow(0 0 10px var(--card-accent));will-change:left;z-index:1000!important;display:block!important;visibility:visible!important;opacity:1!important}
@@ -112,6 +151,13 @@
     const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
     card.style.setProperty('--card-accent-soft',`rgba(${r},${g},${b},.16)`);
 
+    if(!card.querySelector('.ecomax-perimeter-cars')){
+      const orbit=document.createElement('div');
+      orbit.className='ecomax-perimeter-cars';
+      orbit.setAttribute('aria-hidden','true');
+      orbit.innerHTML='<div class="ecomax-perimeter-car cyan"><span class="body"></span><span class="roof"></span><i class="wheel w1"></i><i class="wheel w2"></i></div><div class="ecomax-perimeter-car pink"><span class="body"></span><span class="roof"></span><i class="wheel w1"></i><i class="wheel w2"></i></div>';
+      card.appendChild(orbit);
+    }
     const zone=document.createElement('div');zone.className='ecomax-bottle-zone';
     zone.innerHTML=`<span class="ecomax-volume-chip">5 L • PRO</span><div class="ecomax-bottle-ground"></div><div class="ecomax-bottle"><div class="ecomax-bottle-cap"></div><div class="ecomax-bottle-neck"></div><div class="ecomax-bottle-body"></div><div class="ecomax-bottle-label"><div class="brand">ECO-MAX</div><div class="ka">${t.ka}</div><div class="en">${t.en}</div><span class="size">5 L</span></div></div>`;
     const staticCars=document.createElement('div');
