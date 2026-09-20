@@ -110,17 +110,19 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
   const msg=document.getElementById('msg');
   const ordersEl=document.getElementById('orders');
 
-  const labels={new:'ახალი',processing:'მუშავდება',shipped:'იგზავნება',completed:'ჩაბარდა',cancelled:'გაუქმებული'};
-  const steps=['new','processing','shipped','completed'];
+  const labels={new:'შეკვეთა მიღებულია',processing:'მზადდება',loaded:'ტვირთი დაიტვირთა',picked_up:'კურიერმა აიღო',shipped:'გზაშია',completed:'ჩაბარდა',cancelled:'გაუქმებული'};
+  const steps=['new','processing','loaded','picked_up','shipped','completed'];
 
   function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c));}
   function money(v){return Number(v||0).toLocaleString('ka-GE',{minimumFractionDigits:0,maximumFractionDigits:2})+' ₾';}
   function date(v){if(!v)return '—';const d=new Date(v);return Number.isNaN(d.getTime())?'—':d.toLocaleString('ka-GE');}
 
-  function timeline(status){
+  function timeline(status,o){
     if(status==='cancelled') return '<div class="timeline"><div class="step done">გაუქმებული</div></div>';
     const current=Math.max(0,steps.indexOf(status));
-    return '<div class="timeline">'+steps.map((s,i)=>'<div class="step '+(i<=current?'done':'')+'">'+labels[s]+'</div>').join('')+'</div>';
+    const times={new:o?.created_at,processing:o?.updated_at,loaded:o?.cargo_loaded_at,picked_up:o?.cargo_picked_up_at,shipped:o?.departed_at,completed:o?.delivered_at};
+    const names={new:'მიღებულია',processing:'მზადდება',loaded:'დატვირთულია',picked_up:'კურიერთან',shipped:'გზაშია',completed:'ჩაბარდა'};
+    return '<div class="timeline">'+steps.map((s,i)=>'<div class="step '+(i<=current?'done ':'')+(i===current?'current':'')+'"><span>'+names[s]+'</span>'+(times[s]?'<small>'+esc(date(times[s]))+'</small>':'')+'</div>').join('')+'</div>';
   }
 
   function trackingTimes(o){
@@ -141,7 +143,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       return '<article class="order-card">'+
         '<div class="order-top"><div class="order-number">📦 '+esc(number)+'</div><span class="status '+esc(o.status||'new')+'">'+esc(labels[o.status]||o.status||'ახალი')+'</span></div>'+
         '<div class="order-meta"><span>'+esc(date(o.created_at))+'</span><b>'+money(o.total)+'</b></div>'+
-        timeline(o.status||'new')+
+        timeline(o.status||'new',o)+
         (items?'<div class="items-mini">'+items+'</div>':'')+
         trackingTimes(o)+
       '</article>';
@@ -152,7 +154,9 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     ordersEl.innerHTML='<div class="empty">შეკვეთები იტვირთება...</div>';
     const {data,error}=await client.from('orders').select('*').eq('user_id',user.id).order('created_at',{ascending:false});
     if(error){console.error('Customer orders:',error);ordersEl.innerHTML='<div class="empty">შეკვეთების ჩატვირთვა ვერ მოხერხდა.<br><small>'+esc(error.message)+'</small></div>';return;}
-    renderOrders(data||[]);
+    const rows=data||[];
+    window.__ECOMAX_ORDER_DATA=Object.fromEntries(rows.map(o=>[o.order_number||('ECX-'+String(o.id||'').slice(0,8).toUpperCase()),o]));
+    renderOrders(rows);
   }
 
   try{
@@ -184,7 +188,12 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     });
 
     // სტატუსის ცვლილება ავტომატურად გამოჩნდება დაახლოებით ყოველ 15 წამში.
-    setInterval(()=>loadOrders(user),15000);
+    let refreshTimer=setInterval(()=>loadOrders(user),5000);
+    // Realtime: სტატუსის ცვლილება გამოჩნდება თითქმის მყისიერად.
+    const realtime=client.channel('ecomax-orders-'+user.id)
+      .on('postgres_changes',{event:'UPDATE',schema:'public',table:'orders',filter:'user_id=eq.'+user.id},()=>loadOrders(user))
+      .subscribe();
+    window.addEventListener('beforeunload',()=>{clearInterval(refreshTimer);client.removeChannel(realtime);});
 
   }catch(e){
     loading.hidden=true;
