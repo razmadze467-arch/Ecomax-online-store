@@ -129,7 +129,7 @@ function assign(o){
  $('cSave').onclick=async()=>{const cid=$('cId').value.trim()||null;const {error}=await db.from('orders').update({courier_id:cid,courier_name:$('cName').value.trim()||null,courier_phone:$('cPhone').value.trim()||null,line_assigned_at:cid?new Date().toISOString():null}).eq('id',o.id);if(error){toast(error.message);return;}toast(cid?'კურიერი მიენიჭა ✓':'კურიერი მოიხსნა ✓');$('overlay').style.display='none';await load();};
 }
 $('refresh').onclick=load;$('logout').onclick=async()=>{await db.auth.signOut();location.replace('line-login.html');};$('search').oninput=render;$('filter').onchange=render;$('close').onclick=()=>$('overlay').style.display='none';$('overlay').onclick=e=>{if(e.target===$('overlay'))$('overlay').style.display='none';};
-$('orders').onclick=e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.next||b.dataset.edit||b.dataset.assign||b.dataset.complete;const o=orders.find(x=>String(x.id)===String(id));if(!o)return;if(b.dataset.next)advance(id);else if(b.dataset.complete)updateStatus(o,'completed',null);else if(b.dataset.edit)openDetails(o);else assign(o);};
+$('orders').onclick=e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.next||b.dataset.edit||b.dataset.assign||b.dataset.complete||b.dataset.arrived;const o=orders.find(x=>String(x.id)===String(id));if(!o)return;if(b.dataset.next)advance(id);else if(b.dataset.arrived)markArrived(id);else if(b.dataset.complete)updateStatus(o,'completed',null);else if(b.dataset.edit)openDetails(o);else if(b.dataset.assign)assign(o);};
 if(db)db.channel('ecomax-line-live').on('postgres_changes',{event:'*',schema:'public',table:'orders'},()=>load()).subscribe();
 boot();
 })();
