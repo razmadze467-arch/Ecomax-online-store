@@ -51,6 +51,15 @@
       .metrics{margin-top:42px!important}.metric strong{text-shadow:0 0 20px rgba(255,255,255,.16)}
       .section{max-width:1480px!important;position:relative}.section[id="products"]{border-top:1px solid rgba(0,234,255,.15);background:radial-gradient(ellipse at 50% 0%,rgba(0,234,255,.045),transparent 55%)}
       .section-head{position:relative}.section-head:after{content:"";position:absolute;left:0;bottom:-15px;width:160px;height:1px;background:linear-gradient(90deg,#00eaff,transparent);box-shadow:0 0 12px #00eaff}
+      .ecomax-real-card-cars{position:absolute!important;left:8px!important;right:8px!important;bottom:8px!important;height:58px!important;z-index:99999!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:none!important;overflow:hidden!important}
+      .ecomax-real-car{position:absolute!important;width:70px!important;height:30px!important;display:block!important;visibility:visible!important;opacity:1!important;color:#00eaff!important;filter:drop-shadow(0 0 8px currentColor)!important}
+      .ecomax-real-car.car-a{left:8px!important;top:4px!important}
+      .ecomax-real-car.car-b{right:8px!important;bottom:2px!important;color:#ff2d9a!important;transform:scaleX(-1)!important}
+      .ecomax-real-car .rc-body{position:absolute;left:4px;right:4px;bottom:5px;height:13px;border:2px solid currentColor;border-radius:7px 10px 4px 4px;background:linear-gradient(180deg,rgba(0,234,255,.18),rgba(1,8,15,.96));box-shadow:0 0 8px currentColor}
+      .ecomax-real-car .rc-body:before{content:"";position:absolute;left:15px;top:-8px;width:25px;height:8px;border:2px solid currentColor;border-bottom:0;border-radius:8px 9px 0 0}
+      .ecomax-real-car i{position:absolute;bottom:1px;width:7px;height:7px;border:2px solid #fff;border-radius:50%;background:#02060b}
+      .ecomax-real-car i:first-of-type{left:12px}.ecomax-real-car i:last-of-type{right:12px}
+      @media(max-width:620px){.ecomax-real-card-cars{bottom:6px!important;height:48px!important}.ecomax-real-car{width:58px!important;height:25px!important}.ecomax-real-car.car-a{left:4px!important}.ecomax-real-car.car-b{right:4px!important}}
       .card{transform-style:preserve-3d;background:linear-gradient(145deg,rgba(7,30,46,.9),rgba(1,8,14,.98))!important;border-color:rgba(0,234,255,.24)!important;box-shadow:0 28px 75px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.045)!important;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
       .card:hover{transform:translateY(-9px) rotateX(1deg) rotateY(-1deg)!important;border-color:rgba(0,234,255,.6)!important;box-shadow:0 38px 100px rgba(0,0,0,.58),0 0 45px rgba(0,234,255,.11)!important}
       .card:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.04) 50%,transparent 65%);transform:translateX(-110%);transition:transform .7s}.card:hover:after{transform:translateX(110%)}
@@ -93,6 +102,22 @@
 
     const footer = document.querySelector('.footer');
     if (footer) footer.innerHTML = '© 2026 <strong>შპს ეკო-მაქსი</strong> — <strong>LVL-CHEMICAL</strong> • ყველა უფლება დაცულია';
+
+    /* ECOMAX CARD CARS — attach to the actual rendered .card elements */
+    const addCardCars = (card,index) => {
+      if (card.querySelector('.ecomax-real-card-cars')) return;
+      const wrap=document.createElement('div');
+      wrap.className='ecomax-real-card-cars';
+      wrap.setAttribute('aria-hidden','true');
+      wrap.innerHTML='<div class="ecomax-real-car car-a"><span class="rc-body"></span><i></i><i></i></div><div class="ecomax-real-car car-b"><span class="rc-body"></span><i></i><i></i></div>';
+      card.appendChild(wrap);
+    };
+    document.querySelectorAll('.card').forEach(addCardCars);
+    const cardGrid=document.querySelector('#productsGrid')||document.querySelector('.products-grid');
+    if(cardGrid && 'MutationObserver' in window){
+      const mo=new MutationObserver(()=>document.querySelectorAll('.card').forEach(addCardCars));
+      mo.observe(cardGrid,{childList:true});
+    }
 
     document.querySelectorAll('.card').forEach((card,index)=>{
       card.style.setProperty('--mx-index', index);
