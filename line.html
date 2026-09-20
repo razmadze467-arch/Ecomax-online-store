@@ -60,12 +60,12 @@ function items(o){const a=Array.isArray(o.items)?o.items:[];return a.map(x=>esc(
 function progress(status){if(status==='cancelled')return '';const i=orderSteps.indexOf(status);return '<div class="progress">'+orderSteps.slice(0,5).map((s,n)=>'<div class="pstep '+(i>=n?'on':'')+'"></div>').join('')+'</div>';}
 function phoneHref(v){return v?'tel:'+String(v).replace(/[^+\d]/g,''):'';}
 function mapHref(o){const q=[o.address,o.city].filter(Boolean).join(', ');return q?'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q):'';}
-function quickActions(o){const n=next[o.status],closed=['completed','cancelled'].includes(o.status),map=mapHref(o);if(closed)return '';let h='<div class="quick">';if(n)h+='<button class="q" data-next="'+esc(o.id)+'">→ '+esc(labels[n])+'</button>';if(map)h+='<a class="q arrived" target="_blank" rel="noopener" href="'+esc(map)+'">📍 მივედი ადგილზე</a>';if(o.status==='shipped')h+='<button class="q done" data-complete="'+esc(o.id)+'">✓ ჩავაბარე</button>';return h+'</div>';}
+function quickActions(o){const n=next[o.status],closed=['completed','cancelled'].includes(o.status),map=mapHref(o);if(closed)return '';let h='<div class="quick">';if(n)h+='<button class="q" data-next="'+esc(o.id)+'">→ '+esc(labels[n])+'</button>';if(map)h+='<button class="q arrived" data-arrived="'+esc(o.id)+'">📍 მივედი ადგილზე</button>';if(o.status==='shipped')h+='<button class="q done" data-complete="'+esc(o.id)+'">✓ ჩავაბარე</button>';return h+'</div>';}
 async function boot(){
  if(!db){$('access').textContent='Supabase ვერ ჩაიტვირთა';return;}
  const {data:{user:u}}=await db.auth.getUser();user=u;
  if(!u){location.replace('line-login.html');return;}
- admin=!!u.user_metadata?.is_admin||u.email==='razmadze467-arch@users.noreply.github.com';
+ admin=u?.app_metadata?.role==='admin'||String(u?.email||'').toLowerCase()==='datogringo@gmail.com';
  $('access').textContent=admin?'ADMIN • სრული ECOMAX LINE წვდომა':'COURIER • მხოლოდ მინიჭებული შეკვეთები';
  await load();
 }
@@ -97,6 +97,18 @@ function render(){
  }).join('');
 }
 async function advance(id){const o=orders.find(x=>String(x.id)===String(id));if(o&&next[o.status])await updateStatus(o,next[o.status],null);}
+async function markArrived(id){
+ const o=orders.find(x=>String(x.id)===String(id));
+ if(!o)return;
+ if(admin){
+  const r=await db.from('orders').update({arrived_at:o.arrived_at||new Date().toISOString(),updated_at:new Date().toISOString()}).eq('id',id);
+  if(r.error){toast(r.error.message);return;}
+ }else{
+  const r=await db.rpc('ecomax_line_mark_arrived',{p_order_id:id});
+  if(r.error){toast(r.error.message);return;}
+ }
+ toast('ადგილზე მისვლა დაფიქსირდა ✓'); await load();
+}
 async function updateStatus(o,status,eta){
  let result;
  if(admin)result=await db.from('orders').update({status,estimated_arrival_at:eta||o.estimated_arrival_at||null,updated_at:new Date().toISOString()}).eq('id',o.id);
