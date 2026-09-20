@@ -1697,30 +1697,32 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     if (!currentUser)
       return;
 
+    const meta = currentUser.user_metadata || {};
+    const appMeta = currentUser.app_metadata || {};
+    const isAdmin =
+      appMeta.role === "admin" ||
+      String(currentUser.email || "").toLowerCase() === "datogringo@gmail.com";
 
-    $("loginScreen")
-      .classList.add("hidden");
+    if (!isAdmin) {
+      await db.auth.signOut();
+      currentUser = null;
+      $("adminApp").classList.add("hidden");
+      $("loginScreen").classList.remove("hidden");
+      $("loginError").textContent = "ამ ანგარიშს Admin Panel-ზე წვდომა არ აქვს.";
+      return;
+    }
 
-
-    $("adminApp")
-      .classList.remove("hidden");
-
-
-    const meta =
-      currentUser.user_metadata ||
-      {};
-
+    $("loginScreen").classList.add("hidden");
+    $("adminApp").classList.remove("hidden");
 
     $("adminName").textContent =
       meta.full_name ||
       currentUser.email ||
       "ADMIN";
 
-
     await refreshAll();
 
   }
-
 
   async function checkSession() {
 
