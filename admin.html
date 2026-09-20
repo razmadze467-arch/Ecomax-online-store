@@ -1141,13 +1141,10 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
               ახალი
             </option>
 
-            <option value="processing">
-              მუშავდება
-            </option>
-
-            <option value="shipped">
-              იგზავნება
-            </option>
+            <option value="processing">მუშავდება</option>
+            <option value="loaded">ტვირთი დაიტვირთა</option>
+            <option value="picked_up">ტვირთი აიღო კურიერმა</option>
+            <option value="shipped">გზაშია</option>
 
             <option value="completed">
               ჩაბარდა
@@ -1523,7 +1520,9 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     return {
       new: "ახალი",
       processing: "მუშავდება",
-      shipped: "იგზავნება",
+      loaded: "ტვირთი დაიტვირთა",
+      picked_up: "ტვირთი აიღო კურიერმა",
+      shipped: "გზაშია",
       completed: "ჩაბარდა",
       cancelled: "გაუქმებული"
     }[status] || status || "უცნობი";
@@ -2284,126 +2283,86 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
   async function changeOrderStatus(id) {
 
-    const order =
-      orders.find(
-        item =>
-          String(item.id) ===
-          String(id)
-      );
-
-
-    if (!order)
-      return;
-
+    const order = orders.find(item => String(item.id) === String(id));
+    if (!order) return;
 
     const statuses = [
       ["new", "ახალი"],
       ["processing", "მუშავდება"],
-      ["shipped", "იგზავნება"],
+      ["loaded", "ტვირთი დაიტვირთა"],
+      ["picked_up", "ტვირთი აიღო კურიერმა"],
+      ["shipped", "გზაშია"],
       ["completed", "ჩაბარდა"],
       ["cancelled", "გაუქმებული"]
     ];
 
+    const choice = prompt(
+      "შეიყვანე ახალი სტატუსი:\n\n" +
+      statuses.map(x => x[0] + " — " + x[1]).join("\n") +
+      "\n\nამჟამინდელი: " + (order.status || "new")
+    );
+    if (!choice) return;
 
-    const choice =
-      prompt(
-        "შეიყვანე ახალი სტატუსი:\n\n" +
-        statuses
-          .map(
-            x =>
-              x[0] +
-              " — " +
-              x[1]
-          )
-          .join("\n") +
-        "\n\nამჟამინდელი: " +
-        (
-          order.status ||
-          "new"
-        )
-      );
-
-
-    if (!choice)
+    const newStatus = choice.trim();
+    if (!statuses.some(x => x[0] === newStatus)) {
+      toast("არასწორი სტატუსი");
       return;
-
-
-    const valid =
-      statuses.some(
-        x =>
-          x[0] ===
-          choice.trim()
-      );
-
-
-    if (!valid) {
-
-      toast(
-        "არასწორი სტატუსი"
-      );
-
-      return;
-
     }
 
+    const patch = {
+      status: newStatus,
+      updated_at: new Date().toISOString()
+    };
 
-    const newStatus =
-      choice.trim();
+    const now = new Date().toISOString();
 
+    if (newStatus === "loaded" && !order.cargo_loaded_at) {
+      patch.cargo_loaded_at = now;
+    }
+    if (newStatus === "picked_up" && !order.cargo_picked_up_at) {
+      patch.cargo_picked_up_at = now;
+    }
+    if (newStatus === "shipped") {
+      if (!order.departed_at) patch.departed_at = now;
+      const eta = prompt(
+        "მიუთითე სავარაუდო ჩამოსვლის დრო.\nმაგ: 2026-09-21 18:00\nცარიელი დატოვე, თუ ჯერ არ იცი."
+      );
+      if (eta && eta.trim()) {
+        const parsed = new Date(eta.trim().replace(" ", "T"));
+        if (!Number.isNaN(parsed.getTime())) patch.estimated_arrival_at = parsed.toISOString();
+        else {
+          toast("ჩამოსვლის დრო ვერ გავიგე — სტატუსი არ შეცვლილა");
+          return;
+        }
+      }
+    }
+    if (newStatus === "completed" && !order.delivered_at) {
+      patch.delivered_at = now;
+    }
 
-    const {
-      error
-    } =
-      await db
-        .from("orders")
-        .update({
-          status: newStatus,
-          updated_at:
-            new Date()
-              .toISOString()
-        })
-        .eq("id", id);
-
-
+    const { error } = await db.from("orders").update(patch).eq("id", id);
     if (error) {
-
-      console.error(
-        "Status update:",
-        error
-      );
-
-
-      toast(
-        "სტატუსის შეცვლა ვერ მოხერხდა"
-      );
-
-
+      console.error("Status update:", error);
+      toast("სტატუსის შეცვლა ვერ მოხერხდა: " + error.message);
       return;
-
     }
 
+    // სტატუსის ისტორია
+    await db.from("order_status_history").insert({
+      order_id: id,
+      old_status: order.status || "new",
+      new_status: newStatus,
+      changed_by: currentUser?.id || null
+    });
 
-    order.status =
-      newStatus;
-
-
-    order.updated_at =
-      new Date()
-        .toISOString();
-
-
+    Object.assign(order, patch);
     renderOrders();
     renderRecentOrders();
     updateDashboard();
     renderAnalytics();
 
-
-    toast(
-      "შეკვეთის სტატუსი განახლდა ✓"
-    );
-
+    toast("შეკვეთის სტატუსი განახლდა ✓");
   }
-
 
   function viewOrder(id) {
 
