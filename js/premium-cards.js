@@ -1,15 +1,15 @@
-// ECOMAX — Premium Product Cards V3
+// ECOMAX — Premium Product Cards V5
 // Cars run on the actual product-card border, not an inner/offset frame.
 // Visual layer only: does not replace cart, checkout or auth logic.
 
 (function () {
   "use strict";
 
-  if (window.__ECOMAX_PREMIUM_CARDS_V4__) return;
+  if (window.__ECOMAX_PREMIUM_CARDS_V5__) return;
   window.__ECOMAX_PREMIUM_CARDS_V4__ = true;
 
   const css = document.createElement("style");
-  css.id = "ecomaxPremiumCardsV3";
+  css.id = "ecomaxPremiumCardsV5";
 
   css.textContent = `
     .product-card, .pro-product-card{
@@ -194,7 +194,7 @@
     ];
 
     let raf = 0;
-    const speed = 58; // px/sec
+    const speed = 55; // px/sec
     const inset = 1;
     const radius = 22;
     const started = performance.now();
@@ -202,82 +202,153 @@
     function frame(now){
       const w = circuit.clientWidth;
       const h = circuit.clientHeight;
-      if (w < 20 || h < 20){
+
+      if (w < 40 || h < 40){
         raf = requestAnimationFrame(frame);
         return;
       }
 
-      const cardRadius = parseFloat(getComputedStyle(card).borderTopLeftRadius) || radius;
-      const r = Math.min(cardRadius, Math.max(8, Math.min((w - inset*2)/2 - 1, (h - inset*2)/2 - 1)));
-      const left = inset + r;
-      const right = w - inset - r;
-      const top = inset;
-      const bottom = h - inset;
-      const cxL = left;
-      const cxR = right;
-      const cyT = top + r;
-      const cyB = bottom - r;
+      /*
+       * True rounded-rectangle track:
+       * the car center follows the exact centerline of the card border.
+       * No diagonal shortcuts, no inner orbit, no jumping at corners.
+       */
+      const cs = getComputedStyle(card);
+      const cardRadius = parseFloat(cs.borderTopLeftRadius) || 22;
 
-      const straightTop = Math.max(0, right-left);
-      const straightSide = Math.max(0, cyB-cyT);
-      const corner = Math.PI*r/2;
-      const perimeter = 2*straightTop + 2*straightSide + 4*corner;
+      const x0 = 1;
+      const y0 = 1;
+      const x1 = w - 1;
+      const y1 = h - 1;
+
+      const maxR = Math.min((x1-x0)/2, (y1-y0)/2);
+      const r = Math.min(cardRadius, Math.max(6, maxR - 1));
+
+      const topY = y0;
+      const rightX = x1;
+      const bottomY = y1;
+      const leftX = x0;
+
+      const cxL = leftX + r;
+      const cxR = rightX - r;
+      const cyT = topY + r;
+      const cyB = bottomY - r;
+
+      const topLen = Math.max(0, cxR - cxL);
+      const sideLen = Math.max(0, cyB - cyT);
+      const cornerLen = Math.PI * r / 2;
+      const perimeter = 2 * topLen + 2 * sideLen + 4 * cornerLen;
 
       function pointAt(distance){
         let d = ((distance % perimeter) + perimeter) % perimeter;
 
-        if (d < straightTop)
-          return {x:left+d,y:top,angle:0};
-        d -= straightTop;
+        // TOP — left to right
+        if (d < topLen){
+          return {
+            x: cxL + d,
+            y: topY,
+            angle: 0
+          };
+        }
+        d -= topLen;
 
-        if (d < corner){
+        // TOP-RIGHT rounded corner
+        if (d < cornerLen){
           const a = -Math.PI/2 + d/r;
-          return {x:cxR + r*Math.cos(a),y:cyT + r*Math.sin(a),angle:a+Math.PI/2};
+          return {
+            x: cxR + r*Math.cos(a),
+            y: cyT + r*Math.sin(a),
+            angle: a + Math.PI/2
+          };
         }
-        d -= corner;
+        d -= cornerLen;
 
-        if (d < straightSide)
-          return {x:right,y:cyT+d,angle:Math.PI/2};
-        d -= straightSide;
+        // RIGHT — top to bottom
+        if (d < sideLen){
+          return {
+            x: rightX,
+            y: cyT + d,
+            angle: Math.PI/2
+          };
+        }
+        d -= sideLen;
 
-        if (d < corner){
+        // BOTTOM-RIGHT rounded corner
+        if (d < cornerLen){
           const a = d/r;
-          return {x:cxR + r*Math.cos(a),y:cyB + r*Math.sin(a),angle:a+Math.PI/2};
+          return {
+            x: cxR + r*Math.cos(a),
+            y: cyB + r*Math.sin(a),
+            angle: a + Math.PI/2
+          };
         }
-        d -= corner;
+        d -= cornerLen;
 
-        if (d < straightTop)
-          return {x:right-d,y:bottom,angle:Math.PI};
-        d -= straightTop;
+        // BOTTOM — right to left
+        if (d < topLen){
+          return {
+            x: cxR - d,
+            y: bottomY,
+            angle: Math.PI
+          };
+        }
+        d -= topLen;
 
-        if (d < corner){
+        // BOTTOM-LEFT rounded corner
+        if (d < cornerLen){
           const a = Math.PI/2 + d/r;
-          return {x:cxL + r*Math.cos(a),y:cyB + r*Math.sin(a),angle:a+Math.PI/2};
+          return {
+            x: cxL + r*Math.cos(a),
+            y: cyB + r*Math.sin(a),
+            angle: a + Math.PI/2
+          };
         }
-        d -= corner;
+        d -= cornerLen;
 
-        if (d < straightSide)
-          return {x:left,y:cyB-d,angle:-Math.PI/2};
-        d -= straightSide;
+        // LEFT — bottom to top
+        if (d < sideLen){
+          return {
+            x: leftX,
+            y: cyB - d,
+            angle: -Math.PI/2
+          };
+        }
+        d -= sideLen;
 
+        // TOP-LEFT rounded corner
         const a = Math.PI + d/r;
-        return {x:cxL + r*Math.cos(a),y:cyT + r*Math.sin(a),angle:a+Math.PI/2};
+        return {
+          x: cxL + r*Math.cos(a),
+          y: cyT + r*Math.sin(a),
+          angle: a + Math.PI/2
+        };
       }
 
-      const elapsed = (now-started)/1000;
-      cars.forEach(car=>{
+      const elapsed = (now - started) / 1000;
+
+      cars.forEach(car => {
         if (!car.el) return;
-        const direction = car.el.classList.contains("pink") ? -1 : 1;
-        const p = pointAt((elapsed*speed*direction) + car.phase*perimeter);
-        // The car center is placed directly on the card frame; no inner orbit.
+
+        const direction =
+          car.el.classList.contains("pink") ? -1 : 1;
+
+        const p = pointAt(
+          elapsed * speed * direction +
+          car.phase * perimeter
+        );
+
         car.el.style.left = p.x + "px";
         car.el.style.top = p.y + "px";
-        car.el.style.transform = "translate(-50%,-50%) rotate("+((p.angle*180/Math.PI)+90)+"deg)";
+
+        // Keep the car tangent to the track while it rounds corners.
+        car.el.style.transform =
+          "translate(-50%,-50%) rotate(" +
+          ((p.angle * 180 / Math.PI) + 90) +
+          "deg)";
       });
 
       raf = requestAnimationFrame(frame);
     }
-
     const stop = () => {
       if (document.hidden){
         cancelAnimationFrame(raf);
