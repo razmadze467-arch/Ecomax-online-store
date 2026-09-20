@@ -3,71 +3,84 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ECOMAX LINE — Delivery</title>
+<title>ECOMAX LINE — Courier Control</title>
 <style>
-:root{--bg:#03070b;--card:#09131d;--cyan:#19e6ff;--blue:#4aa8ff;--green:#45e3a3;--yellow:#ffd76a;--red:#ff647d;--muted:#8da5b0;--text:#effcff}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 10%,#063441,transparent 30%),radial-gradient(circle at 90% 20%,#171040,transparent 30%),#03070b;color:var(--text);font-family:Arial,sans-serif;min-height:100vh}
-header{position:sticky;top:0;z-index:10;background:#03070bea;border-bottom:1px solid #19e6ff22;backdrop-filter:blur(14px)}
-.nav{width:min(1200px,calc(100% - 24px));margin:auto;min-height:68px;display:flex;align-items:center;gap:14px}.logo{font-weight:1000;letter-spacing:4px;color:var(--cyan);text-shadow:0 0 18px #19e6ff55}.sub{font-size:10px;color:#7d96a1;letter-spacing:2px}.nav a{margin-left:auto;color:#b9cbd2;text-decoration:none;font-size:12px}.nav a:hover{color:var(--cyan)}
-main{width:min(1200px,calc(100% - 24px));margin:26px auto 60px}.hero{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:18px}.hero h1{font-size:clamp(30px,5vw,56px);margin:5px 0}.eyebrow{color:var(--cyan);font-size:10px;font-weight:900;letter-spacing:3px}.hero p{color:var(--muted);margin:0}.refresh{border:1px solid #19e6ff35;background:#07151f;color:var(--cyan);border-radius:12px;padding:12px 16px;font-weight:900;cursor:pointer}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.stat{background:linear-gradient(145deg,#0b1924,#050b10);border:1px solid #ffffff12;border-radius:17px;padding:17px}.stat small{color:var(--muted);display:block;font-size:10px}.stat b{display:block;font-size:28px;margin-top:7px}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.toolbar input,.toolbar select{min-height:44px;background:#071018;color:var(--text);border:1px solid #ffffff18;border-radius:11px;padding:0 12px;outline:none}.toolbar input{flex:1;min-width:190px}.toolbar input:focus,.toolbar select:focus{border-color:#19e6ff88;box-shadow:0 0 18px #19e6ff18}
-.orders{display:grid;gap:13px}.order{background:linear-gradient(145deg,#0b1823,#050b11);border:1px solid #19e6ff1c;border-radius:19px;padding:18px;box-shadow:inset 0 0 30px #19e6ff05}.top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.num{font-weight:1000;letter-spacing:.7px}.customer{color:#b8cbd2;font-size:12px;margin-top:5px}.badge{border:1px solid #ffffff20;border-radius:999px;padding:7px 10px;font-size:10px;font-weight:900;white-space:nowrap}.badge.new{color:var(--cyan)}.badge.processing{color:var(--yellow)}.badge.loaded{color:#8bdcff}.badge.picked_up{color:#b78cff}.badge.shipped{color:#7db5ff}.badge.completed{color:var(--green)}.badge.cancelled{color:var(--red)}
-.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-top:15px}.box{border:1px solid #ffffff10;border-radius:14px;padding:13px;background:#ffffff03}.box small{color:var(--muted);display:block;font-size:9px;margin-bottom:5px}.box b{font-size:13px}.items{font-size:11px;line-height:1.8;color:#b9cbd2}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.actions button{min-height:42px;border-radius:10px;padding:0 12px;border:1px solid #ffffff18;background:#07131c;color:var(--text);cursor:pointer;font-weight:800}.actions button:hover{border-color:#19e6ff77;box-shadow:0 0 16px #19e6ff18}.actions .go{color:var(--cyan);border-color:#19e6ff38}.actions .done{color:var(--green);border-color:#45e3a338}.actions .danger{color:#ff9aaa;border-color:#ff647d35}.empty{text-align:center;padding:35px;border:1px dashed #19e6ff2a;border-radius:17px;color:var(--muted)}
-.overlay{position:fixed;inset:0;z-index:50;background:#000b;display:none;place-items:center;padding:15px}.modal{width:min(620px,100%);max-height:90vh;overflow:auto;background:linear-gradient(145deg,#0c1a26,#050a10);border:1px solid #19e6ff35;border-radius:20px;padding:20px;box-shadow:0 30px 100px #000}.modalhead{display:flex;justify-content:space-between;align-items:center}.close{width:38px;height:38px;border-radius:10px;border:1px solid #ff647d40;background:#190a0e;color:#ff9aaa;font-size:20px;cursor:pointer}.modal label{display:block;color:var(--muted);font-size:10px;margin:15px 0 6px}.modal input,.modal textarea{width:100%;background:#050c12;color:var(--text);border:1px solid #ffffff18;border-radius:10px;padding:12px;outline:none}.modal textarea{min-height:80px;resize:vertical}.modal .save{margin-top:15px;width:100%;min-height:46px;border:0;border-radius:11px;background:linear-gradient(135deg,var(--cyan),var(--blue));color:#001016;font-weight:1000;cursor:pointer}
-.toast{position:fixed;right:16px;bottom:16px;z-index:80;background:#07151f;border:1px solid #19e6ff44;color:#dffaff;padding:13px 16px;border-radius:12px;display:none}
-@media(max-width:760px){.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}.refresh{width:100%}}
-@media(max-width:430px){.stats{grid-template-columns:1fr 1fr}.stat b{font-size:23px}.order{padding:14px}}
+:root{--bg:#02060a;--panel:#07131c;--panel2:#0a1a25;--cyan:#19e6ff;--blue:#4aa8ff;--green:#45e3a3;--yellow:#ffd76a;--purple:#b78cff;--red:#ff647d;--muted:#8da5b0;--text:#effcff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 8% 4%,#063b49,transparent 27%),radial-gradient(circle at 92% 12%,#19113d,transparent 30%),radial-gradient(circle at 50% 100%,#06202a,transparent 30%),var(--bg);color:var(--text);font-family:Arial,sans-serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 0 48%,#19e6ff05 50%,transparent 52%);z-index:-1}
+header{position:sticky;top:0;z-index:20;background:#02060ae8;border-bottom:1px solid #19e6ff24;backdrop-filter:blur(18px)}
+.nav{width:min(1280px,calc(100% - 24px));margin:auto;min-height:70px;display:flex;align-items:center;gap:15px}.brand{display:flex;align-items:center;gap:11px}.orb{width:34px;height:34px;border:1px solid #19e6ff88;border-radius:50%;box-shadow:0 0 20px #19e6ff33,inset 0 0 14px #19e6ff22;position:relative}.orb:after{content:"";position:absolute;width:8px;height:8px;background:var(--cyan);border-radius:50%;left:12px;top:12px;box-shadow:0 0 16px var(--cyan)}.logo{font-weight:1000;letter-spacing:4px;color:var(--cyan);text-shadow:0 0 18px #19e6ff55}.sub{font-size:9px;color:#708892;letter-spacing:2px;margin-top:2px}.navright{margin-left:auto;display:flex;gap:8px;align-items:center}.navbtn{border:1px solid #ffffff16;background:#07131c;color:#bcd0d7;border-radius:10px;padding:10px 12px;text-decoration:none;font-size:11px;font-weight:800;cursor:pointer}.navbtn:hover{border-color:#19e6ff55;color:var(--cyan)}.logout{color:#ff9aaa;border-color:#ff647d35}
+main{width:min(1280px,calc(100% - 24px));margin:25px auto 70px}.hero{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:18px}.eyebrow{color:var(--cyan);font-size:9px;font-weight:900;letter-spacing:3px}.hero h1{font-size:clamp(30px,5vw,56px);line-height:1;margin:8px 0}.hero p{color:var(--muted);margin:0;font-size:13px}.live{display:inline-flex;align-items:center;gap:7px;margin-top:10px;color:#8fffd1;font-size:10px;font-weight:900;letter-spacing:1px}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}.refresh{border:1px solid #19e6ff35;background:#07151f;color:var(--cyan);border-radius:12px;padding:13px 16px;font-weight:900;cursor:pointer}.refresh:hover{box-shadow:0 0 22px #19e6ff18}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.stat{background:linear-gradient(145deg,#0a1924,#050b10);border:1px solid #ffffff10;border-radius:17px;padding:16px;position:relative;overflow:hidden}.stat:after{content:"";position:absolute;inset:auto -20px -25px auto;width:90px;height:90px;border-radius:50%;background:#19e6ff09}.stat small{color:var(--muted);display:block;font-size:9px;letter-spacing:.7px}.stat b{display:block;font-size:28px;margin-top:6px}.stat:nth-child(2) b{color:var(--cyan)}.stat:nth-child(3) b{color:#8ebcff}.stat:nth-child(4) b{color:var(--green)}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:18px}.step{min-height:56px;border:1px solid #ffffff10;background:#061019;border-radius:12px;padding:10px}.step b{display:block;font-size:11px}.step span{display:block;color:#708892;font-size:9px;margin-top:4px}.step.active{border-color:#19e6ff44;box-shadow:inset 0 0 22px #19e6ff08}.step.active b{color:var(--cyan)}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}.toolbar input,.toolbar select{min-height:44px;background:#061019;color:var(--text);border:1px solid #ffffff18;border-radius:11px;padding:0 12px;outline:none}.toolbar input{flex:1;min-width:220px}.toolbar input:focus,.toolbar select:focus{border-color:#19e6ff88;box-shadow:0 0 18px #19e6ff18}
+.orders{display:grid;gap:13px}.order{background:linear-gradient(145deg,#0a1924,#040a0f);border:1px solid #19e6ff1b;border-radius:20px;padding:17px;box-shadow:inset 0 0 34px #19e6ff04}.order:hover{border-color:#19e6ff42;box-shadow:0 12px 45px #0006,inset 0 0 34px #19e6ff07}.top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.num{font-weight:1000;letter-spacing:.8px;font-size:15px}.customer{color:#b8cbd2;font-size:12px;margin-top:5px}.badge{border:1px solid #ffffff20;border-radius:999px;padding:7px 10px;font-size:9px;font-weight:900;white-space:nowrap}.badge.new{color:var(--cyan)}.badge.processing{color:var(--yellow)}.badge.loaded{color:#8bdcff}.badge.picked_up{color:var(--purple)}.badge.shipped{color:#7db5ff}.badge.completed{color:var(--green)}.badge.cancelled{color:var(--red)}
+.progress{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:15px 0}.pstep{height:4px;border-radius:9px;background:#ffffff0d}.pstep.on{background:var(--cyan);box-shadow:0 0 9px #19e6ff55}.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}.box{border:1px solid #ffffff0d;border-radius:14px;padding:13px;background:#ffffff03}.box small{color:var(--muted);display:block;font-size:9px;margin-bottom:6px}.box b{font-size:13px}.items{font-size:11px;line-height:1.8;color:#b9cbd2}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.actions button{min-height:42px;border-radius:10px;padding:0 12px;border:1px solid #ffffff18;background:#07131c;color:var(--text);cursor:pointer;font-weight:800}.actions button:hover{border-color:#19e6ff77;box-shadow:0 0 16px #19e6ff18}.actions .go{color:var(--cyan);border-color:#19e6ff38;background:#061923}.actions .done{color:var(--green);border-color:#45e3a338}.actions .danger{color:#ff9aaa;border-color:#ff647d35}.actions .call{color:#9fffd7;border-color:#45e3a330}.empty{text-align:center;padding:40px;border:1px dashed #19e6ff2a;border-radius:17px;color:var(--muted)}
+.overlay{position:fixed;inset:0;z-index:50;background:#000b;display:none;place-items:center;padding:15px}.modal{width:min(650px,100%);max-height:90vh;overflow:auto;background:linear-gradient(145deg,#0b1b27,#04090e);border:1px solid #19e6ff35;border-radius:20px;padding:20px;box-shadow:0 30px 100px #000}.modalhead{display:flex;justify-content:space-between;align-items:center}.close{width:38px;height:38px;border-radius:10px;border:1px solid #ff647d40;background:#190a0e;color:#ff9aaa;font-size:20px;cursor:pointer}.modal label{display:block;color:var(--muted);font-size:10px;margin:15px 0 6px}.modal input,.modal textarea,.modal select{width:100%;background:#050c12;color:var(--text);border:1px solid #ffffff18;border-radius:10px;padding:12px;outline:none}.modal textarea{min-height:90px;resize:vertical}.modal .save{margin-top:15px;width:100%;min-height:46px;border:0;border-radius:11px;background:linear-gradient(135deg,var(--cyan),var(--blue));color:#001016;font-weight:1000;cursor:pointer}
+.toast{position:fixed;right:16px;bottom:16px;z-index:80;background:#07151f;border:1px solid #19e6ff44;color:#dffaff;padding:13px 16px;border-radius:12px;display:none;max-width:min(420px,calc(100% - 32px));box-shadow:0 15px 50px #0008}
+@media(max-width:760px){.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.hero{align-items:stretch;flex-direction:column}.refresh{width:100%}.flow{grid-template-columns:1fr 1fr}.step:last-child{grid-column:span 2}.navbtn.adminlink{display:none}}
+@media(max-width:430px){main{margin-top:18px}.stats{gap:8px}.stat{padding:13px}.stat b{font-size:23px}.order{padding:14px}.progress{gap:3px}.flow{grid-template-columns:1fr 1fr}.nav a{display:none}.nav{min-height:62px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js?v=20260920-1"></script>
 </head>
 <body>
-<header><div class="nav"><div><div class="logo">ECOMAX LINE</div><div class="sub">DELIVERY CONTROL</div></div><div style="margin-left:auto;display:flex;gap:10px;align-items:center"><a href="admin.html" style="margin:0">← Admin</a><button id="logout" style="border:1px solid #ff647d35;background:#180a0e;color:#ff9aaa;border-radius:10px;padding:10px 12px;cursor:pointer;font-weight:800">გასვლა</button></div></div></header>
+<header><div class="nav">
+  <div class="brand"><div class="orb"></div><div><div class="logo">ECOMAX LINE</div><div class="sub">COURIER CONTROL</div></div></div>
+  <div class="navright"><a class="navbtn adminlink" href="admin.html">← Admin</a><button class="navbtn" id="refresh">↻ განახლება</button><button class="navbtn logout" id="logout">გასვლა</button></div>
+</div></header>
 <main>
-<section class="hero"><div><div class="eyebrow">LIVE DELIVERY NETWORK</div><h1>მიწოდების მართვა</h1><p id="access">სისტემა იტვირთება...</p></div><button class="refresh" id="refresh">↻ განახლება</button></section>
+<section class="hero"><div><div class="eyebrow">LIVE DELIVERY NETWORK</div><h1>კურიერის პანელი</h1><p id="access">სისტემა იტვირთება...</p><div class="live"><i class="dot"></i> LIVE • შეკვეთები ავტომატურად ახლდება</div></div></section>
 <section class="stats"><div class="stat"><small>აქტიური</small><b id="sActive">0</b></div><div class="stat"><small>ახალი</small><b id="sNew">0</b></div><div class="stat"><small>გზაში</small><b id="sRoad">0</b></div><div class="stat"><small>ჩაბარებული</small><b id="sDone">0</b></div></section>
-<div class="toolbar"><input id="search" placeholder="შეკვეთის ნომერი, სახელი, ტელეფონი..."><select id="filter"><option value="active">აქტიური შეკვეთები</option><option value="all">ყველა</option><option value="new">ახალი</option><option value="processing">მუშავდება</option><option value="loaded">დატვირთული</option><option value="picked_up">კურიერმა აიღო</option><option value="shipped">გზაში</option><option value="completed">ჩაბარდა</option></select></div>
+<section class="flow">
+  <div class="step active"><b>01 • ახალი</b><span>შეკვეთა მოვიდა</span></div>
+  <div class="step"><b>02 • დამუშავება</b><span>მზადდება</span></div>
+  <div class="step"><b>03 • აღება</b><span>კურიერმა აიღო</span></div>
+  <div class="step"><b>04 • გზაში</b><span>მიტანის პროცესში</span></div>
+  <div class="step"><b>05 • ჩაბარება</b><span>შეკვეთა დასრულდა</span></div>
+</section>
+<div class="toolbar"><input id="search" placeholder="🔎 ნომერი, სახელი, ტელეფონი, ქალაქი, მისამართი..."><select id="filter"><option value="active">აქტიური შეკვეთები</option><option value="all">ყველა</option><option value="new">ახალი</option><option value="processing">მუშავდება</option><option value="loaded">დატვირთული</option><option value="picked_up">კურიერმა აიღო</option><option value="shipped">გზაში</option><option value="completed">ჩაბარდა</option></select></div>
 <section class="orders" id="orders"><div class="empty">იტვირთება...</div></section>
 </main>
-<div class="overlay" id="overlay"><div class="modal"><div class="modalhead"><div><div class="eyebrow">ECOMAX LINE</div><h2 id="mTitle">კურიერის მართვა</h2></div><button class="close" id="close">×</button></div><div id="mBody"></div></div></div>
+<div class="overlay" id="overlay"><div class="modal"><div class="modalhead"><div><div class="eyebrow">ECOMAX LINE</div><h2 id="mTitle">შეკვეთის მართვა</h2></div><button class="close" id="close">×</button></div><div id="mBody"></div></div></div>
 <div class="toast" id="toast"></div>
 <script>
 (function(){
 'use strict';
-const db=window.ECOMAX_SUPABASE_CLIENT;
-const $=id=>document.getElementById(id);
+const db=window.ECOMAX_SUPABASE_CLIENT,$=id=>document.getElementById(id);
 const labels={new:'ახალი',processing:'მუშავდება',loaded:'ტვირთი დაიტვირთა',picked_up:'კურიერმა აიღო',shipped:'გზაშია',completed:'ჩაბარდა',cancelled:'გაუქმდა'};
 const next={new:'processing',processing:'loaded',loaded:'picked_up',picked_up:'shipped',shipped:'completed'};
-let orders=[], user=null, admin=false;
+const orderSteps=['new','processing','loaded','picked_up','shipped','completed'];
+let orders=[],user=null,admin=false;
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function money(v){return Number(v||0).toFixed(2)+' ₾';}
-function toast(t){$('toast').textContent=t;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2200);}
+function toast(t){$('toast').textContent=t;$('toast').style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>$('toast').style.display='none',2600);}
 function dt(v){if(!v)return '—';const d=new Date(v);return isNaN(d)?'—':d.toLocaleString('ka-GE',{dateStyle:'short',timeStyle:'short'});}
 function items(o){const a=Array.isArray(o.items)?o.items:[];return a.map(x=>esc(x.name||x.product_name||'პროდუქტი')+' × '+esc(x.quantity??x.qty??1)).join('<br>')||'—';}
+function progress(status){if(status==='cancelled')return '';const i=orderSteps.indexOf(status);return '<div class="progress">'+orderSteps.slice(0,5).map((s,n)=>'<div class="pstep '+(i>=n?'on':'')+'"></div>').join('')+'</div>';}
+function phoneHref(v){return v?'tel:'+String(v).replace(/[^+\d]/g,''):'';}
+function mapHref(o){const q=[o.address,o.city].filter(Boolean).join(', ');return q?'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q):'';}
 async function boot(){
  if(!db){$('access').textContent='Supabase ვერ ჩაიტვირთა';return;}
- const {data:{user:u}}=await db.auth.getUser(); user=u;
- if(!u){location.href='line-login.html';return;}
- admin=!!u.user_metadata?.is_admin || u.email==='razmadze467-arch@users.noreply.github.com';
- $('access').textContent=admin?'ADMIN • ECOMAX LINE სრული წვდომა':'COURIER • მინიჭებული შეკვეთები';
+ const {data:{user:u}}=await db.auth.getUser();user=u;
+ if(!u){location.replace('line-login.html');return;}
+ admin=!!u.user_metadata?.is_admin||u.email==='razmadze467-arch@users.noreply.github.com';
+ $('access').textContent=admin?'ADMIN • სრული ECOMAX LINE წვდომა':'COURIER • მხოლოდ მინიჭებული შეკვეთები';
  await load();
 }
 async function load(){
  $('orders').innerHTML='<div class="empty">შეკვეთები იტვირთება...</div>';
  let q=db.from('orders').select('*').order('created_at',{ascending:false});
- if(!admin) q=q.eq('courier_id',user.id);
+ if(!admin)q=q.eq('courier_id',user.id);
  const {data,error}=await q;
  if(error){$('orders').innerHTML='<div class="empty">შეკვეთების ჩატვირთვა ვერ მოხერხდა: '+esc(error.message)+'</div>';return;}
- orders=data||[]; render();
+ orders=data||[];render();
 }
 function render(){
- const term=($('search').value||'').toLowerCase().trim(), f=$('filter').value;
- let list=orders.filter(o=>{
+ const term=($('search').value||'').toLowerCase().trim(),f=$('filter').value;
+ const list=orders.filter(o=>{
   const hay=[o.order_number,o.customer_name,o.phone,o.city,o.address,o.courier_name].join(' ').toLowerCase();
-  const okSearch=!term||hay.includes(term);
-  const okFilter=f==='all'||(f==='active'&&!['completed','cancelled'].includes(o.status))||o.status===f;
-  return okSearch&&okFilter;
+  return (!term||hay.includes(term))&&(f==='all'||(f==='active'&&!['completed','cancelled'].includes(o.status))||o.status===f);
  });
  $('sActive').textContent=orders.filter(o=>!['completed','cancelled'].includes(o.status)).length;
  $('sNew').textContent=orders.filter(o=>o.status==='new').length;
@@ -75,42 +88,36 @@ function render(){
  $('sDone').textContent=orders.filter(o=>o.status==='completed').length;
  if(!list.length){$('orders').innerHTML='<div class="empty">შეკვეთა ვერ მოიძებნა.</div>';return;}
  $('orders').innerHTML=list.map(o=>{
-  const n=next[o.status], closed=['completed','cancelled'].includes(o.status);
+  const n=next[o.status],closed=['completed','cancelled'].includes(o.status),tel=phoneHref(o.phone),map=mapHref(o);
   return '<article class="order"><div class="top"><div><div class="num">'+esc(o.order_number||('ECX-'+String(o.id).slice(0,8).toUpperCase()))+'</div><div class="customer">'+esc(o.customer_name||'—')+' • '+esc(o.phone||'—')+'</div></div><span class="badge '+esc(o.status)+'">'+esc(labels[o.status]||o.status||'—')+'</span></div>'+
-  '<div class="grid"><div class="box"><small>მისამართი</small><b>'+esc([o.city,o.address].filter(Boolean).join(', ')||'—')+'</b><div class="items" style="margin-top:10px">'+items(o)+'</div></div><div class="box"><small>შეკვეთის თანხა</small><b>'+money(o.total)+'</b><div class="items" style="margin-top:10px">კურიერი: '+esc(o.courier_name||'არ არის მინიჭებული')+'<br>ETA: '+dt(o.estimated_arrival_at)+'</div></div></div>'+
-  '<div class="actions">'+(!closed&&n?'<button class="go" data-next="'+esc(o.id)+'">→ '+esc(labels[n])+'</button>':'')+'<button data-edit="'+esc(o.id)+'">⚙ დეტალები</button>'+(admin?'<button class="danger" data-assign="'+esc(o.id)+'">👤 კურიერი</button>':'')+'</div></article>';
+  progress(o.status)+
+  '<div class="grid"><div class="box"><small>მიტანის მისამართი</small><b>'+esc([o.city,o.address].filter(Boolean).join(', ')||'—')+'</b><div class="items" style="margin-top:10px">'+items(o)+'</div></div><div class="box"><small>შეკვეთის თანხა</small><b>'+money(o.total)+'</b><div class="items" style="margin-top:10px">კურიერი: '+esc(o.courier_name||'არ არის მინიჭებული')+'<br>ETA: '+dt(o.estimated_arrival_at)+'</div></div></div>'+
+  '<div class="actions">'+(!closed&&n?'<button class="go" data-next="'+esc(o.id)+'">→ '+esc(labels[n])+'</button>':'')+(tel?'<a class="navbtn call" href="'+esc(tel)+'">☎ დარეკვა</a>':'')+(map?'<a class="navbtn" target="_blank" rel="noopener" href="'+esc(map)+'">📍 რუკა</a>':'')+'<button data-edit="'+esc(o.id)+'">⚙ დეტალები</button>'+(admin?'<button class="danger" data-assign="'+esc(o.id)+'">👤 კურიერი</button>':'')+'</div></article>';
  }).join('');
 }
-async function advance(id){
- const o=orders.find(x=>String(x.id)===String(id)); if(!o)return;
- const ns=next[o.status]; if(!ns)return;
- await updateStatus(o,ns,null);
-}
+async function advance(id){const o=orders.find(x=>String(x.id)===String(id));if(o&&next[o.status])await updateStatus(o,next[o.status],null);}
 async function updateStatus(o,status,eta){
  let result;
- if(admin){
-  result=await db.from('orders').update({status,estimated_arrival_at:eta||o.estimated_arrival_at||null,updated_at:new Date().toISOString()}).eq('id',o.id);
- }else{
-  result=await db.rpc('ecomax_line_update_order',{p_order_id:o.id,p_status:status,p_estimated_arrival_at:eta||null});
- }
- if(result.error){toast(result.error.message);return;}
- toast('სტატუსი განახლდა ✓'); await load();
+ if(admin)result=await db.from('orders').update({status,estimated_arrival_at:eta||o.estimated_arrival_at||null,updated_at:new Date().toISOString()}).eq('id',o.id);
+ else result=await db.rpc('ecomax_line_update_order',{p_order_id:o.id,p_status:status,p_estimated_arrival_at:eta||null});
+ if(result.error){toast(result.error.message);return false;}
+ toast('სტატუსი განახლდა ✓');await load();return true;
 }
 function openDetails(o){
  $('mTitle').textContent=o.order_number||'შეკვეთა';
- $('mBody').innerHTML='<label>სტატუსი</label><select id="mStatus" style="width:100%;min-height:44px;background:#050c12;color:#fff;border:1px solid #ffffff18;border-radius:10px;padding:10px">'+Object.entries(labels).map(([k,v])=>'<option value="'+k+'" '+(o.status===k?'selected':'')+'>'+v+'</option>').join('')+'</select><label>სავარაუდო ჩამოსვლა</label><input id="mEta" type="datetime-local" value="'+(o.estimated_arrival_at?new Date(o.estimated_arrival_at).toISOString().slice(0,16):'')+'"><label>მისამართი</label><textarea readonly>'+esc([o.customer_name,o.phone,o.city,o.address].filter(Boolean).join('\n'))+'</textarea><button class="save" id="mSave">შენახვა</button>';
+ $('mBody').innerHTML='<label>სტატუსი</label><select id="mStatus">'+Object.entries(labels).map(([k,v])=>'<option value="'+k+'" '+(o.status===k?'selected':'')+'>'+v+'</option>').join('')+'</select><label>სავარაუდო ჩამოსვლა</label><input id="mEta" type="datetime-local" value="'+(o.estimated_arrival_at?new Date(o.estimated_arrival_at).toISOString().slice(0,16):'')+'"><label>მომხმარებლის მონაცემები</label><textarea readonly>'+esc([o.customer_name,o.phone,o.city,o.address].filter(Boolean).join('\n'))+'</textarea><label>შეკვეთა</label><textarea readonly>'+esc((Array.isArray(o.items)?o.items.map(x=>(x.name||x.product_name||'პროდუქტი')+' × '+(x.quantity??x.qty??1)).join('\n'):'—'))+'</textarea><button class="save" id="mSave">შენახვა</button>';
  $('overlay').style.display='grid';
- $('mSave').onclick=async()=>{const st=$('mStatus').value;const eta=$('mEta').value?new Date($('mEta').value).toISOString():null;await updateStatus(o,st,eta);$('overlay').style.display='none';};
+ $('mSave').onclick=async()=>{const eta=$('mEta').value?new Date($('mEta').value).toISOString():null;const ok=await updateStatus(o,$('mStatus').value,eta);if(ok)$('overlay').style.display='none';};
 }
 function assign(o){
  $('mTitle').textContent='კურიერის მინიჭება';
- $('mBody').innerHTML='<p style="color:#8da5b0;font-size:12px">კურიერის Supabase User ID ჩაწერე. კურიერის ანგარიში უნდა იყოს Supabase Auth-ში და მის <b>app_metadata.role</b>-ში უნდა ეწეროს <b>courier</b>.</p><label>Courier User ID</label><input id="cId" value="'+esc(o.courier_id||'')+'" placeholder="UUID"><label>სახელი</label><input id="cName" value="'+esc(o.courier_name||'')+'"><label>ტელეფონი</label><input id="cPhone" value="'+esc(o.courier_phone||'')+'"><button class="save" id="cSave">კურიერის მინიჭება</button>';
+ $('mBody').innerHTML='<p style="color:#8da5b0;font-size:12px">კურიერის ანგარიში უნდა არსებობდეს Supabase Auth-ში და მის <b>app_metadata.role</b>-ში უნდა ეწეროს <b>courier</b>.</p><label>Courier User ID</label><input id="cId" value="'+esc(o.courier_id||'')+'" placeholder="UUID"><label>სახელი</label><input id="cName" value="'+esc(o.courier_name||'')+'"><label>ტელეფონი</label><input id="cPhone" value="'+esc(o.courier_phone||'')+'"><button class="save" id="cSave">კურიერის მინიჭება</button>';
  $('overlay').style.display='grid';
  $('cSave').onclick=async()=>{const cid=$('cId').value.trim()||null;const {error}=await db.from('orders').update({courier_id:cid,courier_name:$('cName').value.trim()||null,courier_phone:$('cPhone').value.trim()||null,line_assigned_at:cid?new Date().toISOString():null}).eq('id',o.id);if(error){toast(error.message);return;}toast(cid?'კურიერი მიენიჭა ✓':'კურიერი მოიხსნა ✓');$('overlay').style.display='none';await load();};
 }
 $('refresh').onclick=load;$('logout').onclick=async()=>{await db.auth.signOut();location.replace('line-login.html');};$('search').oninput=render;$('filter').onchange=render;$('close').onclick=()=>$('overlay').style.display='none';$('overlay').onclick=e=>{if(e.target===$('overlay'))$('overlay').style.display='none';};
 $('orders').onclick=e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.next||b.dataset.edit||b.dataset.assign;const o=orders.find(x=>String(x.id)===String(id));if(!o)return;if(b.dataset.next)advance(id);else if(b.dataset.edit)openDetails(o);else assign(o);};
-db?.channel('ecomax-line-live').on('postgres_changes',{event:'*',schema:'public',table:'orders'},()=>load()).subscribe();
+if(db)db.channel('ecomax-line-live').on('postgres_changes',{event:'*',schema:'public',table:'orders'},()=>load()).subscribe();
 boot();
 })();
 </script>
