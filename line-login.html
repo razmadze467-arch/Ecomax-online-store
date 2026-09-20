@@ -46,7 +46,7 @@ const form=document.getElementById('form'),btn=document.getElementById('submit')
 function show(t){err.textContent=t;err.style.display='block'}
 if(!db){show('Supabase ვერ ჩაიტვირთა. გვერდი განაახლე.');return}
 const {data:{session}}=await db.auth.getSession();
-if(session){location.replace('line.html');return}
+if(session){const u=session.user,role=u?.app_metadata?.role;const ok=role==='courier'||role==='admin'||String(u?.email||'').toLowerCase()==='datogringo@gmail.com';if(ok){location.replace('line.html');return}await db.auth.signOut();}
 form.addEventListener('submit',async e=>{
  e.preventDefault(); err.style.display='none'; btn.disabled=true; btn.textContent='მოწმდება...';
  const email=document.getElementById('email').value.trim();
@@ -55,7 +55,7 @@ form.addEventListener('submit',async e=>{
  if(error){show('შესვლა ვერ მოხერხდა: '+error.message);btn.disabled=false;btn.textContent='შესვლა ECOMAX LINE-ში';return}
  const u=data.user;
  const role=u?.app_metadata?.role;
- const isAdmin=!!u?.user_metadata?.is_admin || u?.email==='razmadze467-arch@users.noreply.github.com';
+ const isAdmin=u?.app_metadata?.role==='admin' || String(u?.email||'').toLowerCase()==='datogringo@gmail.com';
  if(!isAdmin && role!=='courier'){
    await db.auth.signOut();
    show('ეს ანგარიში ECOMAX LINE-ის კურიერად არ არის ავტორიზებული.');
