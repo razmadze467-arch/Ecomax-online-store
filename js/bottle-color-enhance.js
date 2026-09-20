@@ -55,6 +55,9 @@
     }
     .product-card .product-bottle::before{width:62px!important;height:21px!important;top:-15px!important;background:linear-gradient(#263f4c,#071019)!important;border:1px solid rgba(0,246,255,.38)!important;box-shadow:0 -3px 12px var(--mx-glow)!important}
     .product-card .product-bottle::after{content:"";position:absolute;left:10px;top:18px;width:8px;height:72%;border-radius:99px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.25),transparent);filter:blur(2px);pointer-events:none;z-index:1}
+    /* Hide legacy label markup so every bottle has one clean, non-overlapping label */
+    .product-card .product-label > *:not(.ecomax-premium-label-content):not(.ecomax-product-art):not(.ecomax-five-liter){display:none!important}
+    .product-card .product-label::before,.product-card .product-label::after{display:none!important;content:none!important}
     .product-card .product-label{
       left:9px!important;right:9px!important;top:57px!important;height:108px!important;box-sizing:border-box!important;
       border-radius:12px!important;overflow:hidden!important;padding:0!important;
