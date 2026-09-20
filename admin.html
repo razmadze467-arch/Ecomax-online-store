@@ -2697,18 +2697,19 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       }
 
 
-      <button
-        class="primary"
-        style="
-          width:100%;
-          margin-top:18px
-        "
-        onclick="
-          changeOrderStatus('${esc(order.id)}');
-          closeOrderModal();
-        "
-        type="button"
-      >
+      <div class="detail" style="margin-top:18px">
+        <small>🚚 კურიერი</small>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:8px">
+          <select id="orderCourierSelect" class="field" style="margin:0;min-width:220px">
+            <option value="">კურიერის არჩევა...</option>
+          </select>
+          <button class="primary" type="button" onclick="assignOrderCourier('${esc(order.id)}')">🚚 მინიჭება</button>
+        </div>
+        <div id="orderCourierCurrent" style="margin-top:8px;color:var(--muted);font-size:11px"></div>
+      </div>
+
+      <button class="primary" style="width:100%;margin-top:18px"
+        onclick="changeOrderStatus('${esc(order.id)}');closeOrderModal();" type="button">
         ⚙ სტატუსის შეცვლა
       </button>
 
@@ -2718,9 +2719,59 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     $("orderModal")
       .classList.add("show");
 
+    await populateCourierDropdown(order.courier_id || "");
+    const courierCurrent = $("orderCourierCurrent");
+    if (courierCurrent) {
+      courierCurrent.textContent = order.courier_name
+        ? "მიმდინარე: " + order.courier_name + (order.courier_phone ? " • " + order.courier_phone : "")
+        : "კურიერი ჯერ არ არის მინიჭებული";
+    }
+
   }
 
 
+  async function populateCourierDropdown(selectedId = "") {
+    const select = $("orderCourierSelect");
+    if (!select) return;
+    if (!courierApplications.length) await loadCourierApplications();
+    const approved = courierApplications.filter(x => x.status === "approved");
+    select.innerHTML = '<option value="">კურიერის არჩევა...</option>' +
+      approved.map(x => '<option value="' + esc(x.user_id) + '">' +
+        esc(x.full_name || "კურიერი") + ' — ' + esc(x.phone || "ტელეფონი არ არის") +
+        '</option>').join("");
+    if (selectedId) select.value = selectedId;
+  }
+
+  async function assignOrderCourier(orderId) {
+    const select = $("orderCourierSelect");
+    const courierId = select?.value || "";
+    if (!courierId) { toast("ჯერ აირჩიე დამტკიცებული კურიერი"); return; }
+    const courier = courierApplications.find(x => x.user_id === courierId && x.status === "approved");
+    if (!courier) { toast("კურიერი ვერ მოიძებნა"); return; }
+    try {
+      const { data, error } = await db.rpc("ecomax_assign_order_courier", {
+        p_order_id: orderId,
+        p_courier_id: courierId
+      });
+      if (error) throw error;
+      const updated = Array.isArray(data) ? data[0] : data;
+      const order = orders.find(x => String(x.id) === String(orderId));
+      if (order && updated) Object.assign(order, updated);
+      renderOrders();
+      renderRecentOrders();
+      updateDashboard();
+      const current = $("orderCourierCurrent");
+      if (current) current.textContent = "მინიჭებულია: " + (courier.full_name || "კურიერი") + (courier.phone ? " • " + courier.phone : "");
+      toast("კურიერი შეკვეთას მიენიჭა ✓");
+    } catch (error) {
+      console.error("Assign courier:", error);
+      toast("კურიერის მინიჭება ვერ მოხერხდა: " + (error.message || "უცნობი შეცდომა"));
+    }
+  }
+
+  /* ==========================================
+     ORDER MODAL
+  ==========================================
   function closeOrderModal() {
 
     $("orderModal")
