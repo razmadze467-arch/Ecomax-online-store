@@ -128,17 +128,25 @@
       if(!artNode){artNode=document.createElement('div');artNode.className='ecomax-bottle-art';bottle.appendChild(artNode)}
       artNode.innerHTML=art[t.art];
 
-      let content=label.querySelector('.ecomax-premium-label-content');
-      if(!content){content=document.createElement('div');content.className='ecomax-premium-label-content';content.style.cssText='position:absolute;inset:8px 8px 25px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:3;pointer-events:none';label.appendChild(content)}
-      content.innerHTML='<div class="ecomax-label-brand">ECOMAX</div><div class="ecomax-label-icon">'+art[t.art]+'</div><div class="ecomax-label-product">'+t.name+'</div><div class="ecomax-label-line"></div>';
+      /* Rebuild the label from scratch. This removes every legacy text node,
+         old label span, duplicated brand and previous overlay before drawing
+         the single clean ECOMAX label. */
+      label.replaceChildren();
 
-      let watermark=label.querySelector('.ecomax-product-art');
-      if(!watermark){watermark=document.createElement('div');watermark.className='ecomax-product-art';label.appendChild(watermark)}
+      const watermark=document.createElement('div');
+      watermark.className='ecomax-product-art';
       watermark.innerHTML=art[t.art];
+      label.appendChild(watermark);
 
-      let size=label.querySelector('.ecomax-five-liter');
-      if(!size){size=document.createElement('div');size.className='ecomax-five-liter';label.appendChild(size)}
+      const content=document.createElement('div');
+      content.className='ecomax-premium-label-content';
+      content.innerHTML='<div class="ecomax-label-brand">ECOMAX</div><div class="ecomax-label-icon">'+art[t.art]+'</div><div class="ecomax-label-product">'+t.name+'</div><div class="ecomax-label-line"></div>';
+      label.appendChild(content);
+
+      const size=document.createElement('div');
+      size.className='ecomax-five-liter';
       size.textContent='5 L';
+      label.appendChild(size);
       size.style.cssText='position:absolute;right:7px;bottom:7px;padding:3px 6px;border-radius:99px;background:'+t.color+';color:#041018;font-weight:900;letter-spacing:1px;z-index:5;box-shadow:0 0 10px '+t.color+'77';
     });
   }
