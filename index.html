@@ -5118,5 +5118,108 @@ main,.footer{position:relative;z-index:1}
   else boot();
 })();
 </script>
+
+<!-- ECOMAX GUARANTEED PRODUCT CARD CARS -->
+<style id="ecomax-guaranteed-card-cars">
+  .product-card{position:relative!important}
+  .ecomax-guaranteed-cars{
+    position:absolute!important;
+    left:10px!important;
+    right:10px!important;
+    top:155px!important;
+    height:58px!important;
+    z-index:999999!important;
+    pointer-events:none!important;
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    overflow:visible!important;
+  }
+  .ecomax-guaranteed-car{
+    position:absolute!important;
+    width:64px!important;
+    height:28px!important;
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    border:2px solid #00eaff!important;
+    border-radius:9px 13px 5px 5px!important;
+    background:linear-gradient(180deg,rgba(0,234,255,.3),rgba(1,8,15,.95))!important;
+    box-shadow:0 0 7px #00eaff,0 0 18px rgba(0,234,255,.65)!important;
+    animation:ecomaxGuaranteedCarA 5s linear infinite!important;
+    will-change:left!important;
+  }
+  .ecomax-guaranteed-car:before{
+    content:""!important;
+    position:absolute!important;
+    left:13px!important;
+    top:-8px!important;
+    width:25px!important;
+    height:8px!important;
+    border:2px solid currentColor!important;
+    border-bottom:0!important;
+    border-radius:8px 8px 0 0!important;
+  }
+  .ecomax-guaranteed-car:after{
+    content:"•  •"!important;
+    position:absolute!important;
+    left:9px!important;
+    bottom:-5px!important;
+    width:44px!important;
+    font-size:13px!important;
+    line-height:8px!important;
+    letter-spacing:16px!important;
+    color:#fff!important;
+    text-shadow:0 0 5px #fff!important;
+  }
+  .ecomax-guaranteed-car.car2{
+    color:#ff2bd6!important;
+    border-color:#ff2bd6!important;
+    box-shadow:0 0 7px #ff2bd6,0 0 18px rgba(255,43,214,.65)!important;
+    animation-name:ecomaxGuaranteedCarB!important;
+    animation-duration:5.8s!important;
+  }
+  @keyframes ecomaxGuaranteedCarA{
+    0%{left:2px}50%{left:calc(100% - 66px)}100%{left:2px}
+  }
+  @keyframes ecomaxGuaranteedCarB{
+    0%{right:2px}50%{right:calc(100% - 66px)}100%{right:2px}
+  }
+  @media(max-width:620px){
+    .ecomax-guaranteed-cars{top:140px!important;height:48px!important}
+    .ecomax-guaranteed-car{width:52px!important;height:24px!important}
+    @keyframes ecomaxGuaranteedCarA{
+      0%{left:2px}50%{left:calc(100% - 54px)}100%{left:2px}
+    }
+    @keyframes ecomaxGuaranteedCarB{
+      0%{right:2px}50%{right:calc(100% - 54px)}100%{right:2px}
+    }
+  }
+</style>
+<script>
+(function(){
+  function mount(){
+    document.querySelectorAll('.product-card').forEach(function(card){
+      if(card.querySelector(':scope > .ecomax-guaranteed-cars')) return;
+      var wrap=document.createElement('div');
+      wrap.className='ecomax-guaranteed-cars';
+      wrap.setAttribute('aria-hidden','true');
+      wrap.innerHTML='<span class="ecomax-guaranteed-car car1"></span><span class="ecomax-guaranteed-car car2"></span>';
+      card.appendChild(wrap);
+    });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',mount,{once:true});
+  }else{mount();}
+  window.setTimeout(mount,300);
+  window.setTimeout(mount,1000);
+  window.setTimeout(mount,2500);
+  var grid=document.getElementById('productsGrid');
+  if(grid && window.MutationObserver){
+    new MutationObserver(mount).observe(grid,{childList:true,subtree:true});
+  }
+})();
+</script>
+
 </body>
 </html>
