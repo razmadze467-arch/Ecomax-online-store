@@ -38,10 +38,13 @@
     .ecomax-bottle-label .brand{font-size:8px;font-weight:1000;letter-spacing:2px;color:#fff}.ecomax-bottle-label .ka{font-size:12px;font-weight:1000;color:#fff;line-height:1.05;margin-top:8px}.ecomax-bottle-label .en{font-size:8px;font-weight:1000;letter-spacing:1.1px;color:var(--card-accent);margin-top:4px}.ecomax-bottle-label .size{display:inline-block;margin-top:7px;padding:3px 7px;border-radius:999px;background:var(--card-accent);color:#001018;font-size:9px;font-weight:1000;box-shadow:0 0 12px var(--card-accent-soft)}
     .ecomax-bottle-ground{position:absolute;bottom:13px;width:150px;height:18px;border-radius:50%;background:var(--card-accent-soft);filter:blur(9px);animation:ecomaxGround 4.8s ease-in-out infinite}
     .ecomax-volume-chip{position:absolute;right:12px;top:12px;z-index:4;padding:7px 10px;border-radius:999px;background:rgba(1,9,16,.82);border:1px solid color-mix(in srgb,var(--card-accent) 45%,transparent);color:var(--card-accent);font-size:9px;font-weight:1000;letter-spacing:1px;box-shadow:0 0 18px var(--card-accent-soft)}
-    .ecomax-static-cars{position:absolute!important;left:6px!important;right:6px!important;top:235px!important;height:48px!important;z-index:99999!important;display:flex!important;align-items:center!important;justify-content:space-between!important;pointer-events:none!important;visibility:visible!important;opacity:1!important;overflow:visible!important}
-    .ecomax-static-car{display:block!important;visibility:visible!important;opacity:1!important;width:82px!important;height:34px!important;color:#00eaff!important;filter:drop-shadow(0 0 7px currentColor)!important}
-    .ecomax-static-car svg{display:block!important;width:100%!important;height:100%!important;overflow:visible!important}
+    .ecomax-static-cars{position:absolute!important;left:7px!important;right:7px!important;bottom:4px!important;top:auto!important;height:42px!important;z-index:80!important;display:flex!important;align-items:flex-end!important;justify-content:space-between!important;pointer-events:none!important;visibility:visible!important;opacity:1!important;overflow:visible!important}
+    .ecomax-static-car{position:relative!important;display:block!important;visibility:visible!important;opacity:1!important;width:74px!important;height:28px!important;color:#00eaff!important;filter:drop-shadow(0 0 8px currentColor)!important;flex:0 0 74px!important}
+    .ecomax-static-car svg{display:block!important;width:74px!important;height:28px!important;overflow:visible!important}
     .ecomax-static-car.car-right{color:#ff2d78!important;transform:scaleX(-1)!important}
+    .ecomax-bottle-zone .ecomax-static-cars{z-index:999!important}
+    .ecomax-bottle-zone .ecomax-static-car svg path{stroke:currentColor!important}
+    
     .ecomax-card-cars{position:absolute!important;left:0;right:0;bottom:6px;height:54px;z-index:40;pointer-events:none;overflow:hidden!important;opacity:1!important;display:block!important;visibility:visible!important}
     .ecomax-card-road{position:absolute;left:5%;right:5%;bottom:12px;height:1px;background:linear-gradient(90deg,transparent,var(--card-accent),transparent);opacity:.5;box-shadow:0 0 8px var(--card-accent)}
     .ecomax-mini-car{position:absolute!important;width:62px;height:25px;filter:drop-shadow(0 0 10px var(--card-accent));will-change:left;z-index:1000!important;display:block!important;visibility:visible!important;opacity:1!important}
@@ -115,11 +118,11 @@
     staticCars.className='ecomax-static-cars';
     staticCars.setAttribute('aria-hidden','true');
     staticCars.innerHTML='<div class="ecomax-static-car car-left"><svg viewBox="0 0 120 48" aria-hidden="true"><path d="M16 31h88a7 7 0 0 0 7-7v-3H90l-9-12H43L31 21H9v4a6 6 0 0 0 7 6Z" fill="rgba(0,234,255,.16)" stroke="currentColor" stroke-width="2"/><path d="M38 20h43l-7-8H45l-7 8Z" fill="rgba(255,255,255,.08)" stroke="currentColor"/><circle cx="31" cy="33" r="7" fill="#02080d" stroke="#fff" stroke-width="2"/><circle cx="89" cy="33" r="7" fill="#02080d" stroke="#fff" stroke-width="2"/><path d="M12 25h8M100 25h8" stroke="currentColor" stroke-width="2"/><path d="M14 38h92" stroke="currentColor" stroke-width="1" opacity=".7"/></svg></div><div class="ecomax-static-car car-right"><svg viewBox="0 0 120 48" aria-hidden="true"><path d="M16 31h88a7 7 0 0 0 7-7v-3H90l-9-12H43L31 21H9v4a6 6 0 0 0 7 6Z" fill="rgba(255,45,120,.16)" stroke="currentColor" stroke-width="2"/><path d="M38 20h43l-7-8H45l-7 8Z" fill="rgba(255,255,255,.08)" stroke="currentColor"/><circle cx="31" cy="33" r="7" fill="#02080d" stroke="#fff" stroke-width="2"/><circle cx="89" cy="33" r="7" fill="#02080d" stroke="#fff" stroke-width="2"/><path d="M12 25h8M100 25h8" stroke="currentColor" stroke-width="2"/><path d="M14 38h92" stroke="currentColor" stroke-width="1" opacity=".7"/></svg></div>';
-    card.appendChild(staticCars);
     const cars=document.createElement('div');
     cars.className='ecomax-card-cars';
     cars.setAttribute('aria-hidden','true');
     cars.innerHTML='<div class="ecomax-card-road"></div><div class="ecomax-mini-car one"><span class="body"></span><i class="wheel w1"></i><i class="wheel w2"></i><b class="light"></b></div><div class="ecomax-mini-car two"><span class="body"></span><i class="wheel w1"></i><i class="wheel w2"></i><b class="light"></b></div>';
+    zone.appendChild(staticCars);
     zone.appendChild(cars);
     const top=card.querySelector('.pc-top');
     if(top) top.insertAdjacentElement('afterend',zone); else card.insertAdjacentElement('afterbegin',zone);
