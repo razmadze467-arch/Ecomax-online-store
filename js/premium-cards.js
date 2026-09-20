@@ -40,15 +40,15 @@
     .ecomax-volume-chip{position:absolute;right:12px;top:12px;z-index:4;padding:7px 10px;border-radius:999px;background:rgba(1,9,16,.82);border:1px solid color-mix(in srgb,var(--card-accent) 45%,transparent);color:var(--card-accent);font-size:9px;font-weight:1000;letter-spacing:1px;box-shadow:0 0 18px var(--card-accent-soft)}
     .ecomax-card-cars{position:absolute;left:0;right:0;bottom:0;height:58px;z-index:50;pointer-events:none;overflow:hidden;opacity:1}
     .ecomax-card-road{position:absolute;left:8%;right:8%;top:50%;height:1px;background:linear-gradient(90deg,transparent,var(--card-accent),transparent);opacity:.28;box-shadow:0 0 8px var(--card-accent)}
-    .ecomax-mini-car{position:absolute;width:58px;height:22px;filter:drop-shadow(0 0 7px var(--card-accent));will-change:left,opacity;z-index:3}
-    .ecomax-mini-car .body{position:absolute;left:3px;right:3px;bottom:2px;height:9px;border:1px solid var(--card-accent);border-radius:6px 8px 3px 3px;background:linear-gradient(180deg,var(--card-accent-soft),#06121c);box-shadow:0 0 6px var(--card-accent-soft)}
+    .ecomax-mini-car{position:absolute;width:64px;height:24px;filter:drop-shadow(0 0 9px var(--card-accent));will-change:transform,opacity;z-index:3}
+    .ecomax-mini-car .body{position:absolute;left:3px;right:3px;bottom:2px;height:12px;border:1px solid var(--card-accent);border-radius:6px 8px 3px 3px;background:linear-gradient(180deg,var(--card-accent-soft),#06121c);box-shadow:0 0 6px var(--card-accent-soft)}
     .ecomax-mini-car .body:before{content:"";position:absolute;left:10px;top:-6px;width:19px;height:7px;border:1px solid var(--card-accent);border-bottom:0;border-radius:7px 7px 0 0;background:rgba(0,234,255,.08)}
     .ecomax-mini-car .wheel{position:absolute;bottom:0;width:5px;height:5px;border:1px solid #d9fbff;border-radius:50%;background:#02080d}.ecomax-mini-car .w1{left:8px}.ecomax-mini-car .w2{right:8px}
     .ecomax-mini-car .light{position:absolute;right:1px;bottom:6px;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px var(--card-accent)}
-    .ecomax-mini-car.one{left:-65px;top:4px;animation:ecomaxCardCarForward 5.5s linear infinite!important}
-    .ecomax-mini-car.two{left:calc(100% + 65px);bottom:5px;animation:ecomaxCardCarBackward 6.2s linear infinite!important}
-    @keyframes ecomaxCardCarForward{0%{left:-65px;opacity:0}5%{opacity:1}95%{opacity:1}100%{left:calc(100% + 65px);opacity:0}}
-    @keyframes ecomaxCardCarBackward{0%{left:calc(100% + 65px);opacity:0}5%{opacity:1}95%{opacity:1}100%{left:-65px;opacity:0}}
+    .ecomax-mini-car.one{left:0;top:4px;animation:ecomaxCardCarForward 4.5s linear infinite!important}
+    .ecomax-mini-car.two{left:0;bottom:5px;animation:ecomaxCardCarBackward 5.2s linear infinite!important}
+    @keyframes ecomaxCardCarForward{0%{transform:translateX(-80px);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translateX(calc(100% + 80px));opacity:0}}
+    @keyframes ecomaxCardCarBackward{0%{transform:translateX(calc(100% + 80px));opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translateX(-80px);opacity:0}}
 
     .pro-product-card .pc-icon{display:none!important}
     .pro-product-card .pc-code{font-size:10px!important;letter-spacing:2.5px;color:#78909d!important}.pro-product-card .pc-code strong{font-size:18px!important;color:#fff!important}
