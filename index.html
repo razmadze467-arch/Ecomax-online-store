@@ -5230,5 +5230,92 @@ main,.footer{position:relative;z-index:1}
 </script>
 
 
+
+<!-- ECOMAX NEON PERIMETER RUNNER -->
+<style id="ecomax-neon-perimeter-runner-v1">
+  .product-card{
+    --neon-a:#00f6ff;
+    --neon-b:#7b4dff;
+    --neon-c:#ff2bd6;
+  }
+  .product-card.red{--neon-a:#ff315d;--neon-b:#ff7a00;--neon-c:#ff25d9}
+  .product-card.yellow{--neon-a:#ffd21a;--neon-b:#ff8a00;--neon-c:#fff36a}
+  .product-card.cyan{--neon-a:#00f6ff;--neon-b:#42ff9b;--neon-c:#00b7ff}
+  .product-card.blue{--neon-a:#168dff;--neon-b:#7b4dff;--neon-c:#00eaff}
+  .ecomax-neon-perimeter{
+    position:absolute!important;
+    inset:0!important;
+    z-index:999998!important;
+    pointer-events:none!important;
+    overflow:hidden!important;
+    border-radius:22px!important;
+  }
+  .ecomax-neon-beam{
+    position:absolute!important;
+    left:0!important;
+    top:0!important;
+    width:68px!important;
+    height:4px!important;
+    border-radius:999px!important;
+    background:linear-gradient(90deg,transparent,var(--neon-a),#fff,var(--neon-c),transparent)!important;
+    box-shadow:
+      0 0 4px var(--neon-a),
+      0 0 10px var(--neon-a),
+      0 0 22px var(--neon-b),
+      0 0 34px var(--neon-c)!important;
+    offset-path:inset(3px round 20px)!important;
+    offset-distance:0%!important;
+    offset-rotate:auto!important;
+    animation:ecomaxNeonPerimeter 5.2s linear infinite!important;
+    will-change:offset-distance!important;
+  }
+  .ecomax-neon-beam::after{
+    content:"";
+    position:absolute;
+    inset:-5px -16px;
+    border-radius:999px;
+    background:inherit;
+    filter:blur(7px);
+    opacity:.62;
+  }
+  @keyframes ecomaxNeonPerimeter{
+    0%{offset-distance:0%;opacity:.25;filter:hue-rotate(0deg)}
+    3%{opacity:1}
+    25%{filter:hue-rotate(35deg)}
+    50%{filter:hue-rotate(90deg)}
+    75%{filter:hue-rotate(145deg)}
+    97%{opacity:1;filter:hue-rotate(210deg)}
+    100%{offset-distance:100%;opacity:.25;filter:hue-rotate(260deg)}
+  }
+  @media(max-width:620px){
+    .ecomax-neon-perimeter{border-radius:18px!important}
+    .ecomax-neon-beam{width:52px!important;height:3px!important;offset-path:inset(2px round 16px)!important}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .ecomax-neon-beam{animation:ecomaxNeonPerimeter 7s linear infinite!important}
+  }
+</style>
+<script id="ecomax-neon-perimeter-runner-js">
+(function(){
+  function mountNeon(){
+    document.querySelectorAll('.product-card').forEach(function(card){
+      if(card.querySelector(':scope > .ecomax-neon-perimeter')) return;
+      var wrap=document.createElement('div');
+      wrap.className='ecomax-neon-perimeter';
+      wrap.setAttribute('aria-hidden','true');
+      var beam=document.createElement('span');
+      beam.className='ecomax-neon-beam';
+      wrap.appendChild(beam);
+      card.appendChild(wrap);
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',mountNeon,{once:true});
+  else mountNeon();
+  [200,700,1500,3000].forEach(function(t){setTimeout(mountNeon,t)});
+  var grid=document.getElementById('productsGrid');
+  if(grid && window.MutationObserver) new MutationObserver(mountNeon).observe(grid,{childList:true,subtree:true});
+})();
+</script>
+
 </body>
 </html>
