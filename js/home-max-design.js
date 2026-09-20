@@ -486,18 +486,21 @@
         z-index:999999 !important;
       }
 
-      .ecomax-real-card-cars{
+      .product-card > .ecomax-real-card-cars,
+      .card > .ecomax-real-card-cars{
         position:absolute !important;
         left:8px !important;
         right:8px !important;
-        bottom:8px !important;
+        top:165px !important;
+        bottom:auto !important;
         height:58px !important;
         z-index:99999 !important;
         display:block !important;
         visibility:visible !important;
         opacity:1 !important;
         pointer-events:none !important;
-        overflow:hidden !important;
+        overflow:visible !important;
+        animation-play-state:running !important;
       }
 
       .ecomax-real-car{
@@ -512,6 +515,8 @@
           drop-shadow(
             0 0 8px currentColor
           ) !important;
+        animation-play-state:running !important;
+        will-change:left,right;
       }
 
       .ecomax-real-car.car-a{
@@ -581,7 +586,8 @@
       @media(max-width:620px){
 
         .ecomax-real-card-cars{
-          bottom:6px !important;
+          top:140px !important;
+          bottom:auto !important;
           height:48px !important;
         }
 
@@ -694,19 +700,19 @@
          ========================================= */
 
       @keyframes mxCardCarA{
-        0%{left:8px;opacity:.15}
+        0%{left:8px;opacity:1}
         8%{opacity:1}
         50%{left:calc(100% - 78px);opacity:1}
         92%{opacity:1}
-        100%{left:8px;opacity:.15}
+        100%{left:8px;opacity:1}
       }
 
       @keyframes mxCardCarB{
-        0%{right:8px;opacity:.15}
+        0%{right:8px;opacity:1}
         8%{opacity:1}
         50%{right:calc(100% - 78px);opacity:1}
         92%{opacity:1}
-        100%{right:8px;opacity:.15}
+        100%{right:8px;opacity:1}
       }
 
       @keyframes mxBottle{
@@ -1106,6 +1112,19 @@
         }
       );
     }
+
+    // Hard-mount fallback: product cards can be rendered/replaced after
+    // the initial boot. Retry a few times so the cars appear even when
+    // another script rebuilds the grid after page load.
+    const remountCardCars = () => {
+      document
+        .querySelectorAll('.card,.product-card')
+        .forEach((card, index) => addCardCars(card, index));
+    };
+    remountCardCars();
+    [120, 500, 1200, 2200].forEach(delay => {
+      window.setTimeout(remountCardCars, delay);
+    });
 
     /* =========================================
        PRODUCT CARD 3D MOVEMENT
