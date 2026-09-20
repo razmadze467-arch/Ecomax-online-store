@@ -100,6 +100,116 @@ function installBottomUI(){
   const ui=document.createElement("div");ui.className="ecomax-bottom-ui";ui.innerHTML=`<div class="road-line"></div><div class="car"><div class="credit">DEVELOPED BY BTCGAMER</div><div class="roof"></div><div class="car-body"></div><div class="wheel one"></div><div class="wheel two"></div></div>`;document.body.appendChild(ui);
 }
 
+function installOrbitCars(){
+  if(!document.head)return;
+  if(!document.getElementById("ecomaxOrbitCarsStyle")){
+    const style=document.createElement("style");
+    style.id="ecomaxOrbitCarsStyle";
+    style.textContent=`
+      .card,.product-card{
+        position:relative !important;
+        overflow:visible !important;
+      }
+      .ecomax-orbit-cars{
+        position:absolute;
+        inset:-13px;
+        pointer-events:none;
+        z-index:30;
+        overflow:visible;
+      }
+      .ecomax-orbit-car{
+        position:absolute;
+        width:54px;
+        height:25px;
+        left:0;
+        top:0;
+        will-change:left,top,transform;
+        filter:drop-shadow(0 0 5px currentColor) drop-shadow(0 0 11px currentColor);
+      }
+      .ecomax-orbit-car .body{
+        position:absolute;
+        left:5px;
+        right:5px;
+        bottom:3px;
+        height:10px;
+        border:2px solid currentColor;
+        border-radius:7px 10px 4px 4px;
+        background:linear-gradient(180deg,rgba(0,234,255,.28),rgba(2,8,16,.95));
+        box-shadow:0 0 7px currentColor,inset 0 0 7px rgba(255,255,255,.08);
+      }
+      .ecomax-orbit-car .roof{
+        position:absolute;
+        left:16px;
+        top:4px;
+        width:21px;
+        height:8px;
+        border:2px solid currentColor;
+        border-bottom:0;
+        border-radius:7px 8px 0 0;
+      }
+      .ecomax-orbit-car .wheel{
+        position:absolute;
+        bottom:0;
+        width:7px;
+        height:7px;
+        border:2px solid #fff;
+        border-radius:50%;
+        background:#02060b;
+        box-shadow:0 0 4px currentColor;
+      }
+      .ecomax-orbit-car .wheel.a{left:11px}
+      .ecomax-orbit-car .wheel.b{right:11px}
+      .ecomax-orbit-car.cyan{color:#00eaff;animation:ecomaxOrbitCW 8s linear infinite}
+      .ecomax-orbit-car.pink{color:#ff2d9a;animation:ecomaxOrbitCCW 8s linear infinite}
+      @keyframes ecomaxOrbitCW{
+        0%{left:-3px;top:-13px;transform:rotate(0deg)}
+        24%{left:calc(100% - 51px);top:-13px;transform:rotate(0deg)}
+        25%{left:calc(100% - 41px);top:-3px;transform:rotate(90deg)}
+        49%{left:calc(100% - 41px);top:calc(100% - 22px);transform:rotate(90deg)}
+        50%{left:calc(100% - 51px);top:calc(100% - 12px);transform:rotate(180deg)}
+        74%{left:-3px;top:calc(100% - 12px);transform:rotate(180deg)}
+        75%{left:-13px;top:calc(100% - 22px);transform:rotate(270deg)}
+        99%{left:-13px;top:-3px;transform:rotate(270deg)}
+        100%{left:-3px;top:-13px;transform:rotate(360deg)}
+      }
+      @keyframes ecomaxOrbitCCW{
+        0%{left:calc(100% - 51px);top:-13px;transform:rotate(180deg)}
+        24%{left:-3px;top:-13px;transform:rotate(180deg)}
+        25%{left:-13px;top:-3px;transform:rotate(270deg)}
+        49%{left:-13px;top:calc(100% - 22px);transform:rotate(270deg)}
+        50%{left:-3px;top:calc(100% - 12px);transform:rotate(360deg)}
+        74%{left:calc(100% - 51px);top:calc(100% - 12px);transform:rotate(360deg)}
+        75%{left:calc(100% - 41px);top:calc(100% - 22px);transform:rotate(450deg)}
+        99%{left:calc(100% - 41px);top:-3px;transform:rotate(450deg)}
+        100%{left:calc(100% - 51px);top:-13px;transform:rotate(540deg)}
+      }
+      @media(max-width:620px){
+        .ecomax-orbit-cars{inset:-10px}
+        .ecomax-orbit-car{width:42px;height:20px}
+        .ecomax-orbit-car .body{height:8px;left:4px;right:4px}
+        .ecomax-orbit-car .roof{left:13px;top:4px;width:16px;height:6px}
+        .ecomax-orbit-car .wheel{width:6px;height:6px}
+        .ecomax-orbit-car .wheel.a{left:8px}
+        .ecomax-orbit-car .wheel.b{right:8px}
+      }
+      @media(prefers-reduced-motion:reduce){
+        .ecomax-orbit-car{animation:none!important}
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  document.querySelectorAll(".card,.product-card").forEach(card=>{
+    if(card.querySelector(".ecomax-orbit-cars"))return;
+    const wrap=document.createElement("div");
+    wrap.className="ecomax-orbit-cars";
+    wrap.setAttribute("aria-hidden","true");
+    wrap.innerHTML=`
+      <div class="ecomax-orbit-car cyan"><span class="body"></span><span class="roof"></span><i class="wheel a"></i><i class="wheel b"></i></div>
+      <div class="ecomax-orbit-car pink"><span class="body"></span><span class="roof"></span><i class="wheel a"></i><i class="wheel b"></i></div>
+    `;
+    card.appendChild(wrap);
+  });
+}
 function forceMaxHomeDesign(){
   const isHome=/(^|\/)index\.html$/.test(location.pathname)||location.pathname==="/"||location.pathname==="";
   if(!isHome||document.getElementById("ecomaxMaxDesignJs"))return;
@@ -112,6 +222,6 @@ function init(){
   const menuButton=document.getElementById("menuButton")||document.getElementById("mobileMenu"),mobileNav=document.getElementById("mobileNav");if(menuButton&&mobileNav){if(!menuButton.hasAttribute("onclick")){menuButton.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();mobileNav.classList.toggle("active");});}mobileNav.querySelectorAll("a").forEach(a=>a.addEventListener("click",closeMobileMenu));}
   updateCart();syncAuthUI();
   const isHome=/(^|\/)index\.html$/.test(location.pathname)||location.pathname==="/"||location.pathname==="";
-  if(isHome){installCareCards();installBottomUI();forceMaxHomeDesign();}
+  if(isHome){installCareCards();installBottomUI();forceMaxHomeDesign();}\n  installOrbitCars();\n  [300,1000,2200].forEach(ms=>setTimeout(installOrbitCars,ms));
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
