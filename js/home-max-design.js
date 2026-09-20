@@ -481,6 +481,11 @@
          ECOMAX PRODUCT CARD CARS
          ========================================= */
 
+      .product-card > .ecomax-real-card-cars,
+      .card > .ecomax-real-card-cars{
+        z-index:999999 !important;
+      }
+
       .ecomax-real-card-cars{
         position:absolute !important;
         left:8px !important;
@@ -1070,11 +1075,12 @@
           '<i></i>' +
         '</div>';
 
-      const visual = card.querySelector('.product-visual');\n      card.appendChild(wrap);
+      const visual = card.querySelector('.product-visual');
+      card.appendChild(wrap);
     };
 
     document
-      .querySelectorAll('.card')
+      .querySelectorAll('.card,.product-card')
       .forEach(addCardCars);
 
     const cardGrid =
