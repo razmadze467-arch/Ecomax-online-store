@@ -111,7 +111,7 @@
     }
 
     /* Keep existing card contents above decorative layers. */
-    .product-card, .pro-product-card > *:not(.ecomax-perimeter-cars){
+    .product-card > *:not(.ecomax-perimeter-cars), .pro-product-card > *:not(.ecomax-perimeter-cars){
       position:relative;
       z-index:2;
     }
