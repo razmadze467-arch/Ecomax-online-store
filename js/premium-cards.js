@@ -1,6 +1,6 @@
 /* =========================================================
    ECOMAX — PREMIUM CARD PERIMETER CARS
-   Version: 2026-09-21-FINAL3
+   Version: 2026-09-21-FINAL4
    ========================================================= */
 
 (() => {
@@ -135,132 +135,56 @@
 
   function carSVG(type) {
 
-    const color =
-      type === "pink"
-        ? "#ff35d0"
-        : "#00f5ff";
+    const color = type === "pink" ? "#ff2d9a" : "#00eaff";
+    const glow = type === "pink" ? "#ff5ab8" : "#55f6ff";
 
     return `
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 100 52"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-      >
+      <svg xmlns="http://www.w3.org/2000/svg"
+           viewBox="0 0 120 54"
+           preserveAspectRatio="xMidYMid meet"
+           aria-hidden="true">
 
-        <!-- glow body -->
-        <path
-          d="
-            M7 31
-            L15 22
-            L31 22
-            L42 12
-            L70 12
-            L83 22
-            L91 24
-            L95 32
-            L93 38
-            L7 38
-            Z
-          "
-          fill="${color}"
-          fill-opacity=".13"
-          stroke="${color}"
-          stroke-width="2.4"
-          stroke-linejoin="round"
-        />
+        <defs>
+          <filter id="carGlow-${type}" x="-40%" y="-60%" width="180%" height="220%">
+            <feGaussianBlur stdDeviation="2.2" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <linearGradient id="carBody-${type}" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="${glow}" stop-opacity=".95"/>
+            <stop offset=".55" stop-color="${color}" stop-opacity=".65"/>
+            <stop offset="1" stop-color="#06101b" stop-opacity=".98"/>
+          </linearGradient>
+        </defs>
 
-        <!-- windshield -->
-        <path
-          d="
-            M43 14
-            L53 14
-            L53 22
-            L36 22
-            Z
-          "
-          fill="${color}"
-          fill-opacity=".28"
-          stroke="${color}"
-          stroke-width="1"
-        />
+        <g filter="url(#carGlow-${type})">
+          <!-- sleek futuristic car body -->
+          <path d="M8 36 L13 28 Q17 25 30 24 L43 12 Q47 8 58 8 H79 Q86 8 91 13 L102 24 Q109 25 113 30 L115 36 Q114 41 109 41 H13 Q8 41 8 36Z"
+                fill="url(#carBody-${type})"
+                stroke="${color}" stroke-width="2.2"
+                stroke-linejoin="round"/>
 
-        <path
-          d="
-            M56 14
-            L69 14
-            L78 22
-            L56 22
-            Z
-          "
-          fill="${color}"
-          fill-opacity=".22"
-          stroke="${color}"
-          stroke-width="1"
-        />
+          <!-- windows -->
+          <path d="M45 12 L58 12 V23 H35 Z"
+                fill="#061522" stroke="${color}" stroke-width="1.2"/>
+          <path d="M62 12 H78 Q84 12 88 17 L94 23 H62 Z"
+                fill="#061522" stroke="${color}" stroke-width="1.2"/>
 
-        <!-- headlights -->
-        <circle
-          cx="91"
-          cy="29"
-          r="2"
-          fill="#ffffff"
-        />
+          <!-- light strip -->
+          <path d="M15 31 H102" stroke="${glow}" stroke-width="1.2" opacity=".75"/>
+          <path d="M101 28 L111 31" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
 
-        <circle
-          cx="91"
-          cy="29"
-          r="4"
-          fill="${color}"
-          fill-opacity=".25"
-        />
+          <!-- wheels -->
+          <circle cx="29" cy="40" r="8" fill="#02060b" stroke="${color}" stroke-width="2"/>
+          <circle cx="29" cy="40" r="3" fill="${glow}"/>
+          <circle cx="88" cy="40" r="8" fill="#02060b" stroke="${color}" stroke-width="2"/>
+          <circle cx="88" cy="40" r="3" fill="${glow}"/>
 
-        <!-- wheels -->
-        <circle
-          cx="26"
-          cy="38"
-          r="7"
-          fill="#050810"
-          stroke="${color}"
-          stroke-width="2"
-        />
-
-        <circle
-          cx="26"
-          cy="38"
-          r="2.2"
-          fill="${color}"
-        />
-
-        <circle
-          cx="76"
-          cy="38"
-          r="7"
-          fill="#050810"
-          stroke="${color}"
-          stroke-width="2"
-        />
-
-        <circle
-          cx="76"
-          cy="38"
-          r="2.2"
-          fill="${color}"
-        />
-
-        <!-- neon underglow -->
-        <path
-          d="M17 43 L84 43"
-          stroke="${color}"
-          stroke-width="2"
-          stroke-linecap="round"
-          opacity=".8"
-        />
-
+          <!-- underglow -->
+          <path d="M19 47 H98" stroke="${color}" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+        </g>
       </svg>
     `;
   }
-
 
   /* ---------------------------------------------------------
      CREATE CARS
@@ -560,12 +484,10 @@
 
   function startPerimeterAnimation(card, cyan, pink) {
 
-    const speed = 72;
+    const speed = 58;
     const started = performance.now();
 
     function place(el, pt) {
-      // Use left/top for position — this avoids conflicts with
-      // other transform rules on the product cards.
       el.style.setProperty("left", pt.x + "px", "important");
       el.style.setProperty("top", pt.y + "px", "important");
       el.style.setProperty(
@@ -578,8 +500,8 @@
     function frame(now) {
       if (!card.isConnected) return;
 
-      const r = card.getBoundingClientRect();
-      if (r.width < 30 || r.height < 30) {
+      const rect = card.getBoundingClientRect();
+      if (rect.width < 30 || rect.height < 30) {
         requestAnimationFrame(frame);
         return;
       }
@@ -587,14 +509,13 @@
       const perimeter = pointAt(card, 0).length;
       const t = (now - started) / 1000;
 
-      // Two cars, opposite directions, always on the same rounded track.
-      const cyanDistance = (t * speed) % perimeter;
-      const pinkDistance =
-        (perimeter - ((t * speed * 0.82) + perimeter * 0.5) % perimeter)
-        % perimeter;
+      // ორივე მანქანა მოძრაობს ერთსა და იმავე სწორ, უწყვეტ
+      // rounded-rectangle ტრასაზე და ერთი მიმართულებით.
+      const d1 = (t * speed) % perimeter;
+      const d2 = (d1 + perimeter * 0.5) % perimeter;
 
-      place(cyan, pointAt(card, cyanDistance));
-      place(pink, pointAt(card, pinkDistance));
+      place(cyan, pointAt(card, d1));
+      place(pink, pointAt(card, d2));
 
       requestAnimationFrame(frame);
     }
