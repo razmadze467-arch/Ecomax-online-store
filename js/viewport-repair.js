@@ -93,7 +93,7 @@
     var section=document.createElement('section');
     section.id='ecomaxBottleCatalog';
     section.className='section ecomax-bottle-catalog';
-    section.innerHTML='<div class="section-head"><div><div class="section-label">ECOMAX // LEVEL CHEMICAL</div><h2>პრემიუმ <span>ბოთლების კოლექცია</span></h2></div><p>თითოეულ ECOMAX პროდუქტს აქვს საკუთარი ვიზუალური იდენტობა, ეტიკეტი და პროფესიონალური დასახელება.</p></div><div class="ecomax-showcase-grid"></div>';
+    section.innerHTML='<div class="section-head"><div><div class="section-label">ECOMAX // LEVEL CHEMICAL</div><h2><span>DETAILING SERIES</span></h2></div><p>ECOMAX პროფესიონალური detailing პროდუქციის ვიზუალური სერია.</p></div><div class="ecomax-showcase-grid"></div>';
 
     var style=document.createElement('style');
     style.id='ecomax-bottle-catalog-style';
@@ -144,7 +144,7 @@
       var card=document.createElement('article');
       card.className='ecomax-showcase-card';
       card.style.setProperty('--ec',p[3]);
-      card.innerHTML='<div class="ecomax-showcase-top"><span>ECOMAX // PRO</span><span>'+p[0]+'</span></div><div class="ecomax-showcase-bottle"><div class="ecomax-showcase-label"><b>ECOMAX</b><i>'+p[4]+'</i><span>'+p[1]+'</span></div></div><div class="ecomax-showcase-name">'+p[2]+'</div><div class="ecomax-showcase-en">'+p[1]+' • 5 L</div>';
+      card.innerHTML='<div class="ecomax-showcase-top"><span>ECOMAX // DETAILING SERIES</span><span>'+p[0]+'</span></div><div class="ecomax-showcase-bottle"><div class="ecomax-showcase-label"><b>ECOMAX</b><i>'+p[4]+'</i><span>'+p[1]+'</span></div></div><div class="ecomax-showcase-name">'+p[2]+'</div><div class="ecomax-showcase-en">'+p[1]+' • 5 L</div>';
       grid.appendChild(card);
     });
   }
