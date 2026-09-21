@@ -2348,6 +2348,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       <a href="account.html" data-auth-account>ჩემი ანგარიში</a>
 
       <a href="admin.html">Admin Panel</a>
+      <a href="line-login.html">ECOMAX LINE</a>
 
     </div>
 
@@ -5241,5 +5242,39 @@ body{
   letter-spacing:1.5px !important;
 }
 </style>
+<!-- ECOMAX: AUTH PERSISTENCE + COURIER ENTRY -->
+<script id="ecomax-auth-persistence-v2">
+(function(){
+  'use strict';
+  async function bootAuth(){
+    try{
+      const ready=window.ECOMAX_AUTH_READY;
+      const db=ready ? await ready : (window.ECOMAX_SUPABASE_CLIENT||window.ECOMAX_AUTH_CLIENT);
+      if(!db || !db.auth) return;
+      const apply=async(session)=>{
+        const logged=!!session?.user;
+        const login=document.getElementById('loginLink');
+        const reg=document.getElementById('registerLink');
+        const account=document.getElementById('authAccountLink');
+        const ml=document.querySelector('#mobileNav a[href="login.html"]');
+        const mr=document.querySelector('#mobileNav a[href="register.html"]');
+        const ma=document.querySelector('#mobileNav a[href="account.html"]');
+        if(login) login.style.display=logged?'none':'inline-flex';
+        if(reg) reg.style.display=logged?'none':'inline-flex';
+        if(account) account.style.display=logged?'inline-flex':'none';
+        if(ml) ml.style.display=logged?'none':'block';
+        if(mr) mr.style.display=logged?'none':'block';
+        if(ma) ma.style.display=logged?'block':'none';
+        document.documentElement.dataset.ecomaxAuthenticated=logged?'true':'false';
+      };
+      const {data}=await db.auth.getSession();
+      await apply(data?.session||null);
+      db.auth.onAuthStateChange((_event,session)=>{ setTimeout(()=>apply(session||null),0); });
+    }catch(e){ console.warn('ECOMAX auth persistence:',e); }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bootAuth,{once:true});
+  else bootAuth();
+})();
+</script>
 </body>
 </html>
