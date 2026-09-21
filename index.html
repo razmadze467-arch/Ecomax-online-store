@@ -3762,7 +3762,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
   <script src="js/viewport-repair.js?v=20260920-7"></script>
 
-  <script src="js/neon-magic-system.js?v=20260921-2"></script>
+  <script src="js/neon-magic-system.js?v=20260921-3"></script>
 
 
   <!-- =====================================================
@@ -5230,5 +5230,16 @@ body{
 })();
 </script>
 
+<!-- ECOMAX: DETAILING SERIES label hard override -->
+<style id="ecomax-detailing-series-hard-override">
+/* ECOMAX — replace any legacy PRO product-top badge */
+.product-top::before{
+  content:"ECOMAX // DETAILING SERIES" !important;
+  color:rgba(0,234,255,.62) !important;
+  font-size:6px !important;
+  font-weight:900 !important;
+  letter-spacing:1.5px !important;
+}
+</style>
 </body>
 </html>
