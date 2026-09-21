@@ -5202,5 +5202,33 @@ body{
 })();
 </script>
 
+
+<script id="ecomax-detailing-label-fix">
+(function(){
+  "use strict";
+  const replacements = [
+    ["პრემიუმ ბოთლების კოლექცია","ECOMAX // DETAILING SERIES"],
+    ["PREMIUM BOTTLES COLLECTION","ECOMAX // DETAILING SERIES"],
+    ["ECOMAX // PRO","ECOMAX // DETAILING SERIES"]
+  ];
+  function fix(){
+    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+    const nodes=[];
+    let n;
+    while(n=walker.nextNode()) nodes.push(n);
+    nodes.forEach(node=>{
+      let v=node.nodeValue;
+      replacements.forEach(([from,to])=>{
+        if(v.includes(from)) v=v.split(from).join(to);
+      });
+      if(v!==node.nodeValue) node.nodeValue=v;
+    });
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",fix,{once:true});
+  else fix();
+  new MutationObserver(fix).observe(document.body,{childList:true,subtree:true,characterData:true});
+})();
+</script>
+
 </body>
 </html>
