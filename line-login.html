@@ -22,7 +22,54 @@ button{width:100%;height:52px;margin-top:20px;border:1px solid #19eaff55;border-
 @media(max-width:520px){body{padding:12px}.card{padding:27px 20px;border-radius:24px}.card:after{display:none}}</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js?v=20260920-1"></script>
-<style id="ecomax-line-auth-mobile-fix">html,body{min-height:100%!important;height:auto!important}body{overflow-x:hidden!important;overflow-y:auto!important;display:block!important;padding:20px 12px 50px!important}.card{margin:0 auto 30px!important;max-height:none!important;height:auto!important;overflow:visible!important}@media(max-width:520px){body{padding:18px 12px 60px!important}.card{width:100%!important;padding:25px 18px!important}}</style></head>
+<style id="ecomax-line-auth-mobile-fix">html,body{min-height:100%!important;height:auto!important}body{overflow-x:hidden!important;overflow-y:auto!important;display:block!important;padding:20px 12px 50px!important}.card{margin:0 auto 30px!important;max-height:none!important;height:auto!important;overflow:visible!important}@media(max-width:520px){body{padding:18px 12px 60px!important}.card{width:100%!important;padding:25px 18px!important}}</style><style id="ecomax-line-login-5d-form">
+/* ECOMAX LINE LOGIN // 3D • 4D • 5D HOLO GATE */
+body{perspective:1200px}
+.card{
+ transform-style:preserve-3d;will-change:transform;
+ border-color:#19eaff66!important;
+ box-shadow:0 35px 110px #000e,0 0 50px #19eaff18,0 0 130px #8d63ff12,inset 0 1px #ffffff18!important;
+ transition:transform .18s ease-out,box-shadow .3s ease;
+}
+.card:before{height:3px!important;background-size:200% 100%!important;animation:holoLine 3s linear infinite}
+.card:after{content:"LINE // 05D ACCESS // SECURE GATEWAY"!important;animation:microPulse 2.5s ease-in-out infinite}
+.card .logo{transform:translateZ(30px);text-shadow:0 0 12px #19eaff,0 0 35px #19eaff70,0 0 70px #ff3fd230!important}
+.card .line{transform:translateZ(18px)}
+.card .icon{transform:translateZ(45px);box-shadow:0 0 22px #19eaff35,0 0 65px #19eaff18,inset 0 0 28px #19eaff18!important}
+.card h1{transform:translateZ(26px);text-shadow:0 8px 30px #19eaff20}
+.card .desc{transform:translateZ(16px)}
+form{position:relative;transform-style:preserve-3d}
+form label,form input,form button{position:relative}
+form input{transform:translateZ(10px)}
+input:focus{transform:translateZ(24px) scale(1.012)!important;border-color:#19eaffaa!important;box-shadow:inset 0 2px 10px #000,0 0 22px #19eaff22,0 14px 30px #000b!important}
+input{background:linear-gradient(145deg,#07131e,#01070c)!important;border-color:#19eaff25!important;box-shadow:inset 0 2px 10px #000,0 8px 20px #0008!important}
+button{position:relative;overflow:hidden;transform:translateZ(28px);box-shadow:0 12px 28px #19eaff20,0 0 38px #ff3fd214!important}
+button:before{content:"";position:absolute;inset:-2px;background:linear-gradient(110deg,transparent 20%,#ffffff90 42%,transparent 58%);transform:translateX(-120%);animation:scan 3.2s linear infinite;pointer-events:none}
+button:after{content:"";position:absolute;inset:2px;border-radius:9px;border:1px solid #ffffff35;pointer-events:none}
+.error,.back,.hint{position:relative;z-index:3}
+@keyframes holoLine{0%{background-position:0%}100%{background-position:200%}}
+@keyframes scan{to{transform:translateX(120%)}}
+@keyframes microPulse{50%{opacity:.7}}
+@media(max-width:520px){
+ .card{transform:none!important}
+ form input{transform:none}
+ input:focus{transform:scale(1.008)!important}
+ button{transform:none}
+}
+</style>
+<script id="ecomax-line-login-5d-tilt">
+(function(){
+ const card=document.querySelector('.card');
+ if(!card || window.matchMedia('(pointer:coarse)').matches) return;
+ let raf=0;
+ card.addEventListener('pointermove',function(e){
+   const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+   cancelAnimationFrame(raf);
+   raf=requestAnimationFrame(()=>card.style.transform='rotateX('+(-y*5)+'deg) rotateY('+(x*6)+'deg)');
+ });
+ card.addEventListener('pointerleave',()=>card.style.transform='rotateX(0deg) rotateY(0deg)');
+})();
+</script></head>
 <body>
 <main class="card">
 <div class="logo">ECOMAX</div><div class="line">LINE • COURIER ACCESS</div>
