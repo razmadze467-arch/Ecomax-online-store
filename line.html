@@ -20,7 +20,45 @@ main{width:min(1280px,calc(100% - 24px));margin:28px auto 70px}.hero{display:fle
 @media(max-width:430px){main{margin-top:18px}.stats{gap:8px}.stat{padding:13px}.stat b{font-size:23px}.order{padding:14px}.progress{gap:3px}.flow{grid-template-columns:1fr 1fr}.nav a{display:none}.nav{min-height:62px}}</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js?v=20260920-1"></script>
-<style id="ecomax-line-mobile-fix">html,body{min-height:100%!important;height:auto!important}body{overflow-x:hidden!important;overflow-y:auto!important}@media(max-width:760px){body{padding-bottom:90px!important}main{min-height:calc(100vh - 80px)!important}}</style></head>
+<style id="ecomax-line-mobile-fix">html,body{min-height:100%!important;height:auto!important}body{overflow-x:hidden!important;overflow-y:auto!important}@media(max-width:760px){body{padding-bottom:90px!important}main{min-height:calc(100vh - 80px)!important}}</style><style id="ecomax-line-command-5d">
+/* ECOMAX LINE COMMAND // 5D COURIER HUD */
+body{perspective:1400px}
+header,.stat,.card,.toolbar,.modal-box{
+ transform-style:preserve-3d;
+ border-color:#19eaff35!important;
+ box-shadow:0 18px 50px #0009,0 0 35px #19eaff0b,inset 0 1px #ffffff12!important;
+ transition:transform .22s ease,box-shadow .25s ease,border-color .25s ease;
+}
+header:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,#19eaff,#ff3fd2,#19eaff,transparent);background-size:220% 100%;animation:hudScan 4s linear infinite}
+.stat:hover,.card:hover{transform:translateY(-4px) translateZ(10px);border-color:#19eaff70!important;box-shadow:0 22px 60px #000b,0 0 40px #19eaff18!important}
+.stat .value,.stat strong{ text-shadow:0 0 16px #19eaff45,0 0 30px #ff3fd215}
+.card{position:relative;overflow:hidden}
+.card:before,.stat:before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(120deg,transparent 35%,#ffffff08 50%,transparent 65%);background-size:220% 100%;animation:panelSweep 5s linear infinite}
+.status,.badge{box-shadow:0 0 18px #19eaff16}
+.toolbar{backdrop-filter:blur(18px)}
+@keyframes hudScan{to{background-position:220% 0}}
+@keyframes panelSweep{to{background-position:-220% 0}}
+@media(max-width:760px){
+ header{position:sticky!important;top:0!important;z-index:50}
+ .stat:hover,.card:hover{transform:none}
+ main{padding-bottom:100px!important}
+}
+</style>
+<script id="ecomax-line-command-5d-tilt">
+(function(){
+ if(window.matchMedia('(pointer:coarse)').matches) return;
+ const els=[...document.querySelectorAll('header,.stat,.card')];
+ els.forEach(el=>{
+   let raf=0;
+   el.addEventListener('pointermove',e=>{
+    const r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    cancelAnimationFrame(raf);
+    raf=requestAnimationFrame(()=>el.style.transform='perspective(900px) rotateX('+(-y*3)+'deg) rotateY('+(x*4)+'deg) translateZ(5px)');
+   });
+   el.addEventListener('pointerleave',()=>el.style.transform='');
+ });
+})();
+</script></head>
 <body>
 <header><div class="nav">
   <div class="brand"><div class="orb"></div><div><div class="logo">ECOMAX LINE</div><div class="sub">FUTURE DELIVERY NETWORK</div></div></div>
