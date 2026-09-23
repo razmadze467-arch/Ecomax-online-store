@@ -1,6 +1,6 @@
 /* =========================================================
    ECOMAX — PREMIUM CARD PERIMETER CARS
-   Version: 2026-09-21-FINAL4
+   Version: 2026-09-23-PERFECT-PERIMETER
    ========================================================= */
 
 (() => {
@@ -30,7 +30,7 @@
     .product-card,
     .pro-product-card {
       position:relative !important;
-      overflow:hidden !important;
+      overflow:visible !important;
       isolation:isolate !important;
     }
 
@@ -79,8 +79,8 @@
       left:0 !important;
       top:0 !important;
 
-      width:34px !important;
-      height:18px !important;
+      width:32px !important;
+      height:15px !important;
 
       transform-origin:50% 50% !important;
 
@@ -117,8 +117,8 @@
       }
 
       .ecomax-perimeter-car {
-        width:30px !important;
-        height:16px !important;
+        width:28px !important;
+        height:14px !important;
       }
     }
   `;
@@ -272,7 +272,7 @@
       directly on the visible neon frame.
     */
 
-    const inset = 1.2;
+    const inset = 1.5;
 
     const left = inset;
     const top = inset;
@@ -509,13 +509,20 @@
       const perimeter = pointAt(card, 0).length;
       const t = (now - started) / 1000;
 
-      // ორივე მანქანა მოძრაობს ერთსა და იმავე სწორ, უწყვეტ
-      // rounded-rectangle ტრასაზე და ერთი მიმართულებით.
+      // CYAN — clockwise: top → right → bottom → left.
+      // PINK — counter-clockwise: exactly the same frame line,
+      // but travels in the opposite direction.
       const d1 = (t * speed) % perimeter;
-      const d2 = (d1 + perimeter * 0.5) % perimeter;
+      const d2 = (perimeter - ((t * speed + perimeter * 0.5) % perimeter)) % perimeter;
 
       place(cyan, pointAt(card, d1));
-      place(pink, pointAt(card, d2));
+
+      const reverse = pointAt(card, d2);
+      // The path tangent returned by pointAt() is clockwise.
+      // Reverse the tangent so the car's FRONT always points
+      // in the actual direction of travel.
+      reverse.angle += Math.PI;
+      place(pink, reverse);
 
       requestAnimationFrame(frame);
     }
