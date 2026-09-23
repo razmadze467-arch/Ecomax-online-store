@@ -402,7 +402,28 @@ boot();
  document.getElementById('installHint')?.addEventListener('click',()=>note('Chrome მენიუდან აირჩიე “Add to Home screen”, თუ ხელმისაწვდომია.'));
  document.getElementById('reportBtn')?.addEventListener('click',()=>note('ინციდენტის ღილაკი მზადაა. შეკვეთის კონკრეტულ ბარათში გამოიყენე ზარი/რუკა და დეტალები.'));
 window.addEventListener('ecomax-gps-updated',()=>{try{if(typeof render==='function')render()}catch(e){}});
-if(navigator.geolocation){navigator.geolocation.watchPosition(p=>{window.__ecomaxCourierPosition=p},()=>{}, {enableHighAccuracy:true,maximumAge:15000,timeout:10000});}
+if(navigator.geolocation){
+  let lastSent=0,lastLat=null,lastLng=null;
+  navigator.geolocation.watchPosition(async p=>{
+    window.__ecomaxCourierPosition=p;
+    const now=Date.now(),lat=p.coords.latitude,lng=p.coords.longitude;
+    const moved=lastLat===null||Math.abs(lat-lastLat)>0.00005||Math.abs(lng-lastLng)>0.00005;
+    if((now-lastSent<10000&&!moved)||now-lastSent<3000)return;
+    lastSent=now;lastLat=lat;lastLng=lng;
+    try{
+      if(typeof db!=="undefined"&&db&&user){
+        const r=await db.rpc('ecomax_line_update_location',{
+          p_latitude:lat,
+          p_longitude:lng,
+          p_accuracy:p.coords.accuracy??null,
+          p_heading:p.coords.heading??null,
+          p_speed:p.coords.speed??null
+        });
+        if(r.error)console.warn('LIVE GPS:',r.error.message);
+      }
+    }catch(e){console.warn('LIVE GPS exception:',e)}
+  },()=>{}, {enableHighAccuracy:true,maximumAge:15000,timeout:10000});
+}
 })();
 </script></body>
 </html>
