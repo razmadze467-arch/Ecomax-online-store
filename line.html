@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>ECOMAX LINE — Courier Control</title>
+<meta name="theme-color" content="#01040a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest-line.json">
 <style>:root{--bg:#01050a;--panel:#07131d;--cyan:#19eaff;--pink:#ff3fd2;--violet:#8d63ff;--green:#45f0b0;--yellow:#ffd86a;--red:#ff6686;--text:#effcff;--muted:#819aa5}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(circle at 5% 0,#063d4e,transparent 28%),radial-gradient(circle at 95% 10%,#30104a,transparent 30%),radial-gradient(circle at 50% 100%,#062630,transparent 30%),#01050a;color:var(--text);font-family:Arial,sans-serif}
 body:before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(#19eaff07 1px,transparent 1px),linear-gradient(90deg,#19eaff07 1px,transparent 1px);background-size:45px 45px;mask-image:linear-gradient(to bottom,transparent,#fff 12%,#fff 88%,transparent);z-index:-1}
@@ -469,5 +474,23 @@ if(navigator.geolocation){
   }});
 }
 })();
-</script></body>
+</script><script id="ecomax-line-pwa">
+(function(){
+  if(!('serviceWorker' in navigator))return;
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw-line.js',{scope:'./'}).catch(e=>console.warn('PWA:',e)));
+  let deferred=null;
+  window.addEventListener('beforeinstallprompt',e=>{
+    e.preventDefault(); deferred=e;
+    const b=document.getElementById('installHint');
+    if(b)b.innerHTML='<b>📲</b>აპის დაყენება';
+  });
+  document.getElementById('installHint')?.addEventListener('click',async()=>{
+    if(!deferred){note('Chrome მენიუში აირჩიე „Add to Home screen“ ან „Install app“, თუ ხელმისაწვდომია.');return;}
+    deferred.prompt();
+    try{await deferred.userChoice;}catch(e){}
+    deferred=null;
+  });
+})();
+</script>
+</body>
 </html>
