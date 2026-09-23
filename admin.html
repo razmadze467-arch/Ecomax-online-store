@@ -1374,8 +1374,13 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
               კურიერების მიმდინარე GPS, მინიჭებული შეკვეთა და რეალური სტატუსი.
             </p>
           </div>
-          <button class="small-btn" onclick="loadLiveCommand()" type="button">🔄 განახლება</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+            <button class="small-btn" id="liveAutoCenterBtn" onclick="toggleLiveAutoCenter()" type="button">🎯 Auto-center: ON</button>
+            <button class="small-btn" onclick="loadLiveCommand()" type="button">🔄 განახლება</button>
+          </div>
         </div>
+        <div id="liveHudStats" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px"></div>
+        <div id="liveSignalNotice" style="display:none;margin-bottom:12px"></div>
         <div id="ecomaxLiveMap" style="height:430px;border:1px solid rgba(32,231,255,.18);border-radius:16px;overflow:hidden;margin:0 0 14px;background:#030b10"></div>
         <div id="liveCommandGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px"></div>
       </div>
@@ -3798,6 +3803,170 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
   }
 
+
+
+  let liveAutoCenter = true;
+  let liveCommandChannel = null;
+  let liveHudTimer = null;
+
+  function toggleLiveAutoCenter(){
+    liveAutoCenter=!liveAutoCenter;
+    const btn=$("liveAutoCenterBtn");
+    if(btn) btn.textContent="🎯 Auto-center: "+(liveAutoCenter?"ON":"OFF");
+    if(liveAutoCenter) renderLiveMap(liveLocations);
+  }
+
+  function liveAgeMs(value){
+    const t=new Date(value||0).getTime();
+    return Number.isFinite(t)?Math.max(0,Date.now()-t):Infinity;
+  }
+
+  function liveState(value){
+    const age=liveAgeMs(value);
+    if(age<=60000) return {key:"online",label:"● ONLINE",className:"completed"};
+    if(age<=180000) return {key:"stale",label:"● სუსტი სიგნალი",className:"processing"};
+    return {key:"offline",label:"● OFFLINE",className:"cancelled"};
+  }
+
+  function renderLiveHud(locs){
+    const box=$("liveHudStats");
+    if(!box) return;
+    const online=locs.filter(x=>liveState(x.updated_at).key==="online").length;
+    const stale=locs.filter(x=>liveState(x.updated_at).key==="stale").length;
+    const offline=locs.filter(x=>liveState(x.updated_at).key==="offline").length;
+    const active=orders.filter(o=>o.courier_id&&!["completed","cancelled"].includes(o.status)).length;
+    box.innerHTML=
+      '<div class="detail" style="padding:12px"><div style="font-size:10px;color:var(--muted)">🟢 ONLINE</div><div style="font-size:24px;font-weight:900;margin-top:4px">'+online+'</div></div>'+
+      '<div class="detail" style="padding:12px"><div style="font-size:10px;color:var(--muted)">🟡 სუსტი სიგნალი</div><div style="font-size:24px;font-weight:900;margin-top:4px">'+stale+'</div></div>'+
+      '<div class="detail" style="padding:12px"><div style="font-size:10px;color:var(--muted)">🔴 OFFLINE</div><div style="font-size:24px;font-weight:900;margin-top:4px">'+offline+'</div></div>'+
+      '<div class="detail" style="padding:12px"><div style="font-size:10px;color:var(--muted)">📦 აქტიური შეკვეთები</div><div style="font-size:24px;font-weight:900;margin-top:4px">'+active+'</div></div>';
+  }
+
+  function liveDirectionIcon(heading,fresh){
+    const h=Number(heading),deg=Number.isFinite(h)?h:0;
+    const border=fresh?"#20e7ff":"#64757d";
+    const html='<div style="width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:'+
+      (fresh?"rgba(0,246,255,.18)":"rgba(120,140,150,.16)")+
+      ';border:1px solid '+border+';box-shadow:0 0 18px '+(fresh?"rgba(32,231,255,.35)":"rgba(100,117,125,.15)")+
+      ';transform:rotate('+deg+'deg);color:'+border+';font-size:20px;font-weight:900">➤</div>';
+    return L.divIcon({className:"ecomax-live-arrow-wrap",html:html,iconSize:[34,34],iconAnchor:[17,17],popupAnchor:[0,-18]});
+  }
+
+  function renderLiveMap(locs){
+    const map=ensureLiveMap();
+    if(!map) return;
+    ecomaxLiveMarkers.forEach(m=>map.removeLayer(m));
+    ecomaxLiveMarkers=[];
+    const courierById=new Map(courierApplications.map(x=>[String(x.user_id),x]));
+    const activeByCourier=new Map();
+    orders.filter(o=>o.courier_id&&!["completed","cancelled"].includes(o.status)).forEach(o=>activeByCourier.set(String(o.courier_id),o));
+    const bounds=[];
+    locs.forEach(loc=>{
+      const lat=Number(loc.latitude),lng=Number(loc.longitude);
+      if(!Number.isFinite(lat)||!Number.isFinite(lng)) return;
+      const c=courierById.get(String(loc.courier_id))||{},o=activeByCourier.get(String(loc.courier_id)),state=liveState(loc.updated_at);
+      const marker=L.marker([lat,lng],{icon:liveDirectionIcon(loc.heading,state.key==="online"),zIndexOffset:state.key==="online"?1000:100}).addTo(map);
+      marker.bindPopup("<b style='color:#20e7ff'>🚚 "+esc(c.full_name||"ECOMAX LINE")+"</b><br>"+
+        "კავშირი: "+esc(state.label)+"<br>"+
+        "შეკვეთა: "+esc(o?.order_number||"—")+"<br>"+
+        "სტატუსი: "+esc(statusName(o?.status||"—"))+"<br>"+
+        "სიჩქარე: "+(Number.isFinite(Number(loc.speed))?Math.round(Number(loc.speed)*3.6)+" კმ/სთ":"—")+"<br>"+
+        "GPS: "+lat.toFixed(5)+", "+lng.toFixed(5));
+      ecomaxLiveMarkers.push(marker);bounds.push([lat,lng]);
+    });
+    if(liveAutoCenter&&bounds.length===1) map.setView(bounds[0],15);
+    else if(liveAutoCenter&&bounds.length>1) map.fitBounds(bounds,{padding:[35,35],maxZoom:15});
+  }
+
+  async function loadLiveCommand(){
+    const box=$("liveCommandGrid");
+    if(!box||!db||!currentUser) return;
+    box.innerHTML='<div class="detail" style="grid-column:1/-1;text-align:center">📡 LIVE მონაცემები იტვირთება...</div>';
+    const {data,error}=await db.from("courier_locations").select("courier_id,latitude,longitude,accuracy,heading,speed,updated_at").order("updated_at",{ascending:false});
+    if(error){
+      console.error("Live locations:",error);
+      box.innerHTML='<div class="detail" style="grid-column:1/-1;color:var(--red)">LIVE GPS მონაცემების ჩატვირთვა ვერ მოხერხდა.</div>';
+      return;
+    }
+    const locs=data||[];
+    liveLocations=locs;
+    renderLiveHud(locs);
+    renderLiveMap(locs);
+    const courierById=new Map(courierApplications.map(x=>[String(x.user_id),x]));
+    const activeByCourier=new Map();
+    orders.filter(o=>o.courier_id&&!["completed","cancelled"].includes(o.status)).forEach(o=>activeByCourier.set(String(o.courier_id),o));
+    const notice=$("liveSignalNotice");
+    const offlineCount=locs.filter(x=>liveState(x.updated_at).key!=="online").length;
+    if(notice){
+      notice.style.display=offlineCount?"block":"none";
+      notice.innerHTML=offlineCount?'<div class="detail" style="border-color:rgba(255,215,106,.28);color:#ffd76a">⚠️ '+offlineCount+' კურიერს ამჟამად არ აქვს ახალი GPS სიგნალი. კურიერის ტელეფონზე LIVE GPS უნდა იყოს ჩართული.</div>':"";
+    }
+    if(!locs.length){
+      box.innerHTML='<div class="detail" style="grid-column:1/-1;text-align:center;color:var(--muted)">კურიერს ჯერ LIVE GPS არ გამოუგზავნია. კურიერის line.html გვერდი გახსნილი უნდა იყოს და GPS ნებართვა ჰქონდეს.</div>';
+      return;
+    }
+    box.innerHTML=locs.map(loc=>{
+      const c=courierById.get(String(loc.courier_id))||{},o=activeByCourier.get(String(loc.courier_id)),state=liveState(loc.updated_at);
+      const speed=Number(loc.speed),heading=Number(loc.heading);
+      return '<div class="detail live-courier-card" data-live-courier="'+esc(loc.courier_id)+'" style="padding:16px;position:relative;overflow:hidden">'+
+        '<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><div><b style="font-size:16px;color:var(--cyan)">🚚 '+esc(c.full_name||"კურიერი")+'</b>'+
+        '<div style="color:var(--muted);font-size:10px;margin-top:5px">'+esc(c.email||"ECOMAX LINE")+'</div></div><span class="badge '+state.className+'">'+state.label+'</span></div>'+
+        '<div style="margin-top:14px;display:grid;gap:8px">'+
+        '<div><small>შეკვეთა</small><b>'+esc(o?.order_number||"აქტიური შეკვეთა არ აქვს")+'</b></div>'+
+        '<div><small>სტატუსი</small>'+(o?statusBadge(o.status):'<span class="badge">—</span>')+'</div>'+
+        '<div><small>მომხმარებელი</small><b>'+esc(o?.customer_name||"—")+'</b></div>'+
+        '<div><small>მიმართულება</small><b>'+ (Number.isFinite(heading)?Math.round(heading)+"°":"—") +'</b></div>'+
+        '<div><small>სიჩქარე</small><b>'+ (Number.isFinite(speed)?Math.round(speed*3.6)+" კმ/სთ":"—") +'</b></div>'+
+        '<div><small>სიზუსტე</small><b>'+ (loc.accuracy?Math.round(Number(loc.accuracy))+" მ":"—") +'</b></div>'+
+        '<div><small>ბოლო სიგნალი</small><b data-live-age>'+esc(liveTimeAgo(loc.updated_at))+'</b></div></div>'+
+        '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:13px">'+
+        '<button class="small-btn" type="button" onclick="focusLiveCourier(\''+esc(loc.courier_id)+'\')">🎯 ცენტრში</button>'+
+        '<button class="small-btn" type="button" onclick="showCourierTrack(\''+esc(loc.courier_id)+'\',\''+esc(o?.id||"")+'\')">🛣️ მარშრუტი</button>'+
+        '<a class="small-btn" target="_blank" rel="noopener" href="'+esc(liveMapHref(loc.latitude,loc.longitude))+'">📍 Google Maps</a>'+
+        (o?'<button class="small-btn" type="button" onclick="viewOrder(\''+esc(o.id)+'\')">📦 შეკვეთა</button>':'')+
+        '</div></div>';
+    }).join("");
+  }
+
+  function focusLiveCourier(courierId){
+    const loc=liveLocations.find(x=>String(x.courier_id)===String(courierId));
+    if(!loc) return;
+    const map=ensureLiveMap();
+    if(!map) return;
+    liveAutoCenter=false;
+    const btn=$("liveAutoCenterBtn");
+    if(btn) btn.textContent="🎯 Auto-center: OFF";
+    map.setView([Number(loc.latitude),Number(loc.longitude)],15);
+  }
+
+  function subscribeLiveCommand(){
+    if(!db) return;
+    if(liveCommandChannel){try{db.removeChannel(liveCommandChannel);}catch(e){} liveCommandChannel=null;}
+    liveCommandChannel=db.channel("ecomax-admin-live-v2")
+      .on("postgres_changes",{event:"*",schema:"public",table:"orders"},()=>{
+        loadOrders().then(()=>{updateDashboard();if($("section-live")?.classList.contains("active"))loadLiveCommand();});
+      })
+      .on("postgres_changes",{event:"*",schema:"public",table:"courier_locations"},()=>{
+        if($("section-live")?.classList.contains("active"))loadLiveCommand();
+      })
+      .on("postgres_changes",{event:"*",schema:"public",table:"courier_order_events"},()=>{
+        if($("section-live")?.classList.contains("active"))loadLiveCommand();
+      })
+      .subscribe();
+    clearInterval(liveHudTimer);
+    liveHudTimer=setInterval(()=>{
+      if($("section-live")?.classList.contains("active")){
+        renderLiveHud(liveLocations);
+        $("liveCommandGrid")?.querySelectorAll("[data-live-courier]").forEach(card=>{
+          const id=card.getAttribute("data-live-courier"),loc=liveLocations.find(x=>String(x.courier_id)===String(id));
+          if(!loc) return;
+          const state=liveState(loc.updated_at),badge=card.querySelector(".badge"),age=card.querySelector("[data-live-age]");
+          if(badge){badge.className="badge "+state.className;badge.textContent=state.label;}
+          if(age) age.textContent=liveTimeAgo(loc.updated_at);
+        });
+      }
+    },15000);
+  }
 
   /* ==========================================
      START
