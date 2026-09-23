@@ -2483,7 +2483,50 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 @media(max-width:900px){.ecomax-fragrance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.ecomax-fragrance-grid{grid-template-columns:1fr}.winso-perfume-bottle{width:100px}.airbag-pack{width:140px}}
 </style>
-</head>
+<style id="ecomax-inner-bottle-labels-v3">
+/* HARD FIX: labels are INSIDE the bottle, visible on every product card */
+.product-bottle{position:relative!important;overflow:hidden!important}
+.product-bottle .product-label{
+  position:absolute!important;
+  left:9%!important;
+  right:9%!important;
+  top:29%!important;
+  width:auto!important;
+  height:auto!important;
+  min-height:82px!important;
+  padding:12px 8px!important;
+  z-index:100!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  box-sizing:border-box!important;
+  border:2px solid rgba(0,234,255,.85)!important;
+  border-radius:10px!important;
+  background:linear-gradient(145deg,rgba(3,12,20,.97),rgba(8,28,38,.96))!important;
+  box-shadow:0 0 16px rgba(0,234,255,.38),inset 0 0 14px rgba(0,234,255,.08)!important;
+  opacity:1!important;
+  visibility:visible!important;
+  transform:none!important;
+}
+.product-bottle .product-label strong{
+  display:block!important;color:#fff!important;font-size:13px!important;font-weight:1000!important;letter-spacing:1.5px!important;
+  text-shadow:0 0 6px #fff,0 0 14px rgba(0,234,255,.8)!important;
+}
+.product-bottle .product-label span{
+  display:block!important;margin-top:6px!important;color:#00eaff!important;font-size:9px!important;font-weight:900!important;line-height:1.25!important;
+}
+.product-bottle .product-label b{
+  display:block!important;margin-top:6px!important;color:#fff!important;font-size:10px!important;font-weight:1000!important;
+}
+@media(max-width:700px){
+ .product-bottle .product-label{left:7%!important;right:7%!important;top:28%!important;min-height:76px!important;padding:9px 6px!important}
+ .product-bottle .product-label strong{font-size:11px!important}
+ .product-bottle .product-label span{font-size:8px!important}
+ .product-bottle .product-label b{font-size:9px!important}
+}
+</style></head>
 
 <body>
 
