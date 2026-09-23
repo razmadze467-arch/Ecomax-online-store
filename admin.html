@@ -1771,6 +1771,12 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
         currentUser =
           data.session.user;
 
+        const sessionRole=String(currentUser?.app_metadata?.role||'').toLowerCase();
+        if(sessionRole==='courier'){
+          location.replace('index.html');
+          return;
+        }
+
         await openAdmin();
 
       } else {
