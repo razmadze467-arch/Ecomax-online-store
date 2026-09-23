@@ -2516,7 +2516,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     toast("შეკვეთის სტატუსი განახლდა ✓");
   }
 
-  function viewOrder(id) {
+  async function viewOrder(id) {
 
     const order =
       orders.find(
