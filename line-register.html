@@ -169,8 +169,16 @@ form.addEventListener('submit',async e=>{
  if(password.length<8){showErr('პაროლი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს.');return}
  btn.disabled=true;btn.textContent='ანგარიში იქმნება...';
  const {data,error}=await db.auth.signUp({
-   email,password,
-   options:{data:{full_name:name,phone,courier_application:true}}
+   email,
+   password,
+   options:{
+     emailRedirectTo:'https://ecomax.com.ge/line.html',
+     data:{
+       full_name:name,
+       phone:phone,
+       courier_application:true
+     }
+   }
  });
  if(error){showErr('რეგისტრაცია ვერ შესრულდა: '+error.message);btn.disabled=false;btn.textContent='კურიერის ანგარიშის შექმნა';return}
  if(data.session){
