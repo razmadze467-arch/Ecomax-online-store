@@ -1,0 +1,15 @@
+{
+  "name":"ECOMAX LINE — Courier Control",
+  "short_name":"ECOMAX LINE",
+  "lang":"ka",
+  "start_url":"/line.html",
+  "scope":"/",
+  "display":"standalone",
+  "orientation":"portrait",
+  "background_color":"#01040a",
+  "theme_color":"#01040a",
+  "description":"ECOMAX LINE კურიერის უსაფრთხო სამუშაო პანელი და LIVE GPS.",
+  "icons":[
+    {"src":"/icons/ecomax-line.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
