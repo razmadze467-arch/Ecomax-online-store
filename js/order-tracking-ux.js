@@ -8,7 +8,7 @@
 
   const style = document.createElement('style');
   style.id = 'ecomax-order-ux-v4';
-  style.textContent = String.raw\`
+  style.textContent = String.raw`
     /* CUSTOMER TRACKING */
     .ecomax-track{position:relative;margin:22px 0 6px;padding:4px 0 2px;display:grid;grid-template-columns:repeat(6,1fr);gap:0}
     .ecomax-track:before{content:"";position:absolute;left:8%;right:8%;top:17px;height:2px;background:linear-gradient(90deg,#00f6ff,#168dff,#7b4dff,#ff25d9);opacity:.18}
@@ -34,7 +34,7 @@
     .ecx-status-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.ecx-btn{padding:11px 15px;border-radius:10px;border:1px solid rgba(0,246,255,.22);background:#071820;color:#eaffff;font-weight:800}.ecx-btn.primary{background:linear-gradient(135deg,#00cfe3,#168dff);color:#001015;border:0}.ecx-history{margin-top:18px;border-top:1px solid rgba(0,246,255,.1);padding-top:14px}.ecx-history-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:10px;color:#91a7b0}.ecx-history-row b{color:#eaffff}.ecx-history-row span{color:#00f6ff;text-align:right}
     .ecx-admin-times{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:14px}.ecx-admin-time{padding:9px;border:1px solid rgba(0,246,255,.1);border-radius:9px;background:#061119}.ecx-admin-time small{display:block;color:#718891;font-size:8px}.ecx-admin-time b{display:block;margin-top:4px;font-size:9px;color:#dffcff}
     @media(max-width:650px){.ecx-status-grid{grid-template-columns:1fr}.ecx-status-buttons{grid-template-columns:1fr 1fr}.ecx-admin-times{grid-template-columns:1fr 1fr}.ecx-status-actions{flex-direction:column}.ecx-btn{width:100%}}
-  \`;
+  `;
   document.head.appendChild(style);
 
   const labels={new:'შეკვეთა მიღებულია',processing:'მზადდება',loaded:'ტვირთი დაიტვირთა',picked_up:'კურიერმა აიღო',shipped:'გზაშია',completed:'ჩაბარდა',cancelled:'გაუქმებული'};
