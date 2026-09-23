@@ -276,6 +276,7 @@ main:before{
 (function(){
 'use strict';
 const db=window.ECOMAX_SUPABASE_CLIENT,$=id=>document.getElementById(id);
+window.__ECOMAX_LINE_DB=db;
 const labels={new:'ახალი',processing:'მუშავდება',loaded:'ტვირთი დაიტვირთა',picked_up:'კურიერმა აიღო',shipped:'გზაშია',completed:'ჩაბარდა',cancelled:'გაუქმდა'};
 const next={new:'processing',processing:'loaded',loaded:'picked_up',picked_up:'shipped',shipped:'completed'};
 const orderSteps=['new','processing','loaded','picked_up','shipped','completed'];
@@ -299,6 +300,7 @@ function quickActions(o){const n=next[o.status],closed=['completed','cancelled']
 async function boot(){
  if(!db){$('access').textContent='Supabase ვერ ჩაიტვირთა';return;}
  const {data:{user:u}}=await db.auth.getUser();user=u;
+ window.__ECOMAX_LINE_USER=user;
  if(u){ $('courierName').textContent=u.user_metadata?.full_name||u.email||'ECOMAX LINE COURIER'; $('courierPhone').textContent=u.user_metadata?.phone||'COURIER • AUTHENTICATED'; }
  if(!u){location.replace('line-login.html');return;}
  const role=String(u?.app_metadata?.role||'').toLowerCase();
@@ -402,6 +404,7 @@ boot();
  document.getElementById('installHint')?.addEventListener('click',()=>note('Chrome მენიუდან აირჩიე “Add to Home screen”, თუ ხელმისაწვდომია.'));
  document.getElementById('reportBtn')?.addEventListener('click',()=>note('ინციდენტის ღილაკი მზადაა. შეკვეთის კონკრეტულ ბარათში გამოიყენე ზარი/რუკა და დეტალები.'));
 window.addEventListener('ecomax-gps-updated',()=>{try{if(typeof render==='function')render()}catch(e){}});
+window.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&navigator.geolocation){navigator.geolocation.getCurrentPosition(()=>{},()=>{},{enableHighAccuracy:true,timeout:8000,maximumAge:0})}});
 if(navigator.geolocation){
   let lastSent=0,lastLat=null,lastLng=null;
   navigator.geolocation.watchPosition(async p=>{
@@ -411,11 +414,13 @@ if(navigator.geolocation){
     if((now-lastSent<10000&&!moved)||now-lastSent<3000)return;
     lastSent=now;lastLat=lat;lastLng=lng;
     try{
-      if(typeof db!=="undefined"&&db&&user){
+      const lineDb=window.__ECOMAX_LINE_DB;
+      const lineUser=window.__ECOMAX_LINE_USER;
+      if(lineDb&&lineUser){
         const activeOrder = Array.isArray(orders)
-          ? orders.find(o=>String(o.courier_id||'')===String(user.id||'') && !['completed','cancelled'].includes(o.status))
+          ? orders.find(o=>String(o.courier_id||'')===String(lineUser.id||'') && !['completed','cancelled'].includes(o.status))
           : null;
-        const r=await db.rpc('ecomax_line_update_location',{
+        const r=await lineDb.rpc('ecomax_line_update_location',{
           p_latitude:lat,
           p_longitude:lng,
           p_accuracy:p.coords.accuracy??null,
