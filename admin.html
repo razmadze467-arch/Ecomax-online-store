@@ -3589,12 +3589,12 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
   let ecomaxLiveTrack = null;
 
-  async function showCourierTrack(courierId) {
+  async function showCourierTrack(courierId, orderId = null) {
     const map = ensureLiveMap();
     if (!map) return;
     const { data, error } = await db
       .from("courier_location_history")
-      .select("latitude,longitude,accuracy,recorded_at")
+      .select("latitude,longitude,accuracy,recorded_at,order_id")
       .eq("courier_id", courierId)
       .order("recorded_at", { ascending: true })
       .limit(1000);
@@ -3610,7 +3610,8 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       ecomaxLiveTrack = null;
     }
 
-    const points = (data || [])
+    const filtered = orderId ? (data || []).filter(x => String(x.order_id || "") === String(orderId)) : (data || []);
+    const points = filtered
       .map(x => [Number(x.latitude), Number(x.longitude)])
       .filter(x => Number.isFinite(x[0]) && Number.isFinite(x[1]));
 
