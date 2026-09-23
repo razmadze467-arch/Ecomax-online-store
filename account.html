@@ -62,6 +62,13 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 @keyframes ecomaxButtonScan{0%,62%{left:-40%;opacity:0}70%{opacity:1}90%,100%{left:125%;opacity:0}}
 @media(prefers-reduced-motion:reduce){body:after,button:before,.btn:before,.submit:before,.back:before{animation:none!important}}
 </style>
+
+<style id="ECOMAX-LIVE-CUSTOMER">
+.live-box{margin-top:16px;padding:15px;border:1px solid rgba(0,246,255,.18);border-radius:16px;background:linear-gradient(145deg,rgba(0,246,255,.045),rgba(123,77,255,.025));box-shadow:inset 0 0 22px rgba(0,246,255,.025)}
+.live-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.live-title{font-weight:900;color:#00f6ff;font-size:13px}.live-state{font-size:10px;color:#8ea3ae}.live-info{display:flex;gap:12px;flex-wrap:wrap;margin-top:9px;color:#b9ccd5;font-size:11px}.live-map{height:230px;margin-top:12px;border-radius:13px;overflow:hidden;border:1px solid rgba(0,246,255,.12);background:#061018}.live-map .leaflet-control-attribution{font-size:8px}.live-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.live-actions a,.live-actions button{min-height:36px;padding:0 12px;border-radius:9px;border:1px solid #ffffff18;background:#ffffff08;color:#eaffff;text-decoration:none;font-weight:800;font-size:10px;cursor:pointer}.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#45e3a3;box-shadow:0 0 10px #45e3a3;margin-right:6px}.live-off{color:#ffb0bd!important}.live-off .live-dot{background:#ff647d;box-shadow:0 0 10px #ff647d}.live-loading{padding:18px;text-align:center;color:#8ea3ae;font-size:11px}@media(max-width:600px){.live-map{height:210px}}
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 </head>
 <body><div class="bg"></div>
 <header><nav class="nav"><div class="logo">ECOMAX</div><div class="links"><a href="index.html">მთავარი</a><a href="checkout.html">შეკვეთა</a><a href="index.html">პროდუქცია</a></div></nav></header>
@@ -166,8 +173,58 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
         (items?'<div class="items-mini">'+items+'</div>':'')+
         trackingTimes(o)+
         etaBox(o)+
+        (['completed','cancelled'].includes(o.status)?'':'<div class="live-box" data-live-order="'+esc(o.id)+'"><div class="live-loading">📍 LIVE პოზიცია იტვირთება...</div></div>')+
       '</article>';
     }).join('');
+  }
+
+
+  const liveMaps=new Map();
+  let livePollTimer=null;
+
+  function liveStatusText(status){
+    return labels[status]||status||'შეკვეთა';
+  }
+
+  async function loadDeliveryLive(orderId){
+    const box=document.querySelector('[data-live-order="'+CSS.escape(String(orderId))+'"]');
+    if(!box||!client) return;
+    const {data,error}=await client.rpc('ecomax_customer_get_courier_location',{p_order_id:orderId});
+    if(error){box.innerHTML='<div class="live-loading live-off">LIVE პოზიციის ჩატვირთვა ვერ მოხერხდა.</div>';return;}
+    const row=Array.isArray(data)?data[0]:data;
+    if(!row||!row.courier_id){box.innerHTML='<div class="live-loading">📍 კურიერი ჯერ არ არის მიბმული ამ შეკვეთაზე.</div>';return;}
+    if(row.latitude==null||row.longitude==null){
+      box.innerHTML='<div class="live-head"><div class="live-title"><span class="live-dot" style="background:#ffd76a;box-shadow:0 0 10px #ffd76a"></span>კურიერის LIVE პოზიცია</div></div><div class="live-loading">📡 კურიერის GPS ჯერ არ არის აქტიური.</div>';
+      return;
+    }
+    const lat=Number(row.latitude),lng=Number(row.longitude);
+    if(!Number.isFinite(lat)||!Number.isFinite(lng)) return;
+    const mapId='live-map-'+String(orderId).replace(/[^a-zA-Z0-9_-]/g,'');
+    box.innerHTML='<div class="live-head"><div class="live-title"><span class="live-dot"></span>📍 კურიერის LIVE პოზიცია</div><div class="live-state">განახლდა: '+esc(date(row.updated_at))+'</div></div>'+
+      '<div class="live-info"><span>🚚 '+esc(row.courier_name||'ECOMAX კურიერი')+'</span>'+(row.courier_phone?'<span>📞 '+esc(row.courier_phone)+'</span>':'')+'<span>📦 '+esc(liveStatusText(row.status))+'</span></div>'+
+      '<div id="'+mapId+'" class="live-map"></div><div class="live-actions"><a target="_blank" rel="noopener" href="https://www.google.com/maps?q='+encodeURIComponent(lat+','+lng)+'">🗺️ რუკის გახსნა</a><button type="button" data-route="'+esc(orderId)+'">🛣️ მარშრუტი</button></div>';
+    const map=L.map(mapId,{zoomControl:true,attributionControl:true}).setView([lat,lng],15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
+    const icon=L.divIcon({className:'',html:'<div style="width:18px;height:18px;border-radius:50%;background:#00f6ff;border:3px solid #061018;box-shadow:0 0 12px #00f6ff,0 0 25px rgba(0,246,255,.65)"></div>',iconSize:[18,18],iconAnchor:[9,9]});
+    const marker=L.marker([lat,lng],{icon}).addTo(map).bindPopup('<b>ECOMAX LINE</b><br>'+esc(row.courier_name||'კურიერი')).openPopup();
+    liveMaps.set(String(orderId),{map,marker});
+    box.querySelector('[data-route]')?.addEventListener('click',()=>loadDeliveryRoute(orderId,map));
+    setTimeout(()=>map.invalidateSize(),120);
+  }
+
+  async function loadDeliveryRoute(orderId,map){
+    const {data,error}=await client.rpc('ecomax_customer_get_order_route',{p_order_id:orderId});
+    if(error||!Array.isArray(data)||data.length<2){msg.textContent='ამ შეკვეთას ჯერ საკმარისი მარშრუტის GPS ისტორია არ აქვს.';return;}
+    const points=data.map(x=>[Number(x.latitude),Number(x.longitude)]).filter(p=>Number.isFinite(p[0])&&Number.isFinite(p[1]));
+    if(points.length<2) return;
+    if(map.__route) map.removeLayer(map.__route);
+    map.__route=L.polyline(points,{color:'#00f6ff',weight:5,opacity:.82,lineJoin:'round',lineCap:'round'}).addTo(map);
+    map.fitBounds(map.__route.getBounds(),{padding:[25,25],maxZoom:16});
+  }
+
+  async function refreshLiveDelivery(){
+    const boxes=[...document.querySelectorAll('[data-live-order]')];
+    for(const box of boxes) await loadDeliveryLive(box.dataset.liveOrder);
   }
 
   async function loadOrders(user){
@@ -177,6 +234,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     const rows=data||[];
     window.__ECOMAX_ORDER_DATA=Object.fromEntries(rows.map(o=>[o.order_number||('ECX-'+String(o.id||'').slice(0,8).toUpperCase()),o]));
     renderOrders(rows);
+    setTimeout(refreshLiveDelivery,80);
   }
 
   try{
@@ -197,6 +255,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     await loadOrders(user);
     updateEtaCountdowns();
     const etaTimer=setInterval(updateEtaCountdowns,1000);
+    livePollTimer=setInterval(refreshLiveDelivery,10000);
 
     document.getElementById('refreshOrders').addEventListener('click',()=>loadOrders(user));
 
@@ -217,7 +276,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     const realtime=client.channel('ecomax-orders-'+user.id)
       .on('postgres_changes',{event:'UPDATE',schema:'public',table:'orders',filter:'user_id=eq.'+user.id},()=>loadOrders(user))
       .subscribe();
-    window.addEventListener('beforeunload',()=>{clearInterval(refreshTimer);clearInterval(etaTimer);client.removeChannel(realtime);});
+    window.addEventListener('beforeunload',()=>{clearInterval(refreshTimer);clearInterval(etaTimer);clearInterval(livePollTimer);liveMaps.forEach(x=>x.map.remove());liveMaps.clear();client.removeChannel(realtime);});
 
   }catch(e){
     loading.hidden=true;
