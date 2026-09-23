@@ -836,6 +836,19 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
       <div id="loginError" class="login-error"></div>
 
+      <button id="adminForgotPassword" type="button" class="small-btn" style="width:100%;margin-top:10px;">
+        🔑 პაროლის აღდგენა
+      </button>
+
+    </form>
+
+    <form id="adminRecoveryForm" class="hidden" style="margin-top:14px;">
+      <label>ახალი პაროლი</label>
+      <input id="adminNewPassword" class="field" type="password" minlength="6" autocomplete="new-password" placeholder="მინიმუმ 6 სიმბოლო" required>
+      <label style="display:block;margin-top:10px;">გაიმეორე ახალი პაროლი</label>
+      <input id="adminNewPassword2" class="field" type="password" minlength="6" autocomplete="new-password" placeholder="გაიმეორე პაროლი" required>
+      <button class="primary" style="width:100%;margin-top:12px;" type="submit">🔐 პაროლის შეცვლა</button>
+      <div id="recoveryError" class="login-error"></div>
     </form>
 
   </div>
@@ -1612,88 +1625,159 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
      AUTH
   ========================================== */
 
-  $("loginForm")
-    .addEventListener(
-      "submit",
-      async event => {
+  const ADMIN_EMAIL = "datogringo@gmail.com";
 
-        event.preventDefault();
+  $("loginForm").addEventListener("submit", async event => {
+    event.preventDefault();
 
-        if (!db) {
+    if (!db) {
+      $("loginError").textContent = "Supabase კავშირი ვერ ჩაიტვირთა.";
+      return;
+    }
 
-          $("loginError").textContent =
-            "Supabase კავშირი ვერ ჩაიტვირთა.";
+    const email = $("adminEmail").value.trim().toLowerCase();
+    const password = $("adminPassword").value;
 
-          return;
+    if (email !== ADMIN_EMAIL) {
+      $("loginError").textContent =
+        "Admin Panel-ზე შესვლა მხოლოდ ადმინისტრატორის ანგარიშით არის შესაძლებელი.";
+      return;
+    }
 
-        }
+    $("loginError").textContent = "მიმდინარეობს ავტორიზაცია...";
 
-        const email =
-          $("adminEmail")
-            .value
-            .trim();
-
-        const password =
-          $("adminPassword")
-            .value;
-
-
-        $("loginError").textContent =
-          "მიმდინარეობს ავტორიზაცია...";
-
-
-        try {
-
-          const {
-            data,
-            error
-          } =
-            await db.auth.signInWithPassword({
-              email,
-              password
-            });
-
-
-          if (error) {
-
-            console.error(
-              "Admin login:",
-              error
-            );
-
-            $("loginError").textContent =
-              "ავტორიზაცია ვერ მოხერხდა: " +
-              error.message;
-
-            return;
-
-          }
-
-
-          currentUser =
-            data.user;
-
-
-          $("loginError").textContent =
-            "";
-
-
-          await openAdmin();
-
-        } catch (error) {
-
-          console.error(
-            "Admin login exception:",
-            error
-          );
-
-          $("loginError").textContent =
-            "ავტორიზაციის დროს მოხდა შეცდომა.";
-
-        }
-
+    try {
+      const { data, error } = await db.auth.signInWithPassword({
+        email: ADMIN_EMAIL,
+        password
       });
 
+      if (error) {
+        console.error("Admin login:", error);
+        $("loginError").textContent =
+          "ავტორიზაცია ვერ მოხერხდა. შეამოწმე პაროლი.";
+        return;
+      }
+
+      currentUser = data.user;
+
+      const verifiedEmail =
+        String(currentUser?.email || "").trim().toLowerCase();
+      const role =
+        String(currentUser?.app_metadata?.role || "").toLowerCase();
+
+      if (verifiedEmail !== ADMIN_EMAIL || role !== "admin") {
+        await db.auth.signOut();
+        currentUser = null;
+        $("loginError").textContent =
+          "ამ ანგარიშს Admin Panel-ზე წვდომა არ აქვს.";
+        return;
+      }
+
+      $("loginError").textContent = "";
+      await openAdmin();
+
+    } catch (error) {
+      console.error("Admin login exception:", error);
+      $("loginError").textContent =
+        "ავტორიზაციის დროს მოხდა შეცდომა.";
+    }
+  });
+
+  $("adminForgotPassword").addEventListener("click", async () => {
+    const email = $("adminEmail").value.trim().toLowerCase();
+
+    if (email !== ADMIN_EMAIL) {
+      $("loginError").textContent =
+        "პაროლის აღდგენა მხოლოდ datogringo@gmail.com ანგარიშისთვის არის დაშვებული.";
+      return;
+    }
+
+    $("loginError").textContent =
+      "იგზავნება პაროლის აღდგენის ბმული...";
+
+    try {
+      const { error } = await db.auth.resetPasswordForEmail(
+        ADMIN_EMAIL,
+        { redirectTo: location.origin + "/admin.html" }
+      );
+
+      if (error) throw error;
+
+      $("loginError").textContent =
+        "პაროლის აღდგენის ბმული გაიგზავნა ადმინისტრატორის ელფოსტაზე.";
+    } catch (error) {
+      console.error("Admin password reset:", error);
+      $("loginError").textContent =
+        "პაროლის აღდგენა ვერ შესრულდა.";
+    }
+  });
+
+  $("adminRecoveryForm").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const p1 = $("adminNewPassword").value;
+    const p2 = $("adminNewPassword2").value;
+
+    if (p1.length < 6) {
+      $("recoveryError").textContent =
+        "ახალი პაროლი უნდა იყოს მინიმუმ 6 სიმბოლო.";
+      return;
+    }
+
+    if (p1 !== p2) {
+      $("recoveryError").textContent =
+        "პაროლები ერთმანეთს არ ემთხვევა.";
+      return;
+    }
+
+    try {
+      const { data: userData } = await db.auth.getUser();
+      const recoveryUser = userData?.user;
+      const recoveryEmail =
+        String(recoveryUser?.email || "").trim().toLowerCase();
+
+      if (recoveryEmail !== ADMIN_EMAIL) {
+        await db.auth.signOut();
+        throw new Error("Admin recovery is restricted.");
+      }
+
+      const { error } =
+        await db.auth.updateUser({ password: p1 });
+
+      if (error) throw error;
+
+      await db.auth.signOut();
+
+      $("adminRecoveryForm").classList.add("hidden");
+      $("loginForm").classList.remove("hidden");
+      $("adminNewPassword").value = "";
+      $("adminNewPassword2").value = "";
+      $("loginError").textContent =
+        "პაროლი წარმატებით შეიცვალა. ახლა შედი ახალი პაროლით.";
+    } catch (error) {
+      console.error("Admin password update:", error);
+      $("recoveryError").textContent =
+        "პაროლის შეცვლა ვერ შესრულდა. თავიდან მოითხოვე აღდგენის ბმული.";
+    }
+  });
+
+  db.auth.onAuthStateChange((event, session) => {
+    if (event === "PASSWORD_RECOVERY") {
+      const email =
+        String(session?.user?.email || "").trim().toLowerCase();
+
+      if (email !== ADMIN_EMAIL) {
+        db.auth.signOut();
+        return;
+      }
+
+      $("loginForm").classList.add("hidden");
+      $("adminRecoveryForm").classList.remove("hidden");
+      $("loginError").textContent =
+        "შეიყვანე ახალი ადმინისტრატორის პაროლი.";
+    }
+  });
 
   async function openAdmin() {
 
@@ -1703,8 +1787,8 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     const meta = currentUser.user_metadata || {};
     const appMeta = currentUser.app_metadata || {};
     const isAdmin =
-      appMeta.role === "admin" ||
-      String(currentUser.email || "").toLowerCase() === "datogringo@gmail.com";
+      String(currentUser.email || "").trim().toLowerCase() === ADMIN_EMAIL &&
+      String(appMeta.role || "").toLowerCase() === "admin";
 
     if (!isAdmin) {
       await db.auth.signOut();
