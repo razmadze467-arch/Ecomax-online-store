@@ -20,7 +20,13 @@ main{width:min(1280px,calc(100% - 24px));margin:28px auto 70px}.hero{display:fle
 @media(max-width:430px){main{margin-top:18px}.stats{gap:8px}.stat{padding:13px}.stat b{font-size:23px}.order{padding:14px}.progress{gap:3px}.flow{grid-template-columns:1fr 1fr}.nav a{display:none}.nav{min-height:62px}}</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js?v=20260920-1"></script>
-<style id="ecomax-line-mobile-fix">html,body{min-height:100%!important;height:auto!important}body{overflow-x:hidden!important;overflow-y:auto!important}@media(max-width:760px){body{padding-bottom:90px!important}main{min-height:calc(100vh - 80px)!important}}</style><style id="ecomax-line-command-5d">
+<style id="ecomax-live-gps-hud">
+.gps-start{color:#9fffd7!important;border-color:#45f0b055!important}
+.gps-stop{color:#ff9aaa!important;border-color:#ff647d40!important}
+.gps-active{color:#9fffd7!important;border-color:#45f0b0!important;box-shadow:0 0 22px #45f0b020!important}
+.gps-panel-active{color:#9fffd7!important;text-shadow:0 0 10px #45f0b0}
+.gps-panel-warn{color:#ffd86a!important}
+</style><style id="ecomax-line-mobile-fix">html,body{min-height:100%!important;height:auto!important}body{overflow-x:hidden!important;overflow-y:auto!important}@media(max-width:760px){body{padding-bottom:90px!important}main{min-height:calc(100vh - 80px)!important}}</style><style id="ecomax-line-command-5d">
 /* ECOMAX LINE COMMAND // 5D COURIER HUD */
 body{perspective:1400px}
 header,.stat,.card,.toolbar,.modal-box{
@@ -250,6 +256,8 @@ main:before{
   <div class="weather"><div><div class="clock" id="lineClock">--:--:--</div><div style="color:#718b95;font-size:9px">LOCAL FIELD TIME</div></div><div class="geo" id="geoStatus">ლოკაცია: ნებართვა არ არის საჭირო<br>მისამართი ხელით გამოიყენება</div></div>
   <div class="tool-grid">
    <a class="tool" href="tel:112"><b>🚨</b>საგანგებო</a>
+   <button class="tool gps-start" id="gpsStartBtn"><b>📡</b>GPS ჩართვა</button>
+   <button class="tool gps-stop" id="gpsStopBtn"><b>⏹</b>GPS შეჩერება</button>
    <button class="tool" id="locateBtn"><b>📍</b>ჩემი ლოკაცია</button>
    <button class="tool" id="soundBtn"><b>🔔</b>შეტყობინებები</button>
    <button class="tool" id="focusBtn"><b>🎯</b>აქტიურებზე</button>
@@ -405,33 +413,60 @@ boot();
  document.getElementById('reportBtn')?.addEventListener('click',()=>note('ინციდენტის ღილაკი მზადაა. შეკვეთის კონკრეტულ ბარათში გამოიყენე ზარი/რუკა და დეტალები.'));
 window.addEventListener('ecomax-gps-updated',()=>{try{if(typeof render==='function')render()}catch(e){}});
 window.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&navigator.geolocation){navigator.geolocation.getCurrentPosition(()=>{},()=>{},{enableHighAccuracy:true,timeout:8000,maximumAge:0})}});
+let ecomaxGpsWatchId=null,ecomaxGpsLastSent=0,ecomaxGpsLastLat=null,ecomaxGpsLastLng=null;
+function setGpsUi(state,text){
+  const g=document.getElementById('geoStatus'),on=document.getElementById('gpsStartBtn'),off=document.getElementById('gpsStopBtn');
+  if(!g)return;
+  g.classList.remove('gps-panel-active','gps-panel-warn');
+  if(state==='active')g.classList.add('gps-panel-active');
+  if(state==='warn')g.classList.add('gps-panel-warn');
+  g.innerHTML=text;
+  if(on)on.classList.toggle('gps-active',state==='active');
+}
+async function sendLiveGps(p){
+  window.__ecomaxCourierPosition=p;
+  const now=Date.now(),lat=p.coords.latitude,lng=p.coords.longitude;
+  const moved=ecomaxGpsLastLat===null||Math.abs(lat-ecomaxGpsLastLat)>0.00005||Math.abs(lng-ecomaxGpsLastLng)>0.00005;
+  if((now-ecomaxGpsLastSent<10000&&!moved)||now-ecomaxGpsLastSent<3000)return;
+  ecomaxGpsLastSent=now;ecomaxGpsLastLat=lat;ecomaxGpsLastLng=lng;
+  const lineDb=window.__ECOMAX_LINE_DB,lineUser=window.__ECOMAX_LINE_USER;
+  if(!lineDb||!lineUser)return;
+  const activeOrder=Array.isArray(orders)?orders.find(o=>String(o.courier_id||'')===String(lineUser.id||'')&&!['completed','cancelled'].includes(o.status)):null;
+  const r=await lineDb.rpc('ecomax_line_update_location',{
+    p_latitude:lat,p_longitude:lng,p_accuracy:p.coords.accuracy??null,
+    p_heading:p.coords.heading??null,p_speed:p.coords.speed??null,p_order_id:activeOrder?.id||null
+  });
+  if(r.error){
+    console.warn('LIVE GPS:',r.error.message);
+    setGpsUi('warn','⚠️ LIVE GPS შეცდომა<br>'+esc(r.error.message));
+    return;
+  }
+  setGpsUi('active','📡 LIVE GPS: აქტიურია<br>ბოლო გაგზავნა: '+new Date().toLocaleTimeString('ka-GE',{hour12:false})+' • სიზუსტე: '+Math.round(p.coords.accuracy||0)+' მ');
+}
+function stopLiveGps(){
+  if(ecomaxGpsWatchId!==null&&navigator.geolocation){
+    navigator.geolocation.clearWatch(ecomaxGpsWatchId);
+    ecomaxGpsWatchId=null;
+  }
+  setGpsUi('warn','⏹ LIVE GPS: შეჩერებულია');
+  const b=document.getElementById('gpsStartBtn');if(b)b.classList.remove('gps-active');
+}
+function startLiveGps(){
+  if(!navigator.geolocation){setGpsUi('warn','⚠️ ამ მოწყობილობაზე GPS მიუწვდომელია');note('GPS მიუწვდომელია','warn');return;}
+  if(ecomaxGpsWatchId!==null)return;
+  setGpsUi('warn','📡 GPS ირთვება... გთხოვ, დაუშვი Location');
+  ecomaxGpsWatchId=navigator.geolocation.watchPosition(
+    p=>{sendLiveGps(p).catch(e=>{console.warn(e);setGpsUi('warn','⚠️ GPS გაგზავნის შეცდომა')})},
+    e=>{ecomaxGpsWatchId=null;setGpsUi('warn','⚠️ GPS წვდომა ვერ მივიღეთ<br>'+esc(e.message||'ნებართვა უარყოფილია'));note('GPS ჩართვა ვერ მოხერხდა','warn')},
+    {enableHighAccuracy:true,maximumAge:5000,timeout:15000}
+  );
+}
+document.getElementById('gpsStartBtn')?.addEventListener('click',startLiveGps);
+document.getElementById('gpsStopBtn')?.addEventListener('click',stopLiveGps);
 if(navigator.geolocation){
-  let lastSent=0,lastLat=null,lastLng=null;
-  navigator.geolocation.watchPosition(async p=>{
-    window.__ecomaxCourierPosition=p;
-    const now=Date.now(),lat=p.coords.latitude,lng=p.coords.longitude;
-    const moved=lastLat===null||Math.abs(lat-lastLat)>0.00005||Math.abs(lng-lastLng)>0.00005;
-    if((now-lastSent<10000&&!moved)||now-lastSent<3000)return;
-    lastSent=now;lastLat=lat;lastLng=lng;
-    try{
-      const lineDb=window.__ECOMAX_LINE_DB;
-      const lineUser=window.__ECOMAX_LINE_USER;
-      if(lineDb&&lineUser){
-        const activeOrder = Array.isArray(orders)
-          ? orders.find(o=>String(o.courier_id||'')===String(lineUser.id||'') && !['completed','cancelled'].includes(o.status))
-          : null;
-        const r=await lineDb.rpc('ecomax_line_update_location',{
-          p_latitude:lat,
-          p_longitude:lng,
-          p_accuracy:p.coords.accuracy??null,
-          p_heading:p.coords.heading??null,
-          p_speed:p.coords.speed??null,
-          p_order_id:activeOrder?.id||null
-        });
-        if(r.error)console.warn('LIVE GPS:',r.error.message);
-      }
-    }catch(e){console.warn('LIVE GPS exception:',e)}
-  },()=>{}, {enableHighAccuracy:true,maximumAge:15000,timeout:10000});
+  window.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&ecomaxGpsWatchId!==null){
+    navigator.geolocation.getCurrentPosition(p=>sendLiveGps(p).catch(()=>{}),()=>{},{enableHighAccuracy:true,timeout:8000,maximumAge:0});
+  }});
 }
 })();
 </script></body>
