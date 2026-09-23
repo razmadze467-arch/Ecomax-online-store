@@ -18,7 +18,7 @@ body:after{content:"";position:fixed;width:520px;height:520px;border:1px solid #
 h1{text-align:center;font-size:27px;margin:0 0 8px}.desc{text-align:center;color:var(--muted);font-size:12px;line-height:1.7;margin:0 0 25px}
 label{display:block;color:#a7bdc6;font-size:10px;margin:15px 0 7px;font-weight:900;letter-spacing:.8px}input{width:100%;height:52px;border-radius:13px;border:1px solid #ffffff16;background:#020910;color:#fff;padding:0 15px;outline:none;font-size:14px;transition:.2s}input:focus{border-color:#19eaff90;box-shadow:0 0 25px #19eaff18}
 button{width:100%;height:52px;margin-top:20px;border:1px solid #19eaff55;border-radius:13px;background:linear-gradient(100deg,var(--cyan),#5bb5ff 55%,var(--pink));color:#001016;font-weight:1000;cursor:pointer;box-shadow:0 12px 35px #19eaff20;transition:.2s}button:hover{transform:translateY(-1px);box-shadow:0 15px 45px #19eaff30}button:disabled{opacity:.55;cursor:wait}
-.error{display:none;margin-top:14px;padding:12px;border-radius:11px;border:1px solid #ff4f813d;background:#220a14;color:#ffafbf;font-size:11px;line-height:1.55}.back{display:block;text-align:center;margin-top:18px;color:#829aa5;text-decoration:none;font-size:11px}.back:hover{color:var(--cyan)}.hint{text-align:center;color:#4e6873;font-size:8px;margin-top:20px;letter-spacing:1.5px}
+.reset-row{margin-top:12px;text-align:center}.reset-btn{width:auto!important;height:auto!important;margin:0!important;padding:7px 12px!important;border:0!important;background:transparent!important;box-shadow:none!important;color:#82b9c7!important;font-size:11px!important;font-weight:700!important}.reset-btn:hover{color:var(--cyan)!important;transform:none!important}.reset-btn:disabled{opacity:.5}.error{display:none;margin-top:14px;padding:12px;border-radius:11px;border:1px solid #ff4f813d;background:#220a14;color:#ffafbf;font-size:11px;line-height:1.55}.back{display:block;text-align:center;margin-top:18px;color:#829aa5;text-decoration:none;font-size:11px}.back:hover{color:var(--cyan)}.hint{text-align:center;color:#4e6873;font-size:8px;margin-top:20px;letter-spacing:1.5px}
 @media(max-width:520px){body{padding:12px}.card{padding:27px 20px;border-radius:24px}.card:after{display:none}}</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js?v=20260920-1"></script>
@@ -81,32 +81,111 @@ button:after{content:"";position:absolute;inset:2px;border-radius:9px;border:1px
 <label>პაროლი</label><input id="password" type="password" autocomplete="current-password" required placeholder="••••••••">
 <button id="submit" type="submit">ENTER ECOMAX LINE</button>
 </form>
+<div class="reset-row"><button type="button" id="resetBtn" class="reset-btn">🔐 პაროლის აღდგენა</button></div>
 <div id="error" class="error"></div>
 <a class="back" href="line-register.html">📝 ახალი კურიერის ანგარიში — რეგისტრაცია</a><a class="back" href="/">← მთავარ გვერდზე</a>
 <div class="hint">ECOMAX LINE • SECURE DELIVERY CONTROL</div>
 </main>
 <script>
 (async function(){
+'use strict';
 const db=window.ECOMAX_SUPABASE_CLIENT;
-const form=document.getElementById('form'),btn=document.getElementById('submit'),err=document.getElementById('error');
-function show(t){err.textContent=t;err.style.display='block'}
-if(!db){show('Supabase ვერ ჩაიტვირთა. გვერდი განაახლე.');return}
-const {data:{session}}=await db.auth.getSession();
-if(session){const u=session.user,role=String(u?.app_metadata?.role||'').toLowerCase();if(role==='courier'){location.replace('line.html');return}await db.auth.signOut();}
+const form=document.getElementById('form');
+const btn=document.getElementById('submit');
+const resetBtn=document.getElementById('resetBtn');
+const emailEl=document.getElementById('email');
+const passwordEl=document.getElementById('password');
+const err=document.getElementById('error');
+
+function show(t,ok=false){
+  err.textContent=t;
+  err.style.display='block';
+  err.style.borderColor=ok?'#19eaff55':'#ff4f813d';
+  err.style.background=ok?'#06232c':'#220a14';
+  err.style.color=ok?'#9ff7ff':'#ffafbf';
+}
+function clear(){err.textContent='';err.style.display='none'}
+
+if(!db){show('Supabase ვერ ჩაიტვირთა. გვერდი განაახლე.');return;}
+
+try{
+  const {data:{session}}=await db.auth.getSession();
+  if(session){
+    const role=String(session.user?.app_metadata?.role||'').toLowerCase();
+    if(role==='courier'){location.replace('line.html');return;}
+    await db.auth.signOut();
+  }
+}catch(e){console.warn('Session check:',e)}
+
 form.addEventListener('submit',async e=>{
- e.preventDefault(); err.style.display='none'; btn.disabled=true; btn.textContent='მოწმდება...';
- const email=document.getElementById('email').value.trim();
- const password=document.getElementById('password').value;
- const {data,error}=await db.auth.signInWithPassword({email,password});
- if(error){show('შესვლა ვერ მოხერხდა: '+error.message);btn.disabled=false;btn.textContent='შესვლა ECOMAX LINE-ში';return}
- const u=data.user;
- const role=String(u?.app_metadata?.role||'').toLowerCase();
- if(role!=='courier'){
-   await db.auth.signOut();
-   show('ეს ანგარიში ECOMAX LINE-ის კურიერად არ არის ავტორიზებული.');
-   btn.disabled=false;btn.textContent='შესვლა ECOMAX LINE-ში';return;
- }
- location.replace('line.html');
+  e.preventDefault();
+  clear();
+  const email=emailEl.value.trim().toLowerCase();
+  const password=passwordEl.value;
+  if(!email||!password){show('შეავსე ელფოსტა და პაროლი.');return;}
+  btn.disabled=true;btn.textContent='მოწმდება...';
+  try{
+    const {data,error}=await db.auth.signInWithPassword({email,password});
+    if(error){
+      const msg=String(error.message||'');
+      if(/invalid login credentials/i.test(msg)){
+        show('ელფოსტა ან პაროლი არასწორია. თუ პაროლი არ გახსოვს, გამოიყენე „პაროლის აღდგენა“.');
+      }else if(/email not confirmed/i.test(msg)){
+        show('ელფოსტა ჯერ არ არის დადასტურებული. შეამოწმე ელფოსტა და დააჭირე დადასტურების ბმულს.');
+      }else{
+        show('შესვლა ვერ მოხერხდა: '+msg);
+      }
+      return;
+    }
+    const u=data?.user;
+    if(!u){
+      show('შესვლა ვერ დადასტურდა. სცადე თავიდან.');
+      return;
+    }
+    if(!u.email_confirmed_at){
+      await db.auth.signOut();
+      show('ელფოსტა ჯერ არ არის დადასტურებული. შეამოწმე ელფოსტა.');
+      return;
+    }
+    const role=String(u?.app_metadata?.role||'').toLowerCase();
+    if(role!=='courier'){
+      await db.auth.signOut();
+      show('ანგარიში სწორად შევიდა, მაგრამ ECOMAX LINE-ის კურიერის წვდომა ჯერ არ არის მინიჭებული. დაელოდე ადმინისტრატორის დამტკიცებას.');
+      return;
+    }
+    btn.textContent='შესვლა წარმატებულია ✓';
+    location.replace('line.html');
+  }catch(ex){
+    show('შესვლისას მოხდა შეცდომა. გვერდი განაახლე და სცადე თავიდან.');
+    console.error(ex);
+  }finally{
+    if(btn.textContent!=='შესვლა წარმატებულია ✓'){
+      btn.disabled=false;
+      btn.textContent='შესვლა ECOMAX LINE-ში';
+    }
+  }
+});
+
+resetBtn.addEventListener('click',async()=>{
+  clear();
+  const email=emailEl.value.trim().toLowerCase();
+  if(!email){
+    show('ჯერ ჩაწერე ელფოსტა, შემდეგ დააჭირე „პაროლის აღდგენა“.');
+    emailEl.focus();
+    return;
+  }
+  resetBtn.disabled=true;resetBtn.textContent='იგზავნება...';
+  try{
+    const {error}=await db.auth.resetPasswordForEmail(email,{
+      redirectTo:'https://ecomax.com.ge/line-login.html'
+    });
+    if(error) throw error;
+    show('პაროლის აღდგენის ბმული გაიგზავნა ელფოსტაზე. შეამოწმე Inbox და Spam.',true);
+  }catch(ex){
+    show('პაროლის აღდგენა ვერ გაიგზავნა: '+(ex?.message||'უცნობი შეცდომა'));
+  }finally{
+    resetBtn.disabled=false;resetBtn.textContent='🔐 პაროლის აღდგენა';
+  }
 });
 })();
 </script>
