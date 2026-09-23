@@ -2367,6 +2367,57 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
   .home-chemistry-grid .product-label span{font-size:7px!important}
 }
 </style>
+
+<style id="ecomax-spray-series-v1">
+/* ECOMAX SPRAY SERIES — 450ml aerosol-style product cards */
+.ecomax-spray-section{padding-top:38px!important}
+.ecomax-spray-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.ecomax-spray-card{min-height:530px!important}
+.ecomax-spray-can{
+  width:112px!important;height:196px!important;
+  border-radius:18px 18px 14px 14px!important;
+  background:linear-gradient(90deg,#242a31 0%,#e9edf0 13%,#8b9298 28%,#f8fafb 48%,#8e969d 70%,#f3f5f6 86%,#343b41 100%)!important;
+  border:1px solid rgba(255,255,255,.48)!important;
+  box-shadow:inset 12px 0 16px rgba(255,255,255,.18),inset -15px 0 19px rgba(0,0,0,.48),0 22px 40px rgba(0,0,0,.55),0 0 28px var(--accent-glow)!important;
+  transform:perspective(700px) rotateY(-4deg)!important;
+  overflow:visible!important;
+}
+.ecomax-spray-can::before{
+  content:"";position:absolute;left:10px;right:10px;top:53px;height:108px;border-radius:8px;
+  background:linear-gradient(145deg,rgba(15,24,31,.96),rgba(3,10,16,.98));
+  border:1px solid color-mix(in srgb,var(--accent) 72%,white);
+  box-shadow:0 0 16px var(--accent-glow),inset 0 0 15px rgba(255,255,255,.04);
+}
+.spray-cap{
+  position:absolute;z-index:8;left:16px;right:16px;top:-24px;height:38px;
+  border-radius:10px 10px 5px 5px;
+  background:linear-gradient(90deg,#10151b,#59636b 35%,#dce1e4 55%,#434b52 78%,#11161b);
+  border:1px solid rgba(255,255,255,.42);
+  box-shadow:0 8px 14px rgba(0,0,0,.35),0 0 12px var(--accent-glow);
+}
+.spray-cap::after{
+  content:"";position:absolute;left:23px;right:12px;top:-7px;height:10px;border-radius:7px 7px 2px 2px;
+  background:#151b21;border:1px solid rgba(255,255,255,.3);
+}
+.spray-cap i{position:absolute;right:-7px;top:5px;width:18px;height:8px;border-radius:5px;background:#20272d;border:1px solid #87929a}
+.spray-label{position:absolute;z-index:10;left:16px;right:16px;top:66px;height:82px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5px}
+.spray-label strong{font-size:9px;letter-spacing:2px;color:#fff;text-shadow:0 0 7px #fff,0 0 15px var(--accent)}
+.spray-label b{font-size:8px;line-height:1.15;margin-top:4px;color:#fff}
+.spray-label span{font-size:5.5px;line-height:1.25;margin-top:5px;color:var(--accent);font-weight:900}
+.spray-label em{font-style:normal;font-size:7px;margin-top:4px;color:#dcecf2;letter-spacing:1px}
+.ecomax-spray-card .product-visual{height:255px!important}
+.ecomax-spray-card .home-purpose{margin-top:-2px}
+.ecomax-spray-card .product-info{margin-top:8px}
+.ecomax-spray-card .buy-area .price-row{margin-top:10px}
+.ecomax-spray-card .add-cart{width:100%}
+@media(max-width:1100px){.ecomax-spray-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:900px){.ecomax-spray-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:600px){
+  .ecomax-spray-grid{grid-template-columns:1fr!important}
+  .ecomax-spray-card{min-height:500px!important}
+}
+</style>
+
 </head>
 
 <body>
@@ -2639,6 +2690,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
           <option value="interior">სალონი</option>
           <option value="tire">საბურავი</option>
           <option value="foam">ქაფი</option>
+          <option value="spray">სპრეები</option>
         </select>
 
       </div>
@@ -3857,6 +3909,187 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
           </div>
         </article>
 
+      </div>
+    </section>
+
+    
+    <section class="section ecomax-spray-section" id="sprays">
+      <div class="home-chemistry-heading">
+        <div>
+          <div class="section-label">ECOMAX // SPRAY SERIES</div>
+          <h2>პროფესიონალური <span>სპრეები</span></h2>
+        </div>
+        <p>450 მლ პროფესიონალური სპრეები — თითოეული პროდუქტი 20 ₾.</p>
+      </div>
+      <div class="grid ecomax-spray-grid">
+
+        <article class="product-card ecomax-spray-card blue" data-category="spray" data-search="sticker remover სტიკერის მოსაშორებელი სპრეი spray 450ml" data-unit-price="20">
+          <div class="product-top"><span>ECOMAX // SPRAY</span><span class="product-number">20</span></div>
+          <div class="product-visual">
+            <div class="product-glow"></div>
+            <div class="product-bottle ecomax-spray-can ecomax-spray-sticker">
+              <div class="spray-cap"><i></i></div>
+              <div class="spray-label">
+                <strong>ECOMAX</strong>
+                <b>STICKER REMOVER</b>
+                <span>სტიკერის წებო • ეტიკეტის ნარჩენი</span>
+                <em>450 ML</em>
+              </div>
+            </div>
+          </div>
+          <div class="home-purpose"><span>სპრეი</span><b>სტიკერის მოსაშორებელი • 450 მლ • 20 ₾</b></div>
+          <h3>სტიკერის მოსაშორებელი</h3>
+          <p class="product-description">სტიკერისა და წებოვანი ნარჩენების მოსაშორებლად.</p>
+          <div class="product-info"><span>მოცულობა</span><b>450 მლ — 20 ₾</b></div>
+          <div class="buy-area">
+            <div class="price-row"><strong class="selected-price">20 ₾</strong><span class="selected-volume">450 მლ</span></div>
+            <button type="button" class="add-cart" data-name="სტიკერის მოსაშორებელი" data-price="20" data-volume="450 მლ">+ კალათაში</button>
+          </div>
+        </article>
+
+        <article class="product-card ecomax-spray-card cyan" data-category="spray" data-search="paint remover საღებავის მოსაშორებელი სპრეი spray 450ml" data-unit-price="20">
+          <div class="product-top"><span>ECOMAX // SPRAY</span><span class="product-number">21</span></div>
+          <div class="product-visual">
+            <div class="product-glow"></div>
+            <div class="product-bottle ecomax-spray-can ecomax-spray-paint">
+              <div class="spray-cap"><i></i></div>
+              <div class="spray-label">
+                <strong>ECOMAX</strong>
+                <b>PAINT REMOVER</b>
+                <span>საღებავის კვალი • საღებავის ნარჩენი</span>
+                <em>450 ML</em>
+              </div>
+            </div>
+          </div>
+          <div class="home-purpose"><span>სპრეი</span><b>საღებავის მოსაშორებელი • 450 მლ • 20 ₾</b></div>
+          <h3>საღებავის მოსაშორებელი</h3>
+          <p class="product-description">საღებავისა და შესაბამისი ორგანული ნარჩენების მოსაშორებლად.</p>
+          <div class="product-info"><span>მოცულობა</span><b>450 მლ — 20 ₾</b></div>
+          <div class="buy-area">
+            <div class="price-row"><strong class="selected-price">20 ₾</strong><span class="selected-volume">450 მლ</span></div>
+            <button type="button" class="add-cart" data-name="საღებავის მოსაშორებელი" data-price="20" data-volume="450 მლ">+ კალათაში</button>
+          </div>
+        </article>
+
+        <article class="product-card ecomax-spray-card pink" data-category="spray" data-search="sunscreen polish — ocean Sunscreen Polish • Ocean სპრეი spray 450ml" data-unit-price="20">
+          <div class="product-top"><span>ECOMAX // SPRAY</span><span class="product-number">22</span></div>
+          <div class="product-visual">
+            <div class="product-glow"></div>
+            <div class="product-bottle ecomax-spray-can ecomax-spray-ocean">
+              <div class="spray-cap"><i></i></div>
+              <div class="spray-label">
+                <strong>ECOMAX</strong>
+                <b>SUNSCREEN POLISH — OCEAN</b>
+                <span>ანტიბაქტერიული • ბზინვარება • Anti-UV</span>
+                <em>450 ML</em>
+              </div>
+            </div>
+          </div>
+          <div class="home-purpose"><span>სპრეი</span><b>Sunscreen Polish • Ocean • 450 მლ • 20 ₾</b></div>
+          <h3>Sunscreen Polish • Ocean</h3>
+          <p class="product-description">პლასტმასისა და ინტერიერის ზედაპირების მოვლა, ბზინვარება და დაცვა.</p>
+          <div class="product-info"><span>მოცულობა</span><b>450 მლ — 20 ₾</b></div>
+          <div class="buy-area">
+            <div class="price-row"><strong class="selected-price">20 ₾</strong><span class="selected-volume">450 მლ</span></div>
+            <button type="button" class="add-cart" data-name="Sunscreen Polish • Ocean" data-price="20" data-volume="450 მლ">+ კალათაში</button>
+          </div>
+        </article>
+
+        <article class="product-card ecomax-spray-card pink" data-category="spray" data-search="sunscreen polish — rose Sunscreen Polish • Rose სპრეი spray 450ml" data-unit-price="20">
+          <div class="product-top"><span>ECOMAX // SPRAY</span><span class="product-number">23</span></div>
+          <div class="product-visual">
+            <div class="product-glow"></div>
+            <div class="product-bottle ecomax-spray-can ecomax-spray-rose">
+              <div class="spray-cap"><i></i></div>
+              <div class="spray-label">
+                <strong>ECOMAX</strong>
+                <b>SUNSCREEN POLISH — ROSE</b>
+                <span>ანტიბაქტერიული • ბზინვარება • Anti-UV</span>
+                <em>450 ML</em>
+              </div>
+            </div>
+          </div>
+          <div class="home-purpose"><span>სპრეი</span><b>Sunscreen Polish • Rose • 450 მლ • 20 ₾</b></div>
+          <h3>Sunscreen Polish • Rose</h3>
+          <p class="product-description">პლასტმასისა და ინტერიერის ზედაპირების მოვლა, ბზინვარება და დაცვა.</p>
+          <div class="product-info"><span>მოცულობა</span><b>450 მლ — 20 ₾</b></div>
+          <div class="buy-area">
+            <div class="price-row"><strong class="selected-price">20 ₾</strong><span class="selected-volume">450 მლ</span></div>
+            <button type="button" class="add-cart" data-name="Sunscreen Polish • Rose" data-price="20" data-volume="450 მლ">+ კალათაში</button>
+          </div>
+        </article>
+
+        <article class="product-card ecomax-spray-card orange" data-category="spray" data-search="sunscreen polish — peach Sunscreen Polish • Peach სპრეი spray 450ml" data-unit-price="20">
+          <div class="product-top"><span>ECOMAX // SPRAY</span><span class="product-number">24</span></div>
+          <div class="product-visual">
+            <div class="product-glow"></div>
+            <div class="product-bottle ecomax-spray-can ecomax-spray-peach">
+              <div class="spray-cap"><i></i></div>
+              <div class="spray-label">
+                <strong>ECOMAX</strong>
+                <b>SUNSCREEN POLISH — PEACH</b>
+                <span>ანტიბაქტერიული • ბზინვარება • Anti-UV</span>
+                <em>450 ML</em>
+              </div>
+            </div>
+          </div>
+          <div class="home-purpose"><span>სპრეი</span><b>Sunscreen Polish • Peach • 450 მლ • 20 ₾</b></div>
+          <h3>Sunscreen Polish • Peach</h3>
+          <p class="product-description">პლასტმასისა და ინტერიერის ზედაპირების მოვლა, ბზინვარება და დაცვა.</p>
+          <div class="product-info"><span>მოცულობა</span><b>450 მლ — 20 ₾</b></div>
+          <div class="buy-area">
+            <div class="price-row"><strong class="selected-price">20 ₾</strong><span class="selected-volume">450 მლ</span></div>
+            <button type="button" class="add-cart" data-name="Sunscreen Polish • Peach" data-price="20" data-volume="450 მლ">+ კალათაში</button>
+          </div>
+        </article>
+
+        <article class="product-card ecomax-spray-card yellow" data-category="spray" data-search="sunscreen polish — lemon Sunscreen Polish • Lemon სპრეი spray 450ml" data-unit-price="20">
+          <div class="product-top"><span>ECOMAX // SPRAY</span><span class="product-number">25</span></div>
+          <div class="product-visual">
+            <div class="product-glow"></div>
+            <div class="product-bottle ecomax-spray-can ecomax-spray-lemon">
+              <div class="spray-cap"><i></i></div>
+              <div class="spray-label">
+                <strong>ECOMAX</strong>
+                <b>SUNSCREEN POLISH — LEMON</b>
+                <span>ანტიბაქტერიული • ბზინვარება • Anti-UV</span>
+                <em>450 ML</em>
+              </div>
+            </div>
+          </div>
+          <div class="home-purpose"><span>სპრეი</span><b>Sunscreen Polish • Lemon • 450 მლ • 20 ₾</b></div>
+          <h3>Sunscreen Polish • Lemon</h3>
+          <p class="product-description">პლასტმასისა და ინტერიერის ზედაპირების მოვლა, ბზინვარება და დაცვა.</p>
+          <div class="product-info"><span>მოცულობა</span><b>450 მლ — 20 ₾</b></div>
+          <div class="buy-area">
+            <div class="price-row"><strong class="selected-price">20 ₾</strong><span class="selected-volume">450 მლ</span></div>
+            <button type="button" class="add-cart" data-name="Sunscreen Polish • Lemon" data-price="20" data-volume="450 მლ">+ კალათაში</button>
+          </div>
+        </article>
+
+        <article class="product-card ecomax-spray-card blue" data-category="spray" data-search="sunscreen polish — cologne Sunscreen Polish • Cologne სპრეი spray 450ml" data-unit-price="20">
+          <div class="product-top"><span>ECOMAX // SPRAY</span><span class="product-number">26</span></div>
+          <div class="product-visual">
+            <div class="product-glow"></div>
+            <div class="product-bottle ecomax-spray-can ecomax-spray-cologne">
+              <div class="spray-cap"><i></i></div>
+              <div class="spray-label">
+                <strong>ECOMAX</strong>
+                <b>SUNSCREEN POLISH — COLOGNE</b>
+                <span>ანტიბაქტერიული • ბზინვარება • Anti-UV</span>
+                <em>450 ML</em>
+              </div>
+            </div>
+          </div>
+          <div class="home-purpose"><span>სპრეი</span><b>Sunscreen Polish • Cologne • 450 მლ • 20 ₾</b></div>
+          <h3>Sunscreen Polish • Cologne</h3>
+          <p class="product-description">პლასტმასისა და ინტერიერის ზედაპირების მოვლა, ბზინვარება და დაცვა.</p>
+          <div class="product-info"><span>მოცულობა</span><b>450 მლ — 20 ₾</b></div>
+          <div class="buy-area">
+            <div class="price-row"><strong class="selected-price">20 ₾</strong><span class="selected-volume">450 მლ</span></div>
+            <button type="button" class="add-cart" data-name="Sunscreen Polish • Cologne" data-price="20" data-volume="450 მლ">+ კალათაში</button>
+          </div>
+        </article>
       </div>
     </section>
 
