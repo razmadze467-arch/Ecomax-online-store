@@ -79,8 +79,8 @@
       left:0 !important;
       top:0 !important;
 
-      width:32px !important;
-      height:15px !important;
+      width:26px !important;
+      height:13px !important;
 
       transform-origin:50% 50% !important;
 
@@ -117,8 +117,8 @@
       }
 
       .ecomax-perimeter-car {
-        width:28px !important;
-        height:14px !important;
+        width:24px !important;
+        height:12px !important;
       }
     }
   `;
@@ -263,8 +263,12 @@
       directly on the visible neon frame.
     */
 
-    /* 1.5px neon border → 0.75px centerline. */
-    const inset = 0.75;
+    /*
+      The car must ride the OUTER edge of the visible card frame.
+      The frame itself is at the card edge, so use a tiny negative
+      inset and enlarge the track by the same amount.
+    */
+    const inset = -1.5;
 
     const left = inset;
     const top = inset;
@@ -480,9 +484,10 @@
     const started = performance.now();
 
     function place(el, pt) {
-      /* Every car uses the exact same rounded-rectangle border path.
-         Only direction and phase differ. */
-
+      /*
+        The point is the CENTER of the car on the OUTER neon frame.
+        Both cars use this exact same point calculation.
+      */
       el.style.setProperty("left", pt.x + "px", "important");
       el.style.setProperty("top", pt.y + "px", "important");
       el.style.setProperty(
