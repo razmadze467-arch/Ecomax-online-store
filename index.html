@@ -2260,6 +2260,15 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 .product-card .product-number:before{animation:ecomaxHudSpinReverse 5s linear infinite}
 @keyframes ecomaxHudSpin{to{transform:rotate(390deg)}}@keyframes ecomaxHudSpinReverse{to{transform:rotate(-330deg)}}
 </style>
+<style id="ecomax-home-chemistry-ui">
+.home-chemistry-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin:58px 0 24px;padding-top:28px;border-top:1px solid rgba(0,234,255,.12)}
+.home-chemistry-heading h2{margin:0;font-size:clamp(30px,4vw,52px);line-height:1.05;letter-spacing:-1.5px}
+.home-chemistry-heading h2 span{color:var(--cyan)}
+.home-chemistry-heading p{max-width:500px;margin:0;color:#748d9a;font-size:12px;line-height:1.8}
+.home-chemistry-grid{margin-bottom:20px}
+@media(max-width:760px){.home-chemistry-heading{display:block;margin-top:42px}.home-chemistry-heading p{margin-top:12px}}
+</style>
+
 </head>
 
 <body>
@@ -3592,6 +3601,131 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
           </p>
 
         </article>
+
+
+      
+      <div class="home-chemistry-heading">
+        <div>
+          <div class="section-label">ECOMAX // HOME CARE SERIES</div>
+          <h2>საცხოვრებლის <span>ქიმია</span></h2>
+        </div>
+        <p>პროფესიონალური საწმენდი საშუალებები სახლისთვის — ნაჭერი, ტყავი, აბაზანა, მინა, ხე და იატაკი.</p>
+      </div>
+
+      <div class="grid home-chemistry-grid">
+        
+        <article class="product-card blue" data-category="home" data-search="ნაჭრის საწმენდი home care household home fabric" data-unit-price="10">
+          <div class="product-top"><span>HOME FABRIC</span><span class="product-number">12</span></div>
+          <div class="product-visual">
+            <div class="product-glow"></div>
+            <div class="product-bottle"><div class="product-label"><strong>ECOMAX</strong><span>ნაჭრის საწმენდი</span><b>5 L</b></div></div>
+          </div>
+          <h3>ნაჭრის საწმენდი</h3>
+          <p class="product-description">დივნები, სავარძლები, სკამები და სხვა ნაჭრის/ტექსტილის ზედაპირები სახლისთვის.</p>
+          <div class="product-info"><span>გაზავება</span><b>1:1 — 1:10</b></div>
+          <div class="buy-area">
+            <div class="price-row"><strong class="selected-price">10 ₾</strong><span class="selected-volume">1 ლიტრი</span></div>
+            <select class="volume-select" onchange="volumeUpdate(this.closest('.product-card'))"><option value="0.5">500 მლ — 5 ₾</option><option value="1">1 ლ — 10 ₾</option><option value="2">2 ლ — 20 ₾</option><option value="3">3 ლ — 30 ₾</option><option value="4">4 ლ — 40 ₾</option><option value="5">5 ლ — 50 ₾</option><option value="6">6 ლ — 60 ₾</option><option value="7">7 ლ — 70 ₾</option><option value="8">8 ლ — 80 ₾</option><option value="9">9 ლ — 90 ₾</option><option value="10">10 ლ — 100 ₾</option><option value="20">20 ლ — 200 ₾</option></select>
+            <button type="button" class="add-cart" data-name="ნაჭრის საწმენდი" data-price="10" data-volume="1 ლიტრი">+ კალათაში</button>
+          </div>
+        </article>
+
+        <article class="product-card yellow" data-category="home" data-search="ტყავის საწმენდი home care household home leather" data-unit-price="10">
+          <div class="product-top"><span>HOME LEATHER</span><span class="product-number">13</span></div>
+          <div class="product-visual">
+            <div class="product-glow"></div>
+            <div class="product-bottle"><div class="product-label"><strong>ECOMAX</strong><span>ტყავის საწმენდი</span><b>5 L</b></div></div>
+          </div>
+          <h3>ტყავის საწმენდი</h3>
+          <p class="product-description">ტყავის დივნები, სავარძლები, სკამები და სხვა ტყავის ზედაპირების პროფესიონალური წმენდა.</p>
+          <div class="product-info"><span>გაზავება</span><b>1:1 — 1:3</b></div>
+          <div class="buy-area">
+            <div class="price-row"><strong class="selected-price">10 ₾</strong><span class="selected-volume">1 ლიტრი</span></div>
+            <select class="volume-select" onchange="volumeUpdate(this.closest('.product-card'))"><option value="0.5">500 მლ — 5 ₾</option><option value="1">1 ლ — 10 ₾</option><option value="2">2 ლ — 20 ₾</option><option value="3">3 ლ — 30 ₾</option><option value="4">4 ლ — 40 ₾</option><option value="5">5 ლ — 50 ₾</option><option value="6">6 ლ — 60 ₾</option><option value="7">7 ლ — 70 ₾</option><option value="8">8 ლ — 80 ₾</option><option value="9">9 ლ — 90 ₾</option><option value="10">10 ლ — 100 ₾</option><option value="20">20 ლ — 200 ₾</option></select>
+            <button type="button" class="add-cart" data-name="ტყავის საწმენდი" data-price="10" data-volume="1 ლიტრი">+ კალათაში</button>
+          </div>
+        </article>
+
+        <article class="product-card cyan" data-category="home" data-search="აბაზანის საწმენდი home care household bathroom pro" data-unit-price="10">
+          <div class="product-top"><span>BATHROOM PRO</span><span class="product-number">14</span></div>
+          <div class="product-visual">
+            <div class="product-glow"></div>
+            <div class="product-bottle"><div class="product-label"><strong>ECOMAX</strong><span>აბაზანის საწმენდი</span><b>5 L</b></div></div>
+          </div>
+          <h3>აბაზანის საწმენდი</h3>
+          <p class="product-description">აბაზანისა და სანიტარული ზონისთვის — მარილების, ნადების და კოროზიის კვალის მოსაშორებლად.</p>
+          <div class="product-info"><span>გაზავება</span><b>1:1 — 1:3</b></div>
+          <div class="buy-area">
+            <div class="price-row"><strong class="selected-price">10 ₾</strong><span class="selected-volume">1 ლიტრი</span></div>
+            <select class="volume-select" onchange="volumeUpdate(this.closest('.product-card'))"><option value="0.5">500 მლ — 5 ₾</option><option value="1">1 ლ — 10 ₾</option><option value="2">2 ლ — 20 ₾</option><option value="3">3 ლ — 30 ₾</option><option value="4">4 ლ — 40 ₾</option><option value="5">5 ლ — 50 ₾</option><option value="6">6 ლ — 60 ₾</option><option value="7">7 ლ — 70 ₾</option><option value="8">8 ლ — 80 ₾</option><option value="9">9 ლ — 90 ₾</option><option value="10">10 ლ — 100 ₾</option><option value="20">20 ლ — 200 ₾</option></select>
+            <button type="button" class="add-cart" data-name="აბაზანის საწმენდი" data-price="10" data-volume="1 ლიტრი">+ კალათაში</button>
+          </div>
+        </article>
+
+        <article class="product-card red" data-category="home" data-search="ჩაყვითლებული ჭუჭყის მოსაშორებელი home care household yellow attack" data-unit-price="10">
+          <div class="product-top"><span>YELLOW ATTACK</span><span class="product-number">15</span></div>
+          <div class="product-visual">
+            <div class="product-glow"></div>
+            <div class="product-bottle"><div class="product-label"><strong>ECOMAX</strong><span>ჩაყვითლებული ჭუჭყის მოსაშორებელი</span><b>5 L</b></div></div>
+          </div>
+          <h3>ჩაყვითლებული ჭუჭყის მოსაშორებელი</h3>
+          <p class="product-description">ეფექტურად აშორებს ჩაყვითლებულ ჭუჭყს და დაგროვილ დაბინძურებას შესაბამის მყარ ზედაპირებზე.</p>
+          <div class="product-info"><span>გაზავება</span><b>1:1 — 1:3</b></div>
+          <div class="buy-area">
+            <div class="price-row"><strong class="selected-price">10 ₾</strong><span class="selected-volume">1 ლიტრი</span></div>
+            <select class="volume-select" onchange="volumeUpdate(this.closest('.product-card'))"><option value="0.5">500 მლ — 5 ₾</option><option value="1">1 ლ — 10 ₾</option><option value="2">2 ლ — 20 ₾</option><option value="3">3 ლ — 30 ₾</option><option value="4">4 ლ — 40 ₾</option><option value="5">5 ლ — 50 ₾</option><option value="6">6 ლ — 60 ₾</option><option value="7">7 ლ — 70 ₾</option><option value="8">8 ლ — 80 ₾</option><option value="9">9 ლ — 90 ₾</option><option value="10">10 ლ — 100 ₾</option><option value="20">20 ლ — 200 ₾</option></select>
+            <button type="button" class="add-cart" data-name="ჩაყვითლებული ჭუჭყის მოსაშორებელი" data-price="10" data-volume="1 ლიტრი">+ კალათაში</button>
+          </div>
+        </article>
+
+        <article class="product-card white" data-category="home" data-search="ფანჯრების საწმენდი home care household glass pro" data-unit-price="10">
+          <div class="product-top"><span>GLASS PRO</span><span class="product-number">16</span></div>
+          <div class="product-visual">
+            <div class="product-glow"></div>
+            <div class="product-bottle"><div class="product-label"><strong>ECOMAX</strong><span>ფანჯრების საწმენდი</span><b>5 L</b></div></div>
+          </div>
+          <h3>ფანჯრების საწმენდი</h3>
+          <p class="product-description">ფანჯრებისა და მინის ზედაპირებისთვის — სუფთა, გამჭვირვალე და ლაქებისგან თავისუფალი შედეგი.</p>
+          <div class="product-info"><span>გაზავება</span><b>მზადაა გამოყენებისთვის</b></div>
+          <div class="buy-area">
+            <div class="price-row"><strong class="selected-price">10 ₾</strong><span class="selected-volume">1 ლიტრი</span></div>
+            <select class="volume-select" onchange="volumeUpdate(this.closest('.product-card'))"><option value="0.5">500 მლ — 5 ₾</option><option value="1">1 ლ — 10 ₾</option><option value="2">2 ლ — 20 ₾</option><option value="3">3 ლ — 30 ₾</option><option value="4">4 ლ — 40 ₾</option><option value="5">5 ლ — 50 ₾</option><option value="6">6 ლ — 60 ₾</option><option value="7">7 ლ — 70 ₾</option><option value="8">8 ლ — 80 ₾</option><option value="9">9 ლ — 90 ₾</option><option value="10">10 ლ — 100 ₾</option><option value="20">20 ლ — 200 ₾</option></select>
+            <button type="button" class="add-cart" data-name="ფანჯრების საწმენდი" data-price="10" data-volume="1 ლიტრი">+ კალათაში</button>
+          </div>
+        </article>
+
+        <article class="product-card pink" data-category="home" data-search="ხის საწმენდი home care household wood care" data-unit-price="10">
+          <div class="product-top"><span>WOOD CARE</span><span class="product-number">17</span></div>
+          <div class="product-visual">
+            <div class="product-glow"></div>
+            <div class="product-bottle"><div class="product-label"><strong>ECOMAX</strong><span>ხის საწმენდი</span><b>5 L</b></div></div>
+          </div>
+          <h3>ხის საწმენდი</h3>
+          <p class="product-description">ხისა და ხის მასალის ზედაპირების ნაზი და ეფექტური წმენდა სახლის პირობებში.</p>
+          <div class="product-info"><span>გაზავება</span><b>მზადაა გამოყენებისთვის</b></div>
+          <div class="buy-area">
+            <div class="price-row"><strong class="selected-price">10 ₾</strong><span class="selected-volume">1 ლიტრი</span></div>
+            <select class="volume-select" onchange="volumeUpdate(this.closest('.product-card'))"><option value="0.5">500 მლ — 5 ₾</option><option value="1">1 ლ — 10 ₾</option><option value="2">2 ლ — 20 ₾</option><option value="3">3 ლ — 30 ₾</option><option value="4">4 ლ — 40 ₾</option><option value="5">5 ლ — 50 ₾</option><option value="6">6 ლ — 60 ₾</option><option value="7">7 ლ — 70 ₾</option><option value="8">8 ლ — 80 ₾</option><option value="9">9 ლ — 90 ₾</option><option value="10">10 ლ — 100 ₾</option><option value="20">20 ლ — 200 ₾</option></select>
+            <button type="button" class="add-cart" data-name="ხის საწმენდი" data-price="10" data-volume="1 ლიტრი">+ კალათაში</button>
+          </div>
+        </article>
+
+        <article class="product-card green" data-category="home" data-search="იატაკის საწმენდი home care household floor pro" data-unit-price="10">
+          <div class="product-top"><span>FLOOR PRO</span><span class="product-number">18</span></div>
+          <div class="product-visual">
+            <div class="product-glow"></div>
+            <div class="product-bottle"><div class="product-label"><strong>ECOMAX</strong><span>იატაკის საწმენდი</span><b>5 L</b></div></div>
+          </div>
+          <h3>იატაკის საწმენდი</h3>
+          <p class="product-description">სხვადასხვა ტიპის იატაკის ყოველდღიური და პროფესიონალური წმენდისთვის.</p>
+          <div class="product-info"><span>გაზავება</span><b>1:10 — 1:20</b></div>
+          <div class="buy-area">
+            <div class="price-row"><strong class="selected-price">10 ₾</strong><span class="selected-volume">1 ლიტრი</span></div>
+            <select class="volume-select" onchange="volumeUpdate(this.closest('.product-card'))"><option value="0.5">500 მლ — 5 ₾</option><option value="1">1 ლ — 10 ₾</option><option value="2">2 ლ — 20 ₾</option><option value="3">3 ლ — 30 ₾</option><option value="4">4 ლ — 40 ₾</option><option value="5">5 ლ — 50 ₾</option><option value="6">6 ლ — 60 ₾</option><option value="7">7 ლ — 70 ₾</option><option value="8">8 ლ — 80 ₾</option><option value="9">9 ლ — 90 ₾</option><option value="10">10 ლ — 100 ₾</option><option value="20">20 ლ — 200 ₾</option></select>
+            <button type="button" class="add-cart" data-name="იატაკის საწმენდი" data-price="10" data-volume="1 ლიტრი">+ კალათაში</button>
+          </div>
+        </article>
+      </div>
 
       </div>
 
