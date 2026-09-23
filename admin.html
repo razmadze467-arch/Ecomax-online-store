@@ -924,6 +924,14 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       </button>
 
       <button
+        onclick="showSection('live',this)"
+        type="button"
+      >
+        <span class="nav-icon">📡</span>
+        <span class="nav-text">LIVE COMMAND</span>
+      </button>
+
+      <button
         onclick="showSection('couriers',this)"
         type="button"
       >
@@ -1349,6 +1357,22 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
             <tbody id="courierApplicationsTable"></tbody>
           </table>
         </div>
+      </div>
+    </section>
+
+    <!-- LIVE COMMAND CENTER -->
+    <section id="section-live" class="section">
+      <div class="card">
+        <div class="section-header">
+          <div>
+            <h2>📡 ECOMAX LINE — LIVE COMMAND CENTER</h2>
+            <p style="color:var(--muted);font-size:12px;margin:6px 0 0">
+              კურიერების მიმდინარე GPS, მინიჭებული შეკვეთა და რეალური სტატუსი.
+            </p>
+          </div>
+          <button class="small-btn" onclick="loadLiveCommand()" type="button">🔄 განახლება</button>
+        </div>
+        <div id="liveCommandGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px"></div>
       </div>
     </section>
 
@@ -2003,6 +2027,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       products: "პროდუქტები",
       customers: "მომხმარებლები",
       couriers: "კურიერები",
+      live: "LIVE COMMAND",
       analytics: "ანალიტიკა"
     };
 
@@ -2027,6 +2052,9 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     if (name === "analytics")
       renderAnalytics();
 
+    if (name === "live")
+      loadLiveCommand();
+
   }
 
 
@@ -2044,6 +2072,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       "products",
       "customers",
       "couriers",
+      "live",
       "analytics"
     ];
 
@@ -2087,6 +2116,8 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       renderCustomers();
       renderAnalytics();
 
+      await loadLiveCommand();
+      subscribeLiveCommand();
 
       toast(
         "მონაცემები განახლდა ✓"
@@ -3379,6 +3410,107 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
     renderRecentOrders();
 
+  }
+
+
+
+
+  /* ==========================================
+     ECOMAX LINE — LIVE COMMAND CENTER
+  ========================================== */
+
+  let liveLocations = [];
+
+  function liveTimeAgo(value) {
+    if (!value) return "ლოკაცია ჯერ არ არის";
+    const ms = Date.now() - new Date(value).getTime();
+    if (!Number.isFinite(ms) || ms < 0) return "ახლა";
+    const sec = Math.floor(ms / 1000);
+    if (sec < 60) return sec + " წმ. წინ";
+    const min = Math.floor(sec / 60);
+    if (min < 60) return min + " წთ. წინ";
+    return Math.floor(min / 60) + " სთ. წინ";
+  }
+
+  function liveMapHref(lat, lng) {
+    return "https://www.google.com/maps/dir/?api=1&destination=" +
+      encodeURIComponent(lat + "," + lng);
+  }
+
+  async function loadLiveCommand() {
+    const box = $("liveCommandGrid");
+    if (!box || !db || !currentUser) return;
+    box.innerHTML = '<div class="detail" style="grid-column:1/-1;text-align:center">📡 LIVE მონაცემები იტვირთება...</div>';
+
+    const { data, error } = await db
+      .from("courier_locations")
+      .select("courier_id,latitude,longitude,accuracy,heading,speed,updated_at")
+      .order("updated_at", { ascending: false });
+
+    if (error) {
+      console.error("Live locations:", error);
+      box.innerHTML = '<div class="detail" style="grid-column:1/-1;color:var(--red)">LIVE GPS მონაცემების ჩატვირთვა ვერ მოხერხდა.</div>';
+      return;
+    }
+
+    const locs = data || [];
+    const courierById = new Map(courierApplications.map(x => [String(x.user_id), x]));
+    const activeByCourier = new Map();
+    orders.filter(o => o.courier_id && !["completed","cancelled"].includes(o.status))
+      .forEach(o => activeByCourier.set(String(o.courier_id), o));
+
+    liveLocations = locs;
+
+    if (!locs.length) {
+      box.innerHTML = '<div class="detail" style="grid-column:1/-1;text-align:center;color:var(--muted)">კურიერს ჯერ LIVE GPS არ გამოუგზავნია. კურიერის line.html გვერდი გახსნილი უნდა იყოს და GPS ნებართვა ჰქონდეს.</div>';
+      return;
+    }
+
+    box.innerHTML = locs.map(loc => {
+      const c = courierById.get(String(loc.courier_id)) || {};
+      const o = activeByCourier.get(String(loc.courier_id));
+      const fresh = Date.now() - new Date(loc.updated_at).getTime() < 60000;
+      return `
+        <div class="detail" style="padding:16px;position:relative;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+            <div>
+              <b style="font-size:16px;color:var(--cyan)">🚚 ${esc(c.full_name || "კურიერი")}</b>
+              <div style="color:var(--muted);font-size:10px;margin-top:5px">${esc(c.email || "ECOMAX LINE")}</div>
+            </div>
+            <span class="badge ${fresh ? "completed" : "processing"}">${fresh ? "● LIVE" : "● ძველი სიგნალი"}</span>
+          </div>
+
+          <div style="margin-top:14px;display:grid;gap:8px">
+            <div><small>შეკვეთა</small><b>${esc(o?.order_number || "აქტიური შეკვეთა არ აქვს")}</b></div>
+            <div><small>სტატუსი</small>${o ? statusBadge(o.status) : '<span class="badge">—</span>'}</div>
+            <div><small>მომხმარებელი</small><b>${esc(o?.customer_name || "—")}</b></div>
+            <div><small>GPS</small><b>${Number(loc.latitude).toFixed(5)}, ${Number(loc.longitude).toFixed(5)}</b></div>
+            <div><small>სიზუსტე</small><b>${loc.accuracy ? Math.round(Number(loc.accuracy)) + " მ" : "—"}</b></div>
+            <div><small>ბოლო სიგნალი</small><b>${esc(liveTimeAgo(loc.updated_at))}</b></div>
+          </div>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:13px">
+            <a class="small-btn" target="_blank" rel="noopener" href="${esc(liveMapHref(loc.latitude,loc.longitude))}">📍 რუკაზე გახსნა</a>
+            ${o ? '<button class="small-btn" type="button" onclick="viewOrder(\''+esc(o.id)+'\')">📦 შეკვეთა</button>' : ''}
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function subscribeLiveCommand() {
+    if (!db) return;
+    db.channel("ecomax-admin-live")
+      .on("postgres_changes", {event:"*", schema:"public", table:"orders"}, () => {
+        loadOrders().then(() => { updateDashboard(); if ($("section-live")?.classList.contains("active")) loadLiveCommand(); });
+      })
+      .on("postgres_changes", {event:"*", schema:"public", table:"courier_locations"}, () => {
+        if ($("section-live")?.classList.contains("active")) loadLiveCommand();
+      })
+      .on("postgres_changes", {event:"*", schema:"public", table:"courier_order_events"}, () => {
+        if ($("section-live")?.classList.contains("active")) loadLiveCommand();
+      })
+      .subscribe();
   }
 
 
