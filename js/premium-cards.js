@@ -224,11 +224,8 @@
 
   function getRadius(card, width, height) {
 
-    const style = getComputedStyle(card);
-
-    let radius = 22;
-
-    /* Match the visible neon frame exactly. */
+    /* Match the exact radius used by the visible neon frame. */
+    const radius = window.innerWidth <= 700 ? 18 : 22;
     const maxRadius = Math.min(width, height) / 2;
 
     return Math.max(
@@ -266,7 +263,8 @@
       directly on the visible neon frame.
     */
 
-    const inset = 0.5;
+    /* 1.5px neon border → 0.75px centerline. */
+    const inset = 0.75;
 
     const left = inset;
     const top = inset;
