@@ -7,6 +7,10 @@
 
   <title>ECOMAX • Admin Dashboard</title>
 
+  <!-- LIVE MAP -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <!-- Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -1372,6 +1376,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
           </div>
           <button class="small-btn" onclick="loadLiveCommand()" type="button">🔄 განახლება</button>
         </div>
+        <div id="ecomaxLiveMap" style="height:430px;border:1px solid rgba(32,231,255,.18);border-radius:16px;overflow:hidden;margin:0 0 14px;background:#030b10"></div>
         <div id="liveCommandGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px"></div>
       </div>
     </section>
@@ -3437,6 +3442,62 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       encodeURIComponent(lat + "," + lng);
   }
 
+  let ecomaxLiveMap = null;
+  let ecomaxLiveMarkers = [];
+
+  function ensureLiveMap() {
+    const el = $("ecomaxLiveMap");
+    if (!el || typeof L === "undefined") return null;
+    if (!ecomaxLiveMap) {
+      ecomaxLiveMap = L.map(el, { zoomControl:true, attributionControl:true }).setView([42.2679,42.7180], 7);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap contributors"
+      }).addTo(ecomaxLiveMap);
+    }
+    setTimeout(() => ecomaxLiveMap?.invalidateSize(), 50);
+    return ecomaxLiveMap;
+  }
+
+  function renderLiveMap(locs) {
+    const map = ensureLiveMap();
+    if (!map) return;
+    ecomaxLiveMarkers.forEach(m => map.removeLayer(m));
+    ecomaxLiveMarkers = [];
+    if (!locs.length) return;
+
+    const bounds = [];
+    const courierById = new Map(courierApplications.map(x => [String(x.user_id), x]));
+    const activeByCourier = new Map();
+    orders.filter(o => o.courier_id && !["completed","cancelled"].includes(o.status))
+      .forEach(o => activeByCourier.set(String(o.courier_id), o));
+
+    locs.forEach(loc => {
+      const lat=Number(loc.latitude), lng=Number(loc.longitude);
+      if (!Number.isFinite(lat)||!Number.isFinite(lng)) return;
+      const c=courierById.get(String(loc.courier_id))||{};
+      const o=activeByCourier.get(String(loc.courier_id));
+      const fresh=Date.now()-new Date(loc.updated_at).getTime()<60000;
+      const marker=L.circleMarker([lat,lng],{
+        radius: fresh ? 10 : 8,
+        weight: 2,
+        color: fresh ? "#20e7ff" : "#8da8b0",
+        fillColor: fresh ? "#20e7ff" : "#53656d",
+        fillOpacity: .8
+      }).addTo(map);
+      marker.bindPopup(
+        "<b style='color:#20e7ff'>🚚 "+esc(c.full_name||"ECOMAX LINE")+"</b><br>"+
+        "შეკვეთა: "+esc(o?.order_number||"—")+"<br>"+
+        "სტატუსი: "+esc(statusName(o?.status||"—"))+"<br>"+
+        "GPS: "+lat.toFixed(5)+", "+lng.toFixed(5)
+      );
+      ecomaxLiveMarkers.push(marker);
+      bounds.push([lat,lng]);
+    });
+    if(bounds.length===1) map.setView(bounds[0],15);
+    else if(bounds.length>1) map.fitBounds(bounds,{padding:[35,35],maxZoom:15});
+  }
+
   async function loadLiveCommand() {
     const box = $("liveCommandGrid");
     if (!box || !db || !currentUser) return;
@@ -3460,6 +3521,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       .forEach(o => activeByCourier.set(String(o.courier_id), o));
 
     liveLocations = locs;
+    renderLiveMap(locs);
 
     if (!locs.length) {
       box.innerHTML = '<div class="detail" style="grid-column:1/-1;text-align:center;color:var(--muted)">კურიერს ჯერ LIVE GPS არ გამოუგზავნია. კურიერის line.html გვერდი გახსნილი უნდა იყოს და GPS ნებართვა ჰქონდეს.</div>';
