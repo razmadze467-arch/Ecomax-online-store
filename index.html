@@ -2418,6 +2418,56 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 }
 </style>
 
+
+<style id="ecomax-chamois-accessory-v1">
+.ecomax-accessories-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.ecomax-chamois-pack{
+  position:relative;
+  width:185px;
+  height:205px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:9px 9px 16px 16px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 72% 43%,rgba(255,219,25,.82),transparent 23%),
+    linear-gradient(135deg,#0a1117 0%,#182027 48%,#05090d 100%);
+  box-shadow:inset 0 0 30px rgba(255,255,255,.05),0 18px 45px rgba(0,0,0,.55),0 0 28px rgba(0,234,255,.12);
+  transform:perspective(500px) rotateY(-5deg);
+}
+.ecomax-chamois-pack::before{
+  content:"";
+  position:absolute;
+  left:-15%;
+  top:54px;
+  width:130%;
+  height:45px;
+  background:linear-gradient(90deg,#f4d20b,#fff21b,#e8c800);
+  transform:rotate(-2deg);
+  box-shadow:0 0 18px rgba(255,216,20,.16);
+}
+.ecomax-chamois-pack::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(115deg,rgba(255,255,255,.11),transparent 18%,transparent 72%,rgba(255,255,255,.06));
+  pointer-events:none;
+}
+.chamois-hook{
+  position:absolute;left:50%;top:-5px;transform:translateX(-50%);
+  width:46px;height:22px;border:2px solid #8c969b;border-bottom:0;border-radius:50% 50% 0 0;
+}
+.chamois-pack-top{position:absolute;left:18px;top:17px;color:#fff;font-size:16px;font-weight:900;z-index:2}
+.chamois-pack-title{position:absolute;left:15px;top:74px;color:#fff;font-size:19px;font-weight:900;line-height:1.05;letter-spacing:.5px;z-index:2}
+.chamois-pack-soft{position:absolute;left:15px;top:120px;color:#111;background:#ffd900;padding:2px 8px;font-size:10px;font-weight:900;z-index:2}
+.chamois-pack-car{position:absolute;right:13px;top:80px;color:rgba(255,255,255,.65);font-size:24px;font-weight:900;z-index:2}
+.chamois-pack-size{position:absolute;right:12px;bottom:13px;color:#ffd900;font-size:11px;font-weight:900;z-index:2}
+@media(max-width:1100px){.ecomax-accessories-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:900px){.ecomax-accessories-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){
+  .ecomax-accessories-grid{grid-template-columns:1fr}
+  .ecomax-chamois-pack{width:175px;height:195px}
+}
+</style>
 </head>
 
 <body>
@@ -2691,6 +2741,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
           <option value="tire">საბურავი</option>
           <option value="foam">ქაფი</option>
           <option value="spray">სპრეები</option>
+          <option value="accessories">აქსესუარები</option>
         </select>
 
       </div>
@@ -4088,6 +4139,59 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
           <div class="buy-area">
             <div class="price-row"><strong class="selected-price">20 ₾</strong><span class="selected-volume">450 მლ</span></div>
             <button type="button" class="add-cart" data-name="Sunscreen Polish • Cologne" data-price="20" data-volume="450 მლ">+ კალათაში</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    
+    <section class="section ecomax-accessories-section" id="accessories">
+      <div class="home-chemistry-heading">
+        <div>
+          <div class="section-label">ECOMAX // CARE ACCESSORIES</div>
+          <h2>ავტომობილის <span>აქსესუარები</span></h2>
+        </div>
+        <p>პროფესიონალური ზამშის სალფეთი — 45×55 სმ, რბილი და გამძლე მოვლისთვის.</p>
+      </div>
+
+      <div class="grid ecomax-accessories-grid">
+        <article class="product-card ecomax-accessory-card cyan" data-category="accessories" data-search="karo салфетка замша soft ზამშის სალფეთი მანქანის სალფეთი 45x55" data-unit-price="30">
+          <div class="product-top">
+            <span>CARE ACCESSORY</span>
+            <span class="product-number">27</span>
+          </div>
+
+          <div class="product-visual">
+            <div class="product-glow"></div>
+            <div class="ecomax-chamois-pack">
+              <div class="chamois-hook"></div>
+              <div class="chamois-pack-top">karo</div>
+              <div class="chamois-pack-title">САЛФЕТКА<br>ЗАМША</div>
+              <div class="chamois-pack-soft">SOFT</div>
+              <div class="chamois-pack-car">CAR</div>
+              <div class="chamois-pack-size">45×55 см</div>
+            </div>
+          </div>
+
+          <div class="home-purpose">
+            <span>აქსესუარი</span>
+            <b>ზამშის სალფეთი • 45×55 სმ • 30 ₾</b>
+          </div>
+
+          <h3>KARO Soft — ზამშის სალფეთი</h3>
+          <p class="product-description">რბილი და გამძლე სალფეთი ავტომობილის ზედაპირებიდან ტენისა და ჭუჭყის მოსაშორებლად.</p>
+
+          <div class="product-info">
+            <span>ზომა</span>
+            <b>45×55 სმ — 30 ₾</b>
+          </div>
+
+          <div class="buy-area">
+            <div class="price-row">
+              <strong class="selected-price">30 ₾</strong>
+              <span class="selected-volume">1 ცალი</span>
+            </div>
+            <button type="button" class="add-cart" data-name="KARO Soft — ზამშის სალფეთი 45×55 სმ" data-price="30" data-volume="1 ცალი">+ კალათაში</button>
           </div>
         </article>
       </div>
