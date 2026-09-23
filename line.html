@@ -62,7 +62,7 @@ header:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
 <body>
 <header><div class="nav">
   <div class="brand"><div class="orb"></div><div><div class="logo">ECOMAX LINE</div><div class="sub">FUTURE DELIVERY NETWORK</div></div></div>
-  <div class="navright"><a class="navbtn adminlink" href="admin.html">← Admin</a><button class="navbtn" id="refresh">↻ განახლება</button><button class="navbtn logout" id="logout">გასვლა</button></div>
+  <div class="navright"><a class="navbtn" href="index.html">← მთავარი</a><button class="navbtn" id="refresh">↻ განახლება</button><button class="navbtn logout" id="logout">გასვლა</button></div>
 </div></header>
 <main>
 <section class="hero"><div><div class="eyebrow">LIVE DELIVERY NETWORK</div><h1>LINE COMMAND</h1><p id="access">DELIVERY CONTROL SYSTEM • იტვირთება...</p><div class="live"><i class="dot"></i> LIVE • შეკვეთები ავტომატურად ახლდება</div></div></section>
@@ -86,7 +86,7 @@ const db=window.ECOMAX_SUPABASE_CLIENT,$=id=>document.getElementById(id);
 const labels={new:'ახალი',processing:'მუშავდება',loaded:'ტვირთი დაიტვირთა',picked_up:'კურიერმა აიღო',shipped:'გზაშია',completed:'ჩაბარდა',cancelled:'გაუქმდა'};
 const next={new:'processing',processing:'loaded',loaded:'picked_up',picked_up:'shipped',shipped:'completed'};
 const orderSteps=['new','processing','loaded','picked_up','shipped','completed'];
-let orders=[],user=null,admin=false;
+let orders=[],user=null;
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function money(v){return Number(v||0).toFixed(2)+' ₾';}
 function toast(t){$('toast').textContent=t;$('toast').style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>$('toast').style.display='none',2600);}
@@ -100,8 +100,9 @@ async function boot(){
  if(!db){$('access').textContent='Supabase ვერ ჩაიტვირთა';return;}
  const {data:{user:u}}=await db.auth.getUser();user=u;
  if(!u){location.replace('line-login.html');return;}
- admin=u?.app_metadata?.role==='admin'||String(u?.email||'').toLowerCase()==='datogringo@gmail.com';
- $('access').textContent=admin?'ADMIN • სრული ECOMAX LINE წვდომა':'COURIER • მხოლოდ მინიჭებული შეკვეთები';
+ const role=String(u?.app_metadata?.role||'').toLowerCase();
+ if(role!=='courier'){await db.auth.signOut();location.replace('index.html');return;}
+ $('access').textContent='COURIER • მხოლოდ მინიჭებული შეკვეთები';
  await load();
 }
 async function load(){
@@ -128,26 +129,19 @@ function render(){
   return '<article class="order"><div class="top"><div><div class="num">'+esc(o.order_number||('ECX-'+String(o.id).slice(0,8).toUpperCase()))+'</div><div class="customer">'+esc(o.customer_name||'—')+' • '+esc(o.phone||'—')+'</div></div><span class="badge '+esc(o.status)+'">'+esc(labels[o.status]||o.status||'—')+'</span></div>'+
   progress(o.status)+quickActions(o)+
   '<div class="grid"><div class="box"><small>მიტანის მისამართი</small><b>'+esc([o.city,o.address].filter(Boolean).join(', ')||'—')+'</b><div class="items" style="margin-top:10px">'+items(o)+'</div></div><div class="box"><small>შეკვეთის თანხა</small><b>'+money(o.total)+'</b><div class="items" style="margin-top:10px">კურიერი: '+esc(o.courier_name||'არ არის მინიჭებული')+'<br>ETA: '+dt(o.estimated_arrival_at)+'</div></div></div>'+
-  '<div class="actions">'+(!closed&&n?'<button class="go" data-next="'+esc(o.id)+'">→ '+esc(labels[n])+'</button>':'')+(tel?'<a class="navbtn call" href="'+esc(tel)+'">☎ დარეკვა</a>':'')+(map?'<a class="navbtn" target="_blank" rel="noopener" href="'+esc(map)+'">📍 რუკა</a>':'')+'<button data-edit="'+esc(o.id)+'">⚙ დეტალები</button>'+(admin?'<button class="danger" data-assign="'+esc(o.id)+'">👤 კურიერი</button>':'')+'</div></article>';
+  '<div class="actions">'+(!closed&&n?'<button class="go" data-next="'+esc(o.id)+'">→ '+esc(labels[n])+'</button>':'')+(tel?'<a class="navbtn call" href="'+esc(tel)+'">☎ დარეკვა</a>':'')+(map?'<a class="navbtn" target="_blank" rel="noopener" href="'+esc(map)+'">📍 რუკა</a>':'')+'<button data-edit="'+esc(o.id)+'">⚙ დეტალები</button>'+''+'</div></article>';
  }).join('');
 }
 async function advance(id){const o=orders.find(x=>String(x.id)===String(id));if(o&&next[o.status])await updateStatus(o,next[o.status],null);}
 async function markArrived(id){
  const o=orders.find(x=>String(x.id)===String(id));
  if(!o)return;
- if(admin){
-  const r=await db.from('orders').update({arrived_at:o.arrived_at||new Date().toISOString(),updated_at:new Date().toISOString()}).eq('id',id);
-  if(r.error){toast(r.error.message);return;}
- }else{
-  const r=await db.rpc('ecomax_line_mark_arrived',{p_order_id:id});
-  if(r.error){toast(r.error.message);return;}
- }
+ const r=await db.rpc('ecomax_line_mark_arrived',{p_order_id:id});
+ if(r.error){toast(r.error.message);return;}
  toast('ადგილზე მისვლა დაფიქსირდა ✓'); await load();
 }
 async function updateStatus(o,status,eta){
- let result;
- if(admin)result=await db.from('orders').update({status,estimated_arrival_at:eta||o.estimated_arrival_at||null,updated_at:new Date().toISOString()}).eq('id',o.id);
- else result=await db.rpc('ecomax_line_update_order',{p_order_id:o.id,p_status:status,p_estimated_arrival_at:eta||null});
+ const result=await db.rpc('ecomax_line_update_order',{p_order_id:o.id,p_status:status,p_estimated_arrival_at:eta||null});
  if(result.error){toast(result.error.message);return false;}
  toast('სტატუსი განახლდა ✓');await load();return true;
 }
@@ -158,13 +152,13 @@ function openDetails(o){
  $('mSave').onclick=async()=>{const eta=$('mEta').value?new Date($('mEta').value).toISOString():null;const ok=await updateStatus(o,$('mStatus').value,eta);if(ok)$('overlay').style.display='none';};
 }
 function assign(o){
- $('mTitle').textContent='კურიერის მინიჭება';
+ return;
  $('mBody').innerHTML='<p style="color:#8da5b0;font-size:12px">კურიერის ანგარიში უნდა არსებობდეს Supabase Auth-ში და მის <b>app_metadata.role</b>-ში უნდა ეწეროს <b>courier</b>.</p><label>Courier User ID</label><input id="cId" value="'+esc(o.courier_id||'')+'" placeholder="UUID"><label>სახელი</label><input id="cName" value="'+esc(o.courier_name||'')+'"><label>ტელეფონი</label><input id="cPhone" value="'+esc(o.courier_phone||'')+'"><button class="save" id="cSave">კურიერის მინიჭება</button>';
  $('overlay').style.display='grid';
  $('cSave').onclick=async()=>{const cid=$('cId').value.trim()||null;const {error}=await db.from('orders').update({courier_id:cid,courier_name:$('cName').value.trim()||null,courier_phone:$('cPhone').value.trim()||null,line_assigned_at:cid?new Date().toISOString():null}).eq('id',o.id);if(error){toast(error.message);return;}toast(cid?'კურიერი მიენიჭა ✓':'კურიერი მოიხსნა ✓');$('overlay').style.display='none';await load();};
 }
 $('refresh').onclick=load;$('logout').onclick=async()=>{await db.auth.signOut();location.replace('line-login.html');};$('search').oninput=render;$('filter').onchange=render;$('close').onclick=()=>$('overlay').style.display='none';$('overlay').onclick=e=>{if(e.target===$('overlay'))$('overlay').style.display='none';};
-$('orders').onclick=e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.next||b.dataset.edit||b.dataset.assign||b.dataset.complete||b.dataset.arrived;const o=orders.find(x=>String(x.id)===String(id));if(!o)return;if(b.dataset.next)advance(id);else if(b.dataset.arrived)markArrived(id);else if(b.dataset.complete)updateStatus(o,'completed',null);else if(b.dataset.edit)openDetails(o);else if(b.dataset.assign)assign(o);};
+$('orders').onclick=e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.next||b.dataset.edit||b.dataset.assign||b.dataset.complete||b.dataset.arrived;const o=orders.find(x=>String(x.id)===String(id));if(!o)return;if(b.dataset.next)advance(id);else if(b.dataset.arrived)markArrived(id);else if(b.dataset.complete)updateStatus(o,'completed',null);else if(b.dataset.edit)openDetails(o);else if(b.dataset.assign){}};
 if(db)db.channel('ecomax-line-live').on('postgres_changes',{event:'*',schema:'public',table:'orders'},()=>load()).subscribe();
 boot();
 })();
