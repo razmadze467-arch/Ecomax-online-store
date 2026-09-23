@@ -3560,6 +3560,50 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     }).join("");
   }
 
+  let ecomaxLiveTrack = null;
+
+  async function showCourierTrack(courierId) {
+    const map = ensureLiveMap();
+    if (!map) return;
+    const { data, error } = await db
+      .from("courier_location_history")
+      .select("latitude,longitude,accuracy,recorded_at")
+      .eq("courier_id", courierId)
+      .order("recorded_at", { ascending: true })
+      .limit(1000);
+
+    if (error) {
+      console.error("Courier track:", error);
+      toast("კურიერის ტრეკის ჩატვირთვა ვერ მოხერხდა");
+      return;
+    }
+
+    if (ecomaxLiveTrack) {
+      map.removeLayer(ecomaxLiveTrack);
+      ecomaxLiveTrack = null;
+    }
+
+    const points = (data || [])
+      .map(x => [Number(x.latitude), Number(x.longitude)])
+      .filter(x => Number.isFinite(x[0]) && Number.isFinite(x[1]));
+
+    if (points.length < 2) {
+      toast("ამ კურიერს ჯერ საკმარისი GPS ისტორია არ აქვს");
+      return;
+    }
+
+    ecomaxLiveTrack = L.polyline(points, {
+      color:"#20e7ff",
+      weight:5,
+      opacity:.82,
+      lineJoin:"round",
+      lineCap:"round"
+    }).addTo(map);
+
+    map.fitBounds(ecomaxLiveTrack.getBounds(), {padding:[35,35], maxZoom:15});
+    toast("კურიერის გავლილი მარშრუტი ნაჩვენებია ✓");
+  }
+
   function subscribeLiveCommand() {
     if (!db) return;
     db.channel("ecomax-admin-live")
@@ -3570,6 +3614,9 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
         if ($("section-live")?.classList.contains("active")) loadLiveCommand();
       })
       .on("postgres_changes", {event:"*", schema:"public", table:"courier_order_events"}, () => {
+        if ($("section-live")?.classList.contains("active")) loadLiveCommand();
+      })
+      .on("postgres_changes", {event:"INSERT", schema:"public", table:"courier_location_history"}, () => {
         if ($("section-live")?.classList.contains("active")) loadLiveCommand();
       })
       .subscribe();
