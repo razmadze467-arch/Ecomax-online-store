@@ -10,7 +10,7 @@ body{min-height:100vh;display:grid;place-items:center;padding:20px;overflow:hidd
 body:before{content:"";position:fixed;inset:0;background:linear-gradient(#19eaff08 1px,transparent 1px),linear-gradient(90deg,#19eaff08 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,transparent,#fff 18%,#fff 82%,transparent);pointer-events:none}
 body:after{content:"";position:fixed;width:520px;height:520px;border:1px solid #19eaff22;border-radius:50%;box-shadow:0 0 80px #19eaff10,inset 0 0 80px #ff3fd20a;animation:spin 18s linear infinite;pointer-events:none}
 @keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{50%{box-shadow:0 0 45px #19eaff35,inset 0 0 30px #19eaff15}}
-.card{position:relative;z-index:2;width:min(540px,100%);padding:30px;border:1px solid #19eaff3d;border-radius:30px;background:linear-gradient(145deg,#091a27f5,#030a12f7);box-shadow:0 35px 120px #000d,0 0 70px #19eaff0b;backdrop-filter:blur(22px);overflow:hidden}
+.card{position:relative;z-index:3;width:min(540px,100%);padding:30px;border:1px solid #19eaff3d;border-radius:30px;background:linear-gradient(145deg,#091a27f5,#030a12f7);box-shadow:0 35px 120px #000d,0 0 70px #19eaff0b;backdrop-filter:blur(22px);overflow:hidden}
 .card:before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--pink),transparent);box-shadow:0 0 20px var(--cyan)}
 .card:after{content:"LINE // SECURE GATEWAY";position:absolute;right:18px;top:14px;color:#ffffff35;font-size:7px;letter-spacing:2px}
 .logo{text-align:center;color:var(--cyan);font-weight:1000;letter-spacing:7px;font-size:28px;text-shadow:0 0 25px #19eaff80}.line{text-align:center;color:#78939f;font-size:9px;letter-spacing:4px;margin-top:7px}
@@ -124,8 +124,41 @@ button:after{
  card.addEventListener('pointermove',move);
  card.addEventListener('pointerleave',reset);
 })();
-</script></head>
-<body>
+</script><style id="ECOMAX-LIVE-5D-CARS">
+/* ECOMAX LIVE 3D/4D/5D vehicle layer — decorative only */
+.ecomax-traffic{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;perspective:900px;transform-style:preserve-3d}
+.ecomax-road{position:absolute;inset:-20%;background:radial-gradient(ellipse at center,transparent 0 36%,rgba(0,246,255,.025) 37%,transparent 38%),linear-gradient(90deg,transparent 49.7%,rgba(0,246,255,.055) 50%,transparent 50.3%);transform:rotateX(58deg) translateY(20%);opacity:.55}
+.ecomax-car{position:absolute;width:92px;height:38px;transform-style:preserve-3d;filter:drop-shadow(0 0 8px var(--glow,#00f6ff)) drop-shadow(0 0 24px var(--glow,#00f6ff));animation:ecxCarLoop 16s linear infinite}
+.ecomax-car .body{position:absolute;left:8px;top:12px;width:76px;height:22px;border-radius:8px 12px 7px 7px;background:linear-gradient(100deg,#06141d,#19eaff 48%,#7b4dff);border:1px solid rgba(255,255,255,.5);box-shadow:inset 0 0 12px rgba(255,255,255,.18)}
+.ecomax-car .roof{position:absolute;left:27px;top:3px;width:39px;height:18px;border-radius:14px 14px 3px 3px;background:linear-gradient(135deg,#06131c,#ff25d9);border:1px solid rgba(255,255,255,.4);transform:skewX(-12deg) translateZ(8px)}
+.ecomax-car .light{position:absolute;top:19px;width:8px;height:5px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff,0 0 16px var(--glow,#00f6ff)}
+.ecomax-car .l{left:11px}.ecomax-car .r{right:11px}
+.ecomax-car .wheel{position:absolute;top:28px;width:14px;height:14px;border-radius:50%;background:#020409;border:2px solid #738895;box-shadow:0 0 8px var(--glow,#00f6ff)}
+.ecomax-car .w1{left:17px}.ecomax-car .w2{right:17px}
+.ecomax-car:nth-child(2){--glow:#ff25d9;animation-duration:19s;animation-delay:-6s;transform:scale(.72) rotateY(20deg)}
+.ecomax-car:nth-child(3){--glow:#7b4dff;animation-duration:23s;animation-delay:-12s;transform:scale(1.18) rotateY(-20deg)}
+.ecomax-car:nth-child(4){--glow:#00f6ff;animation-duration:27s;animation-delay:-18s;transform:scale(.58) rotateY(35deg)}
+@keyframes ecxCarLoop{
+  0%{left:-12%;top:18%;transform:rotateY(0) rotateZ(0) translateZ(0)}
+  24%{left:72%;top:10%;transform:rotateY(18deg) rotateZ(2deg) translateZ(80px)}
+  50%{left:88%;top:72%;transform:rotateY(180deg) rotateZ(-3deg) translateZ(-40px)}
+  76%{left:14%;top:88%;transform:rotateY(205deg) rotateZ(2deg) translateZ(70px)}
+  100%{left:-12%;top:18%;transform:rotateY(360deg) rotateZ(0) translateZ(0)}
+}
+.ecomax-traffic:after{content:"";position:absolute;inset:10%;border:1px solid rgba(0,246,255,.06);border-radius:40px;box-shadow:0 0 90px rgba(0,246,255,.04),inset 0 0 90px rgba(123,77,255,.035);animation:ecxPulse 4s ease-in-out infinite}
+@keyframes ecxPulse{50%{opacity:.35;transform:scale(1.015)}}
+@media(max-width:800px){
+ .ecomax-car{width:68px;height:29px}.ecomax-car .body{width:56px;height:17px;top:10px}.ecomax-car .roof{left:20px;top:2px;width:30px;height:14px}.ecomax-car .light{top:15px;width:6px;height:4px}.ecomax-car .wheel{top:21px;width:11px;height:11px}.ecomax-car .w1{left:12px}.ecomax-car .w2{right:12px}
+}
+@media(prefers-reduced-motion:reduce){.ecomax-car,.ecomax-traffic:after,.ecomax-road{animation:none!important}}
+</style></head>
+<body><div class="ecomax-traffic" aria-hidden="true">
+<div class="ecomax-road"></div>
+<div class="ecomax-car"><span class="body"></span><span class="roof"></span><span class="light l"></span><span class="light r"></span><span class="wheel w1"></span><span class="wheel w2"></span></div>
+<div class="ecomax-car"><span class="body"></span><span class="roof"></span><span class="light l"></span><span class="light r"></span><span class="wheel w1"></span><span class="wheel w2"></span></div>
+<div class="ecomax-car"><span class="body"></span><span class="roof"></span><span class="light l"></span><span class="light r"></span><span class="wheel w1"></span><span class="wheel w2"></span></div>
+<div class="ecomax-car"><span class="body"></span><span class="roof"></span><span class="light l"></span><span class="light r"></span><span class="wheel w1"></span><span class="wheel w2"></span></div>
+</div>
 <main class="card">
 <div class="logo">ECOMAX</div><div class="line">LINE • COURIER REGISTRATION</div>
 <div class="icon">✦</div>
