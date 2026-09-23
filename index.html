@@ -3742,7 +3742,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
           <div class="product-top"><span>KITCHEN PRO</span><span class="product-number">19</span></div>
           <div class="product-visual">
             <div class="product-glow"></div>
-            <div class="product-bottle"><div class="product-label"><strong>ECOMAX</strong><span>სამზარეულოს საწმენდი</span><b>5 L</b></div></div>
+            <div class="product-bottle"><div class="product-label"><strong>ECOMAX</strong><span>KITCHEN PRO</span><b>სამზარეულოს საწმენდი • 5 L</b></div></div>
           </div>
           <div class="home-purpose"><span>რისთვის არის</span><b>სამზარეულო • კედელზე მიმცხვარი ცხიმი • ცხიმიანი ნადები</b></div>
           <h3>სამზარეულოს საწმენდი</h3>
@@ -3917,7 +3917,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
   <script src="js/magic-home.js?v=20260916-10"></script>
 
-  <script src="js/premium-cards.js?v=20260923-EXACT"></script>
+  <script src="js/premium-cards.js?v=20260923-DUAL"></script>
 
   <script src="js/bottle-color-enhance.js?v=20260920-2"></script>
 
@@ -5440,5 +5440,38 @@ body{
   else bootAuth();
 })();
 </script>
+<style id="ecomax-home-labels-premium">
+.home-chemistry-grid .product-label{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:3px!important;
+  text-align:center!important;
+  padding:8px 6px!important;
+}
+.home-chemistry-grid .product-label strong{
+  font-size:13px!important;
+  letter-spacing:1.6px!important;
+}
+.home-chemistry-grid .product-label span{
+  font-size:8px!important;
+  font-weight:900!important;
+  letter-spacing:1px!important;
+  line-height:1.2!important;
+}
+.home-chemistry-grid .product-label b{
+  font-size:7px!important;
+  color:#fff!important;
+  letter-spacing:.7px!important;
+  line-height:1.2!important;
+}
+.home-chemistry-grid .home-purpose{
+  min-height:48px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+</style>
 </body>
 </html>
