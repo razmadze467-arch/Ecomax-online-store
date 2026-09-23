@@ -220,6 +220,11 @@ main:before{
 @keyframes newPulse{50%{box-shadow:0 0 0 1px #19eaff35,0 0 75px #19eaff22,inset 0 0 45px #19eaff0b}}
 @keyframes orderDot{50%{transform:scale(1.6);opacity:.55}}
 @media(max-width:760px){.order-actions-primary{grid-template-columns:1fr}.new-order-banner{font-size:10px}}
+</style><style id="ecomax-line-route">
+.route-btn{color:#9fffd7!important;border-color:#45f0b055!important;background:linear-gradient(135deg,#08251f,#06131a)!important}
+.route-btn.live-route{color:#19eaff!important;border-color:#19eaff55!important}
+.route-panel{margin-top:12px;padding:12px;border:1px solid #19eaff18;border-radius:13px;background:#020b12aa}
+.route-panel b{font-size:11px}.route-panel span{display:block;color:#718b95;font-size:9px;margin-top:5px}
 </style></head>
 <body>
 <header><div class="nav">
@@ -283,6 +288,13 @@ function items(o){const a=Array.isArray(o.items)?o.items:[];return a.map(x=>esc(
 function progress(status){if(status==='cancelled')return '';const i=orderSteps.indexOf(status);return '<div class="progress">'+orderSteps.slice(0,5).map((s,n)=>'<div class="pstep '+(i>=n?'on':'')+'"></div>').join('')+'</div>';}
 function phoneHref(v){return v?'tel:'+String(v).replace(/[^+\d]/g,''):'';}
 function mapHref(o){const q=[o.address,o.city].filter(Boolean).join(', ');return q?'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q):'';}
+function routeHref(o){
+ const q=[o.address,o.city].filter(Boolean).join(', ');
+ if(!q)return '';
+ const pos=window.__ecomaxCourierPosition;
+ const origin=pos?encodeURIComponent(pos.coords.latitude+','+pos.coords.longitude):'';
+ return 'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(q)+(origin?'&origin='+origin:'')+'&travelmode=driving';
+}
 function quickActions(o){const n=next[o.status],closed=['completed','cancelled'].includes(o.status),map=mapHref(o);if(closed)return '';let h='<div class="quick">';if(n)h+='<button class="q" data-next="'+esc(o.id)+'">→ '+esc(labels[n])+'</button>';if(map)h+='<button class="q arrived" data-arrived="'+esc(o.id)+'">📍 მივედი ადგილზე</button>';if(o.status==='shipped')h+='<button class="q done" data-complete="'+esc(o.id)+'">✓ ჩავაბარე</button>';return h+'</div>';}
 async function boot(){
  if(!db){$('access').textContent='Supabase ვერ ჩაიტვირთა';return;}
@@ -314,11 +326,11 @@ function render(){
  $('sDone').textContent=orders.filter(o=>o.status==='completed').length;
  if(!list.length){$('orders').innerHTML='<div class="empty">შეკვეთა ვერ მოიძებნა.</div>';return;}
  $('orders').innerHTML=list.map(o=>{
-  const n=next[o.status],closed=['completed','cancelled'].includes(o.status),tel=phoneHref(o.phone),map=mapHref(o),isNew=o.status==='new';
+  const n=next[o.status],closed=['completed','cancelled'].includes(o.status),tel=phoneHref(o.phone),map=mapHref(o),route=routeHref(o),isNew=o.status==='new';
   return '<article class="order '+(isNew?'new-order':'')+'"><div class="top"><div><div class="num">'+esc(o.order_number||('ECX-'+String(o.id).slice(0,8).toUpperCase()))+'</div><div class="customer">'+esc(o.customer_name||'—')+' • '+esc(o.phone||'—')+'</div></div><span class="badge '+esc(o.status)+'">'+esc(labels[o.status]||o.status||'—')+'</span></div>'+
   (isNew?'<div class="new-order-banner"><i></i> ახალი შეკვეთა — გთხოვთ მიიღოთ ან უარყოთ დავალება</div>':'')+progress(o.status)+quickActions(o)+
   '<div class="grid"><div class="box"><small>მიტანის მისამართი</small><b>'+esc([o.city,o.address].filter(Boolean).join(', ')||'—')+'</b><div class="items" style="margin-top:10px">'+items(o)+'</div></div><div class="box"><small>შეკვეთის თანხა</small><b>'+money(o.total)+'</b><div class="items" style="margin-top:10px">კურიერი: '+esc(o.courier_name||'არ არის მინიჭებული')+'<br>ETA: '+dt(o.estimated_arrival_at)+'</div></div></div>'+
-  '<div class="actions">'+(isNew?'<div class="order-actions-primary"><button class="accept" data-accept="'+esc(o.id)+'">✓ შეკვეთის მიღება</button><button class="decline" data-decline="'+esc(o.id)+'">× ვერ ვიღებ</button></div>':(!closed&&n?'<button class="go" data-next="'+esc(o.id)+'">→ '+esc(labels[n])+'</button>':''))+(tel?'<a class="navbtn call" href="'+esc(tel)+'">☎ დარეკვა</a>':'')+(map?'<a class="navbtn" target="_blank" rel="noopener" href="'+esc(map)+'">📍 რუკა</a>':'')+'<button data-edit="'+esc(o.id)+'">⚙ დეტალები</button><button data-history="'+esc(o.id)+'">🕒 ისტორია</button>'+''+'</div></article>';
+  '<div class="actions">'+(isNew?'<div class="order-actions-primary"><button class="accept" data-accept="'+esc(o.id)+'">✓ შეკვეთის მიღება</button><button class="decline" data-decline="'+esc(o.id)+'">× ვერ ვიღებ</button></div>':(!closed&&n?'<button class="go" data-next="'+esc(o.id)+'">→ '+esc(labels[n])+'</button>':''))+(tel?'<a class="navbtn call" href="'+esc(tel)+'">☎ დარეკვა</a>':'')+(route?'<a class="navbtn route-btn" target="_blank" rel="noopener" href="'+esc(route)+'">🧭 მარშრუტის დაწყება</a>':'')+(map?'<a class="navbtn" target="_blank" rel="noopener" href="'+esc(map)+'">📍 რუკა</a>':'')+'<button data-edit="'+esc(o.id)+'">⚙ დეტალები</button><button data-history="'+esc(o.id)+'">🕒 ისტორია</button>'+''+'</div></article>';
  }).join('');
 }
 async function acceptOrder(id){
@@ -383,12 +395,14 @@ boot();
  const alerts=document.getElementById('lineAlerts');
  function note(t,kind){if(!alerts)return;alerts.insertAdjacentHTML('afterbegin','<div class="alert '+(kind||'')+'">● '+t+'</div>');setTimeout(()=>alerts.lastElementChild?.remove(),7000)}
  document.getElementById('focusBtn')?.addEventListener('click',()=>{document.getElementById('filter').value='active';document.getElementById('filter').dispatchEvent(new Event('change'));document.getElementById('orders')?.scrollIntoView({behavior:'smooth',block:'start'})});
- document.getElementById('locateBtn')?.addEventListener('click',()=>{const g=document.getElementById('geoStatus');if(!navigator.geolocation){note('ამ მოწყობილობაზე GPS მიუწვდომელია','warn');return}g.textContent='ლოკაცია: GPS იძებნება...';navigator.geolocation.getCurrentPosition(p=>{g.innerHTML='GPS: '+p.coords.latitude.toFixed(5)+', '+p.coords.longitude.toFixed(5)+'<br>კოორდინატები მიღებულია';note('ლოკაცია მიღებულია ✓','ok')},()=>{g.textContent='ლოკაცია: წვდომა უარყოფილია';note('GPS წვდომა ვერ მივიღეთ','warn')},{enableHighAccuracy:true,timeout:8000,maximumAge:30000})});
+ document.getElementById('locateBtn')?.addEventListener('click',()=>{const g=document.getElementById('geoStatus');if(!navigator.geolocation){note('ამ მოწყობილობაზე GPS მიუწვდომელია','warn');return}g.textContent='ლოკაცია: GPS იძებნება...';navigator.geolocation.getCurrentPosition(p=>{window.__ecomaxCourierPosition=p;g.innerHTML='GPS: '+p.coords.latitude.toFixed(5)+', '+p.coords.longitude.toFixed(5)+'<br>მარშრუტის საწყისი წერტილი მზადაა';note('ლოკაცია მიღებულია ✓ • მარშრუტი მზადაა','ok');window.dispatchEvent(new Event('ecomax-gps-updated'))},()=>{g.textContent='ლოკაცია: წვდომა უარყოფილია';note('GPS წვდომა ვერ მივიღეთ','warn')},{enableHighAccuracy:true,timeout:8000,maximumAge:30000})});
  document.getElementById('soundBtn')?.addEventListener('click',async()=>{try{const C=window.AudioContext||window.webkitAudioContext;if(C){const a=new C(),o=a.createOscillator(),g=a.createGain();o.frequency.value=880;g.gain.value=.03;o.connect(g);g.connect(a.destination);o.start();setTimeout(()=>{o.stop();a.close()},140)}}catch(e){}note('შეტყობინების ხმა ჩართულია ✓','ok')});
  document.getElementById('startShift')?.addEventListener('click',()=>{localStorage.setItem('ecomax_shift','1');note('ცვლა დაიწყო • ECOMAX LINE აქტიურ რეჟიმში ✓','ok')});
  document.getElementById('endShift')?.addEventListener('click',()=>{localStorage.removeItem('ecomax_shift');note('ცვლა დასრულდა','warn')});
  document.getElementById('installHint')?.addEventListener('click',()=>note('Chrome მენიუდან აირჩიე “Add to Home screen”, თუ ხელმისაწვდომია.'));
  document.getElementById('reportBtn')?.addEventListener('click',()=>note('ინციდენტის ღილაკი მზადაა. შეკვეთის კონკრეტულ ბარათში გამოიყენე ზარი/რუკა და დეტალები.'));
+window.addEventListener('ecomax-gps-updated',()=>{try{if(typeof render==='function')render()}catch(e){}});
+if(navigator.geolocation){navigator.geolocation.watchPosition(p=>{window.__ecomaxCourierPosition=p},()=>{}, {enableHighAccuracy:true,maximumAge:15000,timeout:10000});}
 })();
 </script></body>
 </html>
