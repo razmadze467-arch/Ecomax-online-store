@@ -1,6 +1,6 @@
 /* =========================================================
    ECOMAX — PREMIUM CARD PERIMETER CARS
-   Version: 2026-09-23-EXACT-OUTER-TRACK
+   Version: 2026-09-23-DUAL-CARS-EXACT-TRACK
    ========================================================= */
 
 (() => {
@@ -509,17 +509,21 @@
       // CYAN — clockwise: top → right → bottom → left.
       // PINK — counter-clockwise: exactly the same frame line,
       // but travels in the opposite direction.
-      const d1 = (t * speed) % perimeter;
-      const d2 = (perimeter - ((t * speed + perimeter * 0.5) % perimeter)) % perimeter;
+      // Both cars are locked to ONE identical rounded-rectangle
+      // centerline. Only direction differs.
+      const travel = (t * speed) % perimeter;
 
-      place(cyan, pointAt(card, d1));
+      // Cyan: clockwise.
+      const cyanPoint = pointAt(card, travel);
 
-      const reverse = pointAt(card, d2);
-      // The path tangent returned by pointAt() is clockwise.
-      // Reverse the tangent so the car's FRONT always points
-      // in the actual direction of travel.
-      reverse.angle += Math.PI;
-      place(pink, reverse);
+      // Pink: counter-clockwise, exactly 50% around the SAME track.
+      const pinkPoint = pointAt(card, perimeter - ((travel + perimeter * 0.5) % perimeter));
+
+      // pointAt() gives the clockwise tangent. Reverse it for pink.
+      pinkPoint.angle += Math.PI;
+
+      place(cyan, cyanPoint);
+      place(pink, pinkPoint);
 
       requestAnimationFrame(frame);
     }
