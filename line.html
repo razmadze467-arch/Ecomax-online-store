@@ -208,6 +208,18 @@ main:before{
 </style><style id="ecomax-line-timeline">
 .line-timeline{position:relative;padding:8px 4px 8px 8px}.line-timeline:before{content:"";position:absolute;left:15px;top:12px;bottom:12px;width:1px;background:linear-gradient(#19eaff,#ff3fd2,#45f0b0);box-shadow:0 0 10px #19eaff55}.tl{position:relative;display:flex;gap:15px;padding:8px 0 18px}.tl-dot{width:15px;height:15px;flex:0 0 15px;border-radius:50%;margin-top:2px;background:#19eaff;border:3px solid #06131c;box-shadow:0 0 14px #19eaff}.tl-main{padding:10px 12px;border:1px solid #19eaff18;border-radius:11px;background:#ffffff03;flex:1}.tl-main b{display:block;color:#dffaff;font-size:12px}.tl-main span{display:block;color:#718b95;font:10px monospace;margin-top:4px}.tl-main p{margin:6px 0 0;color:#9eb4bd;font-size:10px}
 .quick .q{position:relative;overflow:hidden}.quick .q:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,#fff2,transparent);transform:translateX(-120%);animation:actionSweep 3.5s linear infinite}@keyframes actionSweep{65%,100%{transform:translateX(120%)}}
+</style><style id="ecomax-line-new-order">
+.new-order{border-color:#19eaff88!important;box-shadow:0 0 0 1px #19eaff22,0 0 55px #19eaff16,inset 0 0 35px #19eaff08!important;animation:newPulse 2.4s ease-in-out infinite}
+.new-order-banner{display:flex;align-items:center;gap:10px;padding:11px 13px;margin:-2px 0 13px;border:1px solid #19eaff35;border-radius:12px;background:linear-gradient(90deg,#19eaff0d,#ff3fd208);color:#dffaff;font-size:11px;font-weight:900}
+.new-order-banner i{width:9px;height:9px;border-radius:50%;background:#19eaff;box-shadow:0 0 18px #19eaff;animation:orderDot 1s infinite}
+.order-actions-primary{display:grid;grid-template-columns:1.4fr .8fr;gap:8px;margin-top:12px}
+.order-actions-primary button{min-height:48px;border-radius:12px;font-weight:1000;cursor:pointer;border:1px solid #19eaff55;background:#061923;color:#19eaff}
+.order-actions-primary .accept{background:linear-gradient(135deg,#19eaff18,#8d63ff18);box-shadow:0 0 25px #19eaff10}
+.order-actions-primary .decline{color:#ff9aaa;border-color:#ff647d35;background:#190a0e}
+.order-actions-primary button:hover{transform:translateY(-2px);box-shadow:0 0 30px #19eaff18}
+@keyframes newPulse{50%{box-shadow:0 0 0 1px #19eaff35,0 0 75px #19eaff22,inset 0 0 45px #19eaff0b}}
+@keyframes orderDot{50%{transform:scale(1.6);opacity:.55}}
+@media(max-width:760px){.order-actions-primary{grid-template-columns:1fr}.new-order-banner{font-size:10px}}
 </style></head>
 <body>
 <header><div class="nav">
@@ -302,12 +314,24 @@ function render(){
  $('sDone').textContent=orders.filter(o=>o.status==='completed').length;
  if(!list.length){$('orders').innerHTML='<div class="empty">შეკვეთა ვერ მოიძებნა.</div>';return;}
  $('orders').innerHTML=list.map(o=>{
-  const n=next[o.status],closed=['completed','cancelled'].includes(o.status),tel=phoneHref(o.phone),map=mapHref(o);
-  return '<article class="order"><div class="top"><div><div class="num">'+esc(o.order_number||('ECX-'+String(o.id).slice(0,8).toUpperCase()))+'</div><div class="customer">'+esc(o.customer_name||'—')+' • '+esc(o.phone||'—')+'</div></div><span class="badge '+esc(o.status)+'">'+esc(labels[o.status]||o.status||'—')+'</span></div>'+
-  progress(o.status)+quickActions(o)+
+  const n=next[o.status],closed=['completed','cancelled'].includes(o.status),tel=phoneHref(o.phone),map=mapHref(o),isNew=o.status==='new';
+  return '<article class="order '+(isNew?'new-order':'')+'"><div class="top"><div><div class="num">'+esc(o.order_number||('ECX-'+String(o.id).slice(0,8).toUpperCase()))+'</div><div class="customer">'+esc(o.customer_name||'—')+' • '+esc(o.phone||'—')+'</div></div><span class="badge '+esc(o.status)+'">'+esc(labels[o.status]||o.status||'—')+'</span></div>'+
+  (isNew?'<div class="new-order-banner"><i></i> ახალი შეკვეთა — გთხოვთ მიიღოთ ან უარყოთ დავალება</div>':'')+progress(o.status)+quickActions(o)+
   '<div class="grid"><div class="box"><small>მიტანის მისამართი</small><b>'+esc([o.city,o.address].filter(Boolean).join(', ')||'—')+'</b><div class="items" style="margin-top:10px">'+items(o)+'</div></div><div class="box"><small>შეკვეთის თანხა</small><b>'+money(o.total)+'</b><div class="items" style="margin-top:10px">კურიერი: '+esc(o.courier_name||'არ არის მინიჭებული')+'<br>ETA: '+dt(o.estimated_arrival_at)+'</div></div></div>'+
-  '<div class="actions">'+(!closed&&n?'<button class="go" data-next="'+esc(o.id)+'">→ '+esc(labels[n])+'</button>':'')+(tel?'<a class="navbtn call" href="'+esc(tel)+'">☎ დარეკვა</a>':'')+(map?'<a class="navbtn" target="_blank" rel="noopener" href="'+esc(map)+'">📍 რუკა</a>':'')+'<button data-edit="'+esc(o.id)+'">⚙ დეტალები</button><button data-history="'+esc(o.id)+'">🕒 ისტორია</button>'+''+'</div></article>';
+  '<div class="actions">'+(isNew?'<div class="order-actions-primary"><button class="accept" data-accept="'+esc(o.id)+'">✓ შეკვეთის მიღება</button><button class="decline" data-decline="'+esc(o.id)+'">× ვერ ვიღებ</button></div>':(!closed&&n?'<button class="go" data-next="'+esc(o.id)+'">→ '+esc(labels[n])+'</button>':''))+(tel?'<a class="navbtn call" href="'+esc(tel)+'">☎ დარეკვა</a>':'')+(map?'<a class="navbtn" target="_blank" rel="noopener" href="'+esc(map)+'">📍 რუკა</a>':'')+'<button data-edit="'+esc(o.id)+'">⚙ დეტალები</button><button data-history="'+esc(o.id)+'">🕒 ისტორია</button>'+''+'</div></article>';
  }).join('');
+}
+async function acceptOrder(id){
+ const r=await db.rpc('ecomax_line_accept_order',{p_order_id:id});
+ if(r.error){toast(r.error.message);return;}
+ toast('შეკვეთა მიღებულია ✓'); await load();
+}
+function declineOrder(id){
+ const o=orders.find(x=>String(x.id)===String(id)); if(!o)return;
+ $('mTitle').textContent='შეკვეთის უარყოფა';
+ $('mBody').innerHTML='<p style="color:#9db3bc;font-size:11px">შეკვეთა დარჩება სისტემაში და სხვა კურიერს გადაეცემა.</p><label>მიზეზი (სურვილისამებრ)</label><textarea id="declineReason" placeholder="მაგ: ვერ ვასწრებ, მანქანის პრობლემა..."></textarea><button class="save" id="declineSave">დავალების უარყოფა</button>';
+ $('overlay').style.display='grid';
+ $('declineSave').onclick=async()=>{const r=await db.rpc('ecomax_line_decline_order',{p_order_id:id,p_reason:$('declineReason').value.trim()||null});if(r.error){toast(r.error.message);return;}toast('დავალება უარყოფილია და დაბრუნდა განაწილებაში');$('overlay').style.display='none';await load();};
 }
 async function advance(id){const o=orders.find(x=>String(x.id)===String(id));if(o&&next[o.status])await updateStatus(o,next[o.status],null);}
 async function markArrived(id){
@@ -346,7 +370,7 @@ function assign(o){
  $('cSave').onclick=async()=>{const cid=$('cId').value.trim()||null;const {error}=await db.from('orders').update({courier_id:cid,courier_name:$('cName').value.trim()||null,courier_phone:$('cPhone').value.trim()||null,line_assigned_at:cid?new Date().toISOString():null}).eq('id',o.id);if(error){toast(error.message);return;}toast(cid?'კურიერი მიენიჭა ✓':'კურიერი მოიხსნა ✓');$('overlay').style.display='none';await load();};
 }
 $('refresh').onclick=load;$('logout').onclick=async()=>{await db.auth.signOut();location.replace('line-login.html');};$('search').oninput=render;$('filter').onchange=render;$('close').onclick=()=>$('overlay').style.display='none';$('overlay').onclick=e=>{if(e.target===$('overlay'))$('overlay').style.display='none';};
-$('orders').onclick=e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.next||b.dataset.edit||b.dataset.history||b.dataset.assign||b.dataset.complete||b.dataset.arrived;const o=orders.find(x=>String(x.id)===String(id));if(!o)return;if(b.dataset.next)advance(id);else if(b.dataset.arrived)markArrived(id);else if(b.dataset.complete)updateStatus(o,'completed',null);else if(b.dataset.edit)openDetails(o);else if(b.dataset.history)openHistory(o);else if(b.dataset.assign){}};
+$('orders').onclick=e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.next||b.dataset.edit||b.dataset.history||b.dataset.assign||b.dataset.complete||b.dataset.arrived||b.dataset.accept||b.dataset.decline;const o=orders.find(x=>String(x.id)===String(id));if(!o)return;if(b.dataset.accept)acceptOrder(id);else if(b.dataset.decline)declineOrder(id);else if(b.dataset.next)advance(id);else if(b.dataset.arrived)markArrived(id);else if(b.dataset.complete)updateStatus(o,'completed',null);else if(b.dataset.edit)openDetails(o);else if(b.dataset.history)openHistory(o);else if(b.dataset.assign){}};
 if(db)db.channel('ecomax-line-live').on('postgres_changes',{event:'*',schema:'public',table:'orders'},()=>load()).subscribe();
 boot();
 })();
