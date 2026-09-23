@@ -195,6 +195,8 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     account.hidden=false;
 
     await loadOrders(user);
+    updateEtaCountdowns();
+    const etaTimer=setInterval(updateEtaCountdowns,1000);
 
     document.getElementById('refreshOrders').addEventListener('click',()=>loadOrders(user));
 
@@ -215,7 +217,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     const realtime=client.channel('ecomax-orders-'+user.id)
       .on('postgres_changes',{event:'UPDATE',schema:'public',table:'orders',filter:'user_id=eq.'+user.id},()=>loadOrders(user))
       .subscribe();
-    window.addEventListener('beforeunload',()=>{clearInterval(refreshTimer);client.removeChannel(realtime);});
+    window.addEventListener('beforeunload',()=>{clearInterval(refreshTimer);clearInterval(etaTimer);client.removeChannel(realtime);});
 
   }catch(e){
     loading.hidden=true;
