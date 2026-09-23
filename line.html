@@ -58,7 +58,154 @@ header:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
    el.addEventListener('pointerleave',()=>el.style.transform='');
  });
 })();
-</script></head>
+</script>
+<style id="ecomax-line-future-hud">
+/* ECOMAX LINE — FUTURISTIC 5D GRID / HOLOGRAPHIC HUD */
+:root{--neon-c:#19eaff;--neon-p:#ff3fd2;--neon-v:#8d63ff}
+html,body{background:#01040a!important}
+body{
+  position:relative;isolation:isolate;
+  background:
+    radial-gradient(ellipse at 50% 18%,#073d4b55 0%,transparent 35%),
+    radial-gradient(ellipse at 85% 70%,#4b0b4a33 0%,transparent 32%),
+    radial-gradient(ellipse at 15% 78%,#063b5830 0%,transparent 30%),
+    #01040a!important;
+}
+body:after{
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:-3;
+ background:
+  linear-gradient(rgba(25,234,255,.09) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(25,234,255,.09) 1px,transparent 1px);
+ background-size:70px 70px;
+ transform:perspective(500px) rotateX(63deg) scale(1.8) translateY(22%);
+ transform-origin:50% 100%;
+ opacity:.48;
+ mask-image:linear-gradient(to top,rgba(0,0,0,1),rgba(0,0,0,.85) 48%,transparent 92%);
+ animation:gridDrift 12s linear infinite;
+}
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;
+ background:
+  repeating-linear-gradient(0deg,transparent 0 5px,rgba(25,234,255,.025) 6px 7px),
+  radial-gradient(circle at 50% 50%,transparent 45%,#000b 100%);
+ mix-blend-mode:screen;
+}
+@keyframes gridDrift{from{background-position:0 0,0 0}to{background-position:0 70px,70px 0}}
+header{
+ background:linear-gradient(180deg,#020811f2,#02070ddd)!important;
+ border-bottom:1px solid #19eaff45!important;
+ box-shadow:0 10px 50px #000,0 0 35px #19eaff10!important;
+}
+header:before{
+ content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;
+ background:linear-gradient(90deg,transparent,#19eaff,#fff,#ff3fd2,#19eaff,transparent);
+ background-size:300% 100%;animation:hudRail 5s linear infinite;
+ filter:drop-shadow(0 0 8px #19eaff);
+}
+@keyframes hudRail{to{background-position:300% 0}}
+.nav{position:relative}
+.orb{
+ border-color:#19eaffaa!important;
+ box-shadow:0 0 14px #19eaff55,0 0 42px #19eaff22,inset 0 0 20px #19eaff2b!important;
+ animation:orbPulse 2.6s ease-in-out infinite;
+}
+.orb:before{content:"";position:absolute;inset:5px;border:1px dashed #ff3fd255;border-radius:50%;animation:spin 5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes orbPulse{50%{transform:scale(1.06);filter:brightness(1.25)}}
+.logo{letter-spacing:5px!important;text-shadow:0 0 8px #19eaff,0 0 26px #19eaff77!important}
+main{position:relative;transform-style:preserve-3d}
+main:before{
+ content:"";position:absolute;left:50%;top:85px;width:min(900px,90vw);height:260px;
+ transform:translateX(-50%) rotateX(58deg);pointer-events:none;
+ border:1px solid #19eaff15;border-radius:50%;
+ box-shadow:0 0 90px #19eaff0d,inset 0 0 70px #ff3fd20a;
+}
+.hero{
+ position:relative;padding:28px 24px 24px!important;margin-bottom:20px!important;
+ border:1px solid #19eaff25;border-radius:24px;
+ background:linear-gradient(145deg,#071923c9,#030811b8);
+ box-shadow:0 25px 80px #0009,0 0 50px #19eaff0b,inset 0 1px #ffffff16;
+ overflow:hidden;transform-style:preserve-3d;
+}
+.hero:before{
+ content:"";position:absolute;inset:-80%;pointer-events:none;
+ background:conic-gradient(from 0deg,transparent 0 74%,#19eaff14 76%,transparent 79%,#ff3fd214 84%,transparent 87%);
+ animation:heroSpin 10s linear infinite;
+}
+.hero:after{
+ content:"";position:absolute;left:0;right:0;top:0;height:1px;
+ background:linear-gradient(90deg,transparent,#19eaff,#ff3fd2,#19eaff,transparent);
+ box-shadow:0 0 16px #19eaff;
+ animation:scanline 4s linear infinite;
+}
+@keyframes heroSpin{to{transform:rotate(360deg)}}@keyframes scanline{50%{top:100%}}
+.hero>*{position:relative;z-index:2}
+.hero h1{letter-spacing:2px!important;text-shadow:0 0 35px #19eaff18}
+.eyebrow{font-family:monospace;text-shadow:0 0 12px #19eaff}
+.live{filter:drop-shadow(0 0 8px #45f0b044)}
+.stats{perspective:1000px}
+.stat{
+ transform-style:preserve-3d!important;
+ background:linear-gradient(145deg,#0b202dce,#020a11d9)!important;
+ border-color:#19eaff25!important;
+ box-shadow:0 18px 55px #000b,0 0 30px #19eaff0b,inset 0 1px #ffffff14!important;
+}
+.stat:after{
+ content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+ background:linear-gradient(115deg,transparent 20%,#19eaff09 45%,#fff0 52%,#ff3fd209 70%,transparent 82%);
+ transform:translateX(-100%);animation:glassSweep 5s ease-in-out infinite;
+}
+@keyframes glassSweep{55%,100%{transform:translateX(100%)}}
+.flow .step{
+ position:relative;overflow:hidden;
+ background:linear-gradient(145deg,#061822d9,#020a10d9)!important;
+ border-color:#19eaff20!important;
+ box-shadow:inset 0 0 25px #19eaff06,0 12px 35px #0007!important;
+}
+.flow .step:before{
+ content:"";position:absolute;left:-30%;top:50%;width:160%;height:1px;
+ background:linear-gradient(90deg,transparent,#19eaff,transparent);
+ animation:flowScan 3s linear infinite;
+}
+@keyframes flowScan{to{transform:translateX(60%)}}
+.toolbar{
+ background:#030b12aa!important;padding:10px;border:1px solid #19eaff1b;border-radius:16px;
+ box-shadow:0 15px 45px #0008,inset 0 0 35px #19eaff05!important;
+}
+.order{
+ transform-style:preserve-3d!important;
+ background:linear-gradient(145deg,#0a1c29ed,#02090fee)!important;
+ border-color:#19eaff24!important;
+ box-shadow:0 22px 70px #000b,0 0 32px #19eaff08,inset 0 1px #ffffff10!important;
+}
+.order:after{
+ content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+ background:
+  linear-gradient(90deg,transparent 49.7%,#19eaff08 50%,transparent 50.3%),
+  linear-gradient(0deg,transparent 49.7%,#ff3fd208 50%,transparent 50.3%);
+ background-size:80px 80px;opacity:.18;mask-image:linear-gradient(#fff,transparent 75%);
+}
+.order:hover{transform:translateY(-5px) translateZ(8px)!important;border-color:#19eaff65!important;box-shadow:0 28px 85px #000c,0 0 45px #19eaff14!important}
+.progress .pstep.on{box-shadow:0 0 12px #19eaff,0 0 25px #19eaff55!important}
+.quick .q,.actions button{
+ box-shadow:inset 0 0 18px #19eaff05,0 0 0 #19eaff;
+ transition:all .2s ease;
+}
+.quick .q:hover,.actions button:hover{transform:translateY(-2px);box-shadow:0 0 22px #19eaff20,inset 0 0 20px #19eaff0b!important}
+.badge{backdrop-filter:blur(8px);text-shadow:0 0 10px currentColor}
+.overlay{backdrop-filter:blur(12px)}
+.modal{
+ transform-style:preserve-3d!important;
+ box-shadow:0 30px 110px #000,0 0 55px #19eaff12,inset 0 1px #ffffff12!important;
+}
+.empty{background:#020b12aa;box-shadow:inset 0 0 35px #19eaff05}
+@media(max-width:760px){
+ body:after{background-size:42px 42px;opacity:.32;transform:perspective(400px) rotateX(64deg) scale(1.7) translateY(25%)}
+ .hero{padding:22px 16px 20px!important;border-radius:19px}
+ .hero h1{font-size:clamp(30px,12vw,48px)!important}
+ .stat{box-shadow:0 12px 35px #0009,inset 0 1px #ffffff12!important}
+ .order:hover{transform:none!important}
+}
+</style></head>
 <body>
 <header><div class="nav">
   <div class="brand"><div class="orb"></div><div><div class="logo">ECOMAX LINE</div><div class="sub">FUTURE DELIVERY NETWORK</div></div></div>
@@ -108,7 +255,7 @@ async function boot(){
 async function load(){
  $('orders').innerHTML='<div class="empty">შეკვეთები იტვირთება...</div>';
  let q=db.from('orders').select('*').order('created_at',{ascending:false});
- if(!admin)q=q.eq('courier_id',user.id);
+ q=q.eq('courier_id',user.id);
  const {data,error}=await q;
  if(error){$('orders').innerHTML='<div class="empty">შეკვეთების ჩატვირთვა ვერ მოხერხდა: '+esc(error.message)+'</div>';return;}
  orders=data||[];render();
