@@ -1,6 +1,6 @@
 /* =========================================================
    ECOMAX — PREMIUM CARD PERIMETER CARS
-   Version: 2026-09-23-PERFECT-PERIMETER
+   Version: 2026-09-23-EXACT-OUTER-TRACK
    ========================================================= */
 
 (() => {
@@ -226,15 +226,9 @@
 
     const style = getComputedStyle(card);
 
-    let radius = parseFloat(style.borderTopLeftRadius);
+    let radius = 22;
 
-    if (!Number.isFinite(radius)) {
-      radius = 20;
-    }
-
-    /*
-      Keep radius inside valid bounds.
-    */
+    /* Match the visible neon frame exactly. */
     const maxRadius = Math.min(width, height) / 2;
 
     return Math.max(
@@ -272,7 +266,7 @@
       directly on the visible neon frame.
     */
 
-    const inset = 1.5;
+    const inset = 0.5;
 
     const left = inset;
     const top = inset;
@@ -488,6 +482,9 @@
     const started = performance.now();
 
     function place(el, pt) {
+      /* Every car uses the exact same rounded-rectangle border path.
+         Only direction and phase differ. */
+
       el.style.setProperty("left", pt.x + "px", "important");
       el.style.setProperty("top", pt.y + "px", "important");
       el.style.setProperty(
