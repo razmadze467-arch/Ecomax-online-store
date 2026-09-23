@@ -223,6 +223,32 @@ main:before{
 </section>
 <div class="toolbar"><input id="search" placeholder="🔎 ნომერი, სახელი, ტელეფონი, ქალაქი, მისამართი..."><select id="filter"><option value="active">აქტიური შეკვეთები</option><option value="all">ყველა</option><option value="new">ახალი</option><option value="processing">მუშავდება</option><option value="loaded">დატვირთული</option><option value="picked_up">კურიერმა აიღო</option><option value="shipped">გზაში</option><option value="completed">ჩაბარდა</option></select></div>
 <section class="orders" id="orders"><div class="empty">იტვირთება...</div></section>
+
+<section class="courier-suite">
+ <div class="cpanel">
+  <div class="profile-row"><div class="avatar">🚚</div><div class="profile-meta"><b id="courierName">ECOMAX LINE COURIER</b><span id="courierPhone">უსაფრთხო კურიერის სესია</span></div></div>
+  <div class="weather"><div><div class="clock" id="lineClock">--:--:--</div><div style="color:#718b95;font-size:9px">LOCAL FIELD TIME</div></div><div class="geo" id="geoStatus">ლოკაცია: ნებართვა არ არის საჭირო<br>მისამართი ხელით გამოიყენება</div></div>
+  <div class="tool-grid">
+   <a class="tool" href="tel:112"><b>🚨</b>საგანგებო</a>
+   <button class="tool" id="locateBtn"><b>📍</b>ჩემი ლოკაცია</button>
+   <button class="tool" id="soundBtn"><b>🔔</b>შეტყობინებები</button>
+   <button class="tool" id="focusBtn"><b>🎯</b>აქტიურებზე</button>
+   <button class="tool" id="installHint"><b>📲</b>აპის რეჟიმი</button>
+   <button class="tool" id="reportBtn"><b>⚠️</b>ინციდენტი</button>
+  </div>
+ </div>
+ <div class="cpanel">
+  <h3>FIELD CHECK • გასვლამდე</h3><p>კურიერის სამუშაო checklist</p>
+  <div class="checklist" id="courierChecklist">
+   <label class="check"><input type="checkbox" data-key="documents"> დოკუმენტები / შეკვეთის მონაცემები</label>
+   <label class="check"><input type="checkbox" data-key="cargo"> ტვირთი შემოწმებულია</label>
+   <label class="check"><input type="checkbox" data-key="phone"> ტელეფონი / კავშირი მზადაა</label>
+   <label class="check"><input type="checkbox" data-key="route"> მისამართი / მარშრუტი შემოწმებულია</label>
+  </div>
+  <div class="shift"><button id="startShift">▶ ცვლის დაწყება</button><button id="endShift" class="stop">■ ცვლის დასრულება</button></div>
+  <div class="alerts" id="lineAlerts"><div class="alert ok">● სისტემა მზადაა. აქტიური შეკვეთები გამოჩნდება ქვემოთ.</div></div>
+ </div>
+</section>
 </main>
 <div class="overlay" id="overlay"><div class="modal"><div class="modalhead"><div><div class="eyebrow">ECOMAX LINE</div><h2 id="mTitle">შეკვეთის მართვა</h2></div><button class="close" id="close">×</button></div><div id="mBody"></div></div></div>
 <div class="toast" id="toast"></div>
@@ -246,6 +272,7 @@ function quickActions(o){const n=next[o.status],closed=['completed','cancelled']
 async function boot(){
  if(!db){$('access').textContent='Supabase ვერ ჩაიტვირთა';return;}
  const {data:{user:u}}=await db.auth.getUser();user=u;
+ if(u){ $('courierName').textContent=u.user_metadata?.full_name||u.email||'ECOMAX LINE COURIER'; $('courierPhone').textContent=u.user_metadata?.phone||'COURIER • AUTHENTICATED'; }
  if(!u){location.replace('line-login.html');return;}
  const role=String(u?.app_metadata?.role||'').toLowerCase();
  if(role!=='courier'){await db.auth.signOut();location.replace('index.html');return;}
@@ -310,5 +337,20 @@ if(db)db.channel('ecomax-line-live').on('postgres_changes',{event:'*',schema:'pu
 boot();
 })();
 </script>
-</body>
+
+<script id="ecomax-line-field-tools">
+(function(){
+ const clock=document.getElementById('lineClock'); if(clock)setInterval(()=>clock.textContent=new Date().toLocaleTimeString('ka-GE',{hour12:false}),1000);
+ document.querySelectorAll('#courierChecklist input').forEach(x=>{const k='ecomax_line_check_'+x.dataset.key;x.checked=localStorage.getItem(k)==='1';x.onchange=()=>{localStorage.setItem(k,x.checked?'1':'0');x.parentElement.classList.toggle('done',x.checked)};x.parentElement.classList.toggle('done',x.checked)});
+ const alerts=document.getElementById('lineAlerts');
+ function note(t,kind){if(!alerts)return;alerts.insertAdjacentHTML('afterbegin','<div class="alert '+(kind||'')+'">● '+t+'</div>');setTimeout(()=>alerts.lastElementChild?.remove(),7000)}
+ document.getElementById('focusBtn')?.addEventListener('click',()=>{document.getElementById('filter').value='active';document.getElementById('filter').dispatchEvent(new Event('change'));document.getElementById('orders')?.scrollIntoView({behavior:'smooth',block:'start'})});
+ document.getElementById('locateBtn')?.addEventListener('click',()=>{const g=document.getElementById('geoStatus');if(!navigator.geolocation){note('ამ მოწყობილობაზე GPS მიუწვდომელია','warn');return}g.textContent='ლოკაცია: GPS იძებნება...';navigator.geolocation.getCurrentPosition(p=>{g.innerHTML='GPS: '+p.coords.latitude.toFixed(5)+', '+p.coords.longitude.toFixed(5)+'<br>კოორდინატები მიღებულია';note('ლოკაცია მიღებულია ✓','ok')},()=>{g.textContent='ლოკაცია: წვდომა უარყოფილია';note('GPS წვდომა ვერ მივიღეთ','warn')},{enableHighAccuracy:true,timeout:8000,maximumAge:30000})});
+ document.getElementById('soundBtn')?.addEventListener('click',async()=>{try{const C=window.AudioContext||window.webkitAudioContext;if(C){const a=new C(),o=a.createOscillator(),g=a.createGain();o.frequency.value=880;g.gain.value=.03;o.connect(g);g.connect(a.destination);o.start();setTimeout(()=>{o.stop();a.close()},140)}}catch(e){}note('შეტყობინების ხმა ჩართულია ✓','ok')});
+ document.getElementById('startShift')?.addEventListener('click',()=>{localStorage.setItem('ecomax_shift','1');note('ცვლა დაიწყო • ECOMAX LINE აქტიურ რეჟიმში ✓','ok')});
+ document.getElementById('endShift')?.addEventListener('click',()=>{localStorage.removeItem('ecomax_shift');note('ცვლა დასრულდა','warn')});
+ document.getElementById('installHint')?.addEventListener('click',()=>note('Chrome მენიუდან აირჩიე “Add to Home screen”, თუ ხელმისაწვდომია.'));
+ document.getElementById('reportBtn')?.addEventListener('click',()=>note('ინციდენტის ღილაკი მზადაა. შეკვეთის კონკრეტულ ბარათში გამოიყენე ზარი/რუკა და დეტალები.'));
+})();
+</script></body>
 </html>
