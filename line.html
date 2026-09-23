@@ -412,12 +412,16 @@ if(navigator.geolocation){
     lastSent=now;lastLat=lat;lastLng=lng;
     try{
       if(typeof db!=="undefined"&&db&&user){
+        const activeOrder = Array.isArray(orders)
+          ? orders.find(o=>String(o.courier_id||'')===String(user.id||'') && !['completed','cancelled'].includes(o.status))
+          : null;
         const r=await db.rpc('ecomax_line_update_location',{
           p_latitude:lat,
           p_longitude:lng,
           p_accuracy:p.coords.accuracy??null,
           p_heading:p.coords.heading??null,
-          p_speed:p.coords.speed??null
+          p_speed:p.coords.speed??null,
+          p_order_id:activeOrder?.id||null
         });
         if(r.error)console.warn('LIVE GPS:',r.error.message);
       }
