@@ -2149,7 +2149,10 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
           ${app.status==='pending' ? `
             <button class="small-btn" onclick="reviewCourier('${esc(app.id)}','approve')" type="button">✓ დამტკიცება</button>
             <button class="small-btn danger" onclick="reviewCourier('${esc(app.id)}','reject')" type="button">× უარყოფა</button>
-          ` : app.status==='approved' ? '<span style="color:#65f2aa;font-size:11px">ECOMAX LINE დაშვებულია ✓</span>' : '<span style="color:#ff7188;font-size:11px">დახურული განაცხადი</span>'}
+          ` : app.status==='approved' ? `
+            <span style="color:#65f2aa;font-size:11px">ECOMAX LINE დაშვებულია ✓</span>
+            <button class="small-btn danger" style="margin-left:7px" onclick="reviewCourier('${esc(app.id)}','reject')" type="button">⛔ გაუქმება</button>
+          ` : '<span style="color:#ff7188;font-size:11px">დახურული განაცხადი</span>'}
         </td>
       </tr>`).join("");
   }
