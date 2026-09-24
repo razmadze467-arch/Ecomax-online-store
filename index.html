@@ -6154,52 +6154,7 @@ body{
 @media(prefers-reduced-motion:reduce){
   .ecomax-racing-scene .race-car{animation:none!important}
 }
-</style>uard-v1">
-/* Additive performance guard: existing design/scripts remain intact. */
-(function(){
-  'use strict';
-  if(window.__ECOMAX_PERFORMANCE_GUARD_V1__) return;
-  window.__ECOMAX_PERFORMANCE_GUARD_V1__=true;
-  const boot=()=>{
-    const style=document.createElement('style');
-    style.id='ecomax-performance-guard-css-v1';
-    style.textContent=`
-      .ecomax-perf-paused,
-      .ecomax-perf-paused::before,
-      .ecomax-perf-paused::after,
-      .ecomax-perf-paused *,
-      .ecomax-perf-paused *::before,
-      .ecomax-perf-paused *::after{animation-play-state:paused!important}
-      .ecomax-page-hidden *,.ecomax-page-hidden *::before,.ecomax-page-hidden *::after{animation-play-state:paused!important}
-      .ecomax-perf-section{content-visibility:auto;contain-intrinsic-size:1px 720px}
-      @media(max-width:699px){.ecomax-perf-section{contain-intrinsic-size:1px 560px}}
-    `;
-    document.head.appendChild(style);
-
-    const sections=[...document.querySelectorAll('main > section,.section,.ecomax-care-knowledge,footer')];
-    sections.forEach(el=>el.classList.add('ecomax-perf-section'));
-
-    if('IntersectionObserver' in window){
-      const io=new IntersectionObserver(entries=>{
-        for(const e of entries)e.target.classList.toggle('ecomax-perf-paused',!e.isIntersecting);
-      },{rootMargin:'240px 0px',threshold:0});
-      sections.forEach(el=>io.observe(el));
-
-      const cards=[...document.querySelectorAll('.product-card,.pro-product-card,.card,.info-card,.ecomax-care-card')];
-      const cio=new IntersectionObserver(entries=>{
-        for(const e of entries)e.target.classList.toggle('ecomax-perf-paused',!e.isIntersecting);
-      },{rootMargin:'180px',threshold:0});
-      cards.forEach(el=>cio.observe(el));
-    }
-
-    document.addEventListener('visibilitychange',()=>{
-      document.documentElement.classList.toggle('ecomax-page-hidden',document.hidden);
-    },{passive:true});
-  };
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});
-  else boot();
-})();
-</script>
+</style>
 
 
 <script id="ecomax-detailing-label-fix">
