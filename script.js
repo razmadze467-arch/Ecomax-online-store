@@ -222,6 +222,6 @@ function init(){
   const menuButton=document.getElementById("menuButton")||document.getElementById("mobileMenu"),mobileNav=document.getElementById("mobileNav");if(menuButton&&mobileNav){if(!menuButton.hasAttribute("onclick")){menuButton.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();mobileNav.classList.toggle("active");});}mobileNav.querySelectorAll("a").forEach(a=>a.addEventListener("click",closeMobileMenu));}
   updateCart();syncAuthUI();
   const isHome=/(^|\/)index\.html$/.test(location.pathname)||location.pathname==="/"||location.pathname==="";
-  if(isHome){installCareCards();forceMaxHomeDesign();}
+  if(isHome){installCareCards();forceMaxHomeDesign();installBottomUI();}
 
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
