@@ -1,6 +1,6 @@
 /* =========================================================
    ECOMAX — PREMIUM CARD PERIMETER CARS
-   Version: 2026-09-23-DUAL-CARS-EXACT-TRACK
+   Version: 2026-09-24-SINGLE-CYAN-CAR
    ========================================================= */
 
 (() => {
@@ -98,10 +98,6 @@
 
     .ecomax-perimeter-car.cyan {
       color:#00f5ff;
-    }
-
-    .ecomax-perimeter-car.pink {
-      color:#ff35d0;
     }
 
     @media (max-width:700px){
@@ -205,16 +201,13 @@
     cyan.className = "ecomax-perimeter-car cyan";
     cyan.innerHTML = carSVG("cyan");
 
-    const pink = document.createElement("div");
-    pink.className = "ecomax-perimeter-car pink";
-    pink.innerHTML = carSVG("pink");
-
     layer.appendChild(cyan);
-    layer.appendChild(pink);
-
     card.appendChild(layer);
 
-    startPerimeterAnimation(card, cyan, pink);
+    /* Remove any legacy second car left by an older cached/legacy system. */
+    layer.querySelectorAll(".ecomax-perimeter-car.legacy-pink").forEach(el => el.remove());
+
+    startPerimeterAnimation(card, cyan);
   }
 
 
