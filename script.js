@@ -67,7 +67,20 @@ function renderCart(){ const el=document.getElementById("cartItems"); if(!el)ret
 function updateCart(){ const count=cart.reduce((s,i)=>s+Number(i.quantity||0),0), countEl=document.getElementById("cartCount"), totalEl=document.getElementById("cartTotal"); if(countEl)countEl.textContent=count; if(totalEl)totalEl.textContent=total()+" ₾"; renderCart(); save(); }
 function addToCart(name,price,volume){ price=Number(price); if(!name||!Number.isFinite(price)||price<=0){note("პროდუქტის დამატება ვერ მოხერხდა");return;} const old=cart.find(i=>i.name===name&&i.volume===volume); if(old)old.quantity=Number(old.quantity||0)+1; else cart.push({name,price,volume:volume||"",quantity:1}); updateCart(); note(name+" დაემატა კალათაში"); }
 function removeFromCart(index){ if(index>=0&&index<cart.length){cart.splice(index,1);updateCart();} }
-function closeMobileMenu(){document.getElementById("mobileNav")?.classList.remove("active");}
+function toggleMobileMenu(event){
+  if(event){event.preventDefault();event.stopPropagation();}
+  const nav=document.getElementById("mobileNav");
+  const button=document.getElementById("menuButton")||document.getElementById("mobileMenu");
+  if(!nav)return;
+  const active=nav.classList.toggle("active");
+  if(button){button.setAttribute("aria-expanded",active?"true":"false");button.setAttribute("aria-label",active?"მენიუს დახურვა":"მენიუს გახსნა");}
+}
+function closeMobileMenu(){
+  const nav=document.getElementById("mobileNav");
+  const button=document.getElementById("menuButton")||document.getElementById("mobileMenu");
+  nav?.classList.remove("active");
+  if(button){button.setAttribute("aria-expanded","false");button.setAttribute("aria-label","მენიუს გახსნა");}
+}
 function openCart(){closeMobileMenu();const overlay=document.getElementById("cartOverlay");if(!overlay){note("კალათის ფანჯარა ვერ მოიძებნა");return;}overlay.classList.add("active");overlay.style.zIndex="2000";overlay.style.display="flex";document.body.style.overflow="hidden";renderCart();updateCart();}
 function closeCart(){const overlay=document.getElementById("cartOverlay");if(overlay){overlay.classList.remove("active");overlay.style.display="none";}document.body.style.overflow="";}
 function volumeUpdate(card){const select=card.querySelector(".volume-select"),priceEl=card.querySelector(".selected-price"),volumeEl=card.querySelector(".selected-volume"),button=card.querySelector(".add-cart,.new-add-cart");if(!select||!priceEl||!volumeEl)return;const volume=Number(select.value)||.5,price=volume*Number(card.dataset.unitPrice||select.dataset.unitPrice||10),label=volume===.5?"500 მლ":volume+" ლიტრი";priceEl.textContent=price+" ₾";volumeEl.textContent=label;if(button){button.dataset.price=price;button.dataset.volume=label;}}
@@ -249,7 +262,7 @@ function forceMaxHomeDesign(){
 function init(){
   document.querySelectorAll(".product-card,.card").forEach(card=>{const select=card.querySelector(".volume-select");if(select){try{volumeUpdate(card);}catch(e){}select.addEventListener("change",()=>volumeUpdate(card));}});
   document.addEventListener("click",event=>{const add=event.target.closest?.(".add-cart");if(add){event.preventDefault();event.stopPropagation();addToCart(add.dataset.name,add.dataset.price,add.dataset.volume);return;}const cartButton=event.target.closest?.("#cartButton");if(cartButton){event.preventDefault();event.stopPropagation();openCart();return;}const checkoutButton=event.target.closest?.("#checkoutButton");if(checkoutButton){event.preventDefault();event.stopPropagation();checkout();return;}const remove=event.target.closest?.(".remove-item");if(remove){event.preventDefault();removeFromCart(Number(remove.dataset.index));return;}if(event.target.closest?.("#closeCart,#cartClose")){event.preventDefault();closeCart();return;}const overlay=document.getElementById("cartOverlay");if(overlay&&event.target===overlay)closeCart();});
-  const menuButton=document.getElementById("menuButton")||document.getElementById("mobileMenu"),mobileNav=document.getElementById("mobileNav");if(menuButton&&mobileNav){if(!menuButton.hasAttribute("onclick")){menuButton.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();mobileNav.classList.toggle("active");});}mobileNav.querySelectorAll("a").forEach(a=>a.addEventListener("click",closeMobileMenu));}
+  const menuButton=document.getElementById("menuButton")||document.getElementById("mobileMenu"),mobileNav=document.getElementById("mobileNav");if(menuButton&&mobileNav){if(!menuButton.hasAttribute("onclick")){menuButton.addEventListener("click",toggleMobileMenu);}mobileNav.querySelectorAll("a").forEach(a=>a.addEventListener("click",closeMobileMenu));}
   updateCart();syncAuthUI();
   const isHome=/(^|\/)index\.html$/.test(location.pathname)||location.pathname==="/"||location.pathname==="";
   if(isHome){installCareCards();forceMaxHomeDesign();installBottomUI();}
