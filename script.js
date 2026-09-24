@@ -96,8 +96,38 @@ function installCareCards(){
 
 function installBottomUI(){
   if(!document.body || document.querySelector(".ecomax-bottom-ui"))return;
-  const style=document.createElement("style");style.id="ecomaxBottomUIStyle";style.textContent=`.ecomax-bottom-ui{position:relative;width:100%;height:105px;margin-top:10px;background:linear-gradient(180deg,rgba(2,8,18,0),#020812 55%);border-top:1px solid rgba(0,234,255,.18);overflow:hidden;z-index:20}.ecomax-bottom-ui .road-line{position:absolute;left:0;right:0;top:67px;height:2px;background:repeating-linear-gradient(90deg,rgba(0,234,255,.7) 0 65px,transparent 65px 115px);box-shadow:0 0 12px rgba(0,234,255,.25);animation:ecomaxRoad 1.2s linear infinite}.ecomax-bottom-ui .car{position:absolute;left:-145px;top:48px;width:125px;height:34px;animation:ecomaxDrive 12s linear infinite;filter:drop-shadow(0 0 9px #00eaff);z-index:6}.ecomax-bottom-ui .car-body{position:absolute;left:12px;bottom:4px;width:92px;height:18px;border:1px solid #00eaff;border-radius:8px 15px 5px 5px;background:linear-gradient(180deg,rgba(0,234,255,.35),rgba(0,35,55,.95));box-shadow:inset 0 0 10px rgba(0,234,255,.25),0 0 12px rgba(0,234,255,.3)}.ecomax-bottom-ui .roof{position:absolute;left:33px;bottom:21px;width:48px;height:14px;border:1px solid #00eaff;border-bottom:0;border-radius:15px 18px 0 0;transform:skewX(-10deg);background:rgba(0,90,120,.3)}.ecomax-bottom-ui .wheel{position:absolute;bottom:0;width:13px;height:13px;border:2px solid #00eaff;border-radius:50%;background:#020812}.ecomax-bottom-ui .wheel.one{left:20px}.ecomax-bottom-ui .wheel.two{right:15px}.ecomax-bottom-ui .credit{position:absolute;right:100%;top:6px;white-space:nowrap;color:#00eaff;font:900 8px Arial,sans-serif;letter-spacing:1.1px;text-shadow:0 0 9px #00eaff}@keyframes ecomaxDrive{from{transform:translateX(0)}to{transform:translateX(calc(100vw + 400px))}}@keyframes ecomaxRoad{to{background-position:-115px 0}}`;document.head.appendChild(style);
-  const ui=document.createElement("div");ui.className="ecomax-bottom-ui";ui.innerHTML=`<div class="road-line"></div><div class="car"><div class="credit">DEVELOPED BY BTCGAMER</div><div class="roof"></div><div class="car-body"></div><div class="wheel one"></div><div class="wheel two"></div></div>`;document.body.appendChild(ui);
+  const style=document.createElement("style");
+  style.id="ecomaxBottomUIStyle";
+  style.textContent=`
+    .ecomax-bottom-ui{
+      position:relative;
+      width:100%;
+      min-height:58px;
+      margin-top:10px;
+      padding:18px 16px;
+      box-sizing:border-box;
+      background:linear-gradient(180deg,rgba(2,8,18,0),#020812 55%);
+      border-top:1px solid rgba(0,234,255,.16);
+      text-align:center;
+      z-index:20;
+    }
+    .ecomax-bottom-ui .credit{
+      display:block;
+      color:#00eaff;
+      font:900 10px Arial,sans-serif;
+      letter-spacing:2px;
+      text-shadow:0 0 8px rgba(0,234,255,.65);
+    }
+    @media(max-width:600px){
+      .ecomax-bottom-ui{min-height:52px;padding:16px 10px}
+      .ecomax-bottom-ui .credit{font-size:9px;letter-spacing:1.5px}
+    }
+  `;
+  document.head.appendChild(style);
+  const ui=document.createElement("div");
+  ui.className="ecomax-bottom-ui";
+  ui.innerHTML=`<div class="credit">DEVELOPED BY BTCGAMER</div>`;
+  document.body.appendChild(ui);
 }
 
 function installOrbitCars(){
