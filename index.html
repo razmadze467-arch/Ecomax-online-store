@@ -2638,13 +2638,44 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 <body>
   <!-- ECOMAX HOME ONLY — LIVE 3D / 4D / 5D VISUAL WORLD -->
   <div class="ecomax-home-live" aria-hidden="true">
-    <div class="horizon"></div><div class="stars"></div><div class="aurora"></div><div class="beam"></div><div class="beam b2"></div><div class="portal"></div><div class="city"><i class="tower" style="--h:34%"></i><i class="tower" style="--h:67%"></i><i class="tower" style="--h:45%"></i><i class="tower" style="--h:82%"></i><i class="tower" style="--h:55%"></i><i class="tower" style="--h:92%"></i><i class="tower" style="--h:41%"></i><i class="tower" style="--h:73%"></i><i class="tower" style="--h:50%"></i><i class="tower" style="--h:88%"></i><i class="tower" style="--h:38%"></i><i class="tower" style="--h:64%"></i></div><i class="particle p1"></i><i class="particle p2"></i><i class="particle p3"></i><i class="particle p4"></i><i class="particle p5"></i><div class="scan"></div>
+    <div class="horizon"></div>
+    <div class="stars"></div>
+    <div class="aurora"></div>
+    <div class="beam"></div>
+    <div class="beam b2"></div>
+
+    <div class="ecomax-raceway race-main">
+      <div class="race-road">
+        <i class="road-edge edge-left"></i><i class="road-edge edge-right"></i>
+        <i class="lane-line l1"></i><i class="lane-line l2"></i><i class="lane-line l3"></i>
+        <i class="road-glow"></i>
+      </div>
+      <div class="race-car rc-cyan"><span class="car-shell"></span><span class="car-cabin"></span><span class="car-lamp a"></span><span class="car-lamp b"></span><span class="car-wheel a"></span><span class="car-wheel b"></span><span class="car-trail"></span></div>
+      <div class="race-car rc-pink"><span class="car-shell"></span><span class="car-cabin"></span><span class="car-lamp a"></span><span class="car-lamp b"></span><span class="car-wheel a"></span><span class="car-wheel b"></span><span class="car-trail"></span></div>
+      <div class="race-car rc-violet"><span class="car-shell"></span><span class="car-cabin"></span><span class="car-lamp a"></span><span class="car-lamp b"></span><span class="car-wheel a"></span><span class="car-wheel b"></span><span class="car-trail"></span></div>
+    </div>
+
+    <div class="ecomax-raceway race-left">
+      <div class="race-road">
+        <i class="road-edge edge-left"></i><i class="road-edge edge-right"></i>
+        <i class="lane-line l1"></i><i class="lane-line l2"></i><i class="road-glow"></i>
+      </div>
+      <div class="race-car rc-blue"><span class="car-shell"></span><span class="car-cabin"></span><span class="car-lamp a"></span><span class="car-lamp b"></span><span class="car-wheel a"></span><span class="car-wheel b"></span><span class="car-trail"></span></div>
+    </div>
+
+    <div class="ecomax-raceway race-right">
+      <div class="race-road">
+        <i class="road-edge edge-left"></i><i class="road-edge edge-right"></i>
+        <i class="lane-line l1"></i><i class="lane-line l2"></i><i class="road-glow"></i>
+      </div>
+      <div class="race-car rc-gold"><span class="car-shell"></span><span class="car-cabin"></span><span class="car-lamp a"></span><span class="car-lamp b"></span><span class="car-wheel a"></span><span class="car-wheel b"></span><span class="car-trail"></span></div>
+    </div>
+
+    <div class="portal"></div>
+    <div class="city"><i class="tower" style="--h:34%"></i><i class="tower" style="--h:67%"></i><i class="tower" style="--h:45%"></i><i class="tower" style="--h:82%"></i><i class="tower" style="--h:55%"></i><i class="tower" style="--h:92%"></i><i class="tower" style="--h:41%"></i><i class="tower" style="--h:73%"></i><i class="tower" style="--h:50%"></i><i class="tower" style="--h:88%"></i><i class="tower" style="--h:38%"></i><i class="tower" style="--h:64%"></i></div>
+    <i class="particle p1"></i><i class="particle p2"></i><i class="particle p3"></i><i class="particle p4"></i><i class="particle p5"></i>
+    <div class="scan"></div>
     <div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div>
-    <div class="ecomax-home-car cyan"><i class="body"></i><i class="roof"></i><i class="light a"></i><i class="light b"></i><i class="wheel a"></i><i class="wheel b"></i><i class="trail"></i></div>
-    <div class="ecomax-home-car pink"><i class="body"></i><i class="roof"></i><i class="light a"></i><i class="light b"></i><i class="wheel a"></i><i class="wheel b"></i><i class="trail"></i></div>
-    <div class="ecomax-home-car violet"><i class="body"></i><i class="roof"></i><i class="light a"></i><i class="light b"></i><i class="wheel a"></i><i class="wheel b"></i><i class="trail"></i></div>
-    <div class="ecomax-home-car blue"><i class="body"></i><i class="roof"></i><i class="light a"></i><i class="light b"></i><i class="wheel a"></i><i class="wheel b"></i><i class="trail"></i></div>
-    <div class="ecomax-home-car gold"><i class="body"></i><i class="roof"></i><i class="light a"></i><i class="light b"></i><i class="wheel a"></i><i class="wheel b"></i><i class="trail"></i></div>
   </div>
 
 
@@ -5994,6 +6025,46 @@ body{
   .product-card{min-height:500px}
 }
 
+
+<style id="ecomax-racing-highway-v1">
+/* ECOMAX — LIVE RACING HIGHWAYS: cars stay physically aligned with the road surface */
+.ecomax-raceway{position:absolute;pointer-events:none;z-index:18;transform-style:preserve-3d}
+.ecomax-raceway.race-main{left:-5%;right:-5%;top:47%;height:39%;transform:perspective(1050px) rotateX(58deg) rotateZ(0deg);transform-origin:50% 100%}
+.ecomax-raceway.race-left{left:-15%;width:66%;top:24%;height:38%;transform:perspective(900px) rotateX(57deg) rotateZ(-14deg);transform-origin:100% 100%}
+.ecomax-raceway.race-right{right:-15%;width:66%;top:24%;height:38%;transform:perspective(900px) rotateX(57deg) rotateZ(14deg);transform-origin:0 100%}
+.race-road{position:absolute;inset:0;border-radius:48% 48% 7% 7%;overflow:hidden;background:linear-gradient(180deg,rgba(6,17,28,.15),rgba(1,5,10,.92) 18%,rgba(3,10,17,.98));border:1px solid rgba(0,234,255,.32);box-shadow:0 -4px 35px rgba(0,234,255,.13),inset 0 0 45px rgba(0,234,255,.06)}
+.race-road:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 7.8%,rgba(255,255,255,.025) 7.9% 8%,transparent 8.1% 15.8%);opacity:.65}
+.road-edge{position:absolute;top:0;bottom:0;width:3px;background:linear-gradient(transparent,#00eaff 25%,#ff25d9 72%,transparent);box-shadow:0 0 14px #00eaff}
+.edge-left{left:3%}.edge-right{right:3%}
+.lane-line{position:absolute;top:2%;bottom:-4%;width:2px;background:repeating-linear-gradient(180deg,rgba(255,255,255,.8) 0 22px,transparent 22px 48px);filter:drop-shadow(0 0 5px rgba(0,234,255,.55));opacity:.72}
+.race-main .l1{left:25%}.race-main .l2{left:50%}.race-main .l3{left:75%}
+.race-left .l1{left:33%}.race-left .l2{left:66%}
+.race-right .l1{left:33%}.race-right .l2{left:66%}
+.road-glow{position:absolute;left:10%;right:10%;bottom:7%;height:3px;background:linear-gradient(90deg,transparent,#00eaff,#ff25d9,#8c6cff,transparent);box-shadow:0 0 18px #00eaff;opacity:.65}
+.race-car{position:absolute;width:92px;height:40px;z-index:8;transform-style:preserve-3d;filter:drop-shadow(0 0 7px var(--car-glow)) drop-shadow(0 0 20px var(--car-glow));}
+.car-shell{position:absolute;left:5px;top:15px;width:82px;height:20px;border-radius:7px 15px 5px 5px;background:linear-gradient(105deg,#02070d,#0b91a8 45%,var(--car-glow));border:1px solid rgba(255,255,255,.55);box-shadow:inset 0 0 12px rgba(255,255,255,.14),0 0 12px var(--car-glow)}
+.car-cabin{position:absolute;left:31px;top:6px;width:39px;height:17px;border-radius:15px 15px 3px 3px;background:linear-gradient(135deg,#07131d,#26334a 52%,var(--car-glow));border:1px solid rgba(255,255,255,.55);transform:skewX(-12deg) translateZ(10px)}
+.car-lamp{position:absolute;top:19px;width:7px;height:4px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff,0 0 18px var(--car-glow)}.car-lamp.a{left:9px}.car-lamp.b{right:9px}
+.car-wheel{position:absolute;top:29px;width:12px;height:12px;border-radius:50%;background:#010204;border:2px solid #778894;box-shadow:0 0 8px var(--car-glow)}.car-wheel.a{left:15px}.car-wheel.b{right:15px}
+.car-trail{position:absolute;left:-62px;top:23px;width:62px;height:2px;background:linear-gradient(90deg,transparent,var(--car-glow));box-shadow:0 0 10px var(--car-glow)}
+.rc-cyan{--car-glow:#00eaff;top:52%;animation:raceMainForward 12s linear infinite}
+.rc-pink{--car-glow:#ff25d9;top:34%;animation:raceMainReverse 15s linear infinite -5s}
+.rc-violet{--car-glow:#8c6cff;top:69%;animation:raceMainForward 18s linear infinite -8s;transform:scale(.82)}
+.rc-blue{--car-glow:#39d8ff;top:47%;animation:raceSideForward 11s linear infinite -3s;transform:scale(.8)}
+.rc-gold{--car-glow:#ffd52a;top:58%;animation:raceSideReverse 14s linear infinite -7s;transform:scale(.72)}
+@keyframes raceMainForward{0%{left:-8%;transform:translateZ(0) rotateY(0deg)}48%{left:51%;transform:translateZ(55px) rotateY(0deg)}52%{left:58%;transform:translateZ(70px) rotateY(0deg)}100%{left:108%;transform:translateZ(0) rotateY(0deg)}}
+@keyframes raceMainReverse{0%{left:108%;transform:translateZ(0) rotateY(180deg)}48%{left:52%;transform:translateZ(70px) rotateY(180deg)}52%{left:45%;transform:translateZ(55px) rotateY(180deg)}100%{left:-8%;transform:translateZ(0) rotateY(180deg)}}
+@keyframes raceSideForward{0%{left:-12%;transform:translateZ(0) rotateY(0deg)}50%{left:50%;transform:translateZ(80px) rotateY(0deg)}100%{left:112%;transform:translateZ(0) rotateY(0deg)}}
+@keyframes raceSideReverse{0%{left:112%;transform:translateZ(0) rotateY(180deg)}50%{left:50%;transform:translateZ(80px) rotateY(180deg)}100%{left:-12%;transform:translateZ(0) rotateY(180deg)}}
+@media(max-width:700px){
+ .ecomax-raceway.race-main{left:-20%;right:-20%;top:50%;height:30%;transform:perspective(720px) rotateX(60deg)}
+ .ecomax-raceway.race-left{left:-35%;width:86%;top:29%;height:27%;transform:perspective(650px) rotateX(59deg) rotateZ(-11deg)}
+ .ecomax-raceway.race-right{right:-35%;width:86%;top:29%;height:27%;transform:perspective(650px) rotateX(59deg) rotateZ(11deg)}
+ .race-car{width:64px;height:29px}.car-shell{left:4px;top:11px;width:57px;height:15px}.car-cabin{left:22px;top:4px;width:29px;height:12px}.car-lamp{top:14px;width:5px;height:3px}.car-lamp.a{left:7px}.car-lamp.b{right:7px}.car-wheel{top:21px;width:9px;height:9px}.car-wheel.a{left:10px}.car-wheel.b{right:10px}.car-trail{left:-42px;top:17px;width:42px}
+ .race-main .l1{left:25%}.race-main .l2{left:50%}.race-main .l3{left:75%}
+}
+@media(prefers-reduced-motion:reduce){.ecomax-raceway *,.race-car{animation:none!important}}
+</style>
 </style>
 <script id="ecomax-performance-guard-v1">
 /* Additive performance guard: existing design/scripts remain intact. */
