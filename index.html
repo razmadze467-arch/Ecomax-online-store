@@ -6060,7 +6060,8 @@ body{
   --glow:#00eaff;
   position:absolute; width:92px; height:46px; z-index:25;
   filter:drop-shadow(0 0 6px var(--glow)) drop-shadow(0 0 16px var(--glow));
-  transform-origin:50% 80%;
+  transform-origin:50% 50%;
+  transform-style:preserve-3d;
 }
 .ecomax-racing-scene .car-shell{
   position:absolute; left:4px; top:18px; width:84px; height:22px;
@@ -6108,19 +6109,19 @@ body{
 .ecomax-racing-scene .car-3{--glow:#8c6cff;animation:raceLane3 12s linear infinite -6s}
 
 @keyframes raceLane1{
-  0%{left:calc(28% - 46px);top:83%;transform:scale(1.08) rotateZ(-28deg)}
-  50%{left:calc(39% - 46px);top:57%;transform:scale(.86) rotateZ(-16deg)}
-  100%{left:calc(50% - 23px);top:37%;transform:scale(.42) rotateZ(0deg)}
+  0%{left:calc(28% - 46px);top:83%;transform:scale(1.08) rotateZ(-28deg) rotateY(90deg)}
+  50%{left:calc(39% - 46px);top:57%;transform:scale(.86) rotateZ(-16deg) rotateY(90deg)}
+  100%{left:calc(50% - 23px);top:37%;transform:scale(.42) rotateZ(0deg) rotateY(90deg)}
 }
 @keyframes raceLane2{
-  0%{left:calc(72% - 46px);top:83%;transform:scale(1.04) rotateY(180deg) rotateZ(28deg)}
-  50%{left:calc(61% - 46px);top:57%;transform:scale(.84) rotateY(180deg) rotateZ(16deg)}
-  100%{left:calc(50% - 23px);top:37%;transform:scale(.40) rotateY(180deg) rotateZ(0deg)}
+  0%{left:calc(72% - 46px);top:83%;transform:scale(1.04) rotateY(270deg) rotateZ(28deg)}
+  50%{left:calc(61% - 46px);top:57%;transform:scale(.84) rotateY(270deg) rotateZ(16deg)}
+  100%{left:calc(50% - 23px);top:37%;transform:scale(.40) rotateY(270deg) rotateZ(0deg)}
 }
 @keyframes raceLane3{
-  0%{left:calc(50% - 46px);top:88%;transform:scale(1.16) rotateZ(0deg)}
-  50%{left:calc(50% - 46px);top:61%;transform:scale(.88) rotateZ(0deg)}
-  100%{left:calc(50% - 23px);top:40%;transform:scale(.44) rotateZ(0deg)}
+  0%{left:calc(50% - 46px);top:88%;transform:scale(1.16) rotateZ(0deg) rotateY(90deg)}
+  50%{left:calc(50% - 46px);top:61%;transform:scale(.88) rotateZ(0deg) rotateY(90deg)}
+  100%{left:calc(50% - 23px);top:40%;transform:scale(.44) rotateZ(0deg) rotateY(90deg)}
 }
 
 @media(max-width:700px){
