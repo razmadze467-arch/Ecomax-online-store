@@ -6026,106 +6026,172 @@ body{
 }
 
 
-<style id="ecomax-racing-highway-v1">
-/* ECOMAX — LIVE RACING HIGHWAYS: cars stay physically aligned with the road surface */
-.ecomax-raceway{position:absolute;pointer-events:none;z-index:18;transform-style:preserve-3d}
-.ecomax-raceway.race-main{left:-5%;right:-5%;top:47%;height:39%;transform:perspective(1050px) rotateX(58deg) rotateZ(0deg);transform-origin:50% 100%}
-.ecomax-raceway.race-left{left:-15%;width:66%;top:24%;height:38%;transform:perspective(900px) rotateX(57deg) rotateZ(-14deg);transform-origin:100% 100%}
-.ecomax-raceway.race-right{right:-15%;width:66%;top:24%;height:38%;transform:perspective(900px) rotateX(57deg) rotateZ(14deg);transform-origin:0 100%}
-.race-road{position:absolute;inset:0;border-radius:48% 48% 7% 7%;overflow:hidden;background:linear-gradient(180deg,rgba(6,17,28,.15),rgba(1,5,10,.92) 18%,rgba(3,10,17,.98));border:1px solid rgba(0,234,255,.32);box-shadow:0 -4px 35px rgba(0,234,255,.13),inset 0 0 45px rgba(0,234,255,.06)}
-.race-road:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 7.8%,rgba(255,255,255,.025) 7.9% 8%,transparent 8.1% 15.8%);opacity:.65}
-.road-edge{position:absolute;top:0;bottom:0;width:3px;background:linear-gradient(transparent,#00eaff 25%,#ff25d9 72%,transparent);box-shadow:0 0 14px #00eaff}
+<style id="ecomax-racing-highway-clean">
+/* ECOMAX — CLEAN 3D RACING HIGHWAYS
+   Road perspective and vehicle motion are separated so cars stay aligned and dimensional. */
+.ecomax-raceway{
+  position:absolute; pointer-events:none; z-index:18;
+  left:0; right:0; top:0; height:100%;
+  transform:none!important; transform-style:preserve-3d;
+}
+.ecomax-raceway .race-road{
+  position:absolute; overflow:hidden;
+  border:1px solid rgba(0,234,255,.34);
+  background:linear-gradient(180deg,rgba(7,20,32,.10),rgba(1,5,10,.94) 22%,rgba(3,10,17,.99));
+  box-shadow:0 0 38px rgba(0,234,255,.12),inset 0 0 45px rgba(0,234,255,.07);
+}
+.ecomax-raceway .race-road:before{
+  content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg,transparent 0 7.8%,rgba(255,255,255,.025) 7.9% 8%,transparent 8.1% 15.8%);
+}
+.ecomax-raceway.race-main .race-road{
+  left:-6%;right:-6%;top:47%;height:39%;
+  border-radius:48% 48% 8% 8%;
+  transform:perspective(1050px) rotateX(58deg);
+  transform-origin:50% 100%;
+}
+.ecomax-raceway.race-left .race-road{
+  left:-16%;width:67%;top:24%;height:38%;
+  border-radius:48% 48% 8% 8%;
+  transform:perspective(900px) rotateX(57deg) rotateZ(-14deg);
+  transform-origin:100% 100%;
+}
+.ecomax-raceway.race-right .race-road{
+  right:-16%;width:67%;top:24%;height:38%;
+  border-radius:48% 48% 8% 8%;
+  transform:perspective(900px) rotateX(57deg) rotateZ(14deg);
+  transform-origin:0 100%;
+}
+.road-edge{
+  position:absolute;top:0;bottom:0;width:3px;
+  background:linear-gradient(transparent,#00eaff 25%,#ff25d9 72%,transparent);
+  box-shadow:0 0 14px #00eaff;
+}
 .edge-left{left:3%}.edge-right{right:3%}
-.lane-line{position:absolute;top:2%;bottom:-4%;width:2px;background:repeating-linear-gradient(180deg,rgba(255,255,255,.8) 0 22px,transparent 22px 48px);filter:drop-shadow(0 0 5px rgba(0,234,255,.55));opacity:.72}
+.lane-line{
+  position:absolute;top:2%;bottom:-4%;width:2px;
+  background:repeating-linear-gradient(180deg,rgba(255,255,255,.82) 0 22px,transparent 22px 48px);
+  filter:drop-shadow(0 0 5px rgba(0,234,255,.55));opacity:.72;
+}
 .race-main .l1{left:25%}.race-main .l2{left:50%}.race-main .l3{left:75%}
-.race-left .l1{left:33%}.race-left .l2{left:66%}
-.race-right .l1{left:33%}.race-right .l2{left:66%}
-.road-glow{position:absolute;left:10%;right:10%;bottom:7%;height:3px;background:linear-gradient(90deg,transparent,#00eaff,#ff25d9,#8c6cff,transparent);box-shadow:0 0 18px #00eaff;opacity:.65}
-.race-car{position:absolute;width:92px;height:40px;z-index:8;transform-style:preserve-3d;filter:drop-shadow(0 0 7px var(--car-glow)) drop-shadow(0 0 20px var(--car-glow));}
-.car-shell{position:absolute;left:5px;top:15px;width:82px;height:20px;border-radius:7px 15px 5px 5px;background:linear-gradient(105deg,#02070d,#0b91a8 45%,var(--car-glow));border:1px solid rgba(255,255,255,.55);box-shadow:inset 0 0 12px rgba(255,255,255,.14),0 0 12px var(--car-glow)}
-.car-cabin{position:absolute;left:31px;top:6px;width:39px;height:17px;border-radius:15px 15px 3px 3px;background:linear-gradient(135deg,#07131d,#26334a 52%,var(--car-glow));border:1px solid rgba(255,255,255,.55);transform:skewX(-12deg) translateZ(10px)}
-.car-lamp{position:absolute;top:19px;width:7px;height:4px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff,0 0 18px var(--car-glow)}.car-lamp.a{left:9px}.car-lamp.b{right:9px}
-.car-wheel{position:absolute;top:29px;width:12px;height:12px;border-radius:50%;background:#010204;border:2px solid #778894;box-shadow:0 0 8px var(--car-glow)}.car-wheel.a{left:15px}.car-wheel.b{right:15px}
-.car-trail{position:absolute;left:-62px;top:23px;width:62px;height:2px;background:linear-gradient(90deg,transparent,var(--car-glow));box-shadow:0 0 10px var(--car-glow)}
-.rc-cyan{--car-glow:#00eaff;top:52%;animation:raceMainForward 12s linear infinite}
-.rc-pink{--car-glow:#ff25d9;top:34%;animation:raceMainReverse 15s linear infinite -5s}
-.rc-violet{--car-glow:#8c6cff;top:69%;animation:raceMainForward 18s linear infinite -8s;transform:scale(.82)}
-.rc-blue{--car-glow:#39d8ff;top:47%;animation:raceSideForward 11s linear infinite -3s;transform:scale(.8)}
-.rc-gold{--car-glow:#ffd52a;top:58%;animation:raceSideReverse 14s linear infinite -7s;transform:scale(.72)}
-@keyframes raceMainForward{0%{left:-8%;transform:translateZ(0) rotateY(0deg)}48%{left:51%;transform:translateZ(55px) rotateY(0deg)}52%{left:58%;transform:translateZ(70px) rotateY(0deg)}100%{left:108%;transform:translateZ(0) rotateY(0deg)}}
-@keyframes raceMainReverse{0%{left:108%;transform:translateZ(0) rotateY(180deg)}48%{left:52%;transform:translateZ(70px) rotateY(180deg)}52%{left:45%;transform:translateZ(55px) rotateY(180deg)}100%{left:-8%;transform:translateZ(0) rotateY(180deg)}}
-@keyframes raceSideForward{0%{left:-12%;transform:translateZ(0) rotateY(0deg)}50%{left:50%;transform:translateZ(80px) rotateY(0deg)}100%{left:112%;transform:translateZ(0) rotateY(0deg)}}
-@keyframes raceSideReverse{0%{left:112%;transform:translateZ(0) rotateY(180deg)}50%{left:50%;transform:translateZ(80px) rotateY(180deg)}100%{left:-12%;transform:translateZ(0) rotateY(180deg)}}
-@media(max-width:700px){
- .ecomax-raceway.race-main{left:-20%;right:-20%;top:50%;height:30%;transform:perspective(720px) rotateX(60deg)}
- .ecomax-raceway.race-left{left:-35%;width:86%;top:29%;height:27%;transform:perspective(650px) rotateX(59deg) rotateZ(-11deg)}
- .ecomax-raceway.race-right{right:-35%;width:86%;top:29%;height:27%;transform:perspective(650px) rotateX(59deg) rotateZ(11deg)}
- .race-car{width:64px;height:29px}.car-shell{left:4px;top:11px;width:57px;height:15px}.car-cabin{left:22px;top:4px;width:29px;height:12px}.car-lamp{top:14px;width:5px;height:3px}.car-lamp.a{left:7px}.car-lamp.b{right:7px}.car-wheel{top:21px;width:9px;height:9px}.car-wheel.a{left:10px}.car-wheel.b{right:10px}.car-trail{left:-42px;top:17px;width:42px}
- .race-main .l1{left:25%}.race-main .l2{left:50%}.race-main .l3{left:75%}
+.race-left .l1,.race-right .l1{left:33%}
+.race-left .l2,.race-right .l2{left:66%}
+.road-glow{
+  position:absolute;left:10%;right:10%;bottom:7%;height:3px;
+  background:linear-gradient(90deg,transparent,#00eaff,#ff25d9,#8c6cff,transparent);
+  box-shadow:0 0 18px #00eaff;opacity:.7;
 }
-@media(prefers-reduced-motion:reduce){.ecomax-raceway *,.race-car{animation:none!important}}
-</style>
-<style id="ecomax-racing-highway-v2">
-/* V2 — dimensional cars: upright body + wheels, anchored to the highway surface */
-.ecomax-raceway .race-car{
-  height:46px!important;
-  transform-style:preserve-3d!important;
-  transform-origin:50% 82%!important;
-  backface-visibility:hidden;
+
+/* Cars are NOT children of the tilted road surface. */
+.race-car{
+  position:absolute;width:96px;height:48px;z-index:30;
+  transform-style:preserve-3d;transform-origin:50% 78%;
+  filter:drop-shadow(0 0 7px var(--car-glow)) drop-shadow(0 0 18px var(--car-glow));
 }
-.ecomax-raceway .car-shell{
-  top:18px!important;height:22px!important;
-  border-radius:7px 17px 6px 6px!important;
-  transform:translateZ(5px);
+.car-shell{
+  position:absolute;left:5px;top:19px;width:86px;height:22px;
+  border-radius:7px 17px 6px 6px;
+  background:linear-gradient(105deg,#02070d,#0b91a8 45%,var(--car-glow));
+  border:1px solid rgba(255,255,255,.58);
+  box-shadow:inset 0 0 12px rgba(255,255,255,.16),0 0 12px var(--car-glow);
+  transform:translateZ(4px);
 }
-.ecomax-raceway .car-shell::after{
-  content:"";position:absolute;left:7px;right:7px;bottom:-7px;height:7px;
+.car-shell:after{
+  content:"";position:absolute;left:7px;right:7px;bottom:-6px;height:7px;
   border-radius:0 0 7px 7px;
-  background:linear-gradient(180deg,rgba(0,0,0,.85),rgba(0,0,0,.25));
-  transform:skewX(-5deg);
-  box-shadow:0 4px 8px rgba(0,0,0,.65);
+  background:linear-gradient(180deg,rgba(0,0,0,.8),rgba(0,0,0,.2));
+  box-shadow:0 4px 8px rgba(0,0,0,.6);
 }
-.ecomax-raceway .car-cabin{
-  top:3px!important;height:20px!important;
-  transform:skewX(-12deg) translateZ(16px) rotateX(-3deg)!important;
-  background:linear-gradient(135deg,#07131d 0%,rgba(0,234,255,.12) 45%,#02070d 100%)!important;
+.car-cabin{
+  position:absolute;left:31px;top:4px;width:42px;height:20px;
+  border-radius:15px 15px 4px 4px;
+  background:linear-gradient(135deg,#07131d,#27394b 52%,#02070d);
+  border:1px solid rgba(255,255,255,.55);
+  transform:skewX(-12deg) translateZ(14px);
   box-shadow:inset 0 3px 7px rgba(255,255,255,.18),0 5px 10px rgba(0,0,0,.55);
 }
-.ecomax-raceway .car-cabin::after{
-  content:"";position:absolute;left:5px;right:5px;top:3px;height:1px;
-  background:rgba(255,255,255,.6);box-shadow:0 0 6px #fff;
+.car-cabin:after{
+  content:"";position:absolute;left:6px;right:6px;top:3px;height:1px;
+  background:#fff;box-shadow:0 0 7px #fff;
 }
-.ecomax-raceway .car-wheel{
-  top:33px!important;width:14px!important;height:14px!important;
-  border:2px solid #aab8c0!important;
-  box-shadow:inset 0 0 0 3px #05080b,0 2px 6px #000,0 0 9px var(--car-glow)!important;
+.car-lamp{
+  position:absolute;top:23px;width:7px;height:4px;border-radius:50%;
+  background:#fff;box-shadow:0 0 8px #fff,0 0 18px var(--car-glow);
+}
+.car-lamp.a{left:9px}.car-lamp.b{right:9px}
+.car-wheel{
+  position:absolute;top:34px;width:14px;height:14px;border-radius:50%;
+  background:#010204;border:2px solid #aab8c0;
+  box-shadow:inset 0 0 0 3px #05080b,0 2px 6px #000,0 0 9px var(--car-glow);
   transform:translateZ(3px);
 }
-.ecomax-raceway .car-wheel.a{left:13px!important}.ecomax-raceway .car-wheel.b{right:13px!important}
-.ecomax-raceway .car-lamp{top:22px!important}
-.ecomax-raceway .car-trail{top:27px!important;height:3px!important;filter:blur(.2px)}
-/* Counter-tilt keeps the vehicle visually upright while its anchor stays on the tilted road. */
-@keyframes raceMainForwardV2{0%{left:-8%;transform:rotateX(-58deg) rotateY(0deg) translateZ(0) scale(.82)}48%{left:51%;transform:rotateX(-58deg) rotateY(0deg) translateZ(0) scale(1)}52%{left:58%;transform:rotateX(-58deg) rotateY(0deg) translateZ(0) scale(1.03)}100%{left:108%;transform:rotateX(-58deg) rotateY(0deg) translateZ(0) scale(.82)}}
-@keyframes raceMainReverseV2{0%{left:108%;transform:rotateX(-58deg) rotateY(180deg) translateZ(0) scale(.78)}48%{left:52%;transform:rotateX(-58deg) rotateY(180deg) translateZ(0) scale(1)}52%{left:45%;transform:rotateX(-58deg) rotateY(180deg) translateZ(0) scale(1.03)}100%{left:-8%;transform:rotateX(-58deg) rotateY(180deg) translateZ(0) scale(.78)}}
-@keyframes raceSideForwardV2{0%{left:-12%;transform:rotateX(-57deg) rotateY(0deg) translateZ(0) scale(.78)}50%{left:50%;transform:rotateX(-57deg) rotateY(0deg) translateZ(0) scale(1)}100%{left:112%;transform:rotateX(-57deg) rotateY(0deg) translateZ(0) scale(.78)}}
-@keyframes raceSideReverseV2{0%{left:112%;transform:rotateX(-57deg) rotateY(180deg) translateZ(0) scale(.7)}50%{left:50%;transform:rotateX(-57deg) rotateY(180deg) translateZ(0) scale(.95)}100%{left:-12%;transform:rotateX(-57deg) rotateY(180deg) translateZ(0) scale(.7)}}
-.ecomax-raceway .rc-cyan{animation:raceMainForwardV2 12s linear infinite!important}
-.ecomax-raceway .rc-pink{animation:raceMainReverseV2 15s linear infinite -5s!important}
-.ecomax-raceway .rc-violet{animation:raceMainForwardV2 18s linear infinite -8s!important}
-.ecomax-raceway .rc-blue{animation:raceSideForwardV2 11s linear infinite -3s!important}
-.ecomax-raceway .rc-gold{animation:raceSideReverseV2 14s linear infinite -7s!important}
-@media(max-width:700px){
- .ecomax-raceway .race-car{height:34px!important}
- .ecomax-raceway .car-shell{top:13px!important;height:17px!important}
- .ecomax-raceway .car-cabin{top:2px!important;height:15px!important}
- .ecomax-raceway .car-wheel{top:25px!important;width:10px!important;height:10px!important}
- .ecomax-raceway .car-wheel.a{left:9px!important}.ecomax-raceway .car-wheel.b{right:9px!important}
- .ecomax-raceway .car-lamp{top:16px!important}
- .ecomax-raceway .car-trail{top:20px!important}
+.car-wheel.a{left:13px}.car-wheel.b{right:13px}
+.car-trail{
+  position:absolute;left:-64px;top:28px;width:64px;height:3px;
+  background:linear-gradient(90deg,transparent,var(--car-glow));
+  box-shadow:0 0 10px var(--car-glow);
 }
-</style>
-</style>
-<script id="ecomax-performance-guard-v1">
+
+/* Main highway: cars travel in three visually separated lanes. */
+.rc-cyan{--car-glow:#00eaff;top:59%;animation:cleanMain1 11s linear infinite}
+.rc-pink{--car-glow:#ff25d9;top:51%;animation:cleanMain2 14s linear infinite -4s}
+.rc-violet{--car-glow:#8c6cff;top:67%;animation:cleanMain3 17s linear infinite -8s}
+.rc-blue{--car-glow:#39d8ff;top:39%;animation:cleanSideLeft 12s linear infinite -3s}
+.rc-gold{--car-glow:#ffd52a;top:43%;animation:cleanSideRight 13s linear infinite -6s}
+
+@keyframes cleanMain1{
+  0%{left:-10%;transform:perspective(700px) rotateX(7deg) rotateY(0) scale(.72)}
+  45%{left:43%;transform:perspective(700px) rotateX(7deg) rotateY(0) scale(.92)}
+  55%{left:57%;transform:perspective(700px) rotateX(7deg) rotateY(0) scale(1)}
+  100%{left:110%;transform:perspective(700px) rotateX(7deg) rotateY(0) scale(.72)}
+}
+@keyframes cleanMain2{
+  0%{left:110%;transform:perspective(700px) rotateX(7deg) rotateY(180deg) scale(.7)}
+  45%{left:57%;transform:perspective(700px) rotateX(7deg) rotateY(180deg) scale(.92)}
+  55%{left:43%;transform:perspective(700px) rotateX(7deg) rotateY(180deg) scale(1)}
+  100%{left:-10%;transform:perspective(700px) rotateX(7deg) rotateY(180deg) scale(.7)}
+}
+@keyframes cleanMain3{
+  0%{left:-10%;transform:perspective(700px) rotateX(7deg) rotateY(0) scale(.64)}
+  50%{left:50%;transform:perspective(700px) rotateX(7deg) rotateY(0) scale(.88)}
+  100%{left:110%;transform:perspective(700px) rotateX(7deg) rotateY(0) scale(.64)}
+}
+@keyframes cleanSideLeft{
+  0%{left:-12%;transform:rotateZ(-14deg) rotateY(0) scale(.62)}
+  50%{left:49%;transform:rotateZ(-14deg) rotateY(0) scale(.86)}
+  100%{left:112%;transform:rotateZ(-14deg) rotateY(0) scale(.62)}
+}
+@keyframes cleanSideRight{
+  0%{left:112%;transform:rotateZ(14deg) rotateY(180deg) scale(.6)}
+  50%{left:49%;transform:rotateZ(14deg) rotateY(180deg) scale(.84)}
+  100%{left:-12%;transform:rotateZ(14deg) rotateY(180deg) scale(.6)}
+}
+@media(max-width:700px){
+  .ecomax-raceway.race-main .race-road{
+    left:-20%;right:-20%;top:50%;height:30%;
+    transform:perspective(720px) rotateX(60deg);
+  }
+  .ecomax-raceway.race-left .race-road{
+    left:-35%;width:86%;top:29%;height:27%;
+    transform:perspective(650px) rotateX(59deg) rotateZ(-11deg);
+  }
+  .ecomax-raceway.race-right .race-road{
+    right:-35%;width:86%;top:29%;height:27%;
+    transform:perspective(650px) rotateX(59deg) rotateZ(11deg);
+  }
+  .race-car{width:68px;height:34px}
+  .car-shell{left:4px;top:13px;width:60px;height:17px}
+  .car-cabin{left:22px;top:2px;width:31px;height:15px}
+  .car-lamp{top:17px;width:5px;height:3px}
+  .car-lamp.a{left:7px}.car-lamp.b{right:7px}
+  .car-wheel{top:25px;width:10px;height:10px}
+  .car-wheel.a{left:9px}.car-wheel.b{right:9px}
+  .car-trail{left:-45px;top:20px;width:45px;height:2px}
+}
+@media(prefers-reduced-motion:reduce){
+  .ecomax-raceway *,.race-car{animation:none!important}
+}
+</style>uard-v1">
 /* Additive performance guard: existing design/scripts remain intact. */
 (function(){
   'use strict';
