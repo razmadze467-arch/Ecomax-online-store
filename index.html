@@ -4608,7 +4608,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
   <script src="js/magic-home.js?v=20260916-10"></script>
 
-  <script src="js/premium-cards.js?v=20260924-CYAN2"></script>
+  <script src="js/premium-cards.js?v=20260924-CYAN3"></script>
 
   <script src="js/bottle-color-enhance.js?v=20260920-2"></script>
 
@@ -6115,21 +6115,21 @@ body{
   25%{left:calc(32% - 46px);top:78%;transform:scale(1.02) rotateZ(-90deg)}
   50%{left:calc(35% - 46px);top:59%;transform:scale(.88) rotateZ(-90deg)}
   75%{left:calc(42% - 46px);top:43%;transform:scale(.72) rotateZ(-90deg)}
-  100%{left:calc(44.5% - 46px);top:34%;transform:scale(.58) rotateZ(-90deg)}
+  100%{left:calc(44.5% - 46px);top:38%;transform:scale(.62) rotateZ(-90deg)}
 }
 @keyframes raceLane2{
   0%{left:calc(76% - 46px);top:96%;transform:scale(1.14) rotateZ(90deg)}
   25%{left:calc(68% - 46px);top:78%;transform:scale(1.00) rotateZ(90deg)}
   50%{left:calc(65% - 46px);top:59%;transform:scale(.86) rotateZ(90deg)}
   75%{left:calc(58% - 46px);top:43%;transform:scale(.70) rotateZ(90deg)}
-  100%{left:calc(55.5% - 46px);top:34%;transform:scale(.56) rotateZ(90deg)}
+  100%{left:calc(55.5% - 46px);top:38%;transform:scale(.60) rotateZ(90deg)}
 }
 @keyframes raceLane3{
   0%{left:calc(50% - 46px);top:98%;transform:scale(1.22) rotateZ(-90deg)}
   24%{left:calc(50% - 46px);top:80%;transform:scale(1.06) rotateZ(-90deg)}
   48%{left:calc(42% - 46px);top:64%;transform:scale(.92) rotateZ(-90deg)}
   70%{left:calc(50% - 46px);top:50%;transform:scale(.78) rotateZ(-90deg)}
-  100%{left:calc(50% - 46px);top:35%;transform:scale(.58) rotateZ(-90deg)}
+  100%{left:calc(50% - 46px);top:38%;transform:scale(.62) rotateZ(-90deg)}
 }
 
 @media(max-width:700px){
@@ -6147,20 +6147,20 @@ body{
     0%{left:calc(24% - 33px);top:92%;transform:scale(1.08) rotateZ(-90deg)}
     30%{left:calc(31% - 33px);top:74%;transform:scale(.94) rotateZ(-90deg)}
     60%{left:calc(37% - 33px);top:57%;transform:scale(.80) rotateZ(-90deg)}
-    100%{left:calc(45% - 33px);top:43%;transform:scale(.62) rotateZ(-90deg)}
+    100%{left:calc(45% - 33px);top:44%;transform:scale(.64) rotateZ(-90deg)}
   }
   @keyframes raceLane2{
     0%{left:calc(76% - 33px);top:92%;transform:scale(1.06) rotateZ(90deg)}
     30%{left:calc(69% - 33px);top:74%;transform:scale(.92) rotateZ(90deg)}
     60%{left:calc(63% - 33px);top:57%;transform:scale(.78) rotateZ(90deg)}
-    100%{left:calc(55% - 33px);top:43%;transform:scale(.60) rotateZ(90deg)}
+    100%{left:calc(55% - 33px);top:44%;transform:scale(.62) rotateZ(90deg)}
   }
   @keyframes raceLane3{
     0%{left:calc(50% - 33px);top:94%;transform:scale(1.12) rotateZ(-90deg)}
     28%{left:calc(50% - 33px);top:77%;transform:scale(.98) rotateZ(-90deg)}
     55%{left:calc(43% - 33px);top:62%;transform:scale(.84) rotateZ(-90deg)}
     78%{left:calc(50% - 33px);top:51%;transform:scale(.72) rotateZ(-90deg)}
-    100%{left:calc(50% - 33px);top:44%;transform:scale(.62) rotateZ(-90deg)}
+    100%{left:calc(50% - 33px);top:45%;transform:scale(.64) rotateZ(-90deg)}
   }
 }
 .ecomax-racing-scene .race-car{
@@ -6171,14 +6171,16 @@ body{
 .ecomax-racing-scene .race-car::after{
   content:"";
   position:absolute;
-  left:18%;
-  top:92%;
-  width:64%;
-  height:8%;
+  left:8%;
+  top:79%;
+  width:84%;
+  height:20%;
   border-radius:50%;
-  background:rgba(0,0,0,.72);
-  filter:blur(5px);
-  box-shadow:0 0 12px var(--glow);
+  background:rgba(0,0,0,.82);
+  filter:blur(4px);
+  box-shadow:0 0 10px rgba(0,0,0,.95),0 0 12px var(--glow);
+  transform:rotateX(70deg);
+  transform-origin:center;
   pointer-events:none;
 }
 </style>
