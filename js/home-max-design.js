@@ -525,13 +525,7 @@
         animation:mxCardCarA 6s linear infinite !important;
       }
 
-      .ecomax-real-car.car-b{
-        right:8px !important;
-        bottom:2px !important;
-        color:#ff2d9a !important;
-        transform:scaleX(-1) !important;
-        animation:mxCardCarB 6.8s linear infinite !important;
-      }
+      .ecomax-real-car.car-b{display:none!important;visibility:hidden!important;}
 
       .ecomax-real-car .rc-body{
         position:absolute;
@@ -600,9 +594,7 @@
           left:4px !important;
         }
 
-        .ecomax-real-car.car-b{
-          right:4px !important;
-        }
+        .ecomax-real-car.car-b{display:none!important;visibility:hidden!important;}
 
       }
 
@@ -1070,12 +1062,6 @@
 
       wrap.innerHTML =
         '<div class="ecomax-real-car car-a">' +
-          '<span class="rc-body"></span>' +
-          '<i></i>' +
-          '<i></i>' +
-        '</div>' +
-
-        '<div class="ecomax-real-car car-b">' +
           '<span class="rc-body"></span>' +
           '<i></i>' +
           '<i></i>' +
