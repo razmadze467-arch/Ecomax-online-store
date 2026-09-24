@@ -478,16 +478,12 @@
      ANIMATION
      --------------------------------------------------------- */
 
-  function startPerimeterAnimation(card, cyan, pink) {
+  function startPerimeterAnimation(card, cyan) {
 
     const speed = 58;
     const started = performance.now();
 
     function place(el, pt) {
-      /*
-        The point is the CENTER of the car on the OUTER neon frame.
-        Both cars use this exact same point calculation.
-      */
       el.style.setProperty("left", pt.x + "px", "important");
       el.style.setProperty("top", pt.y + "px", "important");
       el.style.setProperty(
@@ -499,35 +495,14 @@
 
     function frame(now) {
       if (!card.isConnected) return;
-
       const rect = card.getBoundingClientRect();
       if (rect.width < 30 || rect.height < 30) {
         requestAnimationFrame(frame);
         return;
       }
-
       const perimeter = pointAt(card, 0).length;
-      const t = (now - started) / 1000;
-
-      // CYAN — clockwise: top → right → bottom → left.
-      // PINK — counter-clockwise: exactly the same frame line,
-      // but travels in the opposite direction.
-      // Both cars are locked to ONE identical rounded-rectangle
-      // centerline. Only direction differs.
-      const travel = (t * speed) % perimeter;
-
-      // Cyan: clockwise.
-      const cyanPoint = pointAt(card, travel);
-
-      // Pink: counter-clockwise, exactly 50% around the SAME track.
-      const pinkPoint = pointAt(card, perimeter - ((travel + perimeter * 0.5) % perimeter));
-
-      // pointAt() gives the clockwise tangent. Reverse it for pink.
-      pinkPoint.angle += Math.PI;
-
-      place(cyan, cyanPoint);
-      place(pink, pinkPoint);
-
+      const travel = (((now - started) / 1000) * speed) % perimeter;
+      place(cyan, pointAt(card, travel));
       requestAnimationFrame(frame);
     }
 
