@@ -2779,7 +2779,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
           id="menuButton"
           aria-label="მენიუს გახსნა"
           aria-expanded="false"
-          onclick="toggleMobileMenu(event)"
+          onclick="event.preventDefault();event.stopPropagation();document.getElementById('mobileNav').classList.toggle('active');this.setAttribute('aria-expanded',document.getElementById('mobileNav').classList.contains('active')?'true':'false');"
         >
           ☰
         </button>
@@ -6225,6 +6225,17 @@ body{
   }
   .home-chemistry-grid .product-label strong{font-size:11px!important}
   .home-chemistry-grid .product-label span{font-size:7px!important}
+}
+</style>
+<style id="ecomax-mobile-menu-hard-fix-v1">
+@media (max-width:768px){
+  .header{z-index:99999!important;overflow:visible!important}
+  .nav{position:relative!important;z-index:100000!important;overflow:visible!important}
+  .actions{position:relative!important;z-index:100001!important}
+  #menuButton{display:block!important;position:relative!important;z-index:100002!important;pointer-events:auto!important;touch-action:manipulation!important;cursor:pointer!important}
+  #mobileNav{position:relative!important;z-index:100000!important;width:100%!important;box-sizing:border-box!important}
+  #mobileNav.active{display:flex!important;max-height:700px!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:none!important;overflow:visible!important}
+  #mobileNav a{display:block!important;position:relative!important;z-index:100003!important;pointer-events:auto!important;touch-action:manipulation!important}
 }
 </style>
 
