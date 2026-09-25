@@ -2754,6 +2754,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
         </a>
 
         <a href="line-login.html"
+           id="ecomaxLineLink"
            class="auth-link ecomax-line-link"
            title="ECOMAX LINE — საკურიერო სისტემა">
           ECOMAX LINE
@@ -2800,7 +2801,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
       <a href="line.html" id="mobileCourierPortalLink" style="display:none;">🚚 კურიერის კაბინეტი</a>
       <a href="admin.html">Admin Panel</a>
-      <a href="line-login.html">ECOMAX LINE</a>
+      <a href="line-login.html" id="mobileEcomaxLineLink">ECOMAX LINE</a>
 
     </div>
 
@@ -6115,6 +6116,8 @@ body{
         const ma=document.querySelector('#mobileNav a[href="account.html"]');
         const desktopCourier=document.getElementById('courierPortalLink');
         const mobileCourier=document.getElementById('mobileCourierPortalLink');
+        const desktopLine=document.getElementById('ecomaxLineLink');
+        const mobileLine=document.getElementById('mobileEcomaxLineLink');
 
         if(login) login.style.display=(logged?'none':'inline-flex');
         if(reg) reg.style.display=(logged?'none':'inline-flex');
@@ -6124,6 +6127,9 @@ body{
         if(ma) ma.style.display=(logged && !isCourier)?'block':'none';
         if(desktopCourier) desktopCourier.style.display=isCourier?'inline-flex':'none';
         if(mobileCourier) mobileCourier.style.display=isCourier?'block':'none';
+        // Logged-in couriers already have the cabinet, so do not show the duplicate LINE entry.
+        if(desktopLine) desktopLine.style.display=isCourier?'none':'inline-flex';
+        if(mobileLine) mobileLine.style.display=isCourier?'none':'block';
 
         document.documentElement.dataset.ecomaxAuthenticated=logged?'true':'false';
         document.documentElement.dataset.ecomaxCourier=isCourier?'true':'false';
