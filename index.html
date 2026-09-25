@@ -6094,6 +6094,11 @@ body{
   letter-spacing:1.5px !important;
 }
 </style>
+<style id="ecomax-courier-menu-visibility-fix">
+/* Keep the courier cabinet hidden until auth logic explicitly enables it. */
+#mobileNav a#mobileCourierPortalLink[style*="display:none"]{display:none!important}
+#mobileNav a#mobileEcomaxLineLink[style*="display:none"]{display:none!important}
+</style>
 <!-- ECOMAX: AUTH PERSISTENCE + COURIER ENTRY -->
 <script id="ecomax-auth-persistence-v3">
 (function(){
