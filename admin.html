@@ -2954,8 +2954,13 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     `;
 
 
-    $("orderModal")
-      .classList.add("show");
+    const orderModal = $("orderModal");
+    orderModal.hidden = false;
+    orderModal.removeAttribute("aria-hidden");
+    orderModal.style.removeProperty("display");
+    orderModal.style.removeProperty("visibility");
+    orderModal.style.removeProperty("opacity");
+    orderModal.classList.add("show");
 
     await populateCourierDropdown(order.courier_id || "");
     const courierCurrent = $("orderCourierCurrent");
@@ -3032,15 +3037,40 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
      ORDER MODAL
   ========================================== */
 
-  function closeOrderModal() {
+  function closeOrderModal(event) {
 
-    const modal = $("orderModal");
-    if (!modal) return;
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+    }
+
+    const modal = document.getElementById("orderModal");
+    if (!modal) return false;
 
     modal.classList.remove("show");
-    modal.style.display = "none";
+    modal.hidden = true;
+    modal.style.setProperty("display", "none", "important");
+    modal.style.setProperty("visibility", "hidden", "important");
+    modal.style.setProperty("opacity", "0", "important");
+    modal.setAttribute("aria-hidden", "true");
 
+    return false;
   }
+
+  // X ღილაკისა და overlay-ის საიმედო დახურვა
+  document.addEventListener("click", function(e) {
+    const closeBtn = e.target.closest("#orderModal .close");
+    if (closeBtn) {
+      closeOrderModal(e);
+      return;
+    }
+
+    const modal = document.getElementById("orderModal");
+    if (modal && e.target === modal) {
+      closeOrderModal(e);
+    }
+  }, true);
 
 
   /* ==========================================
