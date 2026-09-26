@@ -1,4 +1,4 @@
-// ECOMAX — single Supabase client
+// ECOMAX — single shared Supabase auth client
 (function () {
   'use strict';
 
@@ -8,7 +8,6 @@
   const BRIDGE_KEY = 'ecomax-auth-bridge-v1';
 
   window.ECOMAX_SUPABASE = { url: SUPABASE_URL, key: SUPABASE_PUBLISHABLE_KEY };
-  window.ECOMAX_GET_SESSION = getSessionSafe;
 
   function saveBridge(session) {
     try {
@@ -20,72 +19,73 @@
     } catch (_) {}
   }
 
-  async function restoreBridge(client) {
+  function readBridge() {
     try {
       const raw = sessionStorage.getItem(BRIDGE_KEY);
       if (!raw) return null;
       const data = JSON.parse(raw);
-      if (!data?.access_token || !data?.refresh_token) return null;
-      const restored = await client.auth.setSession(data);
-      if (restored?.data?.session) {
-        saveBridge(restored.data.session);
-        return restored.data.session;
+      return data?.access_token && data?.refresh_token ? data : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  async function restoreBridge(client) {
+    const data = readBridge();
+    if (!data) return null;
+    try {
+      const result = await client.auth.setSession(data);
+      const session = result?.data?.session || null;
+      if (session) {
+        saveBridge(session);
+        return session;
       }
     } catch (_) {}
     return null;
   }
 
-  window.ECOMAX_PRESERVE_SESSION = async function(client) {
-    if (!client?.auth) return null;
-    try {
-      const session = await getSessionSafe(client);
-      if (session?.access_token && session?.refresh_token) {
-        saveBridge(session);
-        const persisted = await client.auth.setSession({
-          access_token: session.access_token,
-          refresh_token: session.refresh_token
-        });
-        return persisted?.data?.session || session;
-      }
-    } catch (error) {
-      console.warn('ECOMAX preserve session:', error);
-    }
-    return null;
-  };
-
   async function getSessionSafe(client) {
     if (!client?.auth) return null;
 
-    for (let attempt = 0; attempt < 4; attempt++) {
-      try {
-        const result = await client.auth.getSession();
-        if (result?.data?.session) return result.data.session;
-      } catch (error) {
-        if (attempt === 3) console.warn('ECOMAX getSession:', error);
+    try {
+      const result = await client.auth.getSession();
+      if (result?.data?.session) {
+        saveBridge(result.data.session);
+        return result.data.session;
       }
-      if (attempt < 3) {
-        await new Promise(resolve => setTimeout(resolve, 150 * (attempt + 1)));
-      }
-    }
+    } catch (_) {}
 
     const bridged = await restoreBridge(client);
     if (bridged) return bridged;
 
     try {
-      const refreshed = await client.auth.refreshSession();
-      return refreshed?.data?.session || null;
-    } catch (error) {
-      return null;
-    }
+      const result = await client.auth.refreshSession();
+      if (result?.data?.session) {
+        saveBridge(result.data.session);
+        return result.data.session;
+      }
+    } catch (_) {}
+
+    return null;
   }
+
+  window.ECOMAX_GET_SESSION = getSessionSafe;
+
+  window.ECOMAX_PRESERVE_SESSION = async function (client) {
+    const session = await getSessionSafe(client);
+    if (!session) return null;
+    saveBridge(session);
+    return session;
+  };
 
   function boot() {
     if (!window.supabase || typeof window.supabase.createClient !== 'function') {
       window.ECOMAX_SUPABASE_ERROR = 'Supabase JS SDK ვერ ჩაიტვირთა';
+      window.ECOMAX_AUTH_READY = Promise.reject(new Error(window.ECOMAX_SUPABASE_ERROR));
       return;
     }
 
-    if (window.ECOMAX_SUPABASE_CLIENT) {
+    if (window.ECOMAX_SUPABASE_CLIENT?.auth) {
       window.ECOMAX_AUTH_CLIENT = window.ECOMAX_SUPABASE_CLIENT;
       window.ECOMAX_AUTH_READY = Promise.resolve(window.ECOMAX_SUPABASE_CLIENT);
       loadOrderUX();
@@ -112,29 +112,35 @@
       window.ECOMAX_AUTH_CLIENT = client;
       window.ECOMAX_AUTH_READY = Promise.resolve(client);
 
-      client.auth.getSession()
-        .then(({ data }) => {
-          window.ECOMAX_CURRENT_SESSION = data?.session || null;
-          window.ECOMAX_CURRENT_USER = data?.session?.user || null;
-        })
-        .catch(() => {});
-
-      client.auth.onAuthStateChange((_event, session) => {
-        if (session) saveBridge(session);
-        else { try { sessionStorage.removeItem(BRIDGE_KEY); } catch (_) {} }
-        window.ECOMAX_CURRENT_SESSION = session || null;
+      client.auth.getSession().then(({ data }) => {
+        const session = data?.session || null;
+        window.ECOMAX_CURRENT_SESSION = session;
         window.ECOMAX_CURRENT_USER = session?.user || null;
+        if (session) saveBridge(session);
+      }).catch(() => {});
+
+      client.auth.onAuthStateChange((event, session) => {
+        if (session) {
+          saveBridge(session);
+          window.ECOMAX_CURRENT_SESSION = session;
+          window.ECOMAX_CURRENT_USER = session.user || null;
+        } else if (event === 'SIGNED_OUT') {
+          try { sessionStorage.removeItem(BRIDGE_KEY); } catch (_) {}
+          window.ECOMAX_CURRENT_SESSION = null;
+          window.ECOMAX_CURRENT_USER = null;
+        }
       });
 
       loadOrderUX();
     } catch (error) {
       window.ECOMAX_SUPABASE_ERROR = error?.message || String(error);
+      window.ECOMAX_AUTH_READY = Promise.reject(error);
       console.error('ECOMAX Supabase error:', error);
     }
   }
 
   function loadOrderUX() {
-    if (!/(^|\\/)(account|admin)\\.html$/i.test(location.pathname)) return;
+    if (!/(^|\/)(account|admin)\.html$/i.test(location.pathname)) return;
     if (document.querySelector('script[data-ecomax-order-ux]')) return;
     const s = document.createElement('script');
     s.src = 'js/order-tracking-ux.js?v=20260920-1';
