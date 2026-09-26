@@ -2675,18 +2675,66 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       ["cancelled", "გაუქმებული"]
     ];
 
-    const choice = prompt(
-      "შეიყვანე ახალი სტატუსი:\n\n" +
-      statuses.map(x => x[0] + " — " + x[1]).join("\n") +
-      "\n\nამჟამინდელი: " + (order.status || "new")
-    );
-    if (!choice) return;
+    // სტატუსი აირჩიე ღილაკზე დაჭერით — ხელით ჩაწერა აღარ არის საჭირო.
+    const newStatus = await new Promise(resolve => {
+      const old = document.getElementById("ecomaxStatusPicker");
+      if (old) old.remove();
 
-    const newStatus = choice.trim();
-    if (!statuses.some(x => x[0] === newStatus)) {
-      toast("არასწორი სტატუსი");
-      return;
-    }
+      const overlay = document.createElement("div");
+      overlay.id = "ecomaxStatusPicker";
+      overlay.style.cssText = [
+        "position:fixed","inset:0","z-index:999999","display:flex",
+        "align-items:center","justify-content:center","padding:20px",
+        "background:rgba(0,0,0,.78)","backdrop-filter:blur(10px)"
+      ].join(";");
+
+      const box = document.createElement("div");
+      box.style.cssText = [
+        "width:min(560px,100%)","padding:22px","border-radius:22px",
+        "background:#10131b","border:1px solid rgba(0,229,255,.35)",
+        "box-shadow:0 0 45px rgba(0,229,255,.16)"
+      ].join(";");
+
+      const title = document.createElement("div");
+      title.innerHTML = '<div style="font-size:20px;font-weight:800;color:#fff">შეკვეთის სტატუსი</div>' +
+        '<div style="margin-top:6px;color:#9da7b8;font-size:13px">ამჟამინდელი: <b style="color:#fff">' +
+        esc(order.status || "new") + '</b><br>აირჩიე ახალი სტატუსი:</div>';
+
+      const grid = document.createElement("div");
+      grid.style.cssText = "display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px";
+
+      statuses.forEach(([value,label]) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = value;
+        b.style.cssText = [
+          "min-height:48px","border-radius:12px","cursor:pointer",
+          "font-weight:800","font-size:15px","color:#fff",
+          "background:#171c27","border:1px solid rgba(255,255,255,.16)"
+        ].join(";");
+        b.title = label;
+        b.onclick = () => {
+          overlay.remove();
+          resolve(value);
+        };
+        grid.appendChild(b);
+      });
+
+      const cancel = document.createElement("button");
+      cancel.type = "button";
+      cancel.textContent = "გაუქმება";
+      cancel.style.cssText = "width:100%;margin-top:12px;min-height:44px;border:0;border-radius:12px;background:#252a35;color:#fff;font-weight:700;cursor:pointer";
+      cancel.onclick = () => {
+        overlay.remove();
+        resolve(null);
+      };
+
+      box.append(title, grid, cancel);
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+    });
+
+    if (!newStatus) return;
 
     const patch = {
       status: newStatus,
