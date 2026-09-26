@@ -2349,165 +2349,60 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
 
   function renderOrders() {
+    const table = $("ordersTable");
+    if (!table) return;
 
-    const table =
-      $("ordersTable");
+    const search = ($("orderSearch")?.value || "").toLowerCase().trim();
+    const filter = $("orderStatusFilter")?.value || "";
 
+    const result = orders.filter(order => {
+      const text = [
+        order.order_number,
+        order.customer_name,
+        order.phone,
+        order.city,
+        order.address
+      ].join(" ").toLowerCase();
 
-    if (!table)
-      return;
-
-
-    const search =
-      (
-        $("orderSearch")?.value ||
-        ""
-      )
-        .toLowerCase()
-        .trim();
-
-
-    const filter =
-      $("orderStatusFilter")
-        ?.value ||
-      "";
-
-
-    const result =
-      orders.filter(order => {
-
-        const text =
-          [
-            order.order_number,
-            order.customer_name,
-            order.phone,
-            order.city,
-            order.address
-          ]
-            .join(" ")
-            .toLowerCase();
-
-
-        const matchesSearch =
-          !search ||
-          text.includes(search);
-
-
-        const matchesStatus =
-          !filter ||
-          order.status === filter;
-
-
-        return (
-          matchesSearch &&
-          matchesStatus
-        );
-
-      });
-
+      return (!search || text.includes(search)) &&
+             (!filter || order.status === filter);
+    });
 
     if (!result.length) {
-
       table.innerHTML = `
         <tr>
-          <td
-            colspan="8"
-            style="
-              text-align:center;
-              color:#8da8b0
-            "
-          >
+          <td colspan="8" style="text-align:center;color:#8da8b0;padding:30px">
             შეკვეთები ვერ მოიძებნა.
           </td>
-        </tr>
-      `;
-
+        </tr>`;
       return;
-
     }
 
-
-    table.innerHTML =
-      result
-        .map(order => {
-
-          return `
-
-            <tr>
-
-              <td>
-                <b>
-                  ${esc(
-                    order.order_number ||
-                    "—"
-                  )}
-                </b>
-              </td>
-
-              <td>
-                ${esc(
-                  order.customer_name ||
-                  "—"
-                )}
-              </td>
-
-              <td>
-                ${esc(
-                  order.phone ||
-                  "—"
-                )}
-              </td>
-
-              <td>
-                ${esc(
-                  order.city ||
-                  "—"
-                )}
-              </td>
-
-              <td>
-                <b>
-                  ${money(order.total)}
-                </b>
-              </td>
-
-              <td>
-                ${statusBadge(
-                  order.status
-                )}
-              </td>
-
-              <td>
-                ${date(
-                  order.created_at
-                )}
-              </td>
-
-              <td>
-                <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-                  <button class="small-btn" onclick="viewOrder('${esc(order.id)}')" type="button">👁 ნახვა</button>
-                  <div class="ecomax-status-buttons" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
-            ${[["new","ახალი"],["processing","მუშავდება"],["loaded","დატვირთული"],["picked_up","აღებული"],["shipped","გაგზავნილი"],["completed","დასრულებული"],["cancelled","გაუქმებული"]].map(([v,l])=>"<button type=\"button\" class=\"small-btn ecomax-status-btn"+(String(order.status||"new")===v?" active":"")+" \" onclick=\"quickOrderStatus(\\'${esc(order.id)}\\',\\'"+v+"\\')\">"+l+"</button>").join("")}</div>
-            </div>
-            <span class="badge ${fresh ? "completed" : "processing"}">${fresh ? "● LIVE" : "● ძველი სიგნალი"}</span>
+    table.innerHTML = result.map(order => `
+      <tr>
+        <td><b>${esc(order.order_number || "—")}</b></td>
+        <td>${esc(order.customer_name || "—")}</td>
+        <td>${esc(order.phone || "—")}</td>
+        <td>${esc(order.city || "—")}</td>
+        <td><b>${money(order.total)}</b></td>
+        <td>${statusBadge(order.status)}</td>
+        <td>${date(order.created_at)}</td>
+        <td>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+            <button class="small-btn" onclick="viewOrder('${esc(order.id)}')" type="button">👁 ნახვა</button>
           </div>
-
-          <div style="margin-top:14px;display:grid;gap:8px">
-            <div><small>შეკვეთა</small><b>${esc(o?.order_number || "აქტიური შეკვეთა არ აქვს")}</b></div>
-            <div><small>სტატუსი</small>${o ? statusBadge(o.status) : '<span class="badge">—</span>'}</div>
-            <div><small>მომხმარებელი</small><b>${esc(o?.customer_name || "—")}</b></div>
-            <div><small>GPS</small><b>${Number(loc.latitude).toFixed(5)}, ${Number(loc.longitude).toFixed(5)}</b></div>
-            <div><small>სიზუსტე</small><b>${loc.accuracy ? Math.round(Number(loc.accuracy)) + " მ" : "—"}</b></div>
-            <div><small>ბოლო სიგნალი</small><b>${esc(liveTimeAgo(loc.updated_at))}</b></div>
+          <div class="ecomax-status-buttons" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+            <button type="button" class="small-btn ecomax-status-btn" onclick="quickOrderStatus('${esc(order.id)}','new')">ახალი</button>
+            <button type="button" class="small-btn ecomax-status-btn" onclick="quickOrderStatus('${esc(order.id)}','processing')">მუშავდება</button>
+            <button type="button" class="small-btn ecomax-status-btn" onclick="quickOrderStatus('${esc(order.id)}','loaded')">დატვირთული</button>
+            <button type="button" class="small-btn ecomax-status-btn" onclick="quickOrderStatus('${esc(order.id)}','picked_up')">აღებული</button>
+            <button type="button" class="small-btn ecomax-status-btn" onclick="quickOrderStatus('${esc(order.id)}','shipped')">გაგზავნილი</button>
+            <button type="button" class="small-btn ecomax-status-btn" onclick="quickOrderStatus('${esc(order.id)}','completed')">დასრულებული</button>
+            <button type="button" class="small-btn ecomax-status-btn" onclick="quickOrderStatus('${esc(order.id)}','cancelled')">გაუქმებული</button>
           </div>
-
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:13px">
-            <a class="small-btn" target="_blank" rel="noopener" href="${esc(liveMapHref(loc.latitude,loc.longitude))}">📍 რუკაზე გახსნა</a>
-            ${o ? '<button class="small-btn" type="button" onclick="viewOrder(\''+esc(o.id)+'\')">📦 შეკვეთა</button>' : ''}
-          </div>
-        </div>
-      `;
-    }).join("");
+        </td>
+      </tr>
+    `).join("");
   }
 
   let ecomaxLiveTrack = null;
