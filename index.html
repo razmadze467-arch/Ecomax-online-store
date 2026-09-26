@@ -6102,12 +6102,8 @@ body{
 </style>
 <!-- ECOMAX: AUTH PERSISTENCE + COURIER ENTRY -->
 <style id="ecomax-auth-gate-css">
-html:not([data-ecomax-auth-ready="true"]) #loginLink,
-html:not([data-ecomax-auth-ready="true"]) #registerLink,
-html:not([data-ecomax-auth-ready="true"]) #authAccountLink,
-html:not([data-ecomax-auth-ready="true"]) #mobileNav a[href="login.html"],
-html:not([data-ecomax-auth-ready="true"]) #mobileNav a[href="register.html"],
-html:not([data-ecomax-auth-ready="true"]) #mobileNav a[href="account.html"]{visibility:hidden!important}
+/* Auth links stay visible by default. JS hides them only after a real session is confirmed. */
+#loginLink,#registerLink{visibility:visible!important}
 </style>
 <script id="ecomax-auth-persistence-v3">
 (function(){
@@ -6175,7 +6171,17 @@ html:not([data-ecomax-auth-ready="true"]) #mobileNav a[href="account.html"]{visi
       db.auth.onAuthStateChange((_event,nextSession)=>{
         setTimeout(()=>apply(nextSession||null),0);
       });
-    }catch(e){ console.warn('ECOMAX auth persistence:',e); }
+    }catch(e){
+      console.warn('ECOMAX auth persistence:',e);
+      document.documentElement.dataset.ecomaxAuthenticated='false';
+      document.documentElement.dataset.ecomaxAuthReady='true';
+      const login=document.getElementById('loginLink');
+      const reg=document.getElementById('registerLink');
+      const account=document.getElementById('authAccountLink');
+      if(login) login.style.display='inline-flex';
+      if(reg) reg.style.display='inline-flex';
+      if(account) account.style.display='none';
+    }
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bootAuth,{once:true});
   else bootAuth();
