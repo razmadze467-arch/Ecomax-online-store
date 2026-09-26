@@ -86,7 +86,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     </div>
 
     <div class="actions">
-      <a class="btn primary" href="index.html">მთავარ გვერდზე</a>
+      <a class="btn primary" id="homeLink" href="index.html">მთავარ გვერდზე</a>
       <a class="btn" href="checkout.html">ახალი შეკვეთა</a>
       <button id="logout" class="btn danger" type="button">გამოსვლა</button>
     </div>
@@ -258,6 +258,18 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     updateEtaCountdowns();
     const etaTimer=setInterval(updateEtaCountdowns,1000);
     livePollTimer=setInterval(refreshLiveDelivery,10000);
+
+    const homeLink=document.getElementById('homeLink');
+    if(homeLink){
+      homeLink.addEventListener('click',async function(e){
+        e.preventDefault();
+        try{
+          const preserve=window.ECOMAX_PRESERVE_SESSION;
+          if(preserve) await preserve(client);
+        }catch(_){}
+        location.replace('index.html');
+      });
+    }
 
     document.getElementById('refreshOrders').addEventListener('click',()=>loadOrders(user));
 
