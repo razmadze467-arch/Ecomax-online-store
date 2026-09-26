@@ -6101,6 +6101,14 @@ body{
 #mobileNav a#mobileEcomaxLineLink[style*="display:none"]{display:none!important}
 </style>
 <!-- ECOMAX: AUTH PERSISTENCE + COURIER ENTRY -->
+<style id="ecomax-auth-gate-css">
+html:not([data-ecomax-auth-ready="true"]) #loginLink,
+html:not([data-ecomax-auth-ready="true"]) #registerLink,
+html:not([data-ecomax-auth-ready="true"]) #authAccountLink,
+html:not([data-ecomax-auth-ready="true"]) #mobileNav a[href="login.html"],
+html:not([data-ecomax-auth-ready="true"]) #mobileNav a[href="register.html"],
+html:not([data-ecomax-auth-ready="true"]) #mobileNav a[href="account.html"]{visibility:hidden!important}
+</style>
 <script id="ecomax-auth-persistence-v3">
 (function(){
   'use strict';
@@ -6138,6 +6146,7 @@ body{
         if(mobileLine) mobileLine.style.display=isCourier?'none':'block';
 
         document.documentElement.dataset.ecomaxAuthenticated=logged?'true':'false';
+        document.documentElement.dataset.ecomaxAuthReady='true';
         document.documentElement.dataset.ecomaxCourier=isCourier?'true':'false';
       };
       const getSafe = window.ECOMAX_GET_SESSION;
