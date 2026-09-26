@@ -267,9 +267,10 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     const etaTimer=setInterval(updateEtaCountdowns,1000);
     livePollTimer=setInterval(refreshLiveDelivery,10000);
 
-    const homeLink=document.getElementById('homeLink');
-    if(homeLink){
-      homeLink.addEventListener('click',async function(e){
+    // Preserve the current authenticated session for every account-page
+    // link that returns to the main store.
+    document.querySelectorAll('a[href="index.html"]').forEach(function(link){
+      link.addEventListener('click',async function(e){
         e.preventDefault();
         try{
           const preserve=window.ECOMAX_PRESERVE_SESSION;
@@ -277,7 +278,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
         }catch(_){}
         location.replace('index.html');
       });
-    }
+    });
 
     document.getElementById('refreshOrders').addEventListener('click',()=>loadOrders(user));
 
