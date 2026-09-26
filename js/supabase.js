@@ -7,6 +7,7 @@
   const STORAGE_KEY = 'ecomax-auth';
   const BRIDGE_KEY = 'ecomax-auth-bridge-v1';
   const BACKUP_KEY = 'ecomax-auth-backup-v1';
+  const BACKUP_ENABLED = false;
 
   window.ECOMAX_SUPABASE = { url: SUPABASE_URL, key: SUPABASE_PUBLISHABLE_KEY };
   window.ECOMAX_GET_SESSION = getSessionSafe;
@@ -18,7 +19,7 @@
 
   function saveSessionBackup(session) {
     const pair = tokenPair(session);
-    if (!pair) return false;
+    if (!pair || !BACKUP_ENABLED) return false;
     let ok = false;
     try { sessionStorage.setItem(BRIDGE_KEY, JSON.stringify(pair)); ok = true; } catch (_) {}
     try { localStorage.setItem(BACKUP_KEY, JSON.stringify(pair)); ok = true; } catch (_) {}
@@ -28,6 +29,7 @@
   window.ECOMAX_SAVE_SESSION_BACKUP = saveSessionBackup;
 
   async function restoreBackup(client) {
+    if (!BACKUP_ENABLED) return null;
     const keys = [BRIDGE_KEY, BACKUP_KEY];
     for (const key of keys) {
       try {
