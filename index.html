@@ -6167,10 +6167,37 @@ body{
           session=(await db.auth.getSession())?.data?.session || null;
         }catch(_){}
       }
+
+      // One last refresh attempt before declaring the user logged out.
+      // This prevents a slow/stale browser startup from flashing login/register.
+      if(!session){
+        try{
+          const refreshed=await db.auth.refreshSession();
+          session=refreshed?.data?.session || null;
+        }catch(_){}
+      }
+
       await apply(session);
+
       db.auth.onAuthStateChange((_event,nextSession)=>{
         setTimeout(()=>apply(nextSession||null),0);
       });
+
+      // GitHub Pages/mobile browsers can restore localStorage a little later.
+      // Re-check several times without redirecting or touching cart/order data.
+      let authRetries=0;
+      const retryAuth=async()=>{
+        if(authRetries++>=8)return;
+        try{
+          const current=(await db.auth.getSession())?.data?.session || null;
+          if(current?.user){
+            await apply(current);
+            return;
+          }
+        }catch(_){}
+        setTimeout(retryAuth,500);
+      };
+      setTimeout(retryAuth,500);
     }catch(e){
       console.warn('ECOMAX auth persistence:',e);
       document.documentElement.dataset.ecomaxAuthenticated='false';
