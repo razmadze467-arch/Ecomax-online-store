@@ -47,6 +47,23 @@
   }
 
   document.addEventListener("click",function(event){
+    /* CART BUTTON — capture-phase hard fix.
+       Opens the real overlay even if another script/handler is broken. */
+    const cartBtn=event.target && event.target.closest ? event.target.closest("#cartButton,.cart-button") : null;
+    if(cartBtn){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const overlay=document.getElementById("cartOverlay");
+      if(overlay){
+        overlay.classList.add("active");
+        overlay.style.display="flex";
+        overlay.style.zIndex="99999";
+        document.body.style.overflow="hidden";
+        if(typeof window.updateCart==="function") window.updateCart();
+        else fallbackRender();
+      }
+      return;
+    }
     const btn=event.target && event.target.closest ? event.target.closest(".add-cart") : null;
     if(!btn) return;
     event.preventDefault();
