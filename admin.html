@@ -2486,7 +2486,8 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
               <td>
                 <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
                   <button class="small-btn" onclick="viewOrder('${esc(order.id)}')" type="button">👁 ნახვა</button>
-                  <div class="ecomax-status-buttons" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">\n            ${[["new","ახალი"],["processing","მუშავდება"],["loaded","დატვირთული"],["picked_up","აღებული"],["shipped","გაგზავნილი"],["completed","დასრულებული"],["cancelled","გაუქმებული"]].map(([v,l])=>"<button type=\"button\" class=\"small-btn ecomax-status-btn"+(String(order.status||"new")===v?" active":"")+" \" onclick=\"quickOrderStatus(\\'"+token+"\\',\\'"+v+"\\')\">"+l+"</button>").join("")}</div>
+                  <div class="ecomax-status-buttons" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+            ${[["new","ახალი"],["processing","მუშავდება"],["loaded","დატვირთული"],["picked_up","აღებული"],["shipped","გაგზავნილი"],["completed","დასრულებული"],["cancelled","გაუქმებული"]].map(([v,l])=>"<button type=\"button\" class=\"small-btn ecomax-status-btn"+(String(order.status||"new")===v?" active":"")+" \" onclick=\"quickOrderStatus(\\'${esc(order.id)}\\',\\'"+v+"\\')\">"+l+"</button>").join("")}</div>
             </div>
             <span class="badge ${fresh ? "completed" : "processing"}">${fresh ? "● LIVE" : "● ძველი სიგნალი"}</span>
           </div>
