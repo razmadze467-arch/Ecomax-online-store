@@ -6149,12 +6149,32 @@ html:not([data-ecomax-auth-ready="true"]) #mobileNav a[href="account.html"]{visi
         document.documentElement.dataset.ecomaxAuthReady='true';
         document.documentElement.dataset.ecomaxCourier=isCourier?'true':'false';
       };
+      // Restore the same authenticated session before deciding which links to show.
+      // This is intentionally done before the UI is marked "ready".
+      let session = null;
       const getSafe = window.ECOMAX_GET_SESSION;
-      const session = getSafe
-        ? await getSafe(db)
-        : (await db.auth.getSession())?.data?.session || null;
+      if(getSafe) session = await getSafe(db);
+      if(!session){
+        try{
+          const raw=sessionStorage.getItem('ecomax-auth-bridge-v1');
+          if(raw){
+            const bridge=JSON.parse(raw);
+            if(bridge?.access_token && bridge?.refresh_token){
+              const restored=await db.auth.setSession(bridge);
+              session=restored?.data?.session || null;
+            }
+          }
+        }catch(_){}
+      }
+      if(!session){
+        try{
+          session=(await db.auth.getSession())?.data?.session || null;
+        }catch(_){}
+      }
       await apply(session);
-      db.auth.onAuthStateChange((_event,session)=>setTimeout(()=>apply(session||null),0));
+      db.auth.onAuthStateChange((_event,nextSession)=>{
+        setTimeout(()=>apply(nextSession||null),0);
+      });
     }catch(e){ console.warn('ECOMAX auth persistence:',e); }
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bootAuth,{once:true});
