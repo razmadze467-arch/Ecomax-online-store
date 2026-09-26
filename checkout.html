@@ -38,7 +38,12 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 </style>
 </head>
 <body><div class="wrap"><header class="top"><a class="logo" href="index.html">ECOMAX</a><a class="back" href="index.html">← დაბრუნება</a></header>
-<div id="checkout"><div class="grid"><section class="box"><h1>შეკვეთის გაფორმება</h1><p class="muted">შეავსე მონაცემები და გადაამოწმე შეკვეთა.</p><form id="orderForm" novalidate>
+<div id="checkout"><div class="grid"><section class="box"><h1>შეკვეთის გაფორმება</h1><p class="muted">შეავსე მონაცემები და გადაამოწმე შეკვეთა.</p><div id="authGate" class="auth-gate" style="margin:0 0 18px;padding:14px 15px;border:1px solid rgba(255,55,170,.28);border-radius:14px;background:rgba(255,55,170,.06);display:none">
+  <b id="authGateTitle" style="color:#ff65c7">🔐 ავტორიზაცია საჭიროა</b>
+  <div id="authGateText" class="muted" style="margin-top:6px;font-size:12px;line-height:1.5">პროდუქტები შეგიძლია აირჩიო ავტორიზაციის გარეშე. შეკვეთის გასაგზავნად ჯერ დაადასტურე ავტორიზაცია.</div>
+  <a id="authGateBtn" href="login.html?redirect=checkout.html" class="submit" style="display:inline-flex;width:auto;text-decoration:none;margin-top:11px;padding:11px 16px;font-size:13px">ავტორიზაცია →</a>
+</div>
+<form id="orderForm" novalidate>
 <label for="customerName">სახელი და გვარი *</label><input id="customerName" required autocomplete="name"><label for="phone">ტელეფონი *</label><input id="phone" required type="tel" inputmode="tel" autocomplete="tel" placeholder="5XX XX XX XX"><label for="city">ქალაქი *</label><input id="city" required autocomplete="address-level2"><label for="address">მისამართი</label><textarea id="address" autocomplete="street-address" placeholder="ქუჩა, ნომერი, ბინა"></textarea><label for="delivery">მიტანის მეთოდი</label><select id="delivery"><option value="delivery">კურიერით მიწოდება</option><option value="pickup">თვითგატანა</option></select><label for="payment">გადახდის მეთოდი</label><select id="payment"><option value="cash">ნაღდი ანგარიშსწორება</option><option value="card">ბარათით გადახდა — მალე</option></select><button class="submit" id="submitBtn" type="submit">შეკვეთის დადასტურება →</button><div id="msg" class="msg"></div><div class="secure"><span>🔐 ავტორიზაცია</span><span>✓ Supabase</span><span>✓ Admin-ში იგზავნება</span></div></form></section>
 <section class="box"><h2>შენი კალათა</h2><div id="items"></div><div class="total"><span>ჯამი</span><span id="total">0 ₾</span></div></section></div></div>
 <div id="success" class="box success-screen hidden"><div class="success-icon">✓</div><h1>შეკვეთა მიღებულია!</h1><p class="muted">შეკვეთა წარმატებით გაიგზავნა ECOMAX-ის ადმინისტრატორთან.</p><div class="order-id" id="orderId"></div><a class="submit" style="display:inline-block;width:auto;text-decoration:none" href="index.html">მთავარ გვერდზე დაბრუნება</a></div></div>
@@ -48,7 +53,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
   const SUPABASE_URL='https://mkxkqdvtmfbxmldnvsef.supabase.co';
   const SUPABASE_KEY='sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd';
   const $=id=>document.getElementById(id);
-  const itemsEl=$('items'), totalEl=$('total'), form=$('orderForm'), msg=$('msg'), btn=$('submitBtn');
+  const itemsEl=$('items'), totalEl=$('total'), form=$('orderForm'), msg=$('msg'), btn=$('submitBtn'), authGate=$('authGate'), authGateTitle=$('authGateTitle'), authGateText=$('authGateText');
   const esc=v=>String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]||c));
   const num=v=>{const n=Number(String(v??'').replace(',','.').replace(/[^0-9.-]/g,''));return Number.isFinite(n)?n:0};
   const readCart=()=>{try{const x=JSON.parse(localStorage.getItem('ecomax_cart')||'[]');return Array.isArray(x)?x:[]}catch(_){return[]}};
@@ -58,6 +63,19 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     msg.innerHTML='<b>⚠️ '+esc(t)+'</b>';
     msg.className='msg error';
     msg.style.display='block';
+  }
+  function setAuthState(user){
+    if(user){
+      authGate.style.display='none';
+      btn.disabled=!cart.length;
+      btn.textContent='შეკვეთის დადასტურება →';
+      return;
+    }
+    authGate.style.display='block';
+    authGateTitle.textContent='🔐 შეკვეთისთვის ავტორიზაცია აუცილებელია';
+    authGateText.textContent='პროდუქტები და კალათა ხელმისაწვდომია ავტორიზაციის გარეშე. შეკვეთის დადასტურება მხოლოდ ავტორიზაციის წარმატებით დასრულების შემდეგ იქნება შესაძლებელი.';
+    btn.disabled=true;
+    btn.textContent='🔐 ჯერ გაიარე ავტორიზაცია';
   }
   function showInfo(t){
     msg.innerHTML=esc(t);
@@ -105,11 +123,15 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
   async function loadUser(){
     try{
       const a=await getUser();
+      setAuthState(a.user);
       if(a.user){
         const n=a.user.user_metadata?.full_name||a.user.user_metadata?.name||'';
         if(n&&!$('customerName').value)$('customerName').value=n;
       }
-    }catch(e){ console.warn('checkout auth check',e); }
+    }catch(e){
+      console.warn('checkout auth check',e);
+      setAuthState(null);
+    }
   }
 
   form.addEventListener('submit',async function(e){
@@ -121,11 +143,18 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     if(!cart.length){showError('კალათა ცარიელია.');return;}
     if(!form.checkValidity()){form.reportValidity();return;}
 
+    const auth=await getUser();
+    if(!auth.user){
+      setAuthState(null);
+      window.location.href='login.html?redirect=checkout.html';
+      return;
+    }
+
     btn.disabled=true;
     btn.textContent='იგზავნება...';
 
     try{
-      const a=await getUser();
+      const a=auth;
 
       if(!a.user){
         sessionStorage.setItem('ecomax_checkout_redirect','checkout.html');
