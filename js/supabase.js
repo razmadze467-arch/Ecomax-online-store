@@ -6,32 +6,73 @@
   const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd';
   const STORAGE_KEY = 'ecomax-auth';
   const BRIDGE_KEY = 'ecomax-auth-bridge-v1';
+  const BACKUP_KEY = 'ecomax-auth-backup-v1';
 
   window.ECOMAX_SUPABASE = { url: SUPABASE_URL, key: SUPABASE_PUBLISHABLE_KEY };
   window.ECOMAX_GET_SESSION = getSessionSafe;
 
-  function saveBridge(session) {
-    try {
-      if (!session?.access_token || !session?.refresh_token) return;
-      sessionStorage.setItem(BRIDGE_KEY, JSON.stringify({
-        access_token: session.access_token,
-        refresh_token: session.refresh_token
-      }));
-    } catch (_) {}
+  function tokenPair(session) {
+    if (!session?.access_token || !session?.refresh_token) return null;
+    return { access_token: session.access_token, refresh_token: session.refresh_token };
   }
 
-  async function restoreBridge(client) {
+  function saveSessionBackup(session) {
+    const pair = tokenPair(session);
+    if (!pair) return false;
+    let ok = false;
+    try { sessionStorage.setItem(BRIDGE_KEY, JSON.stringify(pair)); ok = true; } catch (_) {}
+    try { localStorage.setItem(BACKUP_KEY, JSON.stringify(pair)); ok = true; } catch (_) {}
+    return ok;
+  }
+
+  window.ECOMAX_SAVE_SESSION_BACKUP = saveSessionBackup;
+
+  async function restoreBackup(client) {
+    const keys = [BRIDGE_KEY, BACKUP_KEY];
+    for (const key of keys) {
+      try {
+        const store = key === BRIDGE_KEY ? sessionStorage : localStorage;
+        const raw = store.getItem(key);
+        if (!raw) continue;
+        const pair = JSON.parse(raw);
+        if (!pair?.access_token || !pair?.refresh_token) continue;
+        const restored = await client.auth.setSession(pair);
+        if (restored?.data?.session) {
+          saveSessionBackup(restored.data.session);
+          return restored.data.session;
+        }
+      } catch (_) {}
+    }
+    return null;
+  }
+
+  async function getSessionSafe(client) {
+    if (!client?.auth) return null;
+
+    for (let attempt = 0; attempt < 4; attempt++) {
+      try {
+        const result = await client.auth.getSession();
+        if (result?.data?.session) {
+          saveSessionBackup(result.data.session);
+          return result.data.session;
+        }
+      } catch (error) {
+        if (attempt === 3) console.warn('ECOMAX getSession:', error);
+      }
+      if (attempt < 3) await new Promise(resolve => setTimeout(resolve, 150 * (attempt + 1)));
+    }
+
+    const restored = await restoreBackup(client);
+    if (restored) return restored;
+
     try {
-      const raw = sessionStorage.getItem(BRIDGE_KEY);
-      if (!raw) return null;
-      const data = JSON.parse(raw);
-      if (!data?.access_token || !data?.refresh_token) return null;
-      const restored = await client.auth.setSession(data);
-      if (restored?.data?.session) {
-        saveBridge(restored.data.session);
-        return restored.data.session;
+      const refreshed = await client.auth.refreshSession();
+      if (refreshed?.data?.session) {
+        saveSessionBackup(refreshed.data.session);
+        return refreshed.data.session;
       }
     } catch (_) {}
+
     return null;
   }
 
@@ -40,13 +81,9 @@
     try {
       const session = await getSessionSafe(client);
       if (session?.access_token && session?.refresh_token) {
-        saveBridge(session);
-        // Re-write the session through the same client before navigation.
-        // This keeps the exact authenticated session available to the next page.
-        const persisted = await client.auth.setSession({
-          access_token: session.access_token,
-          refresh_token: session.refresh_token
-        });
+        saveSessionBackup(session);
+        const persisted = await client.auth.setSession(tokenPair(session));
+        if (persisted?.data?.session) saveSessionBackup(persisted.data.session);
         return persisted?.data?.session || session;
       }
     } catch (error) {
@@ -54,38 +91,6 @@
     }
     return null;
   };
-
-  async function getSessionSafe(client) {
-    if (!client?.auth) return null;
-
-    // Supabase may still be hydrating the persisted session when a new
-    // document starts. Retry briefly so navigation back to index.html never
-    // treats a real logged-in user as signed out.
-    for (let attempt = 0; attempt < 4; attempt++) {
-      try {
-        const result = await client.auth.getSession();
-        if (result?.data?.session) return result.data.session;
-      } catch (error) {
-        if (attempt === 3) console.warn('ECOMAX getSession:', error);
-      }
-      if (attempt < 3) {
-        await new Promise(resolve => setTimeout(resolve, 150 * (attempt + 1)));
-      }
-    }
-
-    // Fallback bridge: survives page-to-page navigation even if browser
-    // localStorage hydration is delayed or unavailable.
-    const bridged = await restoreBridge(client);
-    if (bridged) return bridged;
-
-    // Recover a persisted session if the access token has just expired.
-    try {
-      const refreshed = await client.auth.refreshSession();
-      return refreshed?.data?.session || null;
-    } catch (error) {
-      return null;
-    }
-  }
 
   function boot() {
     if (!window.supabase || typeof window.supabase.createClient !== 'function') {
@@ -124,12 +129,16 @@
         .then(({ data }) => {
           window.ECOMAX_CURRENT_SESSION = data?.session || null;
           window.ECOMAX_CURRENT_USER = data?.session?.user || null;
+          if (data?.session) saveSessionBackup(data.session);
         })
         .catch(() => {});
 
       client.auth.onAuthStateChange((_event, session) => {
-        if (session) saveBridge(session);
-        else { try { sessionStorage.removeItem(BRIDGE_KEY); } catch (_) {} }
+        if (session) saveSessionBackup(session);
+        else {
+          try { sessionStorage.removeItem(BRIDGE_KEY); } catch (_) {}
+          try { localStorage.removeItem(BACKUP_KEY); } catch (_) {}
+        }
         window.ECOMAX_CURRENT_SESSION = session || null;
         window.ECOMAX_CURRENT_USER = session?.user || null;
       });
