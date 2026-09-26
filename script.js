@@ -52,8 +52,11 @@ async function syncAuthUI() {
       if (mobileAccount) mobileAccount.style.display = loggedIn ? "block" : "none";
     }
 
-    const { data } = await client.auth.getSession();
-    apply(data?.session || null);
+    const getSafe = window.ECOMAX_GET_SESSION;
+    const session = getSafe
+      ? await getSafe(client)
+      : (await client.auth.getSession())?.data?.session || null;
+    apply(session);
 
     if (!window.__ECOMAX_AUTH_UI_LISTENER__) {
       window.__ECOMAX_AUTH_UI_LISTENER__ = true;
