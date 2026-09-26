@@ -132,10 +132,13 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 <div class="field"><label for="password">პაროლი</label><input id="password" type="password" autocomplete="current-password" required></div>
 <div class="row"><label><input type="checkbox" checked> დამიმახსოვრე</label><a href="#" id="forgot">დამავიწყდა პაროლი</a></div>
 <button class="btn" id="loginBtn" type="submit">შესვლა</button></form>
-<div class="foot">არ გაქვს ანგარიში? <a href="register.html">რეგისტრაცია</a><br><a class="back" href="index.html">← მთავარ გვერდზე</a></div></section>
+<div class="foot">არ გაქვს ანგარიში? <a id="registerLink" href="register.html">რეგისტრაცია</a><br><a class="back" href="index.html">← მთავარ გვერდზე</a></div></section>
 </main>
 <script>
 (function(){'use strict';
+const __redirect=new URLSearchParams(location.search).get('redirect');
+const __registerLink=document.getElementById('registerLink');
+if(__registerLink && __redirect==='checkout.html') __registerLink.href='register.html?redirect=checkout.html';
 let client;
 const $=id=>document.getElementById(id),msg=$('msg'),btn=$('loginBtn');
 function show(t,c){msg.textContent=t;msg.className='msg show '+(c||'error')}
