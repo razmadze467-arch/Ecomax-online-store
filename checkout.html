@@ -166,8 +166,15 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       if(error) throw new Error(error.message+(error.details?' — '+error.details:'')+(error.hint?' — '+error.hint:''));
 
       try{
-        await a.client.functions.invoke('notify-new-order',{body:{order_number:orderId}});
-      }catch(_){}
+        const notifyResult = await a.client.functions.invoke('notify-new-order',{body:{order_number:orderId}});
+        if(notifyResult?.error){
+          console.error('ECOMAX EMAIL NOTIFY ERROR',notifyResult.error);
+        }else{
+          console.log('ECOMAX EMAIL NOTIFY OK',notifyResult?.data||null);
+        }
+      }catch(notifyError){
+        console.error('ECOMAX EMAIL NOTIFY EXCEPTION',notifyError);
+      }
 
       localStorage.removeItem('ecomax_cart');
       $('checkout').classList.add('hidden');
