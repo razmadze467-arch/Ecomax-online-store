@@ -3,7 +3,7 @@
   'use strict';
 
   const SUPABASE_URL = 'https://mkxkqdvtmfbxmldnvsef.supabase.co';
-  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_K5orPxrE9q0q9-K0dKYdt-g_0GTFvWtd';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd';
   const STORAGE_KEY = 'ecomax-auth';
   const BRIDGE_KEY = 'ecomax-auth-bridge-v1';
 
