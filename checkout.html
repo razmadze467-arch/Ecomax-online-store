@@ -3,38 +3,9 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="theme-color" content="#020812"><title>ECOMAX • შეკვეთა</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase.js?v=20260915-4"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase.js?v=20260926-3"></script>
 <style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#020812;color:#eafaff;font-family:Arial,"Noto Sans Georgian",sans-serif}body{overflow-x:hidden}body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 12% 8%,rgba(0,234,255,.13),transparent 28%),radial-gradient(circle at 90% 20%,rgba(124,60,255,.13),transparent 32%),linear-gradient(rgba(0,234,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,234,255,.035) 1px,transparent 1px);background-size:auto,auto,58px 58px,58px 58px;z-index:-1}.wrap{width:min(1100px,100%);margin:auto;padding:24px 18px 50px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.logo{font-size:27px;font-weight:950;letter-spacing:5px;color:#00eaff;text-shadow:0 0 24px rgba(0,234,255,.28)}.back{border:1px solid rgba(0,234,255,.25);background:rgba(0,234,255,.05);padding:10px 15px;border-radius:11px;color:#dffaff;transition:.2s}.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:20px}.box{background:rgba(5,22,36,.88);border:1px solid rgba(0,234,255,.16);border-radius:20px;padding:23px;box-shadow:0 18px 65px rgba(0,0,0,.35),0 0 35px rgba(0,234,255,.04);backdrop-filter:blur(14px)}h1{margin:5px 0 8px;font-size:clamp(28px,5vw,38px);line-height:1.08}h2{margin-top:0}.muted{color:#86aebc}label{display:block;margin:15px 0 7px;font-weight:800;font-size:13px;color:#c9edf5}input,select,textarea{width:100%;padding:14px;border-radius:11px;border:1px solid #15586b;background:#061925;color:#fff;font-size:15px;outline:none}textarea{min-height:92px;resize:vertical}.item{display:flex;justify-content:space-between;gap:12px;padding:15px 0;border-bottom:1px solid rgba(0,234,255,.09)}.item-name{font-weight:800}.item b{color:#00eaff;white-space:nowrap}.total{display:flex;justify-content:space-between;font-size:23px;font-weight:950;padding-top:19px}.submit{width:100%;margin-top:20px;padding:16px;border:0;border-radius:13px;background:linear-gradient(100deg,#00d9ef,#00a8ff);color:#00131c;font-size:17px;font-weight:950;cursor:pointer;transition:.25s}.submit:disabled{opacity:.48;cursor:not-allowed}.msg{margin-top:15px;padding:13px;border-radius:11px;display:none;line-height:1.45}.error{display:block;background:rgba(75,24,32,.8);border:1px solid rgba(255,90,110,.2)}.hidden{display:none!important}.success-screen{text-align:center;padding:55px 20px}.success-icon{font-size:58px;color:#48f0b0}.order-id{font-size:19px;color:#00eaff;margin:20px 0}.errcode{display:block;margin-top:8px;font-size:12px;opacity:.85;word-break:break-word}.secure{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.secure span{font-size:11px;color:#83aeba;border:1px solid rgba(0,234,255,.12);border-radius:999px;padding:6px 9px;background:rgba(0,234,255,.035)}@media(max-width:750px){.wrap{padding:16px 12px 35px}.grid{grid-template-columns:1fr}.box{padding:17px}h1{font-size:29px}}
-</style><style id="ecomax-global-neon-boost">
-/* Lightweight global blue/cyan neon polish — visual only */
-@keyframes ecomaxNeonBreath{0%,100%{text-shadow:0 0 4px rgba(0,234,255,.25),0 0 12px rgba(0,140,255,.12)}50%{text-shadow:0 0 8px rgba(0,234,255,.55),0 0 20px rgba(0,140,255,.22)}}
-@keyframes ecomaxLineFlow{0%{background-position:0% 50%}100%{background-position:200% 50%}}
-body{background-image:radial-gradient(circle at 15% 10%,rgba(0,234,255,.09),transparent 28%),radial-gradient(circle at 88% 22%,rgba(50,140,255,.09),transparent 30%),linear-gradient(rgba(0,234,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(50,140,255,.022) 1px,transparent 1px);background-size:auto,auto,44px 44px,44px 44px}
-h1,h2,h3,h4,.logo,.brand,.section-title,.product-name,.product-title,.price,.hero-badge,.tag,.eyebrow{animation:ecomaxNeonBreath 3.2s ease-in-out infinite}
-button,.primary-button,.secondary-button,.cart-button,.back,.login-link,.register-link,.iconbtn,.primary,.ghost{
- transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease!important;
-}
-button:hover,.primary-button:hover,.secondary-button:hover,.cart-button:hover,.back:hover,.login-link:hover,.register-link:hover,.iconbtn:hover,.primary:hover,.ghost:hover{
- box-shadow:0 0 12px rgba(0,234,255,.28),0 0 28px rgba(50,140,255,.13)!important;
- border-color:rgba(0,234,255,.7)!important;
-}
-a:hover{ text-shadow:0 0 8px rgba(0,234,255,.35)}
-@media(prefers-reduced-motion:reduce){h1,h2,h3,h4,.logo,.brand,.section-title,.product-name,.product-title,.price,.hero-badge,.tag,.eyebrow{animation:none!important}}
-</style><style id="ECOMAX-UNIFIED-HUD-V3">
-:root{--e-cyan:#00f6ff;--e-blue:#168dff;--e-violet:#7b4dff;--e-pink:#ff25d9;--e-white:#efffff}
-body{background-color:#020812!important}
-body:after{content:"";position:fixed;left:0;right:0;top:0;height:2px;z-index:9998;pointer-events:none;background:linear-gradient(90deg,transparent,#00f6ff 18%,#7b4dff 48%,#ff25d9 72%,transparent);background-size:220% 100%;box-shadow:0 0 12px #00f6ff,0 0 28px rgba(123,77,255,.45);animation:ecomaxTopScan 6s linear infinite;opacity:.8}
-a,button,input,select,textarea{font-family:inherit}
-button,.btn,.submit,.back{position:relative;overflow:hidden}
-button:before,.btn:before,.submit:before,.back:before{content:"";position:absolute;top:0;bottom:0;width:28%;left:-40%;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),rgba(0,246,255,.28),transparent);transform:skewX(-18deg);animation:ecomaxButtonScan 4.8s ease-in-out infinite}
-.card,.box,.info-card,.product-card{
- box-shadow:0 0 0 1px rgba(0,246,255,.035),0 18px 65px rgba(0,0,0,.42),0 0 28px rgba(0,246,255,.07),inset 0 0 28px rgba(0,246,255,.025)!important
-}
-input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08),0 0 18px rgba(0,246,255,.22),inset 0 0 18px rgba(0,246,255,.04)!important}
-@keyframes ecomaxTopScan{0%{background-position:220% 0}100%{background-position:-20% 0}}
-@keyframes ecomaxButtonScan{0%,62%{left:-40%;opacity:0}70%{opacity:1}90%,100%{left:125%;opacity:0}}
-@media(prefers-reduced-motion:reduce){body:after,button:before,.btn:before,.submit:before,.back:before{animation:none!important}}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#020812;color:#eafaff;font-family:Arial,"Noto Sans Georgian",sans-serif}body{overflow-x:hidden}body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 12% 8%,rgba(0,234,255,.13),transparent 28%),radial-gradient(circle at 90% 20%,rgba(124,60,255,.13),transparent 32%),linear-gradient(rgba(0,234,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,234,255,.035) 1px,transparent 1px);background-size:auto,auto,58px 58px,58px 58px;z-index:-1}.wrap{width:min(1100px,100%);margin:auto;padding:24px 18px 50px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.logo{font-size:27px;font-weight:950;letter-spacing:5px;color:#00eaff;text-shadow:0 0 24px rgba(0,234,255,.28)}.back{border:1px solid rgba(0,234,255,.25);background:rgba(0,234,255,.05);padding:10px 15px;border-radius:11px;color:#dffaff;transition:.2s}.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:20px}.box{background:rgba(5,22,36,.88);border:1px solid rgba(0,234,255,.16);border-radius:20px;padding:23px;box-shadow:0 18px 65px rgba(0,0,0,.35),0 0 35px rgba(0,234,255,.04);backdrop-filter:blur(14px)}h1{margin:5px 0 8px;font-size:clamp(28px,5vw,38px);line-height:1.08}h2{margin-top:0}.muted{color:#86aebc}label{display:block;margin:15px 0 7px;font-weight:800;font-size:13px;color:#c9edf5}input,select,textarea{width:100%;padding:14px;border-radius:11px;border:1px solid #15586b;background:#061925;color:#fff;font-size:15px;outline:none}textarea{min-height:92px;resize:vertical}.item{display:flex;justify-content:space-between;gap:12px;padding:15px 0;border-bottom:1px solid rgba(0,234,255,.09)}.item-name{font-weight:800}.item b{color:#00eaff;white-space:nowrap}.total{display:flex;justify-content:space-between;font-size:23px;font-weight:950;padding-top:19px}.submit{width:100%;margin-top:20px;padding:16px;border:0;border-radius:13px;background:linear-gradient(100deg,#00d9ef,#00a8ff);color:#00131c;font-size:17px;font-weight:950;cursor:pointer;transition:.25s}.submit:disabled{opacity:.48;cursor:not-allowed}.msg{margin-top:15px;padding:13px;border-radius:11px;display:none;line-height:1.45}.error{display:block;background:rgba(75,24,32,.8);border:1px solid rgba(255,90,110,.2)}.hidden{display:none!important}.success-screen{text-align:center;padding:55px 20px}.success-icon{font-size:58px;color:#48f0b0}.order-id{font-size:19px;color:#00eaff;margin:20px 0}.errcode{display:block;margin-top:8px;font-size:12px;opacity:.85;word-break:break-word}.secure{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.secure span{font-size:11px;color:#83aeba;border:1px solid rgba(0,234,255,.12);border-radius:999px;padding:6px 9px;background:rgba(0,234,255,.035)}.auth-gate a{color:#00131c!important}@media(max-width:750px){.wrap{padding:16px 12px 35px}.grid{grid-template-columns:1fr}.box{padding:17px}h1{font-size:29px}}
 </style>
 </head>
 <body><div class="wrap"><header class="top"><a class="logo" href="index.html">ECOMAX</a><a class="back" href="index.html">← დაბრუნება</a></header>
@@ -50,175 +21,83 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 <script>
 'use strict';
 (function(){
-  const SUPABASE_URL='https://mkxkqdvtmfbxmldnvsef.supabase.co';
-  const SUPABASE_KEY='sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd';
   const $=id=>document.getElementById(id);
-  const itemsEl=$('items'), totalEl=$('total'), form=$('orderForm'), msg=$('msg'), btn=$('submitBtn'), authGate=$('authGate'), authGateTitle=$('authGateTitle'), authGateText=$('authGateText');
+  const itemsEl=$('items'),totalEl=$('total'),form=$('orderForm'),msg=$('msg'),btn=$('submitBtn'),authGate=$('authGate'),authGateTitle=$('authGateTitle'),authGateText=$('authGateText');
   const esc=v=>String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]||c));
   const num=v=>{const n=Number(String(v??'').replace(',','.').replace(/[^0-9.-]/g,''));return Number.isFinite(n)?n:0};
   const readCart=()=>{try{const x=JSON.parse(localStorage.getItem('ecomax_cart')||'[]');return Array.isArray(x)?x:[]}catch(_){return[]}};
-  let cart=readCart();
+  let cart=readCart(),client=null;
 
-  function showError(t){
-    msg.innerHTML='<b>⚠️ '+esc(t)+'</b>';
-    msg.className='msg error';
-    msg.style.display='block';
-  }
+  function showError(t){msg.innerHTML='<b>⚠️ '+esc(t)+'</b>';msg.className='msg error';msg.style.display='block'}
+  function showInfo(t){msg.innerHTML=esc(t);msg.className='msg';msg.style.display='block';msg.style.background='rgba(0,180,255,.08)';msg.style.border='1px solid rgba(0,234,255,.25)'}
   function setAuthState(user){
     if(user){
       authGate.style.display='none';
       btn.disabled=!cart.length;
       btn.textContent='შეკვეთის დადასტურება →';
-      return;
+      const n=user.user_metadata?.full_name||user.user_metadata?.name||'';
+      if(n&&!$('customerName').value)$('customerName').value=n;
+    }else{
+      authGate.style.display='block';
+      authGateTitle.textContent='🔐 შეკვეთისთვის ავტორიზაცია აუცილებელია';
+      authGateText.textContent='პროდუქტები და კალათა ხელმისაწვდომია ავტორიზაციის გარეშე. შეკვეთის დადასტურება მხოლოდ ავტორიზაციის წარმატებით დასრულების შემდეგ იქნება შესაძლებელი.';
+      btn.disabled=true;
+      btn.textContent='🔐 ჯერ გაიარე ავტორიზაცია';
     }
-    authGate.style.display='block';
-    authGateTitle.textContent='🔐 შეკვეთისთვის ავტორიზაცია აუცილებელია';
-    authGateText.textContent='პროდუქტები და კალათა ხელმისაწვდომია ავტორიზაციის გარეშე. შეკვეთის დადასტურება მხოლოდ ავტორიზაციის წარმატებით დასრულების შემდეგ იქნება შესაძლებელი.';
-    btn.disabled=true;
-    btn.textContent='🔐 ჯერ გაიარე ავტორიზაცია';
   }
-  function showInfo(t){
-    msg.innerHTML=esc(t);
-    msg.className='msg';
-    msg.style.display='block';
-    msg.style.background='rgba(0,180,255,.08)';
-    msg.style.border='1px solid rgba(0,234,255,.25)';
-  }
-  function total(){
-    return cart.reduce((s,i)=>s+num(i.unit_price??i.price)*Math.max(1,num(i.quantity||1)),0);
-  }
+  function total(){return cart.reduce((s,i)=>s+num(i.unit_price??i.price)*Math.max(1,num(i.quantity||1)),0)}
   function render(){
     cart=readCart();
-    if(!cart.length){
-      itemsEl.innerHTML='<p class="muted">კალათა ცარიელია. დაბრუნდი პროდუქტებზე.</p>';
-      totalEl.textContent='0 ₾';
-      btn.disabled=true;
-      return;
-    }
-    btn.disabled=false;
-    itemsEl.innerHTML=cart.map(i=>{
-      const q=Math.max(1,num(i.quantity||1)), p=num(i.unit_price??i.price), line=p*q;
-      return '<div class="item"><span><span class="item-name">'+esc(i.name||'პროდუქტი')+'</span><br><small class="muted">'+esc(i.volume||'')+' × '+q+'</small></span><b>'+line+' ₾</b></div>';
-    }).join('');
+    if(!cart.length){itemsEl.innerHTML='<p class="muted">კალათა ცარიელია. დაბრუნდი პროდუქტებზე.</p>';totalEl.textContent='0 ₾';btn.disabled=true;return}
+    itemsEl.innerHTML=cart.map(i=>{const q=Math.max(1,num(i.quantity||1)),p=num(i.unit_price??i.price),line=p*q;return '<div class="item"><span><span class="item-name">'+esc(i.name||'პროდუქტი')+'</span><br><small class="muted">'+esc(i.volume||'')+' × '+q+'</small></span><b>'+line+' ₾</b></div>'}).join('');
     totalEl.textContent=total()+' ₾';
   }
-
-  let client=null;
-  function getClient(){
-    if(client) return client;
-    if(!window.supabase||typeof window.supabase.createClient!=='function'){
-      throw new Error('Supabase ვერ ჩაიტვირთა. შეამოწმე ინტერნეტი და განაახლე გვერდი.');
-    }
-    client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
-      auth:{storageKey:'ecomax-auth',storage:window.localStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}
-    });
+  async function getClient(){
+    if(client)return client;
+    if(window.ECOMAX_AUTH_READY) { client=await window.ECOMAX_AUTH_READY; return client; }
+    if(!window.supabase?.createClient)throw new Error('Supabase ვერ ჩაიტვირთა. განაახლე გვერდი.');
+    client=window.supabase.createClient('https://mkxkqdvtmfbxmldnvsef.supabase.co','sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd',{auth:{storageKey:'ecomax-auth',storage:window.localStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}});
     return client;
   }
   async function getUser(){
-    const c=getClient();
-    const {data,error}=await c.auth.getUser();
-    if(error) throw error;
-    return {client:c,user:data?.user||null};
+    const c=await getClient();
+    const {data,error}=await c.auth.getSession();
+    if(error)throw error;
+    return {client:c,user:data?.session?.user||null};
   }
   async function loadUser(){
-    try{
-      const a=await getUser();
-      setAuthState(a.user);
-      if(a.user){
-        const n=a.user.user_metadata?.full_name||a.user.user_metadata?.name||'';
-        if(n&&!$('customerName').value)$('customerName').value=n;
-      }
-    }catch(e){
-      console.warn('checkout auth check',e);
-      setAuthState(null);
-    }
+    try{const a=await getUser();setAuthState(a.user)}
+    catch(e){console.warn('checkout auth check',e);setAuthState(null)}
   }
 
   form.addEventListener('submit',async function(e){
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    cart=readCart();
-    msg.style.display='none';
-
-    if(!cart.length){showError('კალათა ცარიელია.');return;}
-    if(!form.checkValidity()){form.reportValidity();return;}
-
-    const auth=await getUser();
+    e.preventDefault();e.stopImmediatePropagation();cart=readCart();msg.style.display='none';
+    if(!cart.length){showError('კალათა ცარიელია.');return}
+    if(!form.checkValidity()){form.reportValidity();return}
+    let auth=await getUser();
     if(!auth.user){
       setAuthState(null);
-      window.location.href='login.html?redirect=checkout.html';
+      window.location.replace('login.html?redirect=checkout.html');
       return;
     }
-
-    btn.disabled=true;
-    btn.textContent='იგზავნება...';
-
+    btn.disabled=true;btn.textContent='იგზავნება...';
     try{
-      const a=auth;
-
-      if(!a.user){
-        sessionStorage.setItem('ecomax_checkout_redirect','checkout.html');
-        showInfo('შეკვეთის გასაგზავნად ჯერ შედი ანგარიშში. გადაგიყვან ავტორიზაციაზე...');
-        setTimeout(()=>{window.location.href='login.html?redirect=checkout.html'},500);
-        return;
-      }
-
       const orderId='ECX-'+Date.now().toString(36).toUpperCase();
-      const orderItems=cart.map(i=>{
-        const quantity=Math.max(1,num(i.quantity||1));
-        const unitPrice=num(i.unit_price??i.price);
-        return {
-          name:i.name||'პროდუქტი',
-          volume:i.volume||'',
-          price:unitPrice,
-          unit_price:unitPrice,
-          quantity,
-          line_total:unitPrice*quantity
-        };
-      });
-
-      const payload={
-        order_number:orderId,
-        user_id:a.user.id,
-        status:'new',
-        customer_name:$('customerName').value.trim(),
-        phone:$('phone').value.trim(),
-        city:$('city').value.trim(),
-        address:$('address').value.trim(),
-        items:orderItems,
-        total:total(),
-        payment_method:$('payment').value,
-        delivery_method:$('delivery').value
-      };
-
-      const {data,error}=await a.client.from('orders').insert(payload).select('id,order_number').single();
-      if(error) throw new Error(error.message+(error.details?' — '+error.details:'')+(error.hint?' — '+error.hint:''));
-
+      const orderItems=cart.map(i=>{const quantity=Math.max(1,num(i.quantity||1)),unitPrice=num(i.unit_price??i.price);return{name:i.name||'პროდუქტი',volume:i.volume||'',price:unitPrice,unit_price:unitPrice,quantity,line_total:unitPrice*quantity}});
+      const payload={order_number:orderId,user_id:auth.user.id,status:'new',customer_name:$('customerName').value.trim(),phone:$('phone').value.trim(),city:$('city').value.trim(),address:$('address').value.trim(),items:orderItems,total:total(),payment_method:$('payment').value,delivery_method:$('delivery').value};
+      const {data,error}=await auth.client.from('orders').insert(payload).select('id,order_number').single();
+      if(error)throw new Error(error.message+(error.details?' — '+error.details:'')+(error.hint?' — '+error.hint:''));
       try{
-        const notifyResult = await a.client.functions.invoke('notify-new-order',{body:{order_number:orderId}});
-        if(notifyResult?.error){
-          console.error('ECOMAX EMAIL NOTIFY ERROR',notifyResult.error);
-        }else{
-          console.log('ECOMAX EMAIL NOTIFY OK',notifyResult?.data||null);
-        }
-      }catch(notifyError){
-        console.error('ECOMAX EMAIL NOTIFY EXCEPTION',notifyError);
-      }
-
+        const notifyResult=await auth.client.functions.invoke('notify-new-order',{body:{order_number:orderId}});
+        if(notifyResult?.error)console.error('ECOMAX EMAIL NOTIFY ERROR',notifyResult.error);else console.log('ECOMAX EMAIL NOTIFY OK',notifyResult?.data||null);
+      }catch(notifyError){console.error('ECOMAX EMAIL NOTIFY EXCEPTION',notifyError)}
       localStorage.removeItem('ecomax_cart');
-      $('checkout').classList.add('hidden');
-      $('orderId').textContent='შეკვეთის კოდი: '+(data?.order_number||orderId);
-      $('success').classList.remove('hidden');
-    }catch(err){
-      console.error('ECOMAX ORDER ERROR',err);
-      showError(err?.message||'შეკვეთის გაგზავნა ვერ მოხერხდა.');
-      btn.disabled=false;
-      btn.textContent='შეკვეთის დადასტურება →';
-    }
+      $('checkout').classList.add('hidden');$('orderId').textContent='შეკვეთის კოდი: '+(data?.order_number||orderId);$('success').classList.remove('hidden');
+    }catch(err){console.error('ECOMAX ORDER ERROR',err);showError(err?.message||'შეკვეთის გაგზავნა ვერ მოხერხდა.');btn.disabled=false;btn.textContent='შეკვეთის დადასტურება →'}
   });
 
-  render();
-  loadUser();
-  window.addEventListener('pageshow',render);
+  render();loadUser();
+  (async()=>{try{const c=await getClient();c.auth.onAuthStateChange((_event,session)=>{setAuthState(session?.user||null)})}catch(_){} })();
+  window.addEventListener('pageshow',()=>{render();loadUser()});
 })();
 </script></body></html>
