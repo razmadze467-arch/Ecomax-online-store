@@ -20,13 +20,13 @@ function note(text) {
 
 async function syncAuthUI() {
   try {
-    const client = window.ECOMAX_SUPABASE_CLIENT || window.ECOMAX_AUTH_CLIENT;
-    if (!client || !client.auth) return;
+    const ready = window.ECOMAX_AUTH_READY;
+    const client = ready ? await ready : (window.ECOMAX_SUPABASE_CLIENT || window.ECOMAX_AUTH_CLIENT);
+    if (!client?.auth) return;
 
     const login = document.getElementById("loginLink");
     const register = document.getElementById("registerLink");
     const account = document.getElementById("authAccountLink");
-
     const mobileNav = document.getElementById("mobileNav");
     const mobileLogin = mobileNav?.querySelector('a[href="login.html"]');
     const mobileRegister = mobileNav?.querySelector('a[href="register.html"]');
@@ -40,28 +40,48 @@ async function syncAuthUI() {
       mobileNav.appendChild(mobileAccount);
     }
 
-    function apply(session) {
+    const apply = (session) => {
       const loggedIn = !!session?.user;
-
       if (login) login.style.display = loggedIn ? "none" : "inline-flex";
       if (register) register.style.display = loggedIn ? "none" : "inline-flex";
       if (account) account.style.display = loggedIn ? "inline-flex" : "none";
-
       if (mobileLogin) mobileLogin.style.display = loggedIn ? "none" : "block";
       if (mobileRegister) mobileRegister.style.display = loggedIn ? "none" : "block";
       if (mobileAccount) mobileAccount.style.display = loggedIn ? "block" : "none";
+      document.documentElement.dataset.ecomaxAuthenticated = loggedIn ? "true" : "false";
+    };
+
+    let session = null;
+    try {
+      session = window.ECOMAX_GET_SESSION
+        ? await window.ECOMAX_GET_SESSION(client)
+        : (await client.auth.getSession())?.data?.session || null;
+    } catch (_) {}
+
+    if (!session) {
+      try {
+        session = (await client.auth.refreshSession())?.data?.session || null;
+      } catch (_) {}
     }
 
-    const getSafe = window.ECOMAX_GET_SESSION;
-    const session = getSafe
-      ? await getSafe(client)
-      : (await client.auth.getSession())?.data?.session || null;
     apply(session);
 
-    if (!window.__ECOMAX_AUTH_UI_LISTENER__) {
-      window.__ECOMAX_AUTH_UI_LISTENER__ = true;
-      client.auth.onAuthStateChange((_event, session) => apply(session || null));
-    }
+    client.auth.onAuthStateChange((_event, nextSession) => apply(nextSession || null));
+
+    // Retry briefly because mobile/GitHub Pages may restore localStorage after boot.
+    let tries = 0;
+    const retry = async () => {
+      if (tries++ >= 8) return;
+      try {
+        const current = (await client.auth.getSession())?.data?.session || null;
+        if (current?.user) {
+          apply(current);
+          return;
+        }
+      } catch (_) {}
+      setTimeout(retry, 500);
+    };
+    setTimeout(retry, 500);
   } catch (error) {
     console.warn("ECOMAX auth UI:", error);
   }
