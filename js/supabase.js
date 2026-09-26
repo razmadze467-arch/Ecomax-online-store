@@ -7,6 +7,26 @@
   const STORAGE_KEY = 'ecomax-auth';
 
   window.ECOMAX_SUPABASE = { url: SUPABASE_URL, key: SUPABASE_PUBLISHABLE_KEY };
+  window.ECOMAX_GET_SESSION = getSessionSafe;
+
+  async function getSessionSafe(client) {
+    if (!client?.auth) return null;
+
+    try {
+      const first = await client.auth.getSession();
+      if (first?.data?.session) return first.data.session;
+    } catch (error) {
+      console.warn('ECOMAX getSession:', error);
+    }
+
+    // Recover a persisted session if the access token has just expired.
+    try {
+      const refreshed = await client.auth.refreshSession();
+      return refreshed?.data?.session || null;
+    } catch (error) {
+      return null;
+    }
+  }
 
   function boot() {
     if (!window.supabase || typeof window.supabase.createClient !== 'function') {
