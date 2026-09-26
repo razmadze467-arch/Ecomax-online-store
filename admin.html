@@ -3030,11 +3030,15 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
   /* ==========================================
      ORDER MODAL
-  ==========================================
+  ========================================== */
+
   function closeOrderModal() {
 
-    $("orderModal")
-      .classList.remove("show");
+    const modal = $("orderModal");
+    if (!modal) return;
+
+    modal.classList.remove("show");
+    modal.style.display = "none";
 
   }
 
