@@ -41,12 +41,16 @@ h1{font-size:30px;margin:8px 0}.sub{color:var(--muted);font-size:12px;line-heigh
 'use strict';
 const URL='https://mkxkqdvtmfbxmldnvsef.supabase.co';
 const KEY='sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd';
-const STORAGE='ecomax-auth';
+const STORAGE='sb-mkxkqdvtmfbxmldnvsef-auth-token';
+const LEGACY_STORAGE='ecomax-auth';
 const $=id=>document.getElementById(id),msg=$('msg'),btn=$('registerBtn');
 const redirect=new URLSearchParams(location.search).get('redirect');
 if(redirect==='checkout.html')$('loginLink').href='login.html?redirect=checkout.html';
 function show(text,type){msg.textContent=text;msg.className='msg show '+(type||'error')}
 function client(){
+ try{
+  if(!localStorage.getItem(STORAGE) && localStorage.getItem(LEGACY_STORAGE)) localStorage.setItem(STORAGE,localStorage.getItem(LEGACY_STORAGE));
+ }catch(_){}
  if(window.ECOMAX_SUPABASE_CLIENT?.auth)return window.ECOMAX_SUPABASE_CLIENT;
  if(!window.supabase?.createClient)throw new Error('Supabase ვერ ჩაიტვირთა. გვერდი განაახლე და ისევ სცადე.');
  return window.supabase.createClient(URL,KEY,{auth:{storageKey:STORAGE,storage:window.localStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}});
