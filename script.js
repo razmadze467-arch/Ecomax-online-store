@@ -268,3 +268,4 @@ function init(){
   if(isHome){installCareCards();forceMaxHomeDesign();installBottomUI();}
 
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
+}
