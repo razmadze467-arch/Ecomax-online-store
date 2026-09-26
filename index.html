@@ -6269,5 +6269,9 @@ body{
   #ecomaxDeveloperCredit{padding:16px 8px 20px;font-size:9px;letter-spacing:1.5px}
 }
 </style>
+
+<script id="ecomax-add-cart-navigation-guard-v1">
+(function(){'use strict';document.addEventListener('click',function(e){const b=e.target&&e.target.closest?e.target.closest('.add-cart'):null;if(!b)return;e.preventDefault();e.stopImmediatePropagation();const name=b.dataset.name||'';const price=b.dataset.price||'';const volume=b.dataset.volume||'';if(typeof window.addToCart==='function')window.addToCart(name,price,volume);},true);})();
+</script>
 </body>
 </html>
