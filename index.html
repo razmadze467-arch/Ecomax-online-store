@@ -6140,8 +6140,11 @@ body{
         document.documentElement.dataset.ecomaxAuthenticated=logged?'true':'false';
         document.documentElement.dataset.ecomaxCourier=isCourier?'true':'false';
       };
-      const {data}=await db.auth.getSession();
-      await apply(data?.session||null);
+      const getSafe = window.ECOMAX_GET_SESSION;
+      const session = getSafe
+        ? await getSafe(db)
+        : (await db.auth.getSession())?.data?.session || null;
+      await apply(session);
       db.auth.onAuthStateChange((_event,session)=>setTimeout(()=>apply(session||null),0));
     }catch(e){ console.warn('ECOMAX auth persistence:',e); }
   }
