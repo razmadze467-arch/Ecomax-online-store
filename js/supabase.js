@@ -53,6 +53,32 @@
     return null;
   }
 
+  async function restoreStoredSession(client) {
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+
+      const stored = JSON.parse(raw);
+      const access_token = stored?.access_token;
+      const refresh_token = stored?.refresh_token;
+
+      if (!access_token || !refresh_token) return null;
+
+      const result = await client.auth.setSession({
+        access_token,
+        refresh_token
+      });
+
+      const session = result?.data?.session || null;
+      if (session) {
+        saveBridge(session);
+        return session;
+      }
+    } catch (_) {}
+
+    return null;
+  }
+
   async function getSessionSafe(client) {
     if (!client?.auth) return null;
 
@@ -63,6 +89,11 @@
         return result.data.session;
       }
     } catch (_) {}
+
+    // If the SDK has not hydrated its in-memory session yet, restore
+    // the exact persisted Supabase session from localStorage.
+    const stored = await restoreStoredSession(client);
+    if (stored) return stored;
 
     const bridged = await restoreBridge(client);
     if (bridged) return bridged;
