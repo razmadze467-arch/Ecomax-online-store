@@ -136,6 +136,9 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 </main>
 <script>
 (function(){'use strict';
+const redirectTarget=new URLSearchParams(location.search).get("redirect");
+const registerLink=document.getElementById("registerLink");
+if(registerLink && redirectTarget==="checkout.html") registerLink.href="register.html?redirect=checkout.html";
 const __redirect=new URLSearchParams(location.search).get('redirect');
 const __registerLink=document.getElementById('registerLink');
 if(__registerLink && __redirect==='checkout.html') __registerLink.href='register.html?redirect=checkout.html';
