@@ -2192,6 +2192,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     if(error){ console.error("Courier applications:",error); toast("კურიერების მონაცემები ვერ ჩაიტვირთა"); return; }
     courierApplications = data || [];
     renderCourierApplications();
+    renderOrders();
   }
 
   function courierStatusName(s){
@@ -2245,6 +2246,64 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       console.error("Courier review:",error);
       toast("კურიერის მართვა ვერ მოხერხდა: "+(error.message||"უცნობი შეცდომა"));
     }
+  }
+
+  function approvedCouriers(){
+    return courierApplications.filter(x=>x.status==="approved");
+  }
+
+  function courierOptions(order){
+    const list=approvedCouriers();
+    const current=String(order?.courier_id||"");
+    let html='<option value="">— აირჩიე კურიერი —</option>';
+    for(const courier of list){
+      const selected=String(courier.user_id||"")===current ? " selected" : "";
+      html+=`<option value="${esc(courier.user_id||"")}"${selected}>${esc(courier.full_name||courier.email||"კურიერი")} — ${esc(courier.phone||"")}</option>`;
+    }
+    if(current && !list.some(x=>String(x.user_id)===current)){
+      html+=`<option value="${esc(current)}" selected>მიმდინარე: ${esc(order.courier_name||current)}</option>`;
+    }
+    return html;
+  }
+
+  async function assignCourier(orderId){
+    const order=orders.find(x=>String(x.id)===String(orderId));
+    const select=$("courier-select-"+orderId);
+    const courierId=select?.value||"";
+    if(!order || !courierId){ toast("ჯერ აირჩიე კურიერი"); return; }
+    const courier=approvedCouriers().find(x=>String(x.user_id)===String(courierId));
+    if(!courier){ toast("ეს კურიერი დამტკიცებული არ არის"); return; }
+
+    const patch={
+      courier_id:courier.user_id,
+      courier_name:courier.full_name||courier.email||"ECOMAX LINE",
+      courier_phone:courier.phone||null,
+      line_assigned_at:new Date().toISOString(),
+      updated_at:new Date().toISOString()
+    };
+    const {data,error}=await db.from("orders").update(patch).eq("id",orderId).select("*").single();
+    if(error){ console.error("Assign courier:",error); toast("კურიერის მიბმა ვერ მოხერხდა: "+error.message); return; }
+
+    const ev=await db.from("courier_order_events").insert({order_id:orderId,courier_id:courier.user_id,event_type:"assigned"});
+    if(ev.error) console.warn("Courier assigned event:",ev.error.message);
+
+    Object.assign(order,data);
+    renderOrders(); renderRecentOrders();
+    await loadLiveCommand();
+    toast("კურიერი შეკვეთას მიება ✓");
+  }
+
+  async function unassignCourier(orderId){
+    const order=orders.find(x=>String(x.id)===String(orderId));
+    if(!order) return;
+    if(!confirm("მოვხსნათ კურიერი ამ შეკვეთიდან?")) return;
+    const patch={courier_id:null,courier_name:null,courier_phone:null,line_assigned_at:null,updated_at:new Date().toISOString()};
+    const {data,error}=await db.from("orders").update(patch).eq("id",orderId).select("*").single();
+    if(error){ console.error("Unassign courier:",error); toast("კურიერის მოხსნა ვერ მოხერხდა: "+error.message); return; }
+    Object.assign(order,data);
+    renderOrders(); renderRecentOrders();
+    await loadLiveCommand();
+    toast("კურიერი მოიხსნა ✓");
   }
 
   /* ==========================================
@@ -2425,33 +2484,20 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
               </td>
 
               <td>
-
-                <button
-                  class="small-btn"
-                  onclick="viewOrder('${esc(order.id)}')"
-                  type="button"
-                >
-                  👁 ნახვა
-                </button>
-
-                <button
-                  class="small-btn"
-                  onclick="changeOrderStatus('${esc(order.id)}')"
-                  type="button"
-                >
-                  ⚙ სტატუსი
-                </button>
-
-                <button
-                  class="small-btn ecx-delete-order"
-                  onclick="deleteOrder('${esc(order.id)}')"
-                  type="button"
-                  title="შეკვეთის წაშლა"
-                  aria-label="შეკვეთის წაშლა"
-                >
-                  × წაშლა
-                </button>
-
+                <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+                  <button class="small-btn" onclick="viewOrder('${esc(order.id)}')" type="button">👁 ნახვა</button>
+                  <button class="small-btn" onclick="changeOrderStatus('${esc(order.id)}')" type="button">⚙ სტატუსი</button>
+                  <select class="field" style="min-width:190px;max-width:240px;margin:0;padding:7px 9px;font-size:11px" id="courier-select-${esc(order.id)}" aria-label="კურიერის არჩევა">
+                    ${courierOptions(order)}
+                  </select>
+                  <button class="small-btn" onclick="assignCourier('${esc(order.id)}')" type="button" title="კურიერის მიბმა">🚚 მიბმა</button>
+                  ${order.courier_id ? `<button class="small-btn danger" onclick="unassignCourier('${esc(order.id)}')" type="button" title="კურიერის მოხსნა">✕ მოხსნა</button>` : ""}
+                  <button class="small-btn ecx-delete-order" onclick="deleteOrder('${esc(order.id)}')" type="button" title="შეკვეთის წაშლა" aria-label="შეკვეთის წაშლა">× წაშლა</button>
+                </div>
+                <div style="margin-top:6px;color:${order.courier_id ? "#65f2aa" : "#8da8b0"};font-size:10px">
+                  🚚 კურიერი: ${esc(order.courier_name || "არ არის მიბმული")}
+                  ${order.courier_phone ? " • " + esc(order.courier_phone) : ""}
+                </div>
               </td>
 
             </tr>
