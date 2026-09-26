@@ -5,9 +5,35 @@
   const SUPABASE_URL = 'https://mkxkqdvtmfbxmldnvsef.supabase.co';
   const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd';
   const STORAGE_KEY = 'ecomax-auth';
+  const BRIDGE_KEY = 'ecomax-auth-bridge-v1';
 
   window.ECOMAX_SUPABASE = { url: SUPABASE_URL, key: SUPABASE_PUBLISHABLE_KEY };
   window.ECOMAX_GET_SESSION = getSessionSafe;
+
+  function saveBridge(session) {
+    try {
+      if (!session?.access_token || !session?.refresh_token) return;
+      sessionStorage.setItem(BRIDGE_KEY, JSON.stringify({
+        access_token: session.access_token,
+        refresh_token: session.refresh_token
+      }));
+    } catch (_) {}
+  }
+
+  async function restoreBridge(client) {
+    try {
+      const raw = sessionStorage.getItem(BRIDGE_KEY);
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      if (!data?.access_token || !data?.refresh_token) return null;
+      const restored = await client.auth.setSession(data);
+      if (restored?.data?.session) {
+        saveBridge(restored.data.session);
+        return restored.data.session;
+      }
+    } catch (_) {}
+    return null;
+  }
 
   async function getSessionSafe(client) {
     if (!client?.auth) return null;
@@ -26,6 +52,11 @@
         await new Promise(resolve => setTimeout(resolve, 150 * (attempt + 1)));
       }
     }
+
+    // Fallback bridge: survives page-to-page navigation even if browser
+    // localStorage hydration is delayed or unavailable.
+    const bridged = await restoreBridge(client);
+    if (bridged) return bridged;
 
     // Recover a persisted session if the access token has just expired.
     try {
@@ -77,6 +108,8 @@
         .catch(() => {});
 
       client.auth.onAuthStateChange((_event, session) => {
+        if (session) saveBridge(session);
+        else { try { sessionStorage.removeItem(BRIDGE_KEY); } catch (_) {} }
         window.ECOMAX_CURRENT_SESSION = session || null;
         window.ECOMAX_CURRENT_USER = session?.user || null;
       });
