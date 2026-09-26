@@ -310,6 +310,82 @@ function routeHref(o){
  return 'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(q)+(origin?'&origin='+origin:'')+'&travelmode=driving';
 }
 function quickActions(o){const n=next[o.status],closed=['completed','cancelled'].includes(o.status),map=mapHref(o);if(closed)return '';let h='<div class="quick">';if(n)h+='<button class="q" data-next="'+esc(o.id)+'">→ '+esc(labels[n])+'</button>';if(map)h+='<button class="q arrived" data-arrived="'+esc(o.id)+'">📍 მივედი ადგილზე</button>';if(o.status==='shipped')h+='<button class="q done" data-complete="'+esc(o.id)+'">✓ ჩავაბარე</button>';return h+'</div>';}
+function notifyNewOrder(o){
+ const number=o?.order_number||'შეკვეთა';
+ const customer=o?.customer_name||'მომხმარებელი';
+ const address=[o?.city,o?.address].filter(Boolean).join(', ');
+ const message='ახალი შეკვეთა '+number+' • '+customer+(address?' • '+address:'');
+ toast('🔔 '+message);
+
+ const alerts=document.getElementById('lineAlerts');
+ if(alerts){
+   alerts.insertAdjacentHTML('afterbegin','<div class="alert ok">🔔 <b>ახალი შეკვეთა</b><br>'+esc(number)+' • '+esc(customer)+(address?'<br>'+esc(address):'')+'</div>');
+   const first=alerts.firstElementChild;
+   setTimeout(()=>first?.remove(),12000);
+ }
+
+ if('Notification' in window){
+   if(Notification.permission==='granted'){
+     try{ new Notification('ECOMAX LINE — ახალი შეკვეთა',{body:message,tag:'ecomax-order-'+String(o?.id||number)}); }catch(e){}
+   }else if(Notification.permission==='default'){
+     try{ Notification.requestPermission().catch(()=>{}); }catch(e){}
+   }
+ }
+
+ try{
+   const C=window.AudioContext||window.webkitAudioContext;
+   if(C){
+     const a=new C(),g=a.createGain(),o1=a.createOscillator(),o2=a.createOscillator();
+     o1.frequency.value=880;o2.frequency.value=1175;
+     g.gain.setValueAtTime(.0001,a.currentTime);
+     g.gain.exponentialRampToValueAtTime(.08,a.currentTime+.02);
+     g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+.55);
+     o1.connect(g);o2.connect(g);g.connect(a.destination);
+     o1.start();o2.start();o1.stop(a.currentTime+.6);o2.stop(a.currentTime+.6);
+     setTimeout(()=>a.close().catch(()=>{}),800);
+   }
+ }catch(e){}
+}
+
+let lineRealtimeChannel=null;
+async function startLineRealtime(){
+ if(!db||!user?.id)return;
+
+ if(lineRealtimeChannel){
+   try{await db.removeChannel(lineRealtimeChannel);}catch(e){}
+   lineRealtimeChannel=null;
+ }
+
+ lineRealtimeChannel=db
+   .channel('ecomax-line-orders-'+user.id)
+   .on('postgres_changes',{
+     event:'UPDATE',
+     schema:'public',
+     table:'orders',
+     filter:'courier_id=eq.'+user.id
+   },async(payload)=>{
+     const oldRow=payload.old||{};
+     const newRow=payload.new||{};
+     const newlyAssigned=String(oldRow.courier_id||'')!==String(newRow.courier_id||'') &&
+                          String(newRow.courier_id||'')===String(user.id);
+     const known=orders.find(x=>String(x.id)===String(newRow.id));
+     if(newlyAssigned || !known){
+       notifyNewOrder(newRow);
+     }
+     await load();
+   })
+   .subscribe((status,error)=>{
+     console.log('ECOMAX LINE realtime:',status,error||'');
+     if(status==='SUBSCRIBED'){
+       const el=document.getElementById('liveStatus');
+       if(el)el.textContent='LIVE • REAL-TIME CONNECTED';
+     }else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'){
+       const el=document.getElementById('liveStatus');
+       if(el)el.textContent='LIVE • RECONNECTING...';
+     }
+   });
+}
+
 async function boot(){
  if(!db){$('access').textContent='Supabase ვერ ჩაიტვირთა';return;}
  const {data:{user:u}}=await db.auth.getUser();user=u;
@@ -320,6 +396,7 @@ async function boot(){
  if(role!=='courier'){await db.auth.signOut();location.replace('index.html');return;}
  $('access').textContent='COURIER • მხოლოდ მინიჭებული შეკვეთები';
  await load();
+ await startLineRealtime();
 }
 async function load(){
  $('orders').innerHTML='<div class="empty">შეკვეთები იტვირთება...</div>';
@@ -398,7 +475,6 @@ function assign(o){
 }
 $('refresh').onclick=load;$('logout').onclick=async()=>{await db.auth.signOut();location.replace('line-login.html');};$('search').oninput=render;$('filter').onchange=render;$('close').onclick=()=>$('overlay').style.display='none';$('overlay').onclick=e=>{if(e.target===$('overlay'))$('overlay').style.display='none';};
 $('orders').onclick=e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.next||b.dataset.edit||b.dataset.history||b.dataset.assign||b.dataset.complete||b.dataset.arrived||b.dataset.accept||b.dataset.decline;const o=orders.find(x=>String(x.id)===String(id));if(!o)return;if(b.dataset.accept)acceptOrder(id);else if(b.dataset.decline)declineOrder(id);else if(b.dataset.next)advance(id);else if(b.dataset.arrived)markArrived(id);else if(b.dataset.complete)updateStatus(o,'completed',null);else if(b.dataset.edit)openDetails(o);else if(b.dataset.history)openHistory(o);else if(b.dataset.assign){}};
-if(db)db.channel('ecomax-line-live').on('postgres_changes',{event:'*',schema:'public',table:'orders'},()=>load()).subscribe();
 boot();
 })();
 </script>
