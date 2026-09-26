@@ -782,6 +782,33 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 @keyframes ecomaxButtonScan{0%,62%{left:-40%;opacity:0}70%{opacity:1}90%,100%{left:125%;opacity:0}}
 @media(prefers-reduced-motion:reduce){body:after,button:before,.btn:before,.submit:before,.back:before{animation:none!important}}
 </style>
+<style id="ecomax-new-order-alert-css">
+#ecomaxNewOrderAlert{
+ position:fixed;right:22px;top:22px;width:min(430px,calc(100vw - 28px));z-index:999999;
+ background:linear-gradient(145deg,rgba(4,20,30,.98),rgba(5,10,20,.98));
+ border:1px solid rgba(32,231,255,.55);border-radius:18px;padding:16px;
+ box-shadow:0 0 35px rgba(32,231,255,.22),0 22px 70px rgba(0,0,0,.55);backdrop-filter:blur(18px);
+ animation:ecomaxAlertIn .28s ease-out;
+}
+.ecomax-alert-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.ecomax-alert-title{font-size:19px;font-weight:1000;color:#20e7ff}
+.ecomax-alert-number{margin-top:4px;font-size:11px;color:#8da8b0}
+.ecomax-alert-close{border:1px solid rgba(255,113,136,.25);background:rgba(255,113,136,.06);color:#ff7188;border-radius:9px;width:32px;height:32px;font-size:20px}
+.ecomax-alert-customer,.ecomax-alert-address{margin-top:10px;font-size:12px;color:#d9faff;line-height:1.45}
+.ecomax-alert-address{color:#9cc4ce}
+.ecomax-alert-items{margin-top:12px;border-top:1px solid rgba(32,231,255,.12);border-bottom:1px solid rgba(32,231,255,.12);max-height:230px;overflow:auto}
+.ecomax-alert-item{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.ecomax-alert-item:last-child{border-bottom:0}
+.ecomax-alert-item span{display:flex;flex-direction:column;gap:3px;min-width:0}
+.ecomax-alert-item b{font-size:12px;color:#efffff}
+.ecomax-alert-item small{font-size:10px;color:#7897a2}
+.ecomax-alert-item strong{white-space:nowrap;color:#65f2aa}
+.ecomax-alert-total{display:flex;justify-content:space-between;align-items:center;padding:12px 0;font-size:13px;color:#b7d8df}
+.ecomax-alert-total b{font-size:20px;color:#20e7ff}
+.ecomax-alert-open{width:100%;padding:11px;border:1px solid rgba(32,231,255,.45);border-radius:10px;background:rgba(32,231,255,.09);color:#eaffff;font-weight:900}
+@keyframes ecomaxAlertIn{from{opacity:0;transform:translateY(-12px) scale(.98)}to{opacity:1;transform:none}}
+@media(max-width:600px){#ecomaxNewOrderAlert{right:12px;top:12px;width:calc(100vw - 24px)}}
+</style>
 </head>
 
 <body>
@@ -1710,6 +1737,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
       $("loginError").textContent = "";
       await openAdmin();
+      enableAdminOrderNotifications();
 
     } catch (error) {
       console.error("Admin login exception:", error);
@@ -3640,8 +3668,11 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
   function subscribeLiveCommand() {
     if (!db) return;
     db.channel("ecomax-admin-live")
-      .on("postgres_changes", {event:"*", schema:"public", table:"orders"}, () => {
-        loadOrders().then(() => { updateDashboard(); if ($("section-live")?.classList.contains("active")) loadLiveCommand(); });
+      .on("postgres_changes", {event:"*", schema:"public", table:"orders"}, (payload) => {
+        if(payload?.eventType === "INSERT" && payload?.new){
+          showNewOrderAlert(payload.new);
+        }
+        loadOrders().then(() => { updateDashboard(); renderOrders(); renderRecentOrders(); if ($("section-live")?.classList.contains("active")) loadLiveCommand(); });
       })
       .on("postgres_changes", {event:"*", schema:"public", table:"courier_locations"}, () => {
         if ($("section-live")?.classList.contains("active")) loadLiveCommand();
@@ -3655,6 +3686,88 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       .subscribe();
   }
 
+
+  /* ==========================================
+     NEW ORDER LIVE ALERT
+  ========================================== */
+  let ecomaxOrderAlertTimer = null;
+
+  function playNewOrderSound(){
+    try{
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if(!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const gain = ctx.createGain();
+      gain.gain.value = 0.045;
+      gain.connect(ctx.destination);
+      const now = ctx.currentTime;
+      [660,880,1040].forEach((freq,i)=>{
+        const osc = ctx.createOscillator();
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        osc.connect(gain);
+        osc.start(now + i*0.11);
+        osc.stop(now + i*0.11 + 0.09);
+      });
+      setTimeout(()=>ctx.close().catch(()=>{}),700);
+    }catch(e){}
+  }
+
+  function showNewOrderAlert(order){
+    if(!order) return;
+    const old = document.getElementById("ecomaxNewOrderAlert");
+    if(old) old.remove();
+
+    const items = Array.isArray(order.items) ? order.items : [];
+    const itemHtml = items.length
+      ? items.map(item=>{
+          const qty = Math.max(1,Number(item.quantity||1));
+          const unit = Number(item.unit_price ?? item.price ?? 0);
+          const line = Number(item.line_total ?? unit*qty);
+          return '<div class="ecomax-alert-item"><span><b>'+esc(item.name || item.product_name || "პროდუქტი")+'</b><small>'+esc(item.volume || "")+' × '+qty+'</small></span><strong>'+money(line)+'</strong></div>';
+        }).join("")
+      : '<div style="color:#8da8b0">პროდუქტის სია ვერ მოიძებნა.</div>';
+
+    const box=document.createElement("div");
+    box.id="ecomaxNewOrderAlert";
+    box.innerHTML=
+      '<div class="ecomax-alert-head"><div><div class="ecomax-alert-title">🔔 ახალი შეკვეთა</div><div class="ecomax-alert-number">'+esc(order.order_number || "—")+'</div></div><button type="button" class="ecomax-alert-close" aria-label="დახურვა">×</button></div>'+
+      '<div class="ecomax-alert-customer">👤 '+esc(order.customer_name || "—")+' • 📞 '+esc(order.phone || "—")+'</div>'+
+      '<div class="ecomax-alert-address">📍 '+esc([order.city,order.address].filter(Boolean).join(", ") || "მისამართი არ არის მითითებული")+'</div>'+
+      '<div class="ecomax-alert-items">'+itemHtml+'</div>'+
+      '<div class="ecomax-alert-total"><span>საერთო თანხა</span><b>'+money(order.total)+'</b></div>'+
+      '<button type="button" class="ecomax-alert-open">📦 შეკვეთის გახსნა</button>';
+
+    document.body.appendChild(box);
+    box.querySelector(".ecomax-alert-close").onclick=()=>box.remove();
+    box.querySelector(".ecomax-alert-open").onclick=()=>{
+      box.remove();
+      const exists=orders.find(x=>String(x.id)===String(order.id));
+      if(exists) viewOrder(order.id);
+      else loadOrders().then(()=>viewOrder(order.id));
+    };
+    clearTimeout(ecomaxOrderAlertTimer);
+    ecomaxOrderAlertTimer=setTimeout(()=>box.remove(),20000);
+    playNewOrderSound();
+
+    try{
+      if("Notification" in window && Notification.permission==="granted"){
+        const body=items.map(i=>(i.name||i.product_name||"პროდუქტი")+" × "+Number(i.quantity||1)).join(", ");
+        new Notification("ECOMAX — ახალი შეკვეთა",{
+          body:(order.order_number||"შეკვეთა")+" • "+body+" • "+money(order.total),
+          tag:"ecomax-"+String(order.id)
+        });
+      }
+    }catch(e){}
+  }
+
+  async function enableAdminOrderNotifications(){
+    try{
+      if("Notification" in window && Notification.permission==="default"){
+        await Notification.requestPermission();
+      }
+    }catch(e){}
+  }
 
   /* ==========================================
      ANALYTICS
