@@ -21,7 +21,7 @@ h1{font-size:30px;margin:8px 0}.sub{color:var(--muted);font-size:12px;line-heigh
 @media(max-width:430px){body{padding:12px}.card{padding:20px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js?v=20260927-SESSION6"></script>
+<script src="js/supabase.js?v=20260927-SESSION7"></script>
 </head>
 <body>
 <main class="wrap"><section class="card">
@@ -48,13 +48,11 @@ const $=id=>document.getElementById(id),msg=$('msg'),btn=$('registerBtn');
 const redirect=new URLSearchParams(location.search).get('redirect');
 if(redirect==='checkout.html')$('loginLink').href='login.html?redirect=checkout.html';
 function show(text,type){msg.textContent=text;msg.className='msg show '+(type||'error')}
-function client(){
+async function client(){
  try{
-  if(!localStorage.getItem(STORAGE) && localStorage.getItem(LEGACY_STORAGE)) localStorage.setItem(STORAGE,localStorage.getItem(LEGACY_STORAGE));
+  if(window.ECOMAX_AUTH_READY) return await window.ECOMAX_AUTH_READY;
  }catch(_){}
- if(window.ECOMAX_SUPABASE_CLIENT?.auth)return window.ECOMAX_SUPABASE_CLIENT;
- if(!window.supabase?.createClient)throw new Error('Supabase ვერ ჩაიტვირთა. გვერდი განაახლე და ისევ სცადე.');
- return window.supabase.createClient(URL,KEY,{auth:{storageKey:STORAGE,storage:window.localStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}});
+ throw new Error('ECOMAX ავტორიზაციის კლიენტი ვერ ჩაიტვირთა. გვერდი განაახლე და ისევ სცადე.');
 }
 async function finishSession(db,session){
  if(!session?.access_token||!session?.refresh_token)throw new Error('სესია ვერ შეიქმნა.');
