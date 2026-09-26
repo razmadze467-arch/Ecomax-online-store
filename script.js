@@ -83,7 +83,7 @@ function closeMobileMenu(){
 }
 function openCart(){closeMobileMenu();const overlay=document.getElementById("cartOverlay");if(!overlay){note("კალათის ფანჯარა ვერ მოიძებნა");return;}overlay.classList.add("active");overlay.style.zIndex="2000";overlay.style.display="flex";document.body.style.overflow="hidden";renderCart();updateCart();}
 function closeCart(){const overlay=document.getElementById("cartOverlay");if(overlay){overlay.classList.remove("active");overlay.style.display="none";}document.body.style.overflow="";}
-function volumeUpdate(card){const select=card.querySelector(".volume-select"),priceEl=card.querySelector(".selected-price"),volumeEl=card.querySelector(".selected-volume"),button=card.querySelector(".add-cart,.new-add-cart");if(!select||!priceEl||!volumeEl)return;const volume=Number(select.value)||.5,price=volume*Number(card.dataset.unitPrice||select.dataset.unitPrice||10),label=volume===.5?"500 მლ":volume+" ლიტრი";priceEl.textContent=price+" ₾";volumeEl.textContent=label;if(button){button.dataset.price=price;button.dataset.volume=label;}}
+function volumeUpdate(card){const select=card.querySelector(".volume-select"),priceEl=card.querySelector(".selected-price"),volumeEl=card.querySelector(".selected-volume"),button=card.querySelector(".add-cart,.new-add-cart");if(!select||!priceEl||!volumeEl)return;const opt=select.options[select.selectedIndex];const volume=Number(select.value)||.5;let price=Number(opt?.dataset?.price||0);if(!price){const text=String(opt?.textContent||"");const m=text.match(/(?:—|-)?\s*(\d+(?:\.\d+)?)\s*₾/);price=m?Number(m[1]):(volume===.5?5:volume*10);}const label=volume===.5?"500 მლ":volume+" ლიტრი";priceEl.textContent=price+" ₾";volumeEl.textContent=label;if(button){button.dataset.price=String(price);button.dataset.volume=label;}}
 function checkout(){if(!cart.length){note("კალათა ცარიელია");return;}save();window.location.href="checkout.html";}
 window.addToCart=addToCart;window.openCart=openCart;window.closeCart=closeCart;window.removeFromCart=removeFromCart;window.goToCheckout=checkout;window.renderCart=renderCart;window.updateCart=updateCart;window.volumeUpdate=volumeUpdate;
 
@@ -266,6 +266,6 @@ function init(){
   updateCart();syncAuthUI();
   const isHome=/(^|\/)index\.html$/.test(location.pathname)||location.pathname==="/"||location.pathname==="";
   if(isHome){installCareCards();forceMaxHomeDesign();installBottomUI();}
+}
 
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
-}
