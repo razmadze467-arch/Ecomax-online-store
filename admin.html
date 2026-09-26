@@ -2486,7 +2486,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
               <td>
                 <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
                   <button class="small-btn" onclick="viewOrder('${esc(order.id)}')" type="button">👁 ნახვა</button>
-                  <button class="small-btn" onclick="changeOrderStatus('${esc(order.id)}')" type="button">⚙ სტატუსი</button>
+                  <div class="ecomax-status-buttons" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">\n            ${[["new","New"],["processing","processing"],["loaded","loaded"],["picked_up","picked_up"],["shipped","shipped"],["completed","completed"],["cancelled","cancelled"]].map(([v,l])=>"<button type=\"button\" class=\"small-btn ecomax-status-btn"+(String(order.status||"new")===v?" active":"")+"\" onclick=\"quickOrderStatus(\\'${esc(order.id)}\\',\\'"+v+"\\')\">"+l+"</button>").join("")}\n          </div>
                   <select class="field" style="min-width:190px;max-width:240px;margin:0;padding:7px 9px;font-size:11px" id="courier-select-${esc(order.id)}" aria-label="კურიერის არჩევა">
                     ${courierOptions(order)}
                   </select>
@@ -2660,7 +2660,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     toast("ETA შენახულია ✓");
   }
 
-  async function changeOrderStatus(id) {
+  async function quickOrderStatus(id,newStatus){\n    const order=orders.find(item=>String(item.id)===String(id)); if(!order)return;\n    const allowed=["new","processing","loaded","picked_up","shipped","completed","cancelled"]; if(!allowed.includes(newStatus))return;\n    if(String(order.status||"new")===newStatus){toast("ეს სტატუსი უკვე არჩეულია");return;}\n    const patch={status:newStatus,updated_at:new Date().toISOString()},now=new Date().toISOString();\n    if(newStatus==="loaded"&&!order.cargo_loaded_at)patch.cargo_loaded_at=now;\n    if(newStatus==="picked_up"&&!order.cargo_picked_up_at)patch.cargo_picked_up_at=now;\n    if(newStatus==="shipped"){if(!order.departed_at)patch.departed_at=now; const eta=prompt("მიუთითე სავარაუდო ჩამოსვლის დრო.\\nმაგ: 2026-09-21 18:00\\nცარიელი დატოვე, თუ ჯერ არ იცი."); if(eta&&eta.trim()){const parsed=new Date(eta.trim().replace(" ","T"));if(!Number.isNaN(parsed.getTime()))patch.estimated_arrival_at=parsed.toISOString();else{toast("ჩამოსვლის დრო ვერ გავიგე — სტატუსი არ შეცვლილა");return;}}}\n    if(newStatus==="completed"&&!order.delivered_at)patch.delivered_at=now;\n    const {error}=await db.from("orders").update(patch).eq("id",id); if(error){toast("სტატუსის შეცვლა ვერ მოხერხდა: "+error.message);return;}\n    await db.from("order_status_history").insert({order_id:id,old_status:order.status||"new",new_status:newStatus,changed_by:currentUser?.id||null});\n    Object.assign(order,patch); renderOrders();renderRecentOrders();updateDashboard();renderAnalytics(); toast("სტატუსი შეიცვალა: "+newStatus+" ✓");\n  }\n\n  async function changeOrderStatus(id) {
 
     const order = orders.find(item => String(item.id) === String(id));
     if (!order) return;
