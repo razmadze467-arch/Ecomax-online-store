@@ -12,11 +12,19 @@
   async function getSessionSafe(client) {
     if (!client?.auth) return null;
 
-    try {
-      const first = await client.auth.getSession();
-      if (first?.data?.session) return first.data.session;
-    } catch (error) {
-      console.warn('ECOMAX getSession:', error);
+    // Supabase may still be hydrating the persisted session when a new
+    // document starts. Retry briefly so navigation back to index.html never
+    // treats a real logged-in user as signed out.
+    for (let attempt = 0; attempt < 4; attempt++) {
+      try {
+        const result = await client.auth.getSession();
+        if (result?.data?.session) return result.data.session;
+      } catch (error) {
+        if (attempt === 3) console.warn('ECOMAX getSession:', error);
+      }
+      if (attempt < 3) {
+        await new Promise(resolve => setTimeout(resolve, 150 * (attempt + 1)));
+      }
     }
 
     // Recover a persisted session if the access token has just expired.
