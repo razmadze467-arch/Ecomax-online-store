@@ -4,10 +4,19 @@
 
   const SUPABASE_URL = 'https://mkxkqdvtmfbxmldnvsef.supabase.co';
   const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd';
-  const STORAGE_KEY = 'ecomax-auth';
+  const STORAGE_KEY = 'sb-mkxkqdvtmfbxmldnvsef-auth-token';
+  const LEGACY_STORAGE_KEY = 'ecomax-auth';
   const BRIDGE_KEY = 'ecomax-auth-bridge-v1';
 
   window.ECOMAX_SUPABASE = { url: SUPABASE_URL, key: SUPABASE_PUBLISHABLE_KEY };
+
+  function migrateLegacyStorage() {
+    try {
+      const current = window.localStorage.getItem(STORAGE_KEY);
+      const legacy = window.localStorage.getItem(LEGACY_STORAGE_KEY);
+      if (!current && legacy) window.localStorage.setItem(STORAGE_KEY, legacy);
+    } catch (_) {}
+  }
 
   function saveBridge(session) {
     try {
@@ -79,6 +88,7 @@
   };
 
   function boot() {
+    migrateLegacyStorage();
     if (!window.supabase || typeof window.supabase.createClient !== 'function') {
       window.ECOMAX_SUPABASE_ERROR = 'Supabase JS SDK ვერ ჩაიტვირთა';
       window.ECOMAX_AUTH_READY = Promise.reject(new Error(window.ECOMAX_SUPABASE_ERROR));
