@@ -35,6 +35,26 @@
     return null;
   }
 
+  window.ECOMAX_PRESERVE_SESSION = async function(client) {
+    if (!client?.auth) return null;
+    try {
+      const session = await getSessionSafe(client);
+      if (session?.access_token && session?.refresh_token) {
+        saveBridge(session);
+        // Re-write the session through the same client before navigation.
+        // This keeps the exact authenticated session available to the next page.
+        const persisted = await client.auth.setSession({
+          access_token: session.access_token,
+          refresh_token: session.refresh_token
+        });
+        return persisted?.data?.session || session;
+      }
+    } catch (error) {
+      console.warn('ECOMAX preserve session:', error);
+    }
+    return null;
+  };
+
   async function getSessionSafe(client) {
     if (!client?.auth) return null;
 
