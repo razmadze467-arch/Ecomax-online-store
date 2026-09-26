@@ -2768,7 +2768,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
           type="button"
           class="cart-button"
           id="cartButton"
-          onclick="openCart()"
+          onclick="(function(){var o=document.getElementById('cartOverlay');if(o){o.classList.add('active');o.style.display='flex';o.style.zIndex='99999';document.body.style.overflow='hidden';}})()"
         >
           კალათა
           <b id="cartCount">0</b>
