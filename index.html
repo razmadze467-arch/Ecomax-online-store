@@ -6413,6 +6413,24 @@ body{
   line-height:1!important;
   white-space:normal!important;
 }
+.home-chemistry-grid .product-bottle .product-label .ecomax-safety{
+  display:block!important;
+  width:100%!important;
+  margin-top:2px!important;
+  padding-top:3px!important;
+  border-top:1px solid rgba(255,213,42,.42)!important;
+  color:#ffe98a!important;
+  font-size:5.3px!important;
+  font-weight:800!important;
+  line-height:1.18!important;
+  letter-spacing:0!important;
+  text-align:center!important;
+}
+.home-chemistry-grid .product-bottle .product-label .ecomax-safety strong{
+  color:#ffd52a!important;
+  font-size:5.5px!important;
+  letter-spacing:.2px!important;
+}
 </style>
 
 <script id="ecomax-home-product-labels-v4-js">
@@ -6486,7 +6504,8 @@ body{
         '<em class="home-label-name">'+name+'</em>' +
         '<small class="home-label-use">'+data.use+'</small>' +
         '<small class="home-label-rule">'+data.rule+'</small>' +
-        '<b>'+data.dilution+'</b>';
+        '<b>'+data.dilution+'</b>' +
+        '<small class="ecomax-safety"><strong>⚠️ გაფრთხილება:</strong> კანზე ან თვალში მოხვედრის შემთხვევაში დაუყოვნებლივ ჩამოიბანეთ დიდი რაოდენობის სუფთა გამდინარე წყლით. თვალში მოხვედრისას ფრთხილად გამოირეცხეთ. მოარიდეთ ბავშვებს. რეკომენდებულია დამცავი ხელთათმანები.</small>';
 
       label.setAttribute(
         'aria-label',
