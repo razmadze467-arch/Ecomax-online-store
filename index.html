@@ -6365,5 +6365,81 @@ body{
   },true);
 })();
 </script>
+
+<style id="ecomax-home-product-labels-v3">
+/* ECOMAX HOME CARE — individual bottle labels */
+.home-chemistry-grid .product-bottle{
+  position:relative!important;
+}
+.home-chemistry-grid .product-bottle .product-label{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:4px!important;
+  text-align:center!important;
+  padding:8px 7px!important;
+  overflow:hidden!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+.home-chemistry-grid .product-bottle .product-label strong{
+  font-size:11px!important;
+  font-weight:1000!important;
+  letter-spacing:2px!important;
+  line-height:1!important;
+}
+.home-chemistry-grid .product-bottle .product-label span{
+  font-size:10px!important;
+  font-weight:900!important;
+  letter-spacing:.4px!important;
+  line-height:1.25!important;
+  max-width:100%!important;
+  white-space:normal!important;
+}
+.home-chemistry-grid .product-bottle .product-label b{
+  font-size:8px!important;
+  font-weight:1000!important;
+  letter-spacing:1.2px!important;
+  line-height:1!important;
+  color:#fff!important;
+}
+.home-chemistry-grid .product-card.blue .product-label{--label-accent:#39d8ff!important}
+.home-chemistry-grid .product-card.yellow .product-label{--label-accent:#ffd52a!important}
+.home-chemistry-grid .product-card.cyan .product-label{--label-accent:#00eaff!important}
+.home-chemistry-grid .product-card.red .product-label{--label-accent:#ff4b69!important}
+.home-chemistry-grid .product-card.white .product-label{--label-accent:#e9f8ff!important}
+.home-chemistry-grid .product-card.pink .product-label{--label-accent:#ff65b7!important}
+.home-chemistry-grid .product-card .product-label{
+  border-color:var(--label-accent,#00eaff)!important;
+  box-shadow:0 0 18px color-mix(in srgb,var(--label-accent,#00eaff) 32%,transparent),
+             inset 0 0 18px rgba(0,234,255,.07)!important;
+}
+</style>
+
+<script id="ecomax-home-product-labels-v3-js">
+(function(){
+  'use strict';
+  function applyHomeLabels(){
+    document.querySelectorAll('.home-chemistry-grid .product-card').forEach(function(card){
+      const label=card.querySelector('.product-bottle .product-label');
+      const title=card.querySelector('h3');
+      const top=card.querySelector('.product-top span');
+      if(!label || !title) return;
+      const name=title.textContent.trim();
+      const code=(top?.textContent||'HOME CARE').trim();
+      const strong=label.querySelector('strong');
+      const span=label.querySelector('span');
+      const volume=label.querySelector('b');
+      if(strong) strong.textContent='ECOMAX';
+      if(span) span.textContent=name;
+      if(volume) volume.textContent=code;
+      label.setAttribute('aria-label','ECOMAX — '+name);
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',applyHomeLabels,{once:true});
+  else applyHomeLabels();
+})();
+</script>
 </body>
 </html>
