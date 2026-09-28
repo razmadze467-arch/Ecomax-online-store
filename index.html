@@ -6502,5 +6502,82 @@ body{
   }
 })();
 </script>
+
+<style id="ecomax-universal-safety-label-v1">
+/* ECOMAX — საერთო უსაფრთხოების გაფრთხილება ყველა ხსნარის ბოთლის ეტიკეტზე */
+.home-chemistry-grid .product-bottle .product-label{
+  height:124px!important;
+  min-height:124px!important;
+  top:42px!important;
+  padding:6px 6px!important;
+  gap:2px!important;
+}
+.home-chemistry-grid .product-bottle .product-label .ecomax-safety{
+  display:block!important;
+  width:100%!important;
+  margin-top:2px!important;
+  padding-top:3px!important;
+  border-top:1px solid rgba(255,213,42,.42)!important;
+  color:#ffe98a!important;
+  font-size:5.5px!important;
+  font-weight:800!important;
+  line-height:1.22!important;
+  letter-spacing:.05px!important;
+  text-align:center!important;
+}
+.home-chemistry-grid .product-bottle .product-label .ecomax-safety strong{
+  display:inline!important;
+  color:#ffd52a!important;
+  font-size:5.7px!important;
+  letter-spacing:.3px!important;
+}
+@media(max-width:700px){
+  .home-chemistry-grid .product-bottle .product-label{
+    top:40px!important;
+    height:120px!important;
+    min-height:120px!important;
+    padding:5px!important;
+  }
+  .home-chemistry-grid .product-bottle .product-label .ecomax-safety{
+    font-size:5.1px!important;
+  }
+}
+</style>
+
+<script id="ecomax-universal-safety-label-v1-js">
+(function(){
+  'use strict';
+
+  const safety =
+    '<strong>⚠️ გაფრთხილება:</strong> კანზე ან თვალში მოხვედრის შემთხვევაში დაუყოვნებლივ ჩამოიბანეთ დიდი რაოდენობის სუფთა გამდინარე წყლით. თვალში მოხვედრისას ფრთხილად გამოირეცხეთ. მოარიდეთ ბავშვებს. გამოყენებისას რეკომენდებულია დამცავი ხელთათმანები.';
+
+  function applyUniversalSafety(){
+    document.querySelectorAll('.product-bottle .product-label').forEach(function(label){
+      if(label.querySelector('.ecomax-safety')) return;
+      const warning=document.createElement('small');
+      warning.className='ecomax-safety';
+      warning.setAttribute('aria-label','უსაფრთხოება: კანზე ან თვალში მოხვედრის შემთხვევაში ჩამოიბანეთ დიდი რაოდენობის სუფთა წყლით. მოარიდეთ ბავშვებს. გამოყენებისას რეკომენდებულია დამცავი ხელთათმანები.');
+      warning.innerHTML=safety;
+      label.appendChild(warning);
+    });
+  }
+
+  function boot(){
+    applyUniversalSafety();
+    const observer=new MutationObserver(function(){ applyUniversalSafety(); });
+    observer.observe(document.body,{childList:true,subtree:true});
+    setTimeout(applyUniversalSafety,300);
+    setTimeout(applyUniversalSafety,1000);
+    setTimeout(applyUniversalSafety,2500);
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',boot,{once:true});
+  }else{
+    boot();
+  }
+})();
+</script>
+
 </body>
 </html>
