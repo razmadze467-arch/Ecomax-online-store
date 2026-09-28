@@ -6599,5 +6599,32 @@ body{
 })();
 </script>
 
+<style id="ecomax-warning-visible-v2">
+.home-chemistry-grid .product-card::after{
+  content:"⚠️ გაფრთხილება: კანზე ან თვალში მოხვედრის შემთხვევაში დაუყოვნებლივ ჩამოიბანეთ დიდი რაოდენობის სუფთა გამდინარე წყლით. მოარიდეთ ბავშვებს. გამოყენებისას რეკომენდებულია დამცავი ხელთათმანები.";
+  display:block!important;
+  margin:10px 0 0!important;
+  padding:8px 10px!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  border:1px solid rgba(255,213,42,.7)!important;
+  border-radius:9px!important;
+  background:rgba(55,43,0,.28)!important;
+  color:#ffe98a!important;
+  font-size:8px!important;
+  font-weight:800!important;
+  line-height:1.35!important;
+  text-align:center!important;
+  position:relative!important;
+  z-index:100!important;
+}
+.home-chemistry-grid .product-card::after::first-line{color:#ffd52a!important}
+@media(max-width:700px){
+ .home-chemistry-grid .product-card::after{
+  font-size:7px!important;
+  padding:7px 8px!important;
+ }
+}
+</style>
 </body>
 </html>
