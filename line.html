@@ -286,7 +286,7 @@ main:before{
     <div class="nav-stat"><small>მიმართულება</small><b id="navHeading">—</b></div>
   </div>
   <div class="nav-actions" style="margin-top:10px">
-    <a id="navGoogle" class="green-nav" target="_blank" rel="noopener">🗺️ Google Maps ნავიგაცია</a>
+    <a id="navNative" class="green-nav" target="_self" rel="noopener">🚚 ECOMAX LINE აპის ნავიგაცია</a><a id="navGoogle" class="green-nav" target="_blank" rel="noopener">🗺️ Google Maps ნავიგაცია</a>
     <button id="navCall" type="button">☎ მომხმარებელთან დარეკვა</button>
   </div>
 </section>
@@ -374,7 +374,7 @@ async function startOrderNavigation(id){
  const panel=$('lineNavigation'); panel?.classList.add('active');
  $('navOrderTitle').textContent='🧭 '+(o.order_number||'შეკვეთა');
  $('navDestination').textContent='📍 '+q;
- $('navGoogle').href=navGoogleHref(o);
+ $('navGoogle').href=navGoogleHref(o); $('navNative').onclick=()=>{ if(!ecomaxNavDestination){toast('ჯერ დაელოდე დანიშნულების GPS-ის მოძებნას');return;} const u='ecomaxline://navigate?lat='+encodeURIComponent(ecomaxNavDestination.lat)+'&lng='+encodeURIComponent(ecomaxNavDestination.lng)+'&order='+encodeURIComponent(o.order_number||'ECOMAX შეკვეთა'); location.href=u; };
  $('navCall').onclick=()=>{const tel=phoneHref(o.phone);if(tel)location.href=tel;};
  const map=navEnsureMap(); if(!map)return;
  setTimeout(()=>map.invalidateSize(),100);
