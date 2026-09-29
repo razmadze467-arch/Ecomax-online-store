@@ -95,7 +95,8 @@
       if(!session) return;
       const params=new URLSearchParams(location.search);
       const r=params.get('redirect');
-      const target=(r&&/^[A-Za-z0-9_\-\/]+\.html(?:\?[A-Za-z0-9_=&\-]*)?$/.test(r))?r:'account.html';
+      const role=String(session?.user?.app_metadata?.role||'').toLowerCase();
+      const target=role==='courier'?'line.html':((r&&/^[A-Za-z0-9_\-\/]+\.html(?:\?[A-Za-z0-9_=&\-]*)?$/.test(r))?r:'account.html');
       if(location.pathname.toLowerCase().endsWith('/login.html')||location.pathname.toLowerCase().endsWith('/register.html')){
         location.replace(target);
       }
