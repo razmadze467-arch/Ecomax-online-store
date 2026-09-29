@@ -11,6 +11,7 @@ import androidx.activity.ComponentActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.navigation.AudioGuidanceSettings
 import com.google.android.libraries.navigation.NavigationApi
 import com.google.android.libraries.navigation.NavigationView
 import com.google.android.libraries.navigation.Navigator
@@ -50,6 +51,7 @@ class MainActivity : ComponentActivity() {
         NavigationApi.getNavigator(this, object : NavigationApi.NavigatorListener {
             override fun onNavigatorReady(ready: Navigator) {
                 navigator = ready
+                navigator?.setAudioGuidanceSettings(AudioGuidanceSettings.builder().setGuidanceMode(AudioGuidanceSettings.GuidanceMode.VOICE_ALERTS_AND_GUIDANCE).setVolumeLevel(AudioGuidanceSettings.VolumeLevel.NORMAL).setVibrationEnabled(true).setBluetoothAudioEnabled(true).build())
                 handleNavigationIntent(intent)
             }
             override fun onError(errorCode: Int) {
