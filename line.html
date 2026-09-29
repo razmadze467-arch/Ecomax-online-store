@@ -368,7 +368,9 @@ async function navRoute(from,to){
 async function startOrderNavigation(id){
  const o=orders.find(x=>String(x.id)===String(id)); if(!o)return;
  const q=[o.address,o.city].filter(Boolean).join(', '); if(!q){toast('შეკვეთას მისამართი არ აქვს');return;}
+ const previousNavOrder=ecomaxNavOrderId;
  ecomaxNavOrderId=o.id;
+ if(previousNavOrder!==o.id)ecomaxNavDestination=null;
  const panel=$('lineNavigation'); panel?.classList.add('active');
  $('navOrderTitle').textContent='🧭 '+(o.order_number||'შეკვეთა');
  $('navDestination').textContent='📍 '+q;
@@ -661,6 +663,7 @@ async function sendLiveGps(p){
     return;
   }
   setGpsUi('active','📡 LIVE GPS: აქტიურია<br>ბოლო გაგზავნა: '+new Date().toLocaleTimeString('ka-GE',{hour12:false})+' • სიზუსტე: '+Math.round(p.coords.accuracy||0)+' მ');
+ updateNavigationPosition(p);
 }
 function stopLiveGps(){
   if(ecomaxGpsWatchId!==null&&navigator.geolocation){
