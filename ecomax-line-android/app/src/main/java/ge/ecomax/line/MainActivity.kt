@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.EditText
@@ -31,13 +30,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.location.*
 import com.google.android.libraries.navigation.AudioGuidanceSettings
 import com.google.android.libraries.navigation.NavigationApi
-import com.google.android.libraries.navigation.NavigationView
 import com.google.android.libraries.navigation.Navigator
 import com.google.android.libraries.navigation.RoutingOptions
 import com.google.android.libraries.navigation.Waypoint
 
 class MainActivity : ComponentActivity() {
-    private lateinit var navigationView: NavigationView
     private var navigator: Navigator? = null
     private var selectedOrderId: String? = null
     private var locationClient: FusedLocationProviderClient? = null
@@ -52,7 +49,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        locationClient = LocationServices.getFusedLocationProviderClient(this)
         locationClient = LocationServices.getFusedLocationProviderClient(this)
         showLogin()
         ensureLocationPermission()
@@ -142,9 +138,7 @@ class MainActivity : ComponentActivity() {
                         val city = o.optString("city")
                         val card = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(0, 18, 0, 18) }
                         card.addView(TextView(this).apply {
-                            text = "შეკვეთა #" + number + "
-" + o.optString("customer_name") + " — " + city + ", " + address + "
-სტატუსი: " + o.optString("status")
+                            text = "შეკვეთა #" + number + "\n" + o.optString("customer_name") + " — " + city + ", " + address + "\nსტატუსი: " + o.optString("status")
                             textSize = 17f
                         })
                         card.addView(Button(this).apply { text = "ნავიგაციის დაწყება"; setOnClickListener { openOrderNavigation(id, address, city, number) } })
