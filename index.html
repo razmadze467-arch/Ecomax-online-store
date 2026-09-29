@@ -6140,13 +6140,31 @@ body{
     try{
       const ready=window.ECOMAX_AUTH_READY;
       const db=window.ECOMAX_SUPABASE_CLIENT||window.ECOMAX_AUTH_CLIENT||(ready?await ready:null);
-      if(db?.auth) await db.auth.signOut();
+      if(db?.auth){
+        // Local sign-out first: this must remove the persisted Supabase session.
+        await db.auth.signOut({scope:'local'});
+      }
     }catch(e){
       console.warn('ECOMAX courier logout:',e);
     }
+
+    // Hard-clear every ECOMAX/Supabase browser session copy so the next
+    // page load cannot restore the old courier session.
     try{sessionStorage.removeItem('ecomax-auth-bridge-v1')}catch(e){}
     try{localStorage.removeItem('ecomax-auth-bridge-v1')}catch(e){}
-    location.replace('index.html');
+    try{localStorage.removeItem('ecomax-auth')}catch(e){}
+    try{localStorage.removeItem('sb-mkxkqdvtmfbxmldnvsef-auth-token')}catch(e){}
+
+    // Clear any legacy Supabase auth storage entries from older versions.
+    try{
+      Object.keys(localStorage).forEach(function(k){
+        if(/^sb-.*-auth-token$/i.test(k)) localStorage.removeItem(k);
+      });
+    }catch(e){}
+
+    document.documentElement.dataset.ecomaxAuthenticated='false';
+    document.documentElement.dataset.ecomaxCourier='false';
+    location.replace('./index.html?logout=1');
   }
 
   document.addEventListener('click',function(e){
