@@ -71,7 +71,7 @@ $('registerForm').addEventListener('submit',async e=>{
  if(!$('terms').checked){show('მონიშნე თანხმობა.');return}
  btn.disabled=true;btn.textContent='იქმნება...';
  try{
-  const db=client();
+  const db=await client();
   const emailRedirect=redirect==='checkout.html'?location.origin+'/login.html?redirect=checkout.html':location.origin+'/login.html';
   const r=await db.auth.signUp({email,password,options:{emailRedirectTo:emailRedirect}});
   if(r.error)throw r.error;
