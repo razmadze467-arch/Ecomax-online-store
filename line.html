@@ -452,6 +452,7 @@ function notifyNewOrder(o){
    setTimeout(()=>first?.remove(),12000);
  }
 
+ if(window.AndroidBridge&&AndroidBridge.notifyNewOrder){try{AndroidBridge.notifyNewOrder(message);}catch(e){}}
  if('Notification' in window){
    if(Notification.permission==='granted'){
      try{ new Notification('ECOMAX LINE — ახალი შეკვეთა',{body:message,tag:'ecomax-order-'+String(o?.id||number)}); }catch(e){}
