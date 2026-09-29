@@ -2154,39 +2154,21 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     if (name === "control")
       runControlDiagnostics();
 
+    setTimeout(()=>{
+      if(name==="live" && ecomaxLiveMap) ecomaxLiveMap.invalidateSize();
+      if(name==="gps" && ecomaxGpsMap) ecomaxGpsMap.invalidateSize();
+    },80);
+
   }
 
 
   function showSectionById(name) {
-
-    const buttons =
-      document.querySelectorAll(
-        ".nav button"
-      );
-
-
-    const names = [
-      "dashboard",
-      "orders",
-      "products",
-      "customers",
-      "couriers",
-      "live",
-      "gps",
-      "control",
-      "analytics"
-    ];
-
-
-    const index =
-      names.indexOf(name);
-
-
-    showSection(
-      name,
-      buttons[index]
-    );
-
+    const buttons=[...document.querySelectorAll(".nav button")];
+    const button=buttons.find(btn=>{
+      const onclick=btn.getAttribute("onclick")||"";
+      return onclick.includes("showSection('"+name+"'") || onclick.includes('showSection("'+name+'"');
+    });
+    showSection(name,button||null);
   }
 
 
