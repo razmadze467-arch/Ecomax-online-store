@@ -36,7 +36,7 @@ button{width:100%;height:50px;margin-top:19px;border:0;border-radius:12px;backgr
 <button id="submit" type="submit">შესვლა ECOMAX LINE-ში</button>
 </form>
 <div id="error" class="error"></div>
-<a class="back" href="ecomax.com.ge">← მთავარ გვერდზე</a>
+<a class="back" href="../index.html">← მთავარ გვერდზე</a>
 <div class="hint">ECOMAX LINE • SECURE DELIVERY CONTROL</div>
 </main>
 <script>
@@ -46,7 +46,15 @@ const form=document.getElementById('form'),btn=document.getElementById('submit')
 function show(t){err.textContent=t;err.style.display='block'}
 if(!db){show('Supabase ვერ ჩაიტვირთა. გვერდი განაახლე.');return}
 const {data:{session}}=await db.auth.getSession();
-if(session){location.replace('line.html');return}
+if(session){
+ const sessionRole=String(session.user?.app_metadata?.role||'').toLowerCase();
+ const sessionIsAdmin=!!session.user?.user_metadata?.is_admin || session.user?.email==='razmadze467-arch@users.noreply.github.com';
+ if(sessionRole==='courier' || sessionIsAdmin){
+   location.replace('line.html');
+   return;
+ }
+ await db.auth.signOut();
+}
 form.addEventListener('submit',async e=>{
  e.preventDefault(); err.style.display='none'; btn.disabled=true; btn.textContent='მოწმდება...';
  const email=document.getElementById('email').value.trim();
