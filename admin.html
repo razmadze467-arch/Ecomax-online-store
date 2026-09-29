@@ -962,6 +962,16 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
         <span class="nav-text">LIVE COMMAND</span>
       </button>
 
+      <button onclick="showSection('gps',this)" type="button">
+        <span class="nav-icon">🧭</span>
+        <span class="nav-text">GPS NAVIGATION</span>
+      </button>
+
+      <button onclick="showSection('control',this)" type="button">
+        <span class="nav-icon">🎛️</span>
+        <span class="nav-text">CONTROL CENTER</span>
+      </button>
+
       <button
         onclick="showSection('couriers',this)"
         type="button"
@@ -1410,6 +1420,49 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
         <div id="liveSignalNotice" style="display:none;margin-bottom:12px"></div>
         <div id="ecomaxLiveMap" style="height:430px;border:1px solid rgba(32,231,255,.18);border-radius:16px;overflow:hidden;margin:0 0 14px;background:#030b10"></div>
         <div id="liveCommandGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px"></div>
+      </div>
+    </section>
+
+    <!-- GPS NAVIGATION -->
+    <section id="section-gps" class="section">
+      <div class="card">
+        <div class="section-header">
+          <div>
+            <h2>🧭 GPS NAVIGATION CENTER</h2>
+            <p style="color:var(--muted);font-size:12px;margin:6px 0 0">კურიერების მიმდინარე მდებარეობა, მარშრუტი და ნავიგაცია.</p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="small-btn" onclick="loadGpsNavigation()" type="button">🔄 განახლება</button>
+            <button class="small-btn" onclick="fitAllGps()" type="button">🎯 ყველა კურიერი</button>
+          </div>
+        </div>
+        <div id="gpsNavigationStatus" class="detail" style="margin-bottom:12px">GPS მონაცემები იტვირთება...</div>
+        <div id="ecomaxGpsMap" style="height:500px;border:1px solid rgba(32,231,255,.18);border-radius:16px;overflow:hidden;background:#030b10"></div>
+        <div id="gpsNavigationGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px;margin-top:14px"></div>
+      </div>
+    </section>
+
+    <!-- CONTROL CENTER -->
+    <section id="section-control" class="section">
+      <div class="grid stats">
+        <div class="card stat-card"><div class="stat-label">🔐 Admin Auth</div><div id="controlAuth" class="stat-value">—</div><div class="stat-extra">ადმინისტრატორის სესია</div></div>
+        <div class="card stat-card"><div class="stat-label">📡 LIVE Realtime</div><div id="controlRealtime" class="stat-value">—</div><div class="stat-extra">Supabase არხი</div></div>
+        <div class="card stat-card"><div class="stat-label">🧭 GPS</div><div id="controlGps" class="stat-value">—</div><div class="stat-extra">კურიერების სიგნალი</div></div>
+        <div class="card stat-card"><div class="stat-label">📦 Orders</div><div id="controlOrders" class="stat-value">—</div><div class="stat-extra">მონაცემთა კავშირი</div></div>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <div class="section-header">
+          <h2>🎛️ ECOMAX CONTROL CENTER</h2>
+          <button class="small-btn" onclick="runControlDiagnostics()" type="button">🩺 დიაგნოსტიკა</button>
+        </div>
+        <div id="controlDiagnostics" class="detail">სისტემის მდგომარეობა მოწმდება...</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+          <button class="primary" onclick="refreshAll()" type="button">🔄 სრული განახლება</button>
+          <button class="small-btn" onclick="showSectionById('orders')" type="button">📦 შეკვეთები</button>
+          <button class="small-btn" onclick="showSectionById('live')" type="button">📡 LIVE COMMAND</button>
+          <button class="small-btn" onclick="showSectionById('gps')" type="button">🧭 GPS NAVIGATION</button>
+          <button class="small-btn" onclick="showSectionById('couriers')" type="button">🚚 კურიერები</button>
+        </div>
       </div>
     </section>
 
@@ -2065,7 +2118,9 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       products: "პროდუქტები",
       customers: "მომხმარებლები",
       couriers: "კურიერები",
-      live: "LIVE COMMAND",
+      live: "LIVE COMMAND CENTER",
+      gps: "GPS NAVIGATION",
+      control: "CONTROL CENTER",
       analytics: "ანალიტიკა"
     };
 
@@ -2093,6 +2148,12 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     if (name === "live")
       loadLiveCommand();
 
+    if (name === "gps")
+      loadGpsNavigation();
+
+    if (name === "control")
+      runControlDiagnostics();
+
   }
 
 
@@ -2111,6 +2172,8 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       "customers",
       "couriers",
       "live",
+      "gps",
+      "control",
       "analytics"
     ];
 
@@ -2702,6 +2765,119 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
   }
 
 
+
+  // LIVE/GPS map state — kept explicit so every navigation screen has a real Leaflet instance.
+  let ecomaxLiveMap = null;
+  let ecomaxGpsMap = null;
+  let ecomaxLiveMarkers = [];
+  let ecomaxGpsMarkers = [];
+  let liveLocations = [];
+  let gpsLocations = [];
+
+  function ensureLiveMap(){
+    const el=$("ecomaxLiveMap");
+    if(!el || typeof L==="undefined") return null;
+    if(ecomaxLiveMap) {
+      setTimeout(()=>ecomaxLiveMap.invalidateSize(),50);
+      return ecomaxLiveMap;
+    }
+    ecomaxLiveMap=L.map(el,{zoomControl:true}).setView([42.2679,42.7180],10);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(ecomaxLiveMap);
+    return ecomaxLiveMap;
+  }
+
+  function ensureGpsMap(){
+    const el=$("ecomaxGpsMap");
+    if(!el || typeof L==="undefined") return null;
+    if(ecomaxGpsMap) {
+      setTimeout(()=>ecomaxGpsMap.invalidateSize(),50);
+      return ecomaxGpsMap;
+    }
+    ecomaxGpsMap=L.map(el,{zoomControl:true}).setView([42.2679,42.7180],10);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(ecomaxGpsMap);
+    return ecomaxGpsMap;
+  }
+
+  function liveMapHref(lat,lng){
+    return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(Number(lat)+","+Number(lng));
+  }
+
+  function liveTimeAgo(value){
+    const ms=liveAgeMs(value);
+    if(!Number.isFinite(ms)) return "—";
+    if(ms<10000) return "ახლახან";
+    if(ms<60000) return Math.floor(ms/1000)+" წმ წინ";
+    if(ms<3600000) return Math.floor(ms/60000)+" წთ წინ";
+    return Math.floor(ms/3600000)+" სთ წინ";
+  }
+
+  function renderGpsMap(locs){
+    const map=ensureGpsMap();
+    if(!map) return;
+    ecomaxGpsMarkers.forEach(m=>map.removeLayer(m));
+    ecomaxGpsMarkers=[];
+    const courierById=new Map(courierApplications.map(x=>[String(x.user_id),x]));
+    const activeByCourier=new Map();
+    orders.filter(o=>o.courier_id&&!["completed","cancelled"].includes(o.status)).forEach(o=>activeByCourier.set(String(o.courier_id),o));
+    const bounds=[];
+    (locs||[]).forEach(loc=>{
+      const lat=Number(loc.latitude),lng=Number(loc.longitude);
+      if(!Number.isFinite(lat)||!Number.isFinite(lng)) return;
+      const c=courierById.get(String(loc.courier_id))||{},o=activeByCourier.get(String(loc.courier_id)),state=liveState(loc.updated_at);
+      const marker=L.marker([lat,lng],{zIndexOffset:state.key==="online"?1000:100}).addTo(map);
+      marker.bindPopup("<b style='color:#20e7ff'>🚚 "+esc(c.full_name||"ECOMAX LINE")+"</b><br>კავშირი: "+esc(state.label)+"<br>GPS: "+lat.toFixed(5)+", "+lng.toFixed(5)+"<br>სიჩქარე: "+(Number.isFinite(Number(loc.speed))?Math.round(Number(loc.speed)*3.6)+" კმ/სთ":"—")+"<br><a target='_blank' rel='noopener' href='"+esc(liveMapHref(lat,lng))+"'>Google Maps</a>"+(o?"<br>📦 "+esc(o.order_number||"—"):""));
+      ecomaxGpsMarkers.push(marker);
+      bounds.push([lat,lng]);
+    });
+    if(bounds.length===1) map.setView(bounds[0],15);
+    else if(bounds.length>1) map.fitBounds(bounds,{padding:[35,35],maxZoom:15});
+  }
+
+  function fitAllGps(){
+    const map=ensureGpsMap();
+    if(!map||!gpsLocations.length) return;
+    const pts=gpsLocations.map(x=>[Number(x.latitude),Number(x.longitude)]).filter(x=>Number.isFinite(x[0])&&Number.isFinite(x[1]));
+    if(pts.length===1) map.setView(pts[0],15);
+    else if(pts.length>1) map.fitBounds(pts,{padding:[35,35],maxZoom:15});
+  }
+
+  async function loadGpsNavigation(){
+    if(!db||!currentUser) return;
+    const status=$("gpsNavigationStatus"), grid=$("gpsNavigationGrid");
+    if(status) status.textContent="📡 GPS მონაცემები იტვირთება...";
+    const {data,error}=await db.from("courier_locations").select("courier_id,latitude,longitude,accuracy,heading,speed,updated_at").order("updated_at",{ascending:false});
+    if(error){
+      console.error("GPS navigation:",error);
+      if(status) status.textContent="❌ GPS მონაცემების ჩატვირთვა ვერ მოხერხდა.";
+      return;
+    }
+    gpsLocations=data||[];
+    renderGpsMap(gpsLocations);
+    if(status) status.innerHTML="🧭 აქტიური GPS წერტილები: <b>"+gpsLocations.length+"</b> • რუკა და ნავიგაცია მზად არის.";
+    if(grid){
+      const courierById=new Map(courierApplications.map(x=>[String(x.user_id),x]));
+      grid.innerHTML=gpsLocations.length?gpsLocations.map(loc=>{
+        const c=courierById.get(String(loc.courier_id))||{}, state=liveState(loc.updated_at);
+        return "<div class='detail'><b style='color:var(--cyan)'>🚚 "+esc(c.full_name||"კურიერი")+"</b><div style='margin-top:8px;color:var(--muted)'>"+esc(state.label)+" • "+esc(liveTimeAgo(loc.updated_at))+"</div><div style='margin-top:8px'>"+Number(loc.latitude).toFixed(5)+", "+Number(loc.longitude).toFixed(5)+"</div><div style='display:flex;gap:7px;flex-wrap:wrap;margin-top:10px'><button class='small-btn' onclick='focusGpsCourier(""+esc(loc.courier_id)+"")' type='button'>🎯 ცენტრში</button><button class='small-btn' onclick='showCourierTrack(""+esc(loc.courier_id)+"")' type='button'>🛣️ მარშრუტი</button><a class='small-btn' target='_blank' rel='noopener' href='"+esc(liveMapHref(loc.latitude,loc.longitude))+"'>📍 ნავიგაცია</a></div></div>";
+      }).join(""):"<div class='detail' style='grid-column:1/-1;text-align:center;color:var(--muted)'>GPS მონაცემები ჯერ არ არის.</div>";
+    }
+  }
+
+  function focusGpsCourier(courierId){
+    const loc=gpsLocations.find(x=>String(x.courier_id)===String(courierId));
+    if(!loc) return;
+    const map=ensureGpsMap();
+    if(map) map.setView([Number(loc.latitude),Number(loc.longitude)],16);
+  }
+
+  async function runControlDiagnostics(){
+    const auth=$("controlAuth"),rt=$("controlRealtime"),gps=$("controlGps"),ord=$("controlOrders"),box=$("controlDiagnostics");
+    if(auth) auth.textContent=currentUser?"ONLINE":"OFFLINE";
+    if(ord) ord.textContent=Array.isArray(orders)?"OK":"ERROR";
+    if(gps) gps.textContent=liveLocations.length?"ACTIVE":"WAIT";
+    if(rt) rt.textContent=liveCommandChannel?"ACTIVE":"STARTING";
+    if(box) box.innerHTML="<b>ECOMAX Control Center</b><br>🔐 Admin: "+(currentUser?"OK":"NO")+"<br>📦 Orders: "+(Array.isArray(orders)?orders.length:0)+"<br>🚚 GPS points: "+liveLocations.length+"<br>📡 Realtime: "+(liveCommandChannel?"CONNECTED":"NOT CONNECTED")+"<br>🗺️ Leaflet: "+(typeof L!=="undefined"?"READY":"MISSING");
+  }
 
   let liveAutoCenter = true;
   let liveCommandChannel = null;
