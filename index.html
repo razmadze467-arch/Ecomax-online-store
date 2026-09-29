@@ -2749,6 +2749,8 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
         <a href="line.html" id="courierPortalLink" class="auth-link ecomax-courier-portal-link" style="display:none;" title="ECOMAX LINE — კურიერის კაბინეტი">🚚 კურიერის კაბინეტი</a>
 
+        <button type="button" id="courierLogoutButton" class="auth-link ecomax-courier-logout-link" style="display:none;" title="კურიერის ანგარიშიდან გამოსვლა">⎋ საიტიდან გამოსვლა</button>
+
         <a href="admin.html"
            class="auth-link">
           Admin Panel
@@ -2801,6 +2803,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       <a href="account.html" data-auth-account>ჩემი ანგარიში</a>
 
       <a href="line.html" id="mobileCourierPortalLink" style="display:none;">🚚 კურიერის კაბინეტი</a>
+        <button type="button" id="mobileCourierLogoutButton" class="mobile-courier-logout" style="display:none;">⎋ საიტიდან გამოსვლა</button>
       <a href="admin.html">Admin Panel</a>
       <a href="line-login.html" id="mobileEcomaxLineLink">ECOMAX LINE</a>
 
@@ -6102,6 +6105,30 @@ body{
 #mobileNav a#mobileEcomaxLineLink[style*="display:none"]{display:none!important}
 </style>
 <!-- ECOMAX: AUTH PERSISTENCE + COURIER ENTRY -->
+<style id="ecomax-courier-logout-css">
+.ecomax-courier-logout-link,
+.mobile-courier-logout{
+  border:1px solid rgba(255,100,125,.42)!important;
+  background:rgba(40,8,15,.72)!important;
+  color:#ff9aaa!important;
+  cursor:pointer!important;
+  font-weight:900!important;
+}
+.ecomax-courier-logout-link:hover,
+.mobile-courier-logout:hover{
+  border-color:#ff6686!important;
+  color:#fff!important;
+  box-shadow:0 0 20px rgba(255,80,120,.2)!important;
+}
+.mobile-courier-logout{
+  width:100%;
+  padding:12px;
+  text-align:left;
+  border-radius:10px;
+  margin-top:4px;
+  font-size:12px;
+}
+</style>
 <style id="ecomax-auth-gate-css">
 /* Auth links stay visible by default. JS hides them only after a real session is confirmed. */
 #loginLink,#registerLink{visibility:visible!important}
@@ -6109,6 +6136,27 @@ body{
 <script id="ecomax-auth-persistence-v4">
 (function(){
   'use strict';
+  async function courierLogout(){
+    try{
+      const ready=window.ECOMAX_AUTH_READY;
+      const db=window.ECOMAX_SUPABASE_CLIENT||window.ECOMAX_AUTH_CLIENT||(ready?await ready:null);
+      if(db?.auth) await db.auth.signOut();
+    }catch(e){
+      console.warn('ECOMAX courier logout:',e);
+    }
+    try{sessionStorage.removeItem('ecomax-auth-bridge-v1')}catch(e){}
+    try{localStorage.removeItem('ecomax-auth-bridge-v1')}catch(e){}
+    location.replace('index.html');
+  }
+
+  document.addEventListener('click',function(e){
+    const btn=e.target.closest('#courierLogoutButton,#mobileCourierLogoutButton');
+    if(!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    courierLogout();
+  },true);
+
   async function bootAuth(){
     try{
       const ready=window.ECOMAX_AUTH_READY;
@@ -6141,6 +6189,10 @@ body{
         // Logged-in couriers already have the cabinet, so do not show the duplicate LINE entry.
         if(desktopLine) desktopLine.style.display=isCourier?'none':'inline-flex';
         if(mobileLine) mobileLine.style.display=isCourier?'none':'block';
+        const courierLogout=document.getElementById('courierLogoutButton');
+        const mobileCourierLogout=document.getElementById('mobileCourierLogoutButton');
+        if(courierLogout) courierLogout.style.display=isCourier?'inline-flex':'none';
+        if(mobileCourierLogout) mobileCourierLogout.style.display=isCourier?'block':'none';
 
         document.documentElement.dataset.ecomaxAuthenticated=logged?'true':'false';
         document.documentElement.dataset.ecomaxAuthReady='true';
