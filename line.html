@@ -236,7 +236,18 @@ main:before{
 .route-btn.live-route{color:#19eaff!important;border-color:#19eaff55!important}
 .route-panel{margin-top:12px;padding:12px;border:1px solid #19eaff18;border-radius:13px;background:#020b12aa}
 .route-panel b{font-size:11px}.route-panel span{display:block;color:#718b95;font-size:9px;margin-top:5px}
-</style></head>
+<style id="ecomax-line-navigation">
+.line-navigation{display:none;margin:16px 0;padding:14px;border:1px solid #19eaff35;border-radius:20px;background:linear-gradient(145deg,#061923ee,#02080eee);box-shadow:0 20px 65px #000b,inset 0 0 35px #19eaff06}
+.line-navigation.active{display:block}
+.nav-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}.nav-head h2{margin:0;font-size:16px}.nav-head p{margin:5px 0 0;color:#78919b;font-size:10px}
+.nav-actions{display:flex;gap:7px;flex-wrap:wrap}.nav-actions button,.nav-actions a{min-height:40px;padding:0 12px;border-radius:10px;border:1px solid #19eaff35;background:#061923;color:#19eaff;text-decoration:none;font-weight:900;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.nav-actions .stop-nav{color:#ff9aaa;border-color:#ff647d35}.nav-actions .green-nav{color:#9fffd7;border-color:#45f0b055}
+#ecomaxLineMap{height:420px;border-radius:16px;overflow:hidden;border:1px solid #19eaff25;background:#02080d;margin-top:10px}
+.nav-status{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.nav-stat{padding:10px;border:1px solid #ffffff0d;border-radius:11px;background:#ffffff03}.nav-stat small{display:block;color:#718b95;font-size:8px}.nav-stat b{display:block;margin-top:4px;font-size:11px}
+@media(max-width:760px){.nav-head{flex-direction:column}.nav-actions{width:100%}.nav-actions>*{flex:1}.nav-status{grid-template-columns:1fr 1fr}#ecomaxLineMap{height:360px}}
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script></style></head>
 <body>
 <header><div class="nav">
   <div class="brand"><div class="orb"></div><div><div class="logo">ECOMAX LINE</div><div class="sub">FUTURE DELIVERY NETWORK</div></div></div>
@@ -254,6 +265,31 @@ main:before{
 </section>
 <div class="toolbar"><input id="search" placeholder="🔎 ნომერი, სახელი, ტელეფონი, ქალაქი, მისამართი..."><select id="filter"><option value="active">აქტიური შეკვეთები</option><option value="all">ყველა</option><option value="new">ახალი</option><option value="processing">მუშავდება</option><option value="loaded">დატვირთული</option><option value="picked_up">კურიერმა აიღო</option><option value="shipped">გზაში</option><option value="completed">ჩაბარდა</option></select></div>
 <section class="orders" id="orders"><div class="empty">იტვირთება...</div></section>
+<section class="line-navigation" id="lineNavigation">
+  <div class="nav-head">
+    <div>
+      <div class="eyebrow">LIVE GPS NAVIGATION</div>
+      <h2 id="navOrderTitle">🧭 ECOMAX LINE NAVIGATION</h2>
+      <p id="navDestination">დანიშნულება იტვირთება...</p>
+    </div>
+    <div class="nav-actions">
+      <button id="navRecenter" type="button">🎯 ცენტრში</button>
+      <button id="navRefreshRoute" type="button">🔄 მარშრუტი</button>
+      <button id="navStop" class="stop-nav" type="button">⏹ ნავიგაციის შეჩერება</button>
+    </div>
+  </div>
+  <div id="ecomaxLineMap"></div>
+  <div class="nav-status">
+    <div class="nav-stat"><small>GPS</small><b id="navGpsState">მოლოდინი</b></div>
+    <div class="nav-stat"><small>მანძილი</small><b id="navDistance">—</b></div>
+    <div class="nav-stat"><small>ETA</small><b id="navEta">—</b></div>
+    <div class="nav-stat"><small>მიმართულება</small><b id="navHeading">—</b></div>
+  </div>
+  <div class="nav-actions" style="margin-top:10px">
+    <a id="navGoogle" class="green-nav" target="_blank" rel="noopener">🗺️ Google Maps ნავიგაცია</a>
+    <button id="navCall" type="button">☎ მომხმარებელთან დარეკვა</button>
+  </div>
+</section>
 
 <section class="courier-suite">
  <div class="cpanel">
@@ -301,6 +337,96 @@ function dt(v){if(!v)return '—';const d=new Date(v);return isNaN(d)?'—':d.to
 function items(o){const a=Array.isArray(o.items)?o.items:[];return a.map(x=>esc(x.name||x.product_name||'პროდუქტი')+' × '+esc(x.quantity??x.qty??1)).join('<br>')||'—';}
 function progress(status){if(status==='cancelled')return '';const i=orderSteps.indexOf(status);return '<div class="progress">'+orderSteps.slice(0,5).map((s,n)=>'<div class="pstep '+(i>=n?'on':'')+'"></div>').join('')+'</div>';}
 function phoneHref(v){return v?'tel:'+String(v).replace(/[^+\d]/g,''):'';}
+let ecomaxNavMap=null,ecomaxNavMarker=null,ecomaxNavDestinationMarker=null,ecomaxNavRoute=null,ecomaxNavOrderId=null,ecomaxNavDestination=null,ecomaxNavRoutePoints=[];
+function navEnsureMap(){
+ const el=$('ecomaxLineMap'); if(!el||typeof L==='undefined')return null;
+ if(ecomaxNavMap){setTimeout(()=>ecomaxNavMap.invalidateSize(),60);return ecomaxNavMap;}
+ ecomaxNavMap=L.map(el,{zoomControl:true}).setView([42.2679,42.7180],12);
+ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(ecomaxNavMap);
+ return ecomaxNavMap;
+}
+function navGoogleHref(o){
+ const q=[o.address,o.city].filter(Boolean).join(', ');
+ return q?'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(q)+'&travelmode=driving':'';
+}
+function navDistanceKm(points){
+ let total=0; for(let i=1;i<points.length;i++){const a=points[i-1],b=points[i],R=6371,dLat=(b[0]-a[0])*Math.PI/180,dLon=(b[1]-a[1])*Math.PI/180,s=Math.sin(dLat/2)**2+Math.cos(a[0]*Math.PI/180)*Math.cos(b[0]*Math.PI/180)*Math.sin(dLon/2)**2;total+=2*R*Math.asin(Math.sqrt(s));} return total;
+}
+async function navGeocode(q){
+ const url='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=ge&q='+encodeURIComponent(q);
+ const r=await fetch(url,{headers:{Accept:'application/json'}});
+ if(!r.ok)throw new Error('მისამართის მოძებნა ვერ მოხერხდა');
+ const a=await r.json(); if(!a?.length)throw new Error('მისამართი რუკაზე ვერ მოიძებნა');
+ return {lat:Number(a[0].lat),lng:Number(a[0].lon),display:a[0].display_name||q};
+}
+async function navRoute(from,to){
+ const url='https://router.project-osrm.org/route/v1/driving/'+from[1]+','+from[0]+';'+to.lng+','+to.lat+'?overview=full&geometries=geojson&steps=true';
+ const r=await fetch(url); if(!r.ok)throw new Error('მარშრუტის სერვერი მიუწვდომელია');
+ const j=await r.json(); if(j.code!=='Ok'||!j.routes?.[0])throw new Error('სავალი მარშრუტი ვერ მოიძებნა');
+ return j.routes[0];
+}
+async function startOrderNavigation(id){
+ const o=orders.find(x=>String(x.id)===String(id)); if(!o)return;
+ const q=[o.address,o.city].filter(Boolean).join(', '); if(!q){toast('შეკვეთას მისამართი არ აქვს');return;}
+ ecomaxNavOrderId=o.id;
+ const panel=$('lineNavigation'); panel?.classList.add('active');
+ $('navOrderTitle').textContent='🧭 '+(o.order_number||'შეკვეთა');
+ $('navDestination').textContent='📍 '+q;
+ $('navGoogle').href=navGoogleHref(o);
+ $('navCall').onclick=()=>{const tel=phoneHref(o.phone);if(tel)location.href=tel;};
+ const map=navEnsureMap(); if(!map)return;
+ setTimeout(()=>map.invalidateSize(),100);
+ try{
+   $('navGpsState').textContent=window.__ecomaxCourierPosition?'GPS • აქტიური':'GPS • ჩართე GPS';
+   if(!ecomaxNavDestination) ecomaxNavDestination=await navGeocode(q);
+   const d=ecomaxNavDestination;
+   if(ecomaxNavDestinationMarker)map.removeLayer(ecomaxNavDestinationMarker);
+   ecomaxNavDestinationMarker=L.marker([d.lat,d.lng]).addTo(map).bindPopup('<b>📍 დანიშნულება</b><br>'+esc(q)).openPopup();
+   const pos=window.__ecomaxCourierPosition;
+   if(pos){
+     const from=[pos.coords.latitude,pos.coords.longitude];
+     const route=await navRoute(from,d);
+     ecomaxNavRoutePoints=route.geometry.coordinates.map(x=>[x[1],x[0]]);
+     if(ecomaxNavRoute)map.removeLayer(ecomaxNavRoute);
+     ecomaxNavRoute=L.polyline(ecomaxNavRoutePoints,{color:'#19eaff',weight:6,opacity:.9,lineJoin:'round',lineCap:'round'}).addTo(map);
+     $('navDistance').textContent=(route.distance/1000).toFixed(1)+' კმ';
+     $('navEta').textContent=Math.max(1,Math.round(route.duration/60))+' წთ';
+     map.fitBounds(ecomaxNavRoute.getBounds(),{padding:[30,30],maxZoom:16});
+   }else{
+     map.setView([d.lat,d.lng],15);
+     $('navDistance').textContent='GPS საჭიროა';
+     $('navEta').textContent='—';
+   }
+ }catch(e){console.warn('ECOMAX navigation:',e);toast('🧭 '+e.message);}
+}
+async function refreshOrderNavigation(){
+ if(!ecomaxNavOrderId)return;
+ ecomaxNavDestination=null;
+ await startOrderNavigation(ecomaxNavOrderId);
+}
+function stopOrderNavigation(){
+ ecomaxNavOrderId=null;ecomaxNavDestination=null;ecomaxNavRoutePoints=[];
+ $('lineNavigation')?.classList.remove('active');
+}
+function updateNavigationPosition(pos){
+ if(!ecomaxNavOrderId)return;
+ const map=navEnsureMap(); if(!map)return;
+ const lat=pos.coords.latitude,lng=pos.coords.longitude;
+ if(ecomaxNavMarker) ecomaxNavMarker.setLatLng([lat,lng]);
+ else ecomaxNavMarker=L.marker([lat,lng],{title:'ჩემი GPS'}).addTo(map).bindPopup('📡 თქვენი მიმდინარე GPS');
+ $('navGpsState').textContent='GPS • '+lat.toFixed(5)+', '+lng.toFixed(5);
+ const d=ecomaxNavDestination;
+ if(d){
+   navRoute([lat,lng],d).then(route=>{
+     ecomaxNavRoutePoints=route.geometry.coordinates.map(x=>[x[1],x[0]]);
+     if(ecomaxNavRoute)map.removeLayer(ecomaxNavRoute);
+     ecomaxNavRoute=L.polyline(ecomaxNavRoutePoints,{color:'#19eaff',weight:6,opacity:.9,lineJoin:'round',lineCap:'round'}).addTo(map);
+     $('navDistance').textContent=(route.distance/1000).toFixed(1)+' კმ';
+     $('navEta').textContent=Math.max(1,Math.round(route.duration/60))+' წთ';
+     const h=Number(pos.coords.heading); $('navHeading').textContent=Number.isFinite(h)?Math.round(h)+'°':'—';
+   }).catch(()=>{});
+ }
+}
 function mapHref(o){const q=[o.address,o.city].filter(Boolean).join(', ');return q?'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q):'';}
 function routeHref(o){
  const q=[o.address,o.city].filter(Boolean).join(', ');
@@ -422,13 +548,13 @@ function render(){
   return '<article class="order '+(isNew?'new-order':'')+'"><div class="top"><div><div class="num">'+esc(o.order_number||('ECX-'+String(o.id).slice(0,8).toUpperCase()))+'</div><div class="customer">'+esc(o.customer_name||'—')+' • '+esc(o.phone||'—')+'</div></div><span class="badge '+esc(o.status)+'">'+esc(labels[o.status]||o.status||'—')+'</span></div>'+
   (isNew?'<div class="new-order-banner"><i></i> ახალი შეკვეთა — გთხოვთ მიიღოთ ან უარყოთ დავალება</div>':'')+progress(o.status)+quickActions(o)+
   '<div class="grid"><div class="box"><small>მიტანის მისამართი</small><b>'+esc([o.city,o.address].filter(Boolean).join(', ')||'—')+'</b><div class="items" style="margin-top:10px">'+items(o)+'</div></div><div class="box"><small>შეკვეთის თანხა</small><b>'+money(o.total)+'</b><div class="items" style="margin-top:10px">კურიერი: '+esc(o.courier_name||'არ არის მინიჭებული')+'<br>ETA: '+dt(o.estimated_arrival_at)+'</div></div></div>'+
-  '<div class="actions">'+(isNew?'<div class="order-actions-primary"><button class="accept" data-accept="'+esc(o.id)+'">✓ შეკვეთის მიღება</button><button class="decline" data-decline="'+esc(o.id)+'">× ვერ ვიღებ</button></div>':(!closed&&n?'<button class="go" data-next="'+esc(o.id)+'">→ '+esc(labels[n])+'</button>':''))+(tel?'<a class="navbtn call" href="'+esc(tel)+'">☎ დარეკვა</a>':'')+(route?'<a class="navbtn route-btn" target="_blank" rel="noopener" href="'+esc(route)+'">🧭 მარშრუტის დაწყება</a>':'')+(map?'<a class="navbtn" target="_blank" rel="noopener" href="'+esc(map)+'">📍 რუკა</a>':'')+'<button data-edit="'+esc(o.id)+'">⚙ დეტალები</button><button data-history="'+esc(o.id)+'">🕒 ისტორია</button>'+''+'</div></article>';
+  '<div class="actions">'+(isNew?'<div class="order-actions-primary"><button class="accept" data-accept="'+esc(o.id)+'">✓ შეკვეთის მიღება</button><button class="decline" data-decline="'+esc(o.id)+'">× ვერ ვიღებ</button></div>':(!closed&&n?'<button class="go" data-next="'+esc(o.id)+'">→ '+esc(labels[n])+'</button>':''))+(tel?'<a class="navbtn call" href="'+esc(tel)+'">☎ დარეკვა</a>':'')+(route?'<a class="navbtn route-btn" target="_blank" rel="noopener" href="'+esc(route)+'">🧭 მარშრუტის დაწყება</a>':'')+(map?'<a class="navbtn" target="_blank" rel="noopener" href="'+esc(map)+'">📍 რუკა</a>':'')+(!closed&&o.status!=='new'?'<button class="navbtn route-btn live-route" data-navigate="'+esc(o.id)+'">🧭 ნავიგაცია</button>':'')+'<button data-edit="'+esc(o.id)+'">⚙ დეტალები</button><button data-history="'+esc(o.id)+'">🕒 ისტორია</button>'+''+'</div></article>';
  }).join('');
 }
 async function acceptOrder(id){
  const r=await db.rpc('ecomax_line_accept_order',{p_order_id:id});
  if(r.error){toast(r.error.message);return;}
- toast('შეკვეთა მიღებულია ✓'); await load();
+ toast('შეკვეთა მიღებულია ✓'); await load(); setTimeout(()=>startOrderNavigation(id),120);
 }
 function declineOrder(id){
  const o=orders.find(x=>String(x.id)===String(id)); if(!o)return;
@@ -486,7 +612,7 @@ $('logout').onclick=async()=>{
     location.replace('index.html');
   }
 };$('search').oninput=render;$('filter').onchange=render;$('close').onclick=()=>$('overlay').style.display='none';$('overlay').onclick=e=>{if(e.target===$('overlay'))$('overlay').style.display='none';};
-$('orders').onclick=e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.next||b.dataset.edit||b.dataset.history||b.dataset.assign||b.dataset.complete||b.dataset.arrived||b.dataset.accept||b.dataset.decline;const o=orders.find(x=>String(x.id)===String(id));if(!o)return;if(b.dataset.accept)acceptOrder(id);else if(b.dataset.decline)declineOrder(id);else if(b.dataset.next)advance(id);else if(b.dataset.arrived)markArrived(id);else if(b.dataset.complete)updateStatus(o,'completed',null);else if(b.dataset.edit)openDetails(o);else if(b.dataset.history)openHistory(o);else if(b.dataset.assign){}};
+$('orders').onclick=e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.next||b.dataset.edit||b.dataset.history||b.dataset.assign||b.dataset.complete||b.dataset.arrived||b.dataset.accept||b.dataset.decline||b.dataset.navigate;const o=orders.find(x=>String(x.id)===String(id));if(!o)return;if(b.dataset.accept)acceptOrder(id);else if(b.dataset.decline)declineOrder(id);else if(b.dataset.next)advance(id);else if(b.dataset.arrived)markArrived(id);else if(b.dataset.complete)updateStatus(o,'completed',null);else if(b.dataset.edit)openDetails(o);else if(b.dataset.history)openHistory(o);else if(b.dataset.navigate)startOrderNavigation(id);else if(b.dataset.assign){}};
 boot();
 })();
 </script>
@@ -498,7 +624,7 @@ boot();
  const alerts=document.getElementById('lineAlerts');
  function note(t,kind){if(!alerts)return;alerts.insertAdjacentHTML('afterbegin','<div class="alert '+(kind||'')+'">● '+t+'</div>');setTimeout(()=>alerts.lastElementChild?.remove(),7000)}
  document.getElementById('focusBtn')?.addEventListener('click',()=>{document.getElementById('filter').value='active';document.getElementById('filter').dispatchEvent(new Event('change'));document.getElementById('orders')?.scrollIntoView({behavior:'smooth',block:'start'})});
- document.getElementById('locateBtn')?.addEventListener('click',()=>{const g=document.getElementById('geoStatus');if(!navigator.geolocation){note('ამ მოწყობილობაზე GPS მიუწვდომელია','warn');return}g.textContent='ლოკაცია: GPS იძებნება...';navigator.geolocation.getCurrentPosition(p=>{window.__ecomaxCourierPosition=p;g.innerHTML='GPS: '+p.coords.latitude.toFixed(5)+', '+p.coords.longitude.toFixed(5)+'<br>მარშრუტის საწყისი წერტილი მზადაა';note('ლოკაცია მიღებულია ✓ • მარშრუტი მზადაა','ok');window.dispatchEvent(new Event('ecomax-gps-updated'))},()=>{g.textContent='ლოკაცია: წვდომა უარყოფილია';note('GPS წვდომა ვერ მივიღეთ','warn')},{enableHighAccuracy:true,timeout:8000,maximumAge:30000})});
+ document.getElementById('locateBtn')?.addEventListener('click',()=>{const g=document.getElementById('geoStatus');if(!navigator.geolocation){note('ამ მოწყობილობაზე GPS მიუწვდომელია','warn');return}g.textContent='ლოკაცია: GPS იძებნება...';navigator.geolocation.getCurrentPosition(p=>{window.__ecomaxCourierPosition=p;g.innerHTML='GPS: '+p.coords.latitude.toFixed(5)+', '+p.coords.longitude.toFixed(5)+'<br>მარშრუტის საწყისი წერტილი მზადაა';note('ლოკაცია მიღებულია ✓ • მარშრუტი მზადაა','ok');window.dispatchEvent(new Event('ecomax-gps-updated')); updateNavigationPosition(p)},()=>{g.textContent='ლოკაცია: წვდომა უარყოფილია';note('GPS წვდომა ვერ მივიღეთ','warn')},{enableHighAccuracy:true,timeout:8000,maximumAge:30000})});
  document.getElementById('soundBtn')?.addEventListener('click',async()=>{try{const C=window.AudioContext||window.webkitAudioContext;if(C){const a=new C(),o=a.createOscillator(),g=a.createGain();o.frequency.value=880;g.gain.value=.03;o.connect(g);g.connect(a.destination);o.start();setTimeout(()=>{o.stop();a.close()},140)}}catch(e){}note('შეტყობინების ხმა ჩართულია ✓','ok')});
  document.getElementById('startShift')?.addEventListener('click',()=>{localStorage.setItem('ecomax_shift','1');note('ცვლა დაიწყო • ECOMAX LINE აქტიურ რეჟიმში ✓','ok')});
  document.getElementById('endShift')?.addEventListener('click',()=>{localStorage.removeItem('ecomax_shift');note('ცვლა დასრულდა','warn')});
@@ -556,6 +682,13 @@ function startLiveGps(){
 }
 document.getElementById('gpsStartBtn')?.addEventListener('click',startLiveGps);
 document.getElementById('gpsStopBtn')?.addEventListener('click',stopLiveGps);
+document.getElementById('navRecenter')?.addEventListener('click',()=>{
+ const map=navEnsureMap(); if(!map)return;
+ if(ecomaxNavRoute)map.fitBounds(ecomaxNavRoute.getBounds(),{padding:[30,30],maxZoom:16});
+ else if(ecomaxNavDestination)map.setView([ecomaxNavDestination.lat,ecomaxNavDestination.lng],15);
+});
+document.getElementById('navRefreshRoute')?.addEventListener('click',refreshOrderNavigation);
+document.getElementById('navStop')?.addEventListener('click',stopOrderNavigation);
 if(navigator.geolocation){
   window.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&ecomaxGpsWatchId!==null){
     navigator.geolocation.getCurrentPosition(p=>sendLiveGps(p).catch(()=>{}),()=>{},{enableHighAccuracy:true,timeout:8000,maximumAge:0});
