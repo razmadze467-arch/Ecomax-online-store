@@ -6,6 +6,23 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.EditText
+import android.widget.Button
+import android.view.Gravity
+import android.location.Location
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import org.json.JSONArray
+import org.json.JSONObject
+import java.net.HttpURLConnection
+import java.net.URL
+import java.net.URLEncoder
+import java.util.concurrent.Executors
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.core.app.ActivityCompat
@@ -25,13 +42,19 @@ class MainActivity : ComponentActivity() {
     private var selectedOrderId: String? = null
     private var locationClient: FusedLocationProviderClient? = null
     private var locationCallback: LocationCallback? = null
+    private val io = Executors.newSingleThreadExecutor()
+    private val SUPABASE = "https://mkxkqdvtmfbxmldnvsef.supabase.co"
+    private val SUPABASE_KEY = "sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd"
+    private var accessToken: String? = null
+    private var userId: String? = null
+    private lateinit var root: LinearLayout
     private val locationRequest = 7001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         locationClient = LocationServices.getFusedLocationProviderClient(this)
-        navigationView = NavigationView(this)
-        setContentView(FrameLayout(this).apply { addView(navigationView) })
+        locationClient = LocationServices.getFusedLocationProviderClient(this)
+        showLogin()
         ensureLocationPermission()
     }
 
@@ -41,6 +64,98 @@ class MainActivity : ComponentActivity() {
         handleNavigationIntent(intent)
     }
 
+
+    private fun request(method: String, url: String, body: String? = null, bearer: String? = null): String {
+        val c = URL(url).openConnection() as HttpURLConnection
+        c.requestMethod = method
+        c.setRequestProperty("apikey", SUPABASE_KEY)
+        c.setRequestProperty("Content-Type", "application/json")
+        bearer?.let { c.setRequestProperty("Authorization", "Bearer " + it) }
+        if (body != null) {
+            c.doOutput = true
+            c.outputStream.use { it.write(body.toByteArray(Charsets.UTF_8)) }
+        }
+        val code = c.responseCode
+        val stream = if (code in 200..299) c.inputStream else c.errorStream
+        val text = stream?.bufferedReader()?.use { it.readText() } ?: ""
+        if (code !in 200..299) throw Exception("HTTP " + code + ": " + text)
+        return text
+    }
+
+    private fun showLogin() {
+        root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(36, 60, 36, 36)
+            gravity = Gravity.CENTER_HORIZONTAL
+        }
+        val title = TextView(this).apply { text = "ECOMAX LINE"; textSize = 30f; gravity = Gravity.CENTER }
+        val email = EditText(this).apply { hint = "კურიერის ელფოსტა"; inputType = 33 }
+        val password = EditText(this).apply { hint = "პაროლი"; inputType = 129 }
+        val login = Button(this).apply { text = "კურიერის შესვლა" }
+        val status = TextView(this)
+        root.addView(title); root.addView(email); root.addView(password); root.addView(login); root.addView(status)
+        setContentView(root)
+        login.setOnClickListener {
+            val e = email.text.toString().trim()
+            val p = password.text.toString()
+            if (e.isBlank() || p.isBlank()) { status.text = "შეავსე ელფოსტა და პაროლი"; return@setOnClickListener }
+            login.isEnabled = false
+            status.text = "მოწმდება..."
+            io.execute {
+                try {
+                    val json = JSONObject(request("POST", SUPABASE + "/auth/v1/token?grant_type=password",
+                        JSONObject().put("email", e).put("password", p).toString()))
+                    val token = json.getString("access_token")
+                    val uid = json.getJSONObject("user").getString("id")
+                    val profileUrl = SUPABASE + "/rest/v1/profiles?id=eq." + URLEncoder.encode(uid, "UTF-8") + "&select=role"
+                    val prof = JSONArray(request("GET", profileUrl, bearer = token))
+                    val role = if (prof.length() > 0) prof.getJSONObject(0).optString("role") else ""
+                    if (role != "courier" && role != "admin") throw Exception("ამ ანგარიშს კურიერის წვდომა არ აქვს")
+                    accessToken = token
+                    userId = uid
+                    runOnUiThread { showOrders() }
+                } catch (x: Exception) {
+                    runOnUiThread { status.text = x.message ?: "შესვლა ვერ მოხერხდა"; login.isEnabled = true }
+                }
+            }
+        }
+    }
+
+    private fun showOrders() {
+        root.removeAllViews()
+        root.addView(TextView(this).apply { text = "ECOMAX LINE — შეკვეთები"; textSize = 24f })
+        val list = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        root.addView(list, LinearLayout.LayoutParams(-1, 0, 1f))
+        io.execute {
+            try {
+                val uid = userId ?: throw Exception("სესია არ არის")
+                val url = SUPABASE + "/rest/v1/orders?courier_id=eq." + URLEncoder.encode(uid, "UTF-8") +
+                    "&status=not.in.(completed,cancelled)&select=id,order_number,customer_name,phone,address,city,status,total"
+                val arr = JSONArray(request("GET", url, bearer = accessToken))
+                runOnUiThread {
+                    if (arr.length() == 0) list.addView(TextView(this).apply { text = "აქტიური შეკვეთები არ არის" })
+                    for (i in 0 until arr.length()) {
+                        val o = arr.getJSONObject(i)
+                        val id = o.getString("id")
+                        val number = o.optString("order_number").ifBlank { id.take(8) }
+                        val address = o.optString("address")
+                        val city = o.optString("city")
+                        val card = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(0, 18, 0, 18) }
+                        card.addView(TextView(this).apply {
+                            text = "შეკვეთა #" + number + "
+" + o.optString("customer_name") + " — " + city + ", " + address + "
+სტატუსი: " + o.optString("status")
+                            textSize = 17f
+                        })
+                        card.addView(Button(this).apply { text = "ნავიგაციის დაწყება"; setOnClickListener { openOrderNavigation(id, address, city, number) } })
+                        list.addView(card)
+                    }
+                }
+            } catch (x: Exception) {
+                runOnUiThread { list.addView(TextView(this).apply { text = "შეკვეთების ჩატვირთვა ვერ მოხერხდა: " + (x.message ?: "") }) }
+            }
+        }
+    }
 
     private fun sendLiveGps(location: Location) {
         val orderId = selectedOrderId ?: return
@@ -82,7 +197,9 @@ class MainActivity : ComponentActivity() {
         val q = URLEncoder.encode("$address, $city, Georgia", "UTF-8")
         io.execute {
             try {
-                val arr = JSONArray(URL("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=ge&q=$q").readText())
+                val conn = URL("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=ge&q=" + q).openConnection() as HttpURLConnection
+                conn.setRequestProperty("User-Agent", "ECOMAX-LINE/1.0")
+                val arr = JSONArray(conn.inputStream.bufferedReader().use { it.readText() })
                 if (arr.length() == 0) throw Exception("მისამართი GPS-ზე ვერ მოიძებნა")
                 val x = arr.getJSONObject(0)
                 val lat = x.getDouble("lat"); val lng = x.getDouble("lon")
