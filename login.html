@@ -65,7 +65,7 @@ $('loginForm').addEventListener('submit',async e=>{
  if(!email||!password){show('შეავსე ორივე ველი.');return}
  btn.disabled=true;btn.textContent='მიმდინარეობს...';
  try{
-  const db=client(),r=await db.auth.signInWithPassword({email,password});
+  const db=await client(),r=await db.auth.signInWithPassword({email,password});
   if(r.error)throw r.error;
   await finishSession(db,r.data.session);
   show('ავტორიზაცია წარმატებულია.','success');
@@ -80,7 +80,7 @@ $('forgot').addEventListener('click',async e=>{
  e.preventDefault();const email=$('email').value.trim().toLowerCase();
  if(!email){show('ჯერ შეიყვანე ელფოსტა.');return}
  try{
-  const db=client(),r=await db.auth.resetPasswordForEmail(email,{redirectTo:location.origin+'/login.html'});
+  const db=await client(),r=await db.auth.resetPasswordForEmail(email,{redirectTo:location.origin+'/login.html'});
   if(r.error)throw r.error;show('პაროლის აღდგენის ბმული გაიგზავნა.','success');
  }catch(e){show(e?.message||'პაროლის აღდგენა ვერ შესრულდა.')}
 });
