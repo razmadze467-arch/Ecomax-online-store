@@ -1,0 +1,43 @@
+name: ECOMAX LINE Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'ecomax-line-android/**'
+      - '.github/workflows/ecomax-line-android.yml'
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+
+      - name: Build debug APK
+        env:
+          MAPS_API_KEY: ${{ secrets.ECOMAX_MAPS_API_KEY }}
+        run: |
+          if [ -n "$MAPS_API_KEY" ]; then
+            gradle -p ecomax-line-android :app:assembleDebug -PMAPS_API_KEY="$MAPS_API_KEY"
+          else
+            gradle -p ecomax-line-android :app:assembleDebug
+          fi
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ecomax-line-debug-apk
+          path: ecomax-line-android/app/build/outputs/apk/debug/app-debug.apk
