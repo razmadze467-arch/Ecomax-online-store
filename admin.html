@@ -2881,12 +2881,20 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
             <div style="margin-top:8px;color:var(--muted)">${esc(state.label)} • ${esc(liveTimeAgo(loc.updated_at))}</div>
             <div style="margin-top:8px">${Number(loc.latitude).toFixed(5)}, ${Number(loc.longitude).toFixed(5)}</div>
             <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">
-              <button class="small-btn" onclick="focusGpsCourier('${esc(loc.courier_id)}')" type="button">🎯 ცენტრში</button>
-              <button class="small-btn" onclick="showCourierTrack('${esc(loc.courier_id)}')" type="button">🛣️ მარშრუტი</button>
+              <button class="small-btn gps-center-btn" data-courier-id="${esc(loc.courier_id)}" type="button">🎯 ცენტრში</button>
+              <button class="small-btn gps-track-btn" data-courier-id="${esc(loc.courier_id)}" type="button">🛣️ მარშრუტი</button>
               <a class="small-btn" target="_blank" rel="noopener" href="${esc(liveMapHref(loc.latitude,loc.longitude))}">📍 ნავიგაცია</a>
             </div>
           </div>`;
       }).join(""):"<div class='detail' style='grid-column:1/-1;text-align:center;color:var(--muted)'>GPS მონაცემები ჯერ არ არის.</div>";
+    }
+    if(grid){
+      grid.querySelectorAll(".gps-center-btn").forEach(btn=>{
+        btn.addEventListener("click",()=>focusGpsCourier(btn.dataset.courierId));
+      });
+      grid.querySelectorAll(".gps-track-btn").forEach(btn=>{
+        btn.addEventListener("click",()=>showCourierTrack(btn.dataset.courierId));
+      });
     }
   }
 
