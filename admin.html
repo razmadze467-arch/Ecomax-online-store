@@ -15,7 +15,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- ECOMAX — ONE shared Supabase Auth client -->
-  <script src="js/supabase.js"></script>
+  <script src="js/supabase.js?v=20260930-8"></script>
 
   <style>
     :root {
@@ -1788,15 +1788,22 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
         return;
       }
 
-      // Do not let an optional notification feature block the Admin UI.
-      try {
-        await openAdmin();
-      } catch (adminError) {
-        console.error("Admin open:", adminError);
+      // Authentication succeeded: open the Admin UI immediately.
+      // Loading dashboard data must never block the login screen.
+      $("loginScreen").classList.add("hidden");
+      $("adminApp").classList.remove("hidden");
+      $("adminName").textContent =
+        currentUser.user_metadata?.full_name ||
+        currentUser.email ||
+        "ADMIN";
+      $("loginError").textContent = "";
+
+      openAdmin().catch(adminError => {
+        console.error("Admin data load:", adminError);
         $("loginError").textContent =
-          "Admin ავტორიზაცია წარმატებულია, მაგრამ პანელის ჩატვირთვისას მოხდა შეცდომა: " +
+          "Admin-ში შესვლა წარმატებულია, მაგრამ მონაცემების ჩატვირთვისას მოხდა შეცდომა: " +
           (adminError?.message || adminError);
-      }
+      });
 
       try {
         if (typeof enableAdminOrderNotifications === "function") {
