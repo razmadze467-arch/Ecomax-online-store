@@ -4654,17 +4654,13 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
   <script src="js/store-search.js?v=20260916-10"></script>
 
-  <script src="js/magic-home.js?v=20260916-10"></script>
 
-  <script src="js/bottle-color-enhance.js?v=20260920-2"></script>
 
   <script src="js/cart-premium.js?v=20260916-10"></script>
 
   <script src="js/cart-pro-ui.js?v=20260916-10"></script>
 
-  <script src="js/viewport-repair.js?v=20260921-8"></script>
 
-  <script src="js/neon-magic-system.js?v=20260921-3"></script>
   <script src="js/cart-click-fix.js?v=20260926-2"></script>
 
 
@@ -6694,6 +6690,42 @@ body{
   font-size:7px!important;
   padding:7px 8px!important;
  }
+}
+</style>
+
+<style id="ecomax-stable-render-v1">
+/* ECOMAX — STABLE RENDER MODE
+   Keeps the storefront visuals, but removes competing animation/DOM effects
+   that cause cards and sections to flicker or disappear on mobile/WebView. */
+html{scroll-behavior:auto!important}
+*,*::before,*::after{
+  animation:none!important;
+  transition:none!important;
+}
+body::before,body::after{animation:none!important;transform:none!important}
+.header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.product-card,.info-card,.card,.ecomax-care-card{
+  transform:none!important;
+  opacity:1!important;
+  visibility:visible!important;
+  content-visibility:auto;
+  contain:layout paint style;
+}
+.product-card:hover,.info-card:hover,.card:hover,.ecomax-care-card:hover{transform:none!important}
+.product-card::before,.product-card::after,.info-card::before,.info-card::after{
+  animation:none!important;
+}
+.product-visual,.product-bottle,.product-label,.product-glow{
+  transform:none!important;
+  animation:none!important;
+}
+.ecomax-orbit-cars,.ecomax-moving-cars,.ecomax-perimeter-cars,
+.ecomax-magic-home,.ecomax-home-live .stars,.ecomax-home-live .aurora,
+.ecomax-home-live .beam,.ecomax-home-live .portal,.ecomax-home-live .particle,
+.ecomax-mx-progress,.ecomax-mx-dock,.ecomax-mx-status{display:none!important}
+button::before,.btn::before,.submit::before,.back::before{animation:none!important;display:none!important}
+@media(max-width:700px){
+  .product-card,.info-card,.card{contain:layout paint style;}
 }
 </style>
 </body>
