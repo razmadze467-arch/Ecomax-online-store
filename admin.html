@@ -2336,6 +2336,51 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     `).join("");
   }
 
+  function updateDashboard() {
+    const total = orders.length;
+    const newOrders = orders.filter(o => o.status === "new").length;
+    const revenue = orders.reduce((sum, o) => sum + Number(o.total || 0), 0);
+
+    const setText = (id, value) => {
+      const el = $(id);
+      if (el) el.textContent = value;
+    };
+
+    setText("statOrders", total);
+    setText("statNew", newOrders);
+    setText("statCustomers", customers.length);
+    setText("statRevenue", money(revenue));
+
+    renderRecentOrders();
+  }
+
+  function renderRecentOrders() {
+    const tbody = $("recentOrders");
+    if (!tbody) return;
+
+    const rows = [...orders]
+      .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))
+      .slice(0, 8);
+
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px">შეკვეთები ჯერ არ არის.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = rows.map(order => `
+      <tr>
+        <td><b>${esc(order.order_number || "—")}</b></td>
+        <td>${esc(order.customer_name || "—")}</td>
+        <td><b>${money(order.total)}</b></td>
+        <td>${statusBadge(order.status)}</td>
+        <td>${esc(date(order.created_at))}</td>
+        <td>
+          <button class="small-btn" type="button" onclick="viewOrder('${esc(order.id)}')">👁 ნახვა</button>
+        </td>
+      </tr>
+    `).join("");
+  }
+
   async function refreshAll() {
 
     if (!db)
