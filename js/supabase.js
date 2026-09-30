@@ -184,7 +184,7 @@
     if (!/(^|\/)(account|admin)\.html$/i.test(location.pathname)) return;
     if (document.querySelector('script[data-ecomax-order-ux]')) return;
     const s = document.createElement('script');
-    s.src = 'js/order-tracking-ux.js?v=20260920-1';
+    s.src = 'js/order-tracking-ux.js?v=20260930-6';
     s.async = false;
     s.dataset.ecomaxOrderUx = '1';
     (document.head || document.documentElement).appendChild(s);
