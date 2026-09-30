@@ -15,7 +15,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- ECOMAX — ONE shared Supabase Auth client -->
-  <script src="js/supabase.js?v=20260930-8"></script>
+  <script src="js/supabase.js?v=20260930-9"></script>
 
   <style>
     :root {
@@ -1744,30 +1744,36 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
   $("loginForm").addEventListener("submit", async event => {
     event.preventDefault();
 
-    if (!db) {
-      $("loginError").textContent = "Supabase კავშირი ვერ ჩაიტვირთა.";
-      return;
-    }
-
-    const email = $("adminEmail").value.trim().toLowerCase();
-    const password = $("adminPassword").value;
-
-    if (email !== ADMIN_EMAIL) {
-      $("loginError").textContent =
-        "Admin Panel-ზე შესვლა მხოლოდ ადმინისტრატორის ანგარიშით არის შესაძლებელი.";
-      return;
-    }
-
-    $("loginError").textContent = "მიმდინარეობს ავტორიზაცია...";
+    const loginError = $("loginError");
+    const submitButton = $("loginForm").querySelector('button[type="submit"]');
 
     try {
-      const { data, error } = await db.auth.signInWithPassword({
+      const authClient = window.ECOMAX_AUTH_CLIENT || window.ECOMAX_SUPABASE_CLIENT || db;
+      if (window.ECOMAX_AUTH_READY) await window.ECOMAX_AUTH_READY;
+      if (!authClient?.auth) throw new Error("Supabase Auth client ვერ ჩაიტვირთა.");
+
+      const email = $("adminEmail").value.trim().toLowerCase();
+      const password = $("adminPassword").value;
+
+      if (email !== ADMIN_EMAIL) {
+        loginError.textContent = "Admin Panel-ზე შესვლა მხოლოდ ადმინისტრატორის ანგარიშით არის შესაძლებელი.";
+        return;
+      }
+      if (!password) {
+        loginError.textContent = "შეიყვანე ადმინისტრატორის პაროლი.";
+        return;
+      }
+      if (submitButton) submitButton.disabled = true;
+      loginError.textContent = "მიმდინარეობს ავტორიზაცია...";
+
+      const { data, error } = await authClient.auth.signInWithPassword({
         email: ADMIN_EMAIL,
         password
       });
 
       if (error || !data?.user) {
         console.error("Admin login:", error);
+        if (submitButton) submitButton.disabled = false;
         $("loginError").textContent =
           "ავტორიზაცია ვერ მოხერხდა: " +
           (error?.message || "Supabase-მა მომხმარებელი ვერ დააბრუნა.");
@@ -1815,8 +1821,14 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
     } catch (error) {
       console.error("Admin login exception:", error);
-      $("loginError").textContent =
-        "ავტორიზაციის დროს მოხდა შეცდომა.";
+      if (submitButton) submitButton.disabled = false;
+      loginError.textContent =
+        "ავტორიზაციის დროს მოხდა შეცდომა: " + (error?.message || error?.code || String(error));
+    }
+    } catch (outerError) {
+      console.error("Admin login outer exception:", outerError);
+      if (submitButton) submitButton.disabled = false;
+      loginError.textContent = "Admin Auth შეცდომა: " + (outerError?.message || String(outerError));
     }
   });
 
