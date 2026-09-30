@@ -2211,6 +2211,126 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
      LOAD DATA
   ========================================== */
 
+  /* ==========================================
+     PRODUCTS + CUSTOMERS
+     Restored as standalone admin data modules.
+  ========================================== */
+
+  let customers = [];
+  let products = [];
+
+  async function loadCustomers() {
+    if (!db || !currentUser) return;
+    const { data, error } = await db
+      .from("profiles")
+      .select("id,full_name,phone,address,city,created_at,updated_at,role")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Customers:", error);
+      customers = [];
+      toast("მომხმარებლების მონაცემები ვერ ჩაიტვირთა");
+      return;
+    }
+
+    customers = data || [];
+  }
+
+  function renderCustomers() {
+    const table = $("customersTable");
+    if (!table) return;
+
+    const q = String($("customerSearch")?.value || "").trim().toLowerCase();
+
+    const rows = customers.filter(c => {
+      if (!q) return true;
+      return [
+        c.full_name,
+        c.email,
+        c.phone,
+        c.city,
+        c.address,
+        c.id
+      ].some(v => String(v || "").toLowerCase().includes(q));
+    });
+
+    if (!rows.length) {
+      table.innerHTML =
+        '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px">მომხმარებლები ვერ მოიძებნა.</td></tr>';
+      return;
+    }
+
+    table.innerHTML = rows.map(c => `
+      <tr>
+        <td><b>${esc(c.full_name || "—")}</b></td>
+        <td>${esc(c.email || "—")}</td>
+        <td>${esc(c.phone || "—")}</td>
+        <td>${esc(date(c.created_at))}</td>
+        <td><span style="font-size:10px;color:var(--muted)">${esc(c.id || "—")}</span></td>
+      </tr>
+    `).join("");
+  }
+
+  async function loadProducts() {
+    if (!db || !currentUser) return;
+    const { data, error } = await db
+      .from("products")
+      .select("*")
+      .order("id", { ascending: true });
+
+    if (error) {
+      console.error("Products:", error);
+      products = [];
+      toast("პროდუქტების მონაცემები ვერ ჩაიტვირთა");
+      return;
+    }
+
+    products = data || [];
+  }
+
+  function renderProducts() {
+    const table = $("productsTable");
+    if (!table) return;
+
+    const q = String($("productSearch")?.value || "").trim().toLowerCase();
+
+    const rows = products.filter(p => {
+      if (!q) return true;
+      return [
+        p.name,
+        p.category,
+        p.description,
+        p.usage,
+        p.dilution,
+        p.unit
+      ].some(v => String(v || "").toLowerCase().includes(q));
+    });
+
+    if (!rows.length) {
+      table.innerHTML =
+        '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px">პროდუქტები ვერ მოიძებნა.</td></tr>';
+      return;
+    }
+
+    table.innerHTML = rows.map(p => `
+      <tr>
+        <td>
+          <b>${esc(p.name || "—")}</b>
+          ${p.badge ? `<div style="color:var(--cyan);font-size:10px;margin-top:3px">${esc(p.badge)}</div>` : ""}
+        </td>
+        <td>${esc(p.category || "—")}</td>
+        <td>${esc(p.dilution || "—")}</td>
+        <td><b style="color:var(--cyan)">${money(p.price)}</b></td>
+        <td>${esc(p.unit || "ლიტრი")}</td>
+        <td>
+          <span class="badge ${p.active ? "completed" : "cancelled"}">
+            ${p.active ? "აქტიური" : "გამორთული"}
+          </span>
+        </td>
+      </tr>
+    `).join("");
+  }
+
   async function refreshAll() {
 
     if (!db)
