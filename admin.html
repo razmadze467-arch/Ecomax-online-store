@@ -2485,6 +2485,100 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     `).join("");
   }
 
+  function closeOrderModal(){
+    const modal=$("orderModal");
+    if(modal) modal.classList.remove("show");
+  }
+
+  function orderItemsHtml(items){
+    if(!Array.isArray(items)||!items.length){
+      return '<div class="detail" style="color:var(--muted)">პროდუქტები ვერ მოიძებნა.</div>';
+    }
+    return items.map(item=>{
+      const qty=Math.max(1,Number(item.quantity||1));
+      const unit=Number(item.unit_price ?? item.price ?? 0);
+      const line=Number(item.line_total ?? unit*qty);
+      return '<div class="detail" style="display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:8px">'+
+        '<div><b>'+esc(item.name||item.product_name||"პროდუქტი")+'</b><div style="color:var(--muted);font-size:11px;margin-top:3px">'+esc(item.volume||item.unit||"")+' × '+qty+'</div></div>'+
+        '<b style="color:var(--cyan)">'+money(line)+'</b></div>';
+    }).join("");
+  }
+
+  function viewOrder(orderId){
+    const order=orders.find(x=>String(x.id)===String(orderId));
+    const box=$("orderDetails");
+    const modal=$("orderModal");
+    if(!order||!box||!modal) return;
+
+    const courierList=approvedCouriers();
+    box.innerHTML=
+      '<div class="detail-grid">'+
+        '<div class="detail"><small>შეკვეთა</small><b>'+esc(order.order_number||"—")+'</b></div>'+
+        '<div class="detail"><small>სტატუსი</small>'+statusBadge(order.status)+'</div>'+
+        '<div class="detail"><small>მომხმარებელი</small><b>'+esc(order.customer_name||"—")+'</b></div>'+
+        '<div class="detail"><small>ტელეფონი</small><b>'+esc(order.phone||"—")+'</b></div>'+
+        '<div class="detail"><small>ქალაქი</small><b>'+esc(order.city||"—")+'</b></div>'+
+        '<div class="detail"><small>მისამართი</small><b>'+esc(order.address||"—")+'</b></div>'+
+      '</div>'+
+      '<h3 style="margin:20px 0 8px">🛒 პროდუქტები</h3>'+
+      orderItemsHtml(order.items)+
+      '<div class="detail" style="margin-top:10px;display:flex;justify-content:space-between"><b>სულ</b><b style="font-size:18px;color:var(--cyan)">'+money(order.total)+'</b></div>'+
+      '<h3 style="margin:20px 0 8px">🚚 კურიერის მინიჭება</h3>'+
+      '<div class="detail">'+
+        '<div style="color:var(--muted);font-size:11px;margin-bottom:8px">დამტკიცებული ECOMAX LINE კურიერი</div>'+
+        '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
+          '<select id="courier-select-'+esc(order.id)+'" class="field" style="min-width:240px;flex:1">'+courierOptions(order)+'</select>'+
+          '<button class="primary" type="button" onclick="assignCourier(\''+esc(order.id)+'\')">🚚 კურიერის მიბმა</button>'+
+          (order.courier_id?'<button class="small-btn danger" type="button" onclick="unassignCourier(\''+esc(order.id)+'\')">მოხსნა</button>': '')+
+        '</div>'+
+        '<div style="margin-top:9px;color:var(--muted);font-size:11px">მიმდინარე: <b style="color:#fff">'+esc(order.courier_name||"კურიერი არ არის მინიჭებული")+'</b></div>'+
+        (courierList.length?'':'<div style="margin-top:9px;color:var(--yellow)">დამტკიცებული კურიერი ჯერ არ არის.</div>')+
+      '</div>'+
+      '<h3 style="margin:20px 0 8px">📦 შეკვეთის სტატუსი</h3>'+
+      '<div style="display:flex;gap:7px;flex-wrap:wrap">'+
+        ['new','processing','loaded','picked_up','shipped','completed','cancelled'].map(s=>'<button class="small-btn" type="button" onclick="quickOrderStatus(\''+esc(order.id)+'\',\''+s+'\')">'+esc(statusName(s))+'</button>').join("")+
+      '</div>'+
+      '<div style="margin-top:14px;color:var(--muted);font-size:11px">შექმნილია: '+esc(date(order.created_at))+'</div>';
+
+    modal.classList.add("show");
+  }
+
+  async function quickOrderStatus(orderId,status){
+    const order=orders.find(x=>String(x.id)===String(orderId));
+    if(!order) return;
+    const oldStatus=order.status;
+    if(oldStatus===status){ toast("ეს სტატუსი უკვე აქტიურია."); return; }
+
+    const now=new Date().toISOString();
+    const patch={status,updated_at:now};
+    if(status==="loaded") patch.cargo_loaded_at=now;
+    if(status==="picked_up") patch.cargo_picked_up_at=now;
+    if(status==="shipped") patch.departed_at=now;
+    if(status==="completed") patch.delivered_at=now;
+
+    const {data,error}=await db.from("orders").update(patch).eq("id",orderId).select("*").single();
+    if(error){
+      console.error("Quick order status:",error);
+      toast("სტატუსის შეცვლა ვერ მოხერხდა: "+error.message);
+      return;
+    }
+
+    Object.assign(order,data);
+    const history=await db.from("order_status_history").insert({
+      order_id:orderId,
+      old_status:oldStatus||null,
+      new_status:status,
+      changed_by:currentUser?.id||null,
+      note:"Admin Control Center"
+    });
+    if(history.error) console.warn("Order status history:",history.error.message);
+
+    renderOrders();
+    if(typeof renderRecentOrders==="function") renderRecentOrders();
+    if($("orderModal")?.classList.contains("show")) viewOrder(orderId);
+    toast("შეკვეთის სტატუსი განახლდა ✓");
+  }
+
   let ecomaxLiveTrack = null;
 
   async function showCourierTrack(courierId, orderId = null) {
