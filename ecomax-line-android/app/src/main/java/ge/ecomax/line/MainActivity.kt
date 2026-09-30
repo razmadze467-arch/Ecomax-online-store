@@ -38,8 +38,8 @@ class MainActivity : ComponentActivity() {
             settings.domStorageEnabled = true
             settings.databaseEnabled = true
             settings.setGeolocationEnabled(true)
-            settings.allowFileAccess = true
-            settings.allowContentAccess = true
+            settings.allowFileAccess = false
+            settings.allowContentAccess = false
             settings.mediaPlaybackRequiresUserGesture = false
             settings.userAgentString = settings.userAgentString + " ECOMAX-LINE-Android/2.0"
 
@@ -82,7 +82,9 @@ class MainActivity : ComponentActivity() {
                 }
 
                 override fun onPermissionRequest(request: PermissionRequest?) {
-                    request?.grant(request.resources)
+                    // ECOMAX LINE does not use camera/microphone from the WebView.
+                    // Never grant WebView media permissions automatically.
+                    request?.deny()
                 }
             }
 
