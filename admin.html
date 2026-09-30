@@ -1766,10 +1766,11 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
         password
       });
 
-      if (error) {
+      if (error || !data?.user) {
         console.error("Admin login:", error);
         $("loginError").textContent =
-          "ავტორიზაცია ვერ მოხერხდა. შეამოწმე პაროლი.";
+          "ავტორიზაცია ვერ მოხერხდა: " +
+          (error?.message || "Supabase-მა მომხმარებელი ვერ დააბრუნა.");
         return;
       }
 
@@ -1778,8 +1779,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       const verifiedEmail =
         String(currentUser?.email || "").trim().toLowerCase();
 
-      // Admin access is restricted to the single owner account.
-      // Do not depend on app_metadata.role because older accounts may not have it.
+      // The only account allowed into the Admin Control Center.
       if (verifiedEmail !== ADMIN_EMAIL) {
         await db.auth.signOut();
         currentUser = null;
@@ -1788,9 +1788,23 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
         return;
       }
 
-      $("loginError").textContent = "";
-      await openAdmin();
-      enableAdminOrderNotifications();
+      // Do not let an optional notification feature block the Admin UI.
+      try {
+        await openAdmin();
+      } catch (adminError) {
+        console.error("Admin open:", adminError);
+        $("loginError").textContent =
+          "Admin ავტორიზაცია წარმატებულია, მაგრამ პანელის ჩატვირთვისას მოხდა შეცდომა: " +
+          (adminError?.message || adminError);
+      }
+
+      try {
+        if (typeof enableAdminOrderNotifications === "function") {
+          enableAdminOrderNotifications();
+        }
+      } catch (notificationError) {
+        console.warn("Admin notifications:", notificationError);
+      }
 
     } catch (error) {
       console.error("Admin login exception:", error);
