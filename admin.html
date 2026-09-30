@@ -2222,8 +2222,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
      Restored as standalone admin data modules.
   ========================================== */
 
-  let customers = [];
-  let products = [];
+  // customers/products state is declared once in the main STATE block above.
 
   async function loadCustomers() {
     if (!db || !currentUser) return;
