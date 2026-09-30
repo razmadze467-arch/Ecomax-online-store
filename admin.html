@@ -1787,7 +1787,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
       // The only account allowed into the Admin Control Center.
       if (verifiedEmail !== ADMIN_EMAIL) {
-        await db.auth.signOut();
+        await (window.ECOMAX_AUTH_CLIENT || db).auth.signOut();
         currentUser = null;
         $("loginError").textContent =
           "ამ ანგარიშს Admin Panel-ზე წვდომა არ აქვს.";
@@ -1824,11 +1824,6 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       if (submitButton) submitButton.disabled = false;
       loginError.textContent =
         "ავტორიზაციის დროს მოხდა შეცდომა: " + (error?.message || error?.code || String(error));
-    }
-    } catch (outerError) {
-      console.error("Admin login outer exception:", outerError);
-      if (submitButton) submitButton.disabled = false;
-      loginError.textContent = "Admin Auth შეცდომა: " + (outerError?.message || String(outerError));
     }
   });
 
