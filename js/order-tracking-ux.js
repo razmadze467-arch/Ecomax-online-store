@@ -40,7 +40,7 @@
   const labels={new:'შეკვეთა მიღებულია',processing:'მზადდება',loaded:'ტვირთი დაიტვირთა',picked_up:'კურიერმა აიღო',shipped:'გზაშია',completed:'ჩაბარდა',cancelled:'გაუქმებული'};
   const steps=['new','processing','loaded','picked_up','shipped','completed'];
 
-  function esc(v){return String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c]||c));}
+  function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]||c));}
   function dt(v,withSeconds=false){if(!v)return '—';const d=new Date(v);if(Number.isNaN(d.getTime()))return '—';return d.toLocaleString('ka-GE',withSeconds?{dateStyle:'medium',timeStyle:'medium'}:{dateStyle:'medium',timeStyle:'short'});}
   function isoLocal(v){if(!v)return '';const d=new Date(v);if(Number.isNaN(d.getTime()))return '';const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());}
 
