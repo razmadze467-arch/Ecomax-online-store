@@ -2434,23 +2434,48 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
   }
 
   async function reviewCourier(applicationId,action){
-    const app=courierApplications.find(x=>x.id===applicationId);
+    const app=courierApplications.find(x=>String(x.id)===String(applicationId));
     if(!app) return;
     const question=action==="approve"
-      ? "დავუშვათ ეს კურიერი ECOMAX LINE-ზე?"
+      ? "დავამტკიცოთ ეს კურიერი ECOMAX LINE-ზე?"
       : "უარვყოთ ეს კურიერის განაცხადი?";
-    if(!confirm(question+"\n\n"+app.full_name+"\n"+app.email)) return;
+    if(!confirm(question+"\\n\\n"+(app.full_name||"კურიერი")+"\\n"+(app.email||""))) return;
+
     try{
-      const {data,error}=await db.functions.invoke("ecomax-courier-admin",{
-        body:{application_id:applicationId,action}
+      if(!db || !currentUser) throw new Error("Admin სესია ვერ მოიძებნა.");
+
+      const {data:sessionData,error:sessionError}=await db.auth.getSession();
+      if(sessionError) throw sessionError;
+      const accessToken=sessionData?.session?.access_token;
+      if(!accessToken) throw new Error("Admin ავტორიზაცია ვადაგასულია. თავიდან შედი Admin-ში.");
+
+      const supabaseUrl=String(db.supabaseUrl||"https://mkxkqdvtmfbxmldnvsef.supabase.co").replace(/\\/$/,"");
+      const publishableKey=String(db.supabaseKey||"sb_publishable_K5orPxr9E0q9-K0dKYdt-g_0GTFvWtd");
+
+      const response=await fetch(supabaseUrl+"/functions/v1/ecomax-courier-admin",{
+        method:"POST",
+        headers:{
+          "Authorization":"Bearer "+accessToken,
+          "apikey":publishableKey,
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({application_id:applicationId,action})
       });
-      if(error) throw error;
-      if(!data?.ok) throw new Error(data?.error || "ოპერაცია ვერ შესრულდა");
+
+      const raw=await response.text();
+      let data={};
+      try{ data=raw?JSON.parse(raw):{}; }catch(_){}
+
+      if(!response.ok || !data.ok){
+        throw new Error(data.error || ("Supabase Edge Function HTTP "+response.status));
+      }
+
       toast(action==="approve" ? "კურიერი დამტკიცებულია ✓" : "განაცხადი უარყოფილია");
       await loadCourierApplications();
+      renderOrders();
     }catch(error){
       console.error("Courier review:",error);
-      toast("კურიერის მართვა ვერ მოხერხდა: "+(error.message||"უცნობი შეცდომა"));
+      toast("კურიერის მართვა ვერ მოხერხდა: "+(error?.message||"უცნობი შეცდომა"));
     }
   }
 
