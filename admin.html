@@ -1777,10 +1777,10 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
       const verifiedEmail =
         String(currentUser?.email || "").trim().toLowerCase();
-      const role =
-        String(currentUser?.app_metadata?.role || "").toLowerCase();
 
-      if (verifiedEmail !== ADMIN_EMAIL || role !== "admin") {
+      // Admin access is restricted to the single owner account.
+      // Do not depend on app_metadata.role because older accounts may not have it.
+      if (verifiedEmail !== ADMIN_EMAIL) {
         await db.auth.signOut();
         currentUser = null;
         $("loginError").textContent =
@@ -1900,10 +1900,9 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       return;
 
     const meta = currentUser.user_metadata || {};
-    const appMeta = currentUser.app_metadata || {};
+    // Admin access is intentionally restricted to one exact email.
     const isAdmin =
-      String(currentUser.email || "").trim().toLowerCase() === ADMIN_EMAIL &&
-      String(appMeta.role || "").toLowerCase() === "admin";
+      String(currentUser.email || "").trim().toLowerCase() === ADMIN_EMAIL;
 
     if (!isAdmin) {
       await db.auth.signOut();
@@ -1970,9 +1969,17 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
         currentUser =
           data.session.user;
 
-        const sessionRole=String(currentUser?.app_metadata?.role||'').toLowerCase();
-        if(sessionRole==='courier'){
-          location.replace('index.html');
+        const sessionEmail =
+          String(currentUser?.email || "").trim().toLowerCase();
+
+        // Only the dedicated admin account may open this page.
+        if (sessionEmail !== ADMIN_EMAIL) {
+          await db.auth.signOut();
+          currentUser = null;
+          $("loginScreen").classList.remove("hidden");
+          $("adminApp").classList.add("hidden");
+          $("loginError").textContent =
+            "ამ ანგარიშს Admin Panel-ზე წვდომა არ აქვს.";
           return;
         }
 
