@@ -45,10 +45,10 @@ public class MainActivity extends Activity {
         s.setDisplayZoomControls(false);
         s.setMediaPlaybackRequiresUserGesture(true);
         s.setLoadsImagesAutomatically(true);
-        s.setCacheMode(WebSettings.LOAD_DEFAULT);
+        s.setCacheMode(WebSettings.LOAD_NO_CACHE);
         s.setAllowFileAccess(false);
         s.setAllowContentAccess(false);
-        s.setUserAgentString(s.getUserAgentString() + " ECOMAXLINE-Android/2.0.1");
+        s.setUserAgentString(s.getUserAgentString() + " ECOMAXLINE-Android/2.0.2");
 
         webView.setBackgroundColor(Color.rgb(2, 8, 18));
 
@@ -96,6 +96,7 @@ public class MainActivity extends Activity {
 
         // Always start at the real ECOMAX home page.
         // Do not restore an old WebView scroll position or stale page snapshot.
+        webView.clearCache(true);
         webView.clearHistory();
         webView.loadUrl(HOME);
     }
