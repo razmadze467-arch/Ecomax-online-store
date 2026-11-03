@@ -2403,32 +2403,89 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     renderRecentOrders();
   }
 
-  function renderRecentOrders() {
-    const tbody = $("recentOrders");
-    if (!tbody) return;
 
-    const rows = [...orders]
-      .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))
-      .slice(0, 8);
+  /* Dashboard is a temporary inbox, not the order database.
+     Dismissed completed orders are browser-local and reversible. */
+  const dashboardHiddenFallback=new Map();
 
-    if (!rows.length) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px">შეკვეთები ჯერ არ არის.</td></tr>';
+  function dashboardHiddenKey(){
+    return "ecomax:admin:hidden-completed:v1:"+String(currentUser?.id||ADMIN_EMAIL).toLowerCase();
+  }
+
+  function dashboardHiddenCompleted(){
+    const key=dashboardHiddenKey();
+    let persisted=[];
+    try{
+      const parsed=JSON.parse(window.localStorage.getItem(key)||"[]");
+      if(Array.isArray(parsed))persisted=parsed.filter(id=>typeof id==="string");
+    }catch(e){console.warn("Saved Dashboard view read:",e);}
+    return new Set([...persisted,...(dashboardHiddenFallback.get(key)||[])]);
+  }
+
+  function saveDashboardHiddenCompleted(hidden){
+    const key=dashboardHiddenKey();
+    const ids=[...hidden].slice(-1500);
+    dashboardHiddenFallback.set(key,ids);
+    try{window.localStorage.setItem(key,JSON.stringify(ids));}
+    catch(e){console.warn("Saved Dashboard view write:",e);}
+  }
+
+  function hideCompletedFromDashboard(orderId){
+    const order=orders.find(x=>String(x.id)===String(orderId));
+    if(!order||order.status!=="completed"){
+      toast("× მხოლოდ დასრულებულ შეკვეთებზე მოქმედებს.");
       return;
     }
-
-    tbody.innerHTML = rows.map(order => `
-      <tr>
-        <td><b>${esc(order.order_number || "—")}</b></td>
-        <td>${esc(order.customer_name || "—")}</td>
-        <td><b>${money(order.total)}</b></td>
-        <td>${statusBadge(order.status)}</td>
-        <td>${esc(date(order.created_at))}</td>
-        <td>
-          <button class="small-btn" type="button" onclick="viewOrder('${esc(order.id)}')">👁 ნახვა</button>
-        </td>
-      </tr>
-    `).join("");
+    const hidden=dashboardHiddenCompleted();
+    hidden.add(String(order.id));
+    saveDashboardHiddenCompleted(hidden);
+    renderRecentOrders();
+    toast("Dashboard გასუფთავდა ✓ შეკვეთის ჩანაწერი და ისტორია დარჩა 📦 შეკვეთებში.");
   }
+
+  function restoreCompletedToDashboard(){
+    saveDashboardHiddenCompleted(new Set());
+    renderRecentOrders();
+    toast("Dashboard-ზე დასრულებული შეკვეთები კვლავ გამოჩნდა ✓");
+  }
+
+  function renderRecentOrders(){
+    const tbody=$("recentOrders");
+    if(!tbody)return;
+    const hidden=dashboardHiddenCompleted();
+    const restore=$("dashboardRestoreCompleted");
+    if(restore)restore.hidden=!orders.some(o=>o.status==="completed"&&hidden.has(String(o.id)));
+
+    const rows=[...orders]
+      .filter(o=>o.status!=="completed"||!hidden.has(String(o.id)))
+      .sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0))
+      .slice(0,8);
+    if(!rows.length){
+      tbody.innerHTML='<tr><td colspan="6" class="dashboard-empty">📭 Dashboard-ზე საჩვენებელი შეკვეთები არ არის.'+
+        '<small>ყველა შეკვეთა ინახება 📦 შეკვეთების ისტორიაში. დასრულებული ჩანაწერების დაბრუნება შეგიძლია ზედა ღილაკით.</small></td></tr>';
+      return;
+    }
+    tbody.innerHTML=rows.map(order=>
+      '<tr>'+
+        '<td><b>'+esc(order.order_number||"—")+'</b></td>'+
+        '<td>'+esc(order.customer_name||"—")+'</td>'+
+        '<td><b>'+money(order.total)+'</b></td>'+
+        '<td>'+statusBadge(order.status)+'</td>'+
+        '<td>'+esc(date(order.created_at))+'</td>'+
+        '<td class="dashboard-row-actions"><div>'+
+          '<button class="small-btn" type="button" onclick="viewOrder(\''+esc(order.id)+'\')">👁 ნახვა</button>'+
+          (order.status==="completed"?
+            '<button class="dashboard-dismiss-completed" type="button" data-dashboard-hide="'+esc(order.id)+'" aria-label="დასრულებული შეკვეთის მხოლოდ Dashboard-იდან დამალვა" title="× Dashboard-დან დამალვა — ისტორია რჩება">×</button>':"")+
+        '</div></td>'+
+      '</tr>'
+    ).join("");
+  }
+
+  $("recentOrders")?.addEventListener("click",event=>{
+    const button=event.target.closest("[data-dashboard-hide]");
+    if(button)hideCompletedFromDashboard(button.dataset.dashboardHide);
+  });
+  $("dashboardRestoreCompleted")?.addEventListener("click",restoreCompletedToDashboard);
 
   async function refreshAll() {
 
