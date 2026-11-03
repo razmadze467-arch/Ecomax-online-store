@@ -503,3 +503,9 @@ html[data-ecomax-unified="line-gate"][data-ecomax-premium="courier-gate"] .card 
 html[data-ecomax-unified="line-gate"][data-ecomax-premium="courier-gate"] .card .icon{
   border-color:#ff74187a!important;background:radial-gradient(circle at 25% 20%,#ff741838,#071724 74%)!important
 }
+
+/* Same orange AX wordmark used by index.html; text remains accessible. */
+html[data-ecomax-unified] .ecomax-orange{
+  color:#ff7418!important;text-shadow:0 0 16px rgba(255,116,24,.45)!important;
+  -webkit-text-fill-color:#ff7418!important
+}
