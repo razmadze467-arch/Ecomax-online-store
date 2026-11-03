@@ -307,3 +307,48 @@ html[data-ecomax-premium="line-console"] :where(.navbtn,.nav-actions button,.too
   html[data-ecomax-premium="admin"] #adminApp .stat-card:hover,
   html[data-ecomax-premium="line-console"] :where(.stat,.tool):hover{transform:none}
 }
+
+/* Courier registration: override legacy 5D small-screen compression for readability. */
+@media(max-width:600px){
+  html[data-ecomax-variant="courier-register"] body{
+    padding:20px 12px 45px!important;overflow-x:hidden!important;overflow-y:auto!important
+  }
+  html[data-ecomax-variant="courier-register"] .card{
+    width:100%!important;max-width:540px!important;
+    padding:26px 20px!important;margin:0 auto 22px!important;border-radius:23px!important
+  }
+  html[data-ecomax-variant="courier-register"] .logo{font-size:24px!important;letter-spacing:4px!important}
+  html[data-ecomax-variant="courier-register"] .line{font-size:9px!important;letter-spacing:2px!important}
+  html[data-ecomax-variant="courier-register"] .icon{
+    width:62px!important;height:62px!important;border-radius:19px!important;
+    font-size:27px!important;margin:17px auto 12px!important
+  }
+  html[data-ecomax-variant="courier-register"] h1{font-size:25px!important;margin:0 0 8px!important}
+  html[data-ecomax-variant="courier-register"] .desc{
+    font-size:12px!important;line-height:1.7!important;margin-bottom:18px!important
+  }
+  html[data-ecomax-variant="courier-register"] form .grid{
+    grid-template-columns:minmax(0,1fr)!important;gap:3px!important
+  }
+  html[data-ecomax-variant="courier-register"] form .grid .full{grid-column:auto!important}
+  html[data-ecomax-variant="courier-register"] form label{
+    font-size:11px!important;margin:11px 0 5px!important;color:#d7eaff!important
+  }
+  html[data-ecomax-variant="courier-register"] form input:not([type=checkbox]){
+    min-height:49px!important;font-size:14px!important;border-radius:12px!important
+  }
+  html[data-ecomax-variant="courier-register"] .check{
+    align-items:flex-start!important;gap:10px!important;margin-top:17px!important
+  }
+  html[data-ecomax-variant="courier-register"] .check span{font-size:11px!important;line-height:1.6!important}
+  html[data-ecomax-variant="courier-register"] form>button[type=submit]{
+    min-height:52px!important;margin-top:19px!important;font-size:13px!important
+  }
+  html[data-ecomax-variant="courier-register"] .links{
+    font-size:11px!important;line-height:1.8!important;margin-top:17px!important
+  }
+  html[data-ecomax-variant="courier-register"] .hint{font-size:8px!important;margin-top:14px!important}
+  html[data-ecomax-variant="courier-register"] :where(.error,.ok){
+    font-size:11px!important;line-height:1.55!important;padding:12px!important
+  }
+}
