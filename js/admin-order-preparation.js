@@ -19,6 +19,7 @@
   const QUEUE = new Set(["new","processing"]);
   const drafts = new Map();
   const saving = new Set();
+  const selected = new Set();
   let filter = "queue";
 
   const section = document.getElementById("section-preparation");
@@ -89,6 +90,9 @@
     const selectedStatus=ALLOWED.has(draft)?draft:persisted;
     return '<article class="ecomax-prep-order" data-order-id="'+safe(id)+'" data-status="'+safe(persisted)+'">'+
       '<header class="ecomax-prep-order-top">'+
+        '<label class="ecomax-prep-check-label" title="მონიშნე ჯგუფური წაშლისთვის">'+
+          '<input type="checkbox" data-prep-check="'+safe(id)+'"'+(selected.has(id)?' checked':'')+' aria-label="მონიშნე '+safe(o.order_number||id)+'">'+
+        '</label>'+
         '<div><span class="ecomax-prep-order-number">'+safe(o.order_number||("ECX-"+id.slice(0,8).toUpperCase()))+'</span>'+
           '<small>შექმნილია: <time>'+safe(fmtDate(o.created_at))+'</time></small></div>'+
         '<span class="ecomax-prep-status '+safe(badgeClass)+'">'+safe(stateLabel(persisted))+'</span>'+
@@ -111,6 +115,7 @@
           ((busy||!changed)?' disabled':'')+'>'+
           (busy?'ინახება…':'✓ სტატუსის შენახვა')+'</button>'+
           '<button type="button" class="ecomax-prep-detail" data-prep-details="'+safe(id)+'">დეტალები</button>'+
+          '<button type="button" class="ecomax-prep-delete" data-prep-delete="'+safe(id)+'"'+(busy?' disabled':'')+'>🗑 წაშლა</button>'+
         '</div>'+
         '<small class="ecomax-prep-save-hint" aria-live="polite">'+
           (busy?'ცვლილება ინახება…':changed?'შეცვლილი სტატუსი შენახული არ არის.':'შენახული სტატუსი: '+safe(stateLabel(persisted)))+
@@ -119,8 +124,28 @@
     '</article>';
   }
 
+  function visibleChecks(){return [...section.querySelectorAll("[data-prep-check]")];}
+  function syncSelectionUI(){
+    const checks=visibleChecks();
+    const visible=new Set(checks.map(el=>String(el.dataset.prepCheck)));
+    for(const id of [...selected])if(!visible.has(id))selected.delete(id);
+    const count=section.querySelector("#preparationSelectedCount");
+    const all=section.querySelector("#preparationSelectAll");
+    const remove=section.querySelector("#preparationDeleteSelected");
+    const clear=section.querySelector("#preparationClearSelection");
+    if(count)count.textContent="მონიშნულია: "+selected.size;
+    if(remove)remove.disabled=!selected.size;
+    if(clear)clear.disabled=!selected.size;
+    if(all){
+      all.checked=checks.length>0&&checks.every(el=>selected.has(String(el.dataset.prepCheck)));
+      all.indeterminate=selected.size>0&&!all.checked;
+      all.disabled=!checks.length;
+    }
+  }
   function render(){
     const list=rows();
+    const known=new Set(list.map(o=>String(o.id)));
+    for(const id of [...selected])if(!known.has(id))selected.delete(id);
     const tabs=section.querySelector("#preparationStatusTabs");
     const grid=section.querySelector("#preparationOrderCards");
     const result=section.querySelector("#preparationResultCount");
@@ -135,9 +160,11 @@
     result.textContent=filtered.length+" შეკვეთა";
     if(!filtered.length){
       grid.innerHTML='<div class="ecomax-prep-empty">📭 ამ კატეგორიაში შეკვეთები არ არის.<small>ახალი შეკვეთები ავტომატურად გამოჩნდება განახლების შემდეგ.</small></div>';
+      syncSelectionUI();
       return;
     }
     grid.innerHTML=filtered.map(renderCard).join("");
+    syncSelectionUI();
   }
 
   async function save(orderId,button){
@@ -175,6 +202,13 @@
   }
 
   section.addEventListener("change",event=>{
+    const check=event.target.closest("[data-prep-check]");
+    if(check){
+      const id=String(check.dataset.prepCheck);
+      if(check.checked)selected.add(id);else selected.delete(id);
+      syncSelectionUI();
+      return;
+    }
     const select=event.target.closest("[data-prep-select]");
     if(!select)return;
     drafts.set(String(select.dataset.orderId),String(select.value));
@@ -188,13 +222,42 @@
   });
   section.addEventListener("click",event=>{
     const tab=event.target.closest("[data-prep-filter]");
-    if(tab){filter=tab.dataset.prepFilter||"queue";render();return;}
+    if(tab){selected.clear();filter=tab.dataset.prepFilter||"queue";render();return;}
+    const del=event.target.closest("[data-prep-delete]");
+    if(del){void deleteAdminOrders([del.dataset.prepDelete]);return;}
     const detail=event.target.closest("[data-prep-details]");
     if(detail){viewOrder(detail.dataset.prepDetails);return;}
     const btn=event.target.closest("[data-prep-save]");
     if(btn){void save(btn.dataset.prepSave,btn);}
   });
-  section.querySelector("#preparationSearch")?.addEventListener("input",render);
+  section.querySelector("#preparationSearch")?.addEventListener("input",()=>{
+    selected.clear();
+    render();
+  });
+  section.querySelector("#preparationSelectAll")?.addEventListener("change",event=>{
+    const active=event.target.checked;
+    for(const box of visibleChecks()){
+      box.checked=active;
+      if(active)selected.add(String(box.dataset.prepCheck));
+      else selected.delete(String(box.dataset.prepCheck));
+    }
+    syncSelectionUI();
+  });
+  section.querySelector("#preparationClearSelection")?.addEventListener("click",()=>{
+    selected.clear();
+    for(const box of visibleChecks())box.checked=false;
+    syncSelectionUI();
+  });
+  section.querySelector("#preparationDeleteSelected")?.addEventListener("click",async ()=>{
+    const ids=[...selected];
+    if(!ids.length)return;
+    await deleteAdminOrders(ids);
+    render();
+  });
+  window.ecomaxOnOrdersDeleted=(ids)=>{
+    for(const id of ids||[])selected.delete(String(id));
+    render();
+  };
   section.querySelector("#preparationRefresh")?.addEventListener("click",async e=>{
     const button=e.currentTarget;
     if(button.disabled)return;
