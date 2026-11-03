@@ -1,0 +1,477 @@
+/*
+ * ECOMAX • INDEX-MATCHED UNIFIED THEME (2026-11-03)
+ * Visual-only layer based on the current index.html "ECOMAX NEON STOREFRONT".
+ * Dark navy + electric-blue #22c8ff + orange #ff7418.
+ * All selectors are scoped to data-ecomax-unified on the HTML root.
+ * No auth, order, map, inventory or business state is changed.
+ */
+html[data-ecomax-unified]{
+  --u-bg:#020811;--u-panel:#071522;--u-panel2:#0b202e;
+  --u-blue:#22c8ff;--u-blue-deep:#0876ff;
+  --u-orange:#ff7418;--u-orange-soft:#ff9a35;
+  --u-text:#f5fbff;--u-muted:#a7c1d0;
+  --u-line:rgba(39,151,206,.36);
+  --u-surface:linear-gradient(155deg,rgba(11,32,46,.98),rgba(5,14,26,.98) 72%);
+  --u-shadow:0 24px 68px rgba(0,0,0,.50),0 0 35px rgba(15,153,228,.09),inset 0 1px 0 rgba(184,239,255,.10);
+  color-scheme:dark;
+  background:#020811;
+}
+html[data-ecomax-unified] *,html[data-ecomax-unified] *::before,html[data-ecomax-unified] *::after{box-sizing:border-box}
+html[data-ecomax-unified] body{
+  min-width:0;min-height:100vh;min-height:100svh;color:var(--u-text);
+  font-family:"Noto Sans Georgian",Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important;
+  background:
+    radial-gradient(ellipse at 20% 10%,rgba(5,60,104,.27),transparent 34%),
+    radial-gradient(ellipse at 78% 18%,rgba(255,107,25,.085),transparent 31%),
+    radial-gradient(ellipse at 82% 90%,rgba(13,92,150,.20),transparent 39%),
+    linear-gradient(180deg,#01060d,#061522 45%,#020811)!important;
+  -webkit-font-smoothing:antialiased;
+}
+html[data-ecomax-unified] :where(a,button,input,textarea,select){font-family:inherit}
+html[data-ecomax-unified] :where(a,button,input,textarea,select):focus-visible{
+  outline:2px solid #68e9ff;outline-offset:3px
+}
+html[data-ecomax-unified] :where(button,a){-webkit-tap-highlight-color:transparent}
+html[data-ecomax-unified] :where(button:disabled){cursor:not-allowed;filter:saturate(.7)}
+html[data-ecomax-unified] :where(input,select,textarea){accent-color:var(--u-orange)}
+html[data-ecomax-unified] [hidden]{display:none!important}
+
+/* Orange electric accents borrowed from the home-page hero and CTA */
+html[data-ecomax-unified] .index-accent-rule{
+  height:2px;border:0;margin:0;
+  background:linear-gradient(90deg,transparent,var(--u-orange),var(--u-blue),transparent)
+}
+html[data-ecomax-unified] :where(.ecomax-unified-eyebrow,.premium-screen-badge){
+  display:inline-flex;align-items:center;gap:8px;max-width:100%;
+  border:1px solid rgba(255,116,24,.48)!important;
+  border-radius:8px!important;background:rgba(255,116,24,.10)!important;
+  color:#ffb471!important;padding:8px 12px!important;
+  font-size:10px!important;letter-spacing:.11em!important;font-weight:850!important;
+  text-shadow:none!important
+}
+html[data-ecomax-unified] :where(.brand,.brand-title,.logo){
+  color:#f7fbff;text-shadow:0 0 20px rgba(34,200,255,.26);
+}
+html[data-ecomax-unified] :where(.brand,.brand-title,.logo)::selection{background:#ff7418;color:#fff}
+
+/* 1. CUSTOMER LOGIN + REGISTRATION: same header and glowing product cards */
+html[data-ecomax-unified="customer-gate"] body{
+  background:
+    radial-gradient(ellipse at 16% 12%,rgba(4,86,144,.27),transparent 43%),
+    radial-gradient(ellipse at 86% 80%,rgba(255,116,24,.13),transparent 42%),
+    linear-gradient(180deg,#01060d,#061522 48%,#020811)!important
+}
+html[data-ecomax-unified="customer-gate"] .wrap{width:min(100%,545px);z-index:2}
+html[data-ecomax-unified="customer-gate"] .wrap>.card{
+  position:relative;isolation:isolate;overflow:hidden;
+  padding:clamp(24px,5vw,42px)!important;
+  border:1px solid rgba(35,158,221,.55)!important;
+  border-radius:24px!important;background:var(--u-surface)!important;
+  box-shadow:var(--u-shadow),0 0 0 1px rgba(255,116,24,.07)!important;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)
+}
+html[data-ecomax-unified="customer-gate"] .wrap>.card::before{
+  content:"";position:absolute;inset:0 0 auto;height:3px;pointer-events:none;
+  background:linear-gradient(90deg,var(--u-orange),#ff9e3c,var(--u-blue),transparent);
+  box-shadow:0 0 20px rgba(255,116,24,.3)
+}
+html[data-ecomax-unified="customer-gate"] .wrap>.card::after{
+  content:"";position:absolute;z-index:-1;top:-150px;right:-150px;
+  width:290px;height:290px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(255,116,24,.14),transparent 70%)
+}
+html[data-ecomax-unified="customer-gate"] .brand{
+  color:#fff!important;letter-spacing:5px!important;font-size:clamp(24px,5vw,31px)!important;
+  font-weight:950;text-shadow:0 0 15px rgba(34,200,255,.25)!important
+}
+html[data-ecomax-unified="customer-gate"] .brand::after{
+  content:" / DETAILING STUDIO";margin-left:8px;
+  font-size:9px;letter-spacing:.08em;font-weight:700;color:#ff9c49;
+  vertical-align:middle;text-shadow:none
+}
+html[data-ecomax-unified="customer-gate"] .label{
+  border-color:rgba(255,116,24,.5)!important;background:rgba(255,116,24,.085)!important;
+  color:#ffb277!important;letter-spacing:1.5px
+}
+html[data-ecomax-unified="customer-gate"] .wrap>.card h1{
+  font-size:clamp(30px,5.6vw,40px);font-weight:950;color:#f7fbff;text-shadow:0 5px 22px rgba(0,0,0,.3)
+}
+html[data-ecomax-unified="customer-gate"] .sub{color:#b2c5d1!important;font-size:13px;line-height:1.8}
+html[data-ecomax-unified="customer-gate"] .field label{color:#e0f1f9;font-size:12px}
+html[data-ecomax-unified="customer-gate"] .field input:not([type=checkbox]){
+  min-height:54px!important;border-radius:11px!important;
+  border:1px solid rgba(35,137,193,.49)!important;
+  background:#04101b!important;color:#effaff!important;box-shadow:inset 0 0 18px rgba(0,0,0,.15)
+}
+html[data-ecomax-unified="customer-gate"] .field input:not([type=checkbox]):focus{
+  outline:none!important;border-color:#27c9ff!important;
+  box-shadow:0 0 0 3px rgba(35,189,255,.12),0 0 22px rgba(30,171,246,.15)!important
+}
+html[data-ecomax-unified="customer-gate"] .wrap .btn{
+  min-height:50px;border-radius:11px;border:1px solid rgba(255,116,24,.30);
+  color:#fff;transition:transform .2s,box-shadow .2s,border-color .2s
+}
+html[data-ecomax-unified="customer-gate"] .wrap .btn:hover:not(:disabled){transform:translateY(-2px);border-color:#ff9a35}
+html[data-ecomax-unified="customer-gate"] .wrap button.btn[type=submit]{
+  min-height:55px;border:1px solid #ff9e3f!important;
+  background:linear-gradient(135deg,#ff972d,#eb5010)!important;
+  color:#fff!important;font-weight:900;
+  text-shadow:none!important;
+  box-shadow:0 0 24px rgba(255,116,24,.24),inset 0 1px rgba(255,255,255,.27)!important
+}
+html[data-ecomax-unified="customer-gate"] .wrap button.btn[type=submit]:hover:not(:disabled){
+  box-shadow:0 0 30px rgba(255,116,24,.37),0 14px 30px rgba(0,0,0,.22)!important
+}
+html[data-ecomax-unified="customer-gate"] .foot{
+  border-top:1px solid rgba(41,126,165,.48);color:#b1c9d6!important;
+  font-size:12px;padding-top:18px
+}
+html[data-ecomax-unified="customer-gate"] :where(.foot a,.row a){color:#64d7ff!important;font-weight:750}
+html[data-ecomax-unified="customer-gate"] :where(.foot a,.row a):hover{color:#ffad6b!important}
+html[data-ecomax-unified="customer-gate"] #recoveryPanel{
+  padding:16px 0 0;border-top:1px solid rgba(40,139,190,.25);margin-top:18px
+}
+html[data-ecomax-unified="customer-gate"] #recoveryPanel h2{color:#ffad70}
+
+/* 2. LINE GATES: use the same bold orange CTA and home-page blue framing */
+html[data-ecomax-unified="line-gate"] :where(.card,.login-box){
+  border:1px solid rgba(38,160,222,.52)!important;
+  border-radius:24px!important;background:var(--u-surface)!important;
+  box-shadow:var(--u-shadow)!important;backdrop-filter:blur(20px)
+}
+html[data-ecomax-unified="line-gate"] .card::before{
+  background:linear-gradient(90deg,#ff7418,#ff9a35,#22c8ff,transparent)!important;
+  box-shadow:0 0 20px rgba(255,116,24,.23)!important
+}
+html[data-ecomax-unified="line-gate"] :where(.logo,.brand-copy strong){color:#fff!important;text-shadow:0 0 18px rgba(34,200,255,.28)!important}
+html[data-ecomax-unified="line-gate"] :where(.line,.brand-copy small){color:#9cbaca!important}
+html[data-ecomax-unified="line-gate"] :where(.icon,.lock){
+  border-color:rgba(255,116,24,.5)!important;
+  color:#ffc38b!important;
+  background:radial-gradient(circle at 28% 24%,rgba(255,116,24,.22),#071b29 70%)!important;
+  box-shadow:0 0 33px rgba(255,116,24,.14),inset 0 1px rgba(255,255,255,.12)!important
+}
+html[data-ecomax-unified="line-gate"] :where(.premium-screen-badge,.card-kicker .edition){
+  border:1px solid rgba(255,116,24,.39)!important;
+  background:rgba(255,116,24,.10)!important;color:#ffad70!important
+}
+html[data-ecomax-unified="line-gate"] :where(.card h1,.card h2){color:#fff!important}
+html[data-ecomax-unified="line-gate"] .card :where(input:not([type=checkbox])){
+  background:#04101b!important;border:1px solid rgba(36,145,205,.40)!important;
+  border-radius:11px!important;color:#f2faff!important
+}
+html[data-ecomax-unified="line-gate"] .card :where(input:not([type=checkbox])):focus{
+  outline:none!important;border-color:#22c8ff!important;box-shadow:0 0 0 3px rgba(34,200,255,.14)!important
+}
+html[data-ecomax-unified="line-gate"] :where(.card form>button[type=submit],.card button.submit){
+  min-height:52px;border:1px solid #ff9a35!important;border-radius:12px!important;
+  background:linear-gradient(135deg,#ff972d,#eb5010)!important;
+  color:#fff!important;font-weight:900!important;text-shadow:none!important;
+  box-shadow:0 0 28px rgba(255,116,24,.24),inset 0 1px rgba(255,255,255,.22)!important
+}
+html[data-ecomax-unified="line-gate"] :where(.card form>button[type=submit],.card button.submit):hover:not(:disabled){
+  box-shadow:0 0 38px rgba(255,116,24,.30)!important
+}
+html[data-ecomax-unified="line-gate"] :where(.card .links a,.card .join a,.card .back,.home-link){color:#76dfff!important}
+html[data-ecomax-unified="line-gate"] :where(.card .links a,.card .join a,.card .back,.home-link):hover{color:#ffad70!important}
+html[data-ecomax-unified="line-gate"] .showcase h1 em{
+  background:linear-gradient(95deg,#ff9c42,#ff7418 40%,#53d6ff 90%);
+  background-clip:text;-webkit-background-clip:text;color:transparent
+}
+html[data-ecomax-unified="line-gate"] .showcase .eyebrow{
+  border-color:rgba(255,116,24,.4);background:rgba(255,116,24,.09);color:#ffb57c
+}
+html[data-ecomax-unified="line-gate"] .scene-badge{
+  border-color:rgba(255,116,24,.5);color:#ffb57c
+}
+html[data-ecomax-unified="line-gate"] .topbar{border-bottom-color:rgba(39,151,206,.3)}
+html[data-ecomax-unified="line-gate"] .brand-mark{
+  background:linear-gradient(135deg,#ff982f,#ff6b18 65%,#1abcf8)!important;
+  color:#fff!important;box-shadow:0 0 22px rgba(255,116,24,.18)
+}
+html[data-ecomax-unified="line-gate"] .feature-strip span{
+  border-color:rgba(42,126,171,.44);background:#061825;color:#b5ccda
+}
+
+/* 3. ADMIN: control center takes the home page's product-card vocabulary */
+html[data-ecomax-unified="admin"] .login-box{
+  border-color:rgba(38,155,220,.55)!important;background:var(--u-surface)!important;
+  box-shadow:var(--u-shadow)!important
+}
+html[data-ecomax-unified="admin"] .login-box::before{
+  background:linear-gradient(90deg,#ff7418,#ff9a35,#22c8ff,transparent)!important
+}
+html[data-ecomax-unified="admin"] .login-title{
+  color:#fff!important;font-weight:950;text-shadow:0 0 20px rgba(34,200,255,.22)!important
+}
+html[data-ecomax-unified="admin"] .login-robot{
+  border:1px solid rgba(255,116,24,.50)!important;
+  background:radial-gradient(circle at 30% 20%,rgba(255,116,24,.22),#071724 80%)!important;
+  box-shadow:0 0 26px rgba(255,116,24,.13)!important
+}
+html[data-ecomax-unified="admin"] .login-box button.primary{
+  background:linear-gradient(135deg,#ff972d,#eb5010)!important;
+  color:#fff!important;border:1px solid #ff9e3f!important;
+  box-shadow:0 0 26px rgba(255,116,24,.22)!important
+}
+html[data-ecomax-unified="admin"] #adminApp .sidebar{
+  border-right:1px solid rgba(29,137,202,.45)!important;
+  background:linear-gradient(180deg,#061522,#030914)!important
+}
+html[data-ecomax-unified="admin"] #adminApp .brand-title{
+  color:#fff!important;font-weight:950;text-shadow:0 0 18px rgba(34,200,255,.26)!important
+}
+html[data-ecomax-unified="admin"] #adminApp .brand-sub{color:#ffaf70!important}
+html[data-ecomax-unified="admin"] #adminApp .nav button.active{
+  border-color:rgba(255,116,24,.48)!important;background:rgba(255,116,24,.11)!important;
+  box-shadow:inset 3px 0 #ff7418!important;color:#ffe6d3
+}
+html[data-ecomax-unified="admin"] #adminApp .nav button:hover{
+  border-color:rgba(34,200,255,.48)!important;background:rgba(34,200,255,.08)!important
+}
+html[data-ecomax-unified="admin"] #adminApp :where(.card,.table-card,.modal,.detail){
+  border-color:rgba(36,130,178,.49)!important;border-radius:17px!important;
+  background:var(--u-surface)!important;
+  box-shadow:0 16px 44px rgba(0,0,0,.30),inset 0 1px rgba(180,230,255,.08)!important
+}
+html[data-ecomax-unified="admin"] #adminApp .stat-card{
+  border:1px solid rgba(33,146,206,.42)!important;min-height:142px;
+  transition:transform .2s,border-color .2s,box-shadow .2s
+}
+html[data-ecomax-unified="admin"] #adminApp .stat-card::before{
+  background:linear-gradient(90deg,#ff7418,#22c8ff,transparent)!important
+}
+html[data-ecomax-unified="admin"] #adminApp .stat-card:nth-child(2)::before{
+  background:linear-gradient(90deg,#22c8ff,#0876ff,transparent)!important
+}
+html[data-ecomax-unified="admin"] #adminApp .stat-card:nth-child(3)::before{
+  background:linear-gradient(90deg,#ff9a35,#ff7418,transparent)!important
+}
+html[data-ecomax-unified="admin"] #adminApp .stat-card:nth-child(4)::before{
+  background:linear-gradient(90deg,#22c8ff,#64e7ff,transparent)!important
+}
+html[data-ecomax-unified="admin"] #adminApp .stat-card:hover{
+  transform:translateY(-3px);border-color:rgba(255,116,24,.54)!important;
+  box-shadow:0 21px 46px rgba(0,0,0,.35),0 0 20px rgba(255,116,24,.06)!important
+}
+html[data-ecomax-unified="admin"] #adminApp .stat-label{color:#b0c8d5!important}
+html[data-ecomax-unified="admin"] #adminApp .stat-extra{color:#ffa76b!important}
+html[data-ecomax-unified="admin"] #adminApp .stat-value{
+  color:#f7fbff!important;font-weight:950;font-variant-numeric:tabular-nums
+}
+html[data-ecomax-unified="admin"] #adminApp :where(.top-btn,.toolbar button){
+  border-radius:10px;border-color:rgba(35,153,210,.48)!important;
+  background:#071b27!important;color:#d8f2ff!important
+}
+html[data-ecomax-unified="admin"] #adminApp :where(.top-btn,.toolbar button):hover{
+  border-color:#ff7418!important;color:#ffb27a!important
+}
+html[data-ecomax-unified="admin"] #adminApp :where(.field,input,select,textarea):focus{
+  border-color:#22c8ff!important;outline:2px solid rgba(34,200,255,.22);outline-offset:0
+}
+html[data-ecomax-unified="admin"] #adminApp thead th{background:rgba(6,44,67,.75)!important}
+html[data-ecomax-unified="admin"] #adminApp tbody tr:hover td{background:rgba(15,94,130,.18)!important}
+
+/* 4. COURIER COMMAND: cards, maps and action tools match the index panels */
+html[data-ecomax-unified="line-console"] header{
+  background:#020914f5!important;border-bottom:1px solid rgba(34,200,255,.4)!important
+}
+html[data-ecomax-unified="line-console"] :where(.hero,.stat,.step,.order,.cpanel,.tool,.line-navigation,.nav-stat,.modal){
+  border-color:rgba(32,134,193,.42)!important;
+  background:var(--u-surface)!important;
+  box-shadow:0 14px 40px rgba(0,0,0,.34),inset 0 1px rgba(196,238,255,.08)!important
+}
+html[data-ecomax-unified="line-console"] :where(.stat,.step,.order,.cpanel,.line-navigation,.modal){
+  border-radius:17px!important
+}
+html[data-ecomax-unified="line-console"] .hero{
+  background:linear-gradient(115deg,rgba(6,34,56,.96),rgba(4,17,30,.92))!important;
+  border:1px solid rgba(34,158,217,.35)!important;border-radius:20px!important;
+  box-shadow:0 18px 46px rgba(0,0,0,.24)!important
+}
+html[data-ecomax-unified="line-console"] .hero .eyebrow{
+  border-color:rgba(255,116,24,.42)!important;background:rgba(255,116,24,.08)!important;
+  color:#ffb277!important
+}
+html[data-ecomax-unified="line-console"] .hero h1{color:#fff!important;text-shadow:0 0 19px rgba(34,200,255,.19)}
+html[data-ecomax-unified="line-console"] .brand .logo{color:#fff!important;text-shadow:0 0 18px rgba(34,200,255,.22)}
+html[data-ecomax-unified="line-console"] .stat::before,
+html[data-ecomax-unified="line-console"] .order::before,
+html[data-ecomax-unified="line-console"] .cpanel::before{
+  background:linear-gradient(90deg,#ff7418,#22c8ff,transparent)!important;height:3px!important
+}
+html[data-ecomax-unified="line-console"] .stat:nth-child(2)::before{
+  background:linear-gradient(90deg,#22c8ff,#0876ff,transparent)!important
+}
+html[data-ecomax-unified="line-console"] .stat:nth-child(3)::before{
+  background:linear-gradient(90deg,#ff9a35,#ff7418,transparent)!important
+}
+html[data-ecomax-unified="line-console"] .stat:nth-child(4)::before{
+  background:linear-gradient(90deg,#22c8ff,#64e7ff,transparent)!important
+}
+html[data-ecomax-unified="line-console"] .stat small{color:#abc8d8!important;font-size:11px}
+html[data-ecomax-unified="line-console"] .stat b{color:#fff!important;text-shadow:none;font-variant-numeric:tabular-nums}
+html[data-ecomax-unified="line-console"] :where(.step.active,.order:hover,.tool:hover){
+  border-color:rgba(255,116,24,.60)!important;
+  box-shadow:0 15px 42px rgba(0,0,0,.3),0 0 17px rgba(255,116,24,.055)!important
+}
+html[data-ecomax-unified="line-console"] .navbtn{
+  border-color:rgba(40,151,204,.48)!important;background:#071b27!important;color:#b7eaff!important
+}
+html[data-ecomax-unified="line-console"] .navbtn:hover{border-color:#ff7418!important;color:#ffb277!important}
+html[data-ecomax-unified="line-console"] :where(.toolbar input,.toolbar select){
+  border:1px solid rgba(28,134,196,.53)!important;background:#04101b!important;color:#f5fbff
+}
+html[data-ecomax-unified="line-console"] :where(.toolbar input,.toolbar select):focus{
+  outline:2px solid rgba(34,200,255,.28)!important;outline-offset:1px;border-color:#22c8ff!important
+}
+html[data-ecomax-unified="line-console"] :where(#ecomaxLineMap,#ecomaxGpsMap){
+  border:1px solid rgba(34,200,255,.40);border-radius:14px;overflow:hidden
+}
+html[data-ecomax-unified="line-console"] .tool:focus-visible{
+  outline:2px solid #ff9a35;outline-offset:3px
+}
+
+/* 5. CUSTOMER ACCOUNT: dashboard matches the home-page feature cards */
+html[data-ecomax-unified="customer-account"] header{
+  background:#020914f5!important;border-bottom:1px solid rgba(32,153,211,.42)!important;
+  box-shadow:0 5px 24px rgba(0,0,0,.23)
+}
+html[data-ecomax-unified="customer-account"] header .logo{
+  color:#fff!important;font-weight:950;letter-spacing:4px;text-shadow:0 0 17px rgba(34,200,255,.19)!important
+}
+html[data-ecomax-unified="customer-account"] header .links a{
+  color:#d7edf8!important;border-radius:9px!important
+}
+html[data-ecomax-unified="customer-account"] header .links a:hover{
+  color:#ffb17d!important;background:rgba(255,116,24,.08)!important
+}
+html[data-ecomax-unified="customer-account"] main>.card{
+  position:relative;isolation:isolate;
+  border:1px solid rgba(37,148,208,.52)!important;border-radius:23px!important;
+  background:var(--u-surface)!important;
+  box-shadow:var(--u-shadow)!important
+}
+html[data-ecomax-unified="customer-account"] main>.card::before{
+  content:"";position:absolute;inset:0 0 auto;height:3px;pointer-events:none;
+  background:linear-gradient(90deg,#ff7418,#ff9a35,#22c8ff,transparent)
+}
+html[data-ecomax-unified="customer-account"] .eyebrow{
+  border-color:rgba(255,116,24,.51)!important;background:rgba(255,116,24,.09)!important;
+  color:#ffae70!important;border-radius:8px!important
+}
+html[data-ecomax-unified="customer-account"] h1{color:#f8fcff!important;text-shadow:none;font-weight:950}
+html[data-ecomax-unified="customer-account"] .email{
+  border:1px solid rgba(38,132,183,.42)!important;
+  background:#061522!important;border-radius:14px!important;
+  box-shadow:inset 0 1px rgba(195,234,255,.07)
+}
+html[data-ecomax-unified="customer-account"] .email strong{
+  color:#e8faff;overflow-wrap:anywhere
+}
+html[data-ecomax-unified="customer-account"] .actions .btn{
+  border-color:rgba(40,153,203,.48)!important;border-radius:11px!important;
+  background:#071c2b!important;color:#e2f5ff!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.16)!important;
+  transition:transform .2s,border-color .2s
+}
+html[data-ecomax-unified="customer-account"] .actions .btn.primary{
+  background:linear-gradient(135deg,#ff972d,#eb5010)!important;
+  border:1px solid #ff9a35!important;color:#fff!important;
+  box-shadow:0 0 25px rgba(255,116,24,.18)!important
+}
+html[data-ecomax-unified="customer-account"] .actions .btn:hover:not(:disabled){
+  transform:translateY(-2px);border-color:#ff9a35!important
+}
+html[data-ecomax-unified="customer-account"] .orders-head{border-color:rgba(33,123,181,.37)!important}
+html[data-ecomax-unified="customer-account"] .orders-head h2{color:#fff!important}
+html[data-ecomax-unified="customer-account"] .orders .order-card,
+html[data-ecomax-unified="customer-account"] .orders .empty{
+  border:1px solid rgba(34,132,193,.45)!important;border-radius:17px!important;
+  background:var(--u-surface)!important;
+  box-shadow:0 12px 35px rgba(0,0,0,.24)!important
+}
+html[data-ecomax-unified="customer-account"] .orders .order-card::before{
+  content:"";display:block;height:2px;margin:-1px -1px 14px;
+  background:linear-gradient(90deg,#ff7418,#22c8ff,transparent)
+}
+html[data-ecomax-unified="customer-account"] :where(.order-number,.total){color:#ffb678}
+html[data-ecomax-unified="customer-account"] :where(.order-card .status,.live-box,.eta-box){
+  border-color:rgba(35,147,193,.42)!important
+}
+html[data-ecomax-unified="customer-account"] .live-title{color:#78deff!important}
+html[data-ecomax-unified="customer-account"] .live-map{
+  border-color:rgba(34,200,255,.36)!important;border-radius:13px!important
+}
+
+/* 6. CHECKOUT: product-card premium styling without touching checkout behavior */
+html[data-ecomax-unified="checkout"] .top{
+  padding:10px 0 24px;border-bottom:1px solid rgba(37,138,190,.36);margin-bottom:26px
+}
+html[data-ecomax-unified="checkout"] .top .logo{
+  color:#f8fcff!important;letter-spacing:4px;text-shadow:0 0 18px rgba(34,200,255,.24)
+}
+html[data-ecomax-unified="checkout"] .back{
+  background:#071b29!important;border:1px solid rgba(38,151,198,.52)!important;
+  color:#d1eeff!important;border-radius:10px
+}
+html[data-ecomax-unified="checkout"] .back:hover{border-color:#ff7418!important;color:#ffb077!important}
+html[data-ecomax-unified="checkout"] .box{
+  position:relative;isolation:isolate;
+  border:1px solid rgba(34,145,209,.50)!important;border-radius:20px!important;
+  background:var(--u-surface)!important;box-shadow:var(--u-shadow)!important
+}
+html[data-ecomax-unified="checkout"] .box::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;pointer-events:none;
+  background:linear-gradient(90deg,#ff7418,#22c8ff,transparent)
+}
+html[data-ecomax-unified="checkout"] :where(h1,h2){color:#fff;font-weight:950;text-shadow:0 5px 20px rgba(0,0,0,.2)}
+html[data-ecomax-unified="checkout"] .muted{color:#a9c4d1!important}
+html[data-ecomax-unified="checkout"] :where(input,select,textarea){
+  border:1px solid rgba(37,151,209,.48)!important;background:#04121e!important;
+  color:#f5fbff!important;border-radius:11px!important
+}
+html[data-ecomax-unified="checkout"] :where(input,select,textarea):focus{
+  outline:2px solid rgba(34,200,255,.22)!important;outline-offset:1px;
+  border-color:#22c8ff!important
+}
+html[data-ecomax-unified="checkout"] .submit{
+  border:1px solid #ff9a35!important;
+  background:linear-gradient(135deg,#ff972d,#eb5010)!important;
+  color:#fff!important;text-shadow:none!important;border-radius:12px!important;
+  box-shadow:0 0 24px rgba(255,116,24,.18),inset 0 1px rgba(255,255,255,.23)!important
+}
+html[data-ecomax-unified="checkout"] .submit:hover:not(:disabled){box-shadow:0 0 34px rgba(255,116,24,.30)!important}
+html[data-ecomax-unified="checkout"] .submit:disabled{opacity:.52}
+html[data-ecomax-unified="checkout"] .item{
+  border-bottom-color:rgba(33,138,196,.26)!important
+}
+html[data-ecomax-unified="checkout"] .item b{color:#ffae70!important}
+html[data-ecomax-unified="checkout"] .total{
+  border-top:1px solid rgba(38,147,201,.33);color:#f7fcff!important
+}
+html[data-ecomax-unified="checkout"] .total #total{color:#ff9a35!important}
+html[data-ecomax-unified="checkout"] .secure span{
+  color:#b1d1df!important;border-color:rgba(35,141,197,.41)!important;background:#071b2b!important
+}
+html[data-ecomax-unified="checkout"] .auth-gate{
+  border-color:rgba(255,116,24,.47)!important;background:rgba(255,116,24,.06)!important
+}
+html[data-ecomax-unified="checkout"] #authGateTitle{color:#ffad6e!important}
+
+/* Mobile: never mask a form with ornamental effects or restrict scrolling. */
+@media(max-width:760px){
+  html[data-ecomax-unified] body{overflow-x:hidden}
+  html[data-ecomax-unified="customer-gate"] .wrap>.card{border-radius:20px!important}
+  html[data-ecomax-unified="line-gate"] .card{border-radius:20px!important}
+  html[data-ecomax-unified="admin"] .login-box{border-radius:20px!important}
+  html[data-ecomax-unified="customer-account"] main>.card{border-radius:18px!important}
+  html[data-ecomax-unified="checkout"] .box{border-radius:17px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-ecomax-unified] *,html[data-ecomax-unified] *::before,html[data-ecomax-unified] *::after{
+    animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;scroll-behavior:auto!important
+  }
+  html[data-ecomax-unified] :where(.stat-card,.stat,.order-card,.btn):hover{transform:none!important}
+}
