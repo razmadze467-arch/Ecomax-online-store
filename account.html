@@ -283,7 +283,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     document.getElementById('refreshOrders').addEventListener('click',()=>loadOrders(user));
 
     client.auth.onAuthStateChange((event,s)=>{
-      if(event==='SIGNED_OUT'||!s) location.replace('login.html');
+      if(event==='SIGNED_OUT') location.replace('login.html'); // Null INITIAL_SESSION is not a sign-out.
     });
 
     document.getElementById('logout').addEventListener('click',async function(){
