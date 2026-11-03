@@ -89,6 +89,15 @@ a:focus-visible,button:focus-visible{outline:2px solid #78f3ff;outline-offset:4p
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js?v=20260920-1"></script>
 <link rel="stylesheet" href="ecomax-premium-cards.css?v=20261103-1">
+<style id="line-recovery-ui">
+#recoveryPanel{padding:18px 0 6px}
+#recoveryPanel h2{font-size:21px;text-align:center;margin:10px 0}
+#recoveryPanel label{display:block;font-size:11px;margin:14px 0 7px;color:#c6e6fc}
+#recoveryPanel input{display:block;width:100%;min-height:52px;padding:0 13px;border:1px solid rgba(114,190,252,.4);border-radius:13px;background:#041223;color:#f5faff}
+#recoveryPanel input:focus{outline:2px solid #65e7ff;outline-offset:1px}
+#recoveryPanel .submit{margin-top:20px}
+[hidden]{display:none!important}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#loginPanel">გადასვლა შესვლის ფორმაზე</a>
@@ -179,6 +188,15 @@ a:focus-visible,button:focus-visible{outline:2px solid #78f3ff;outline-offset:4p
     </div>
     <button class="submit" id="submit" type="submit">შესვლა ECOMAX LINE-ში <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
   </form>
+  <section id="recoveryPanel" hidden aria-labelledby="recoveryTitle">
+    <h2 id="recoveryTitle">პაროლის აღდგენა</h2>
+    <p class="desc">დააყენე ახალი პაროლი კურიერის ანგარიშისთვის.</p>
+    <form id="recoveryForm">
+      <label for="newCourierPassword">ახალი პაროლი</label><input id="newCourierPassword" type="password" autocomplete="new-password" minlength="8" required placeholder="მინიმუმ 8 სიმბოლო">
+      <label for="confirmCourierPassword">გაიმეორე პაროლი</label><input id="confirmCourierPassword" type="password" autocomplete="new-password" minlength="8" required placeholder="გაიმეორე პაროლი">
+      <button id="recoverySubmit" class="submit" type="submit">პაროლის განახლება</button>
+    </form>
+  </section>
   <div class="reset-row"><button type="button" id="resetBtn" class="reset-btn">პაროლის აღდგენა</button></div>
   <div id="error" class="error" role="status" aria-live="polite"></div>
   <div class="join">ახალი კურიერი ხარ? <a href="line-register.html">რეგისტრაცია ↗</a></div>
@@ -209,13 +227,45 @@ function show(t,ok=false){
 function clear(){err.textContent='';err.style.display='none'}
 
 if(!db){show('Supabase ვერ ჩაიტვირთა. გვერდი განაახლე.');return;}
+function enterRecovery(){
+  form.hidden=true;
+  document.querySelector('.reset-row').hidden=true;
+  document.getElementById('recoveryPanel').hidden=false;
+  show('აღდგენის ბმული დადასტურებულია. შეიყვანე ახალი პაროლი.',true);
+}
+db.auth.onAuthStateChange((event)=>{
+  if(event==='PASSWORD_RECOVERY') setTimeout(enterRecovery,0);
+});
+if(window.ECOMAX_RECOVERY_SESSION) enterRecovery();
+document.getElementById('recoveryForm').addEventListener('submit',async event=>{
+ event.preventDefault();
+ const a=document.getElementById('newCourierPassword').value;
+ const b=document.getElementById('confirmCourierPassword').value;
+ const save=document.getElementById('recoverySubmit');
+ if(a.length<8){show('ახალი პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო.');return}
+ if(a!==b){show('პაროლები ერთმანეთს არ ემთხვევა.');return}
+ if(!window.ECOMAX_RECOVERY_SESSION){show('აღდგენის ბმული ვადაგასულია. მოითხოვე ახალი ბმული.');return}
+ save.disabled=true;save.textContent='ინახება...';
+ try{
+  const {error}=await db.auth.updateUser({password:a});
+  if(error)throw error;
+  window.ECOMAX_RECOVERY_SESSION=false;
+  try{await db.auth.signOut()}catch(_){}
+  document.getElementById('recoveryForm').reset();
+  document.getElementById('recoveryPanel').hidden=true;
+  document.querySelector('.reset-row').hidden=false;
+  form.hidden=false;
+  show('პაროლი განახლდა. ახლა შედი ახალი პაროლით.',true);
+ }catch(ex){show('პაროლის შეცვლა ვერ მოხერხდა: '+(ex?.message||'უცნობი შეცდომა'))}
+ finally{save.disabled=false;save.textContent='პაროლის განახლება'}
+});
 
 try{
   const {data:{session}}=await db.auth.getSession();
   if(session){
     const role=String(session.user?.app_metadata?.role||'').toLowerCase();
-    if(role==='courier'){location.replace('line.html');return;}
-    await db.auth.signOut();
+    if(role==='courier' && !window.ECOMAX_RECOVERY_SESSION){location.replace('line.html');return;}
+    // Do not sign out a customer simply for visiting the courier login page.
   }
 }catch(e){console.warn('Session check:',e)}
 
