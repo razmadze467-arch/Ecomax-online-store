@@ -1938,7 +1938,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       String(currentUser.email || "").trim().toLowerCase() === ADMIN_EMAIL;
 
     if (!isAdmin) {
-      await db.auth.signOut();
+      // Deny admin UI access without logging the customer out of the store.
       currentUser = null;
       $("adminApp").classList.add("hidden");
       $("loginScreen").classList.remove("hidden");
@@ -2007,7 +2007,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
         // Only the dedicated admin account may open this page.
         if (sessionEmail !== ADMIN_EMAIL) {
-          await db.auth.signOut();
+          // Keep customer sessions intact; only the admin UI is restricted.
           currentUser = null;
           $("loginScreen").classList.remove("hidden");
           $("adminApp").classList.add("hidden");
