@@ -34,6 +34,15 @@ h1{font-size:30px;margin:8px 0}.sub{color:var(--muted);font-size:12px;line-heigh
 <div class="row"><label><input id="remember" type="checkbox" checked> დამიმახსოვრე</label><a href="#" id="forgot">დამავიწყდა პაროლი</a></div>
 <button class="btn" id="loginBtn" type="submit">შესვლა</button>
 </form>
+<section id="recoveryPanel" hidden aria-labelledby="recoveryTitle">
+  <h2 id="recoveryTitle">ახალი პაროლის დაყენება</h2>
+  <p class="sub">შეიყვანე ახალი პაროლი, რომელიც შემდეგ ავტორიზაციისთვის გამოიყენება.</p>
+  <form id="recoveryForm">
+    <div class="field"><label for="recoveryPassword">ახალი პაროლი</label><input id="recoveryPassword" type="password" autocomplete="new-password" minlength="6" required></div>
+    <div class="field"><label for="recoveryPassword2">გაიმეორე პაროლი</label><input id="recoveryPassword2" type="password" autocomplete="new-password" minlength="6" required></div>
+    <button type="submit" id="recoverySubmit" class="btn">ახალი პაროლის შენახვა</button>
+  </form>
+</section>
 <div class="foot">არ გაქვს ანგარიში? <a id="registerLink" href="register.html">რეგისტრაცია</a><br><a class="back" href="index.html">← მთავარ გვერდზე</a></div>
 </section></main>
 <script>
@@ -53,6 +62,44 @@ async function client(){
  }catch(_){}
  throw new Error('ECOMAX ავტორიზაციის კლიენტი ვერ ჩაიტვირთა. გვერდი განაახლე და ისევ სცადე.');
 }
+
+/* Show password-update form only after Supabase confirms a PASSWORD_RECOVERY event. */
+function enterRecovery(){
+ $('loginForm').hidden=true;
+ $('recoveryPanel').hidden=false;
+ show('ბმული დადასტურებულია. დააყენე ახალი პაროლი.','success');
+ $('recoveryPassword').focus();
+}
+if(window.ECOMAX_AUTH_READY){
+ window.ECOMAX_AUTH_READY.then(db=>{
+  db.auth.onAuthStateChange((event)=>{
+   if(event==='PASSWORD_RECOVERY') setTimeout(enterRecovery,0);
+  });
+  // The shared client may see the recovery event before this listener.
+  if(window.ECOMAX_RECOVERY_SESSION) enterRecovery();
+ }).catch(()=>{});
+}
+$('recoveryForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const p1=$('recoveryPassword').value,p2=$('recoveryPassword2').value,save=$('recoverySubmit');
+ if(p1.length<6){show('პაროლი უნდა იყოს მინიმუმ 6 სიმბოლო.');return}
+ if(p1!==p2){show('პაროლები ერთმანეთს არ ემთხვევა.');return}
+ if(!window.ECOMAX_RECOVERY_SESSION){show('აღდგენის ბმული ვადაგასულია ან არასწორია. მოითხოვე ახალი ბმული.');return}
+ save.disabled=true;save.textContent='ინახება...';
+ try{
+  const db=await client();
+  const {error}=await db.auth.updateUser({password:p1});
+  if(error)throw error;
+  window.ECOMAX_RECOVERY_SESSION=false;
+  try{await db.auth.signOut()}catch(_){}
+  $('recoveryForm').reset();
+  $('recoveryPanel').hidden=true;
+  $('loginForm').hidden=false;
+  show('პაროლი განახლდა. ახლა შედი ახალი პაროლით.','success');
+ }catch(err){show('პაროლის შეცვლა ვერ მოხერხდა: '+(err?.message||'უცნობი შეცდომა'))}
+ finally{save.disabled=false;save.textContent='ახალი პაროლის შენახვა'}
+});
+
 async function finishSession(db,session){
  if(!session?.access_token||!session?.refresh_token)throw new Error('სესია ვერ შეიქმნა.');
  const r=await db.auth.setSession({access_token:session.access_token,refresh_token:session.refresh_token});
