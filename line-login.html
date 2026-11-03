@@ -301,7 +301,7 @@ form.addEventListener('submit',async e=>{
     }
     const role=String(u?.app_metadata?.role||'').toLowerCase();
     if(role!=='courier'){
-      await db.auth.signOut();
+      // Keep the legitimate customer session; only LINE access is denied.
       show('ანგარიში სწორად შევიდა, მაგრამ ECOMAX LINE-ის კურიერის წვდომა ჯერ არ არის მინიჭებული. დაელოდე ადმინისტრატორის დამტკიცებას.');
       return;
     }
