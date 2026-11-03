@@ -6389,11 +6389,1061 @@ button::before,.btn::before,.submit::before,.back::before{animation:none!importa
   .product-card,.info-card,.card{contain:layout paint style;}
 }
 </style>
-<link rel="stylesheet" href="css/product-packaging.css?v=20261103-live">
-<script src="js/product-packaging.js?v=20261103-live"></script>
-<link rel="stylesheet" href="css/storefront-refinement.css?v=20261103-live">
-<script src="js/storefront-refinement.js?v=20261103-live"></script>
-<link rel="stylesheet" href="css/neon-storefront.css?v=20261103-live">
-<script src="js/neon-storefront.js?v=20261103-live"></script>
+<!-- ECOMAX LIVE STOREFRONT: embedded to keep GitHub Pages identical to localhost -->
+<style id="ecomax-product-packaging-live-css">
+/* Packaging only: product data and purchase controls remain owned by the store. */
+#productsGrid .product-card .product-bottle.ecomax-packaging {
+  width: 188px !important;
+  height: 252px !important;
+  max-width: 100% !important;
+  background: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  filter: drop-shadow(0 15px 12px #0007) drop-shadow(0 0 9px #00eaff20) !important;
+}
+#productsGrid .ecomax-packaging::before,
+#productsGrid .ecomax-packaging::after { display: none !important; }
+#productsGrid .ecomax-packaging > :not(.ecomax-package-art) { display: none !important; }
+#productsGrid .ecomax-packaging .ecomax-package-art {
+  display: block !important;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.ecomax-package-art .package-label {
+  font-family: "Noto Sans Georgian", Arial, sans-serif;
+  text-anchor: middle;
+}
+.ecomax-package-art .package-label-brand {
+  font-family: Arial, sans-serif;
+  font-weight: 900;
+  fill: #f5fcff;
+}
+.ecomax-package-art .package-label-series {
+  font-size: 4.7px;
+  font-weight: 600;
+  letter-spacing: .35px;
+  fill: #b4d2da;
+}
+.ecomax-package-art .package-label-name { font-weight: 800; fill: #102632; }
+.ecomax-package-art .package-label-english {
+  font-family: Arial, sans-serif;
+  font-size: 6.1px;
+  font-weight: 700;
+  letter-spacing: .25px;
+  fill: #3b5663;
+}
+.ecomax-package-art .package-label-caption { font-size: 4.4px; font-weight: 600; fill: #526b74; }
+.ecomax-package-art .package-label-volume { font-size: 10.5px; font-weight: 800; fill: #102632; }
+@media (max-width: 600px) {
+  #productsGrid .product-card .product-bottle.ecomax-packaging {
+    width: 168px !important;
+    height: 236px !important;
+  }
+}
+
+</style>
+<script id="ecomax-product-packaging-live-js">
+(function () {
+  'use strict';
+  let nextId = 0;
+  const escape = text => String(text).replace(/[&<>"']/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[char]);
+
+  // Liquid appearance belongs to the packaging, never the product/price data.
+  const liquids = [
+    { match: /ძრავ|მატორ|engine/i, color: '#ef334e', shadow: '#860b2a' },
+    { match: /რადიატორ|radiator/i, color: '#ffd52e', shadow: '#b66b08' },
+    { match: /დისკ|ალუმინ|wheel/i, color: '#f4f8fc', shadow: '#a6bdcd', opaque: true },
+    { match: /ნაჭრ|fabric/i, color: '#008dbb', shadow: '#03476d' },
+    { match: /ტყავის ქიმ|leather clean/i, color: '#ffd52e', shadow: '#b66b08' },
+    { match: /საბურავ|tire|tyre/i, color: '#ef334e', shadow: '#860b2a' },
+    { match: /ფოსფორ|phosphor/i, color: '#4ce67c', shadow: '#087449' },
+    { match: /ტყავის მკვებ|leather condition/i, color: '#f472b6', shadow: '#a92c76' },
+    { match: /ტორპედო|dashboard/i, color: '#f4f8fc', shadow: '#a6bdcd', opaque: true },
+    { match: /ქაფი.*წითელ/i, color: '#ef334e', shadow: '#860b2a' },
+    { match: /ქაფი.*ლურჯ/i, color: '#63d7f4', shadow: '#147dba' },
+    { match: /პლას[ტმ]მას|პლასმას|plastic/i, color: '#465465', shadow: '#172531' }
+  ];
+
+  function liquidFor(name) {
+    return liquids.find(liquid => liquid.match.test(name)) ||
+      { color: '#bcecf4', shadow: '#4c93af' };
+  }
+
+  const englishNames = new Map([
+    ['ძრავის სარეცხი', 'ENGINE CLEANER'],
+    ['დისკების და ალუმინის სარეცხი', 'WHEEL & ALUMINIUM CLEANER'],
+    ['რადიატორის და წყლის სისტემის გამწმენდი', 'COOLING SYSTEM CLEANER'],
+    ['ნაჭრის ქიმწმენდა', 'FABRIC CLEANER'],
+    ['ტყავის ქიმწმენდა', 'LEATHER CLEANER'],
+    ['საბურავის საპრიალებელი', 'TIRE SHINE'],
+    ['ტორპედოს საპრიალებელი', 'DASHBOARD POLISH'],
+    ['ტყავის მკვებავი', 'LEATHER CONDITIONER'],
+    ['პლასმასების საშავებელი', 'PLASTIC BLACKENER'],
+    ['ქაფი — წითელი', 'RED CAR WASH FOAM'],
+    ['ქაფი — ღია ლურჯი', 'LIGHT BLUE CAR WASH FOAM'],
+    ['ფოსფორი მანქანის', 'CAR PHOSPHOR']
+  ]);
+
+  // Wrap the existing product name without substituting a separate product catalog.
+  function linesFor(name, limit) {
+    const lines = [];
+    for (const word of name.split(/\s+/)) {
+      const last = lines.length - 1;
+      if (last >= 0 && (lines[last] + ' ' + word).length <= limit) lines[last] += ' ' + word;
+      else lines.push(word);
+    }
+    return lines;
+  }
+
+  function render(card) {
+    const select = card.querySelector('.volume-select');
+    const bottle = card.querySelector('.product-bottle');
+    const heading = card.querySelector('h3');
+    // Leave aerosol cans, accessories and products without a volume selector intact.
+    if (!select || !bottle || !heading || bottle.classList.contains('ecomax-spray-can')) return;
+    const volume = Number(select.value);
+    if (!Number.isFinite(volume) || volume <= 0) return;
+    const name = heading.textContent.trim();
+    const liquid = liquidFor(name);
+    const english = englishNames.get(name) || 'CAR CARE';
+    const size = `${volume} ლ`;
+    const signature = `${name}|${english}|${volume}|${liquid.color}`;
+    if (bottle.dataset.packagingSignature === signature) return;
+    bottle.dataset.packagingSignature = signature;
+    const id = `ecomax-package-${++nextId}`;
+    const canister = volume >= 2;
+    const small = volume === 0.5;
+    const labelY = canister ? 110 : small ? 116 : 106;
+    const labelHeight = canister ? 107 : small ? 106 : 110;
+    const nameLines = linesFor(name, canister ? 23 : small ? 16 : 18);
+    const englishLines = linesFor(english, canister ? 29 : small ? 20 : 23);
+    const footerY = labelHeight - 22;
+    // Separate text regions keep long bilingual names clear of the volume footer.
+    const lineHeight = Math.min(10.5,
+      (footerY - 4 - 42 - 10.5 - (englishLines.length - 1) * 7.5) / Math.max(1, nameLines.length - 1));
+    const nameFontSize = Math.min(8.8, lineHeight - 1);
+    const lastBaseline = 42 + (nameLines.length - 1) * lineHeight + 10.5 + (englishLines.length - 1) * 7.5;
+    const nameY = labelY + 42 + Math.max(0, (footerY - 4 - lastBaseline) / 2);
+    const englishY = nameY + (nameLines.length - 1) * lineHeight + 10.5;
+    const body = canister
+      ? 'M35 58 V45 Q35 41 39 41 H67 Q71 41 71 45 V48 H132 Q143 48 147 64 L160 92 V220 Q160 232 146 232 H34 Q20 232 20 218 V91 Q20 76 35 58 Z M68 62 Q62 62 62 69 V83 Q62 89 69 89 H123 Q130 89 127 81 L122 66 Q121 62 114 62 Z'
+      : small
+        ? 'M70 65 H110 V80 Q110 88 122 98 Q132 106 132 123 V218 Q132 231 119 231 H61 Q48 231 48 218 V123 Q48 106 58 98 Q70 88 70 80 Z'
+        : 'M68 35 H112 V57 Q112 68 127 78 Q142 89 142 109 V218 Q142 232 128 232 H52 Q38 232 38 218 V109 Q38 89 53 78 Q68 68 68 57 Z';
+    // A small overhang seats each screw cap on its own neck, including the jug spout.
+    const cap = canister ? { x: 32, y: 27, width: 42, height: 18 }
+      : small ? { x: 68, y: 50, width: 44, height: 17 }
+        : { x: 66, y: 18, width: 48, height: 19 };
+    const capRibs = Array.from({ length: Math.floor((cap.width - 8) / 3) }, (_, index) => {
+      const x = cap.x + 4 + index * 3;
+      return `<path d="M${x} ${cap.y + 5}v${cap.height - 8}" stroke="#020a10" stroke-opacity=".65"/>
+        <path d="M${x + .8} ${cap.y + 5}v${cap.height - 8}" stroke="#b5cbd3" stroke-opacity=".28" stroke-width=".65"/>`;
+    }).join('');
+    const labelX = canister ? 32 : small ? 52 : 45;
+    const labelWidth = canister ? 116 : small ? 76 : 90;
+    const center = 90;
+    const labelRight = labelX + labelWidth;
+    const labelBottom = labelY + labelHeight;
+    const labelPath = `M${labelX} ${labelY + 2} Q90 ${labelY - 3} ${labelRight} ${labelY + 2} V${labelBottom - 3} Q90 ${labelBottom + 3} ${labelX} ${labelBottom - 3} Z`;
+    const liquidY = canister ? 101 : small ? 107 : 88;
+    const svg = `<svg class="ecomax-package-art" viewBox="0 0 180 250" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="${id}-plastic" x1="0" x2="1">
+          <stop stop-color="#b2d9ee" stop-opacity=".32"/>
+          <stop offset=".12" stop-color="#e1f2ff" stop-opacity=".12"/>
+          <stop offset=".28" stop-color="#fff" stop-opacity=".25"/>
+          <stop offset=".5" stop-color="#e5f3ff" stop-opacity=".02"/>
+          <stop offset=".85" stop-color="#93b7d5" stop-opacity=".08"/>
+          <stop offset="1" stop-color="#d3edff" stop-opacity=".3"/>
+        </linearGradient>
+        <linearGradient id="${id}-liquid" x1="0" x2="1">
+          <stop stop-color="${liquid.shadow}" stop-opacity=".95"/>
+          <stop offset=".22" stop-color="${liquid.color}" stop-opacity="${liquid.opaque ? '.98' : '.85'}"/>
+          <stop offset=".58" stop-color="${liquid.color}" stop-opacity="${liquid.opaque ? '.94' : '.66'}"/>
+          <stop offset="1" stop-color="${liquid.shadow}" stop-opacity=".95"/>
+        </linearGradient>
+        <linearGradient id="${id}-depth" x1="0" y1="0" x2="0" y2="1">
+          <stop stop-color="#020d19" stop-opacity="0"/>
+          <stop offset="1" stop-color="#020d19" stop-opacity=".24"/>
+        </linearGradient>
+        <linearGradient id="${id}-cap" x1="0" x2="1">
+          <stop stop-color="#0c1820"/><stop offset=".25" stop-color="#4b606b"/>
+          <stop offset=".5" stop-color="#293d48"/><stop offset="1" stop-color="#09131a"/>
+        </linearGradient>
+        <linearGradient id="${id}-cap-top" x1="0" y1="0" x2="0" y2="1">
+          <stop stop-color="#526874"/><stop offset="1" stop-color="#243742"/>
+        </linearGradient>
+        <linearGradient id="${id}-label" x1="0" y1="0" x2="1" y2="1">
+          <stop stop-color="#18313e"/><stop offset=".5" stop-color="#081820"/><stop offset="1" stop-color="#172d3e"/>
+        </linearGradient>
+        <linearGradient id="${id}-paper" x1="0" x2="1">
+          <stop stop-color="#b0bec1"/><stop offset=".12" stop-color="#e9efed"/>
+          <stop offset=".48" stop-color="#fffffa"/><stop offset=".86" stop-color="#edf2ef"/>
+          <stop offset="1" stop-color="#bac9cb"/>
+        </linearGradient>
+        <linearGradient id="${id}-laminate" x1="0" x2="1">
+          <stop stop-color="#00111b" stop-opacity=".18"/><stop offset=".1" stop-color="#fff" stop-opacity=".12"/>
+          <stop offset=".3" stop-color="#fff" stop-opacity="0"/><stop offset=".84" stop-color="#fff" stop-opacity="0"/>
+          <stop offset="1" stop-color="#00111b" stop-opacity=".14"/>
+        </linearGradient>
+        <clipPath id="${id}-body"><path d="${body}" clip-rule="evenodd"/></clipPath>
+        <clipPath id="${id}-sticker"><path d="${labelPath}"/></clipPath>
+      </defs>
+      <ellipse cx="90" cy="237" rx="64" ry="6" fill="#00eaff" opacity=".1"/>
+      <g clip-path="url(#${id}-body)">
+        <rect class="package-liquid" x="20" y="${liquidY}" width="140" height="145" fill="url(#${id}-liquid)"/>
+        <ellipse cx="90" cy="${liquidY}" rx="72" ry="4" fill="${liquid.color}" opacity=".65"/>
+        <rect x="20" y="${liquidY}" width="140" height="145" fill="url(#${id}-depth)"/>
+      </g>
+      <path d="${body}" fill="url(#${id}-plastic)" fill-rule="evenodd" stroke="#d3edff" stroke-opacity=".65" stroke-width="1.2"/>
+      <path d="M${canister ? 29 : small ? 54 : 44} 128 V213 Q${canister ? 29 : small ? 54 : 44} 223 ${canister ? 40 : small ? 65 : 55} 223" fill="none" stroke="#fff" stroke-width="3" opacity=".42"/>
+      <path d="${canister ? 'M43 56 H127 M26 217 H154' : small ? 'M75 73 H105 M54 218 H126' : 'M73 45 H107 M44 218 H136'}" fill="none" stroke="#d9f3ff" stroke-width="1.5" opacity=".4"/>
+      <g class="package-cap">
+        <rect class="package-cap-ring" x="${cap.x + 1}" y="${cap.y + cap.height - 1.5}" width="${cap.width - 2}" height="4" rx="1.2" fill="url(#${id}-cap)" stroke="#9aafb8" stroke-opacity=".35" stroke-width=".6"/>
+        <rect class="package-cap-grip" x="${cap.x}" y="${cap.y + 3}" width="${cap.width}" height="${cap.height - 3}" rx="2" fill="url(#${id}-cap)" stroke="#90a5af" stroke-opacity=".6" stroke-width=".7"/>
+        ${capRibs}
+        <ellipse cx="${cap.x + cap.width / 2}" cy="${cap.y + 3}" rx="${cap.width / 2}" ry="3" fill="url(#${id}-cap-top)" stroke="#abc0ca" stroke-opacity=".55" stroke-width=".7"/>
+        <ellipse cx="${cap.x + cap.width / 2}" cy="${cap.y + 3}" rx="${cap.width / 2 - 3}" ry="1.6" fill="none" stroke="#a8bec9" stroke-opacity=".22" stroke-width=".6"/>
+        <path d="M${cap.x + 2} ${cap.y + cap.height - 1}h${cap.width - 4}" stroke="#020a10" stroke-opacity=".8" stroke-width=".8"/>
+      </g>
+      <g class="package-label" clip-path="url(#${id}-body)">
+        <path class="package-label-stock" d="${labelPath}" fill="url(#${id}-paper)" stroke="#091923" stroke-opacity=".65" stroke-width=".8"/>
+        <g clip-path="url(#${id}-sticker)">
+          <rect x="${labelX}" y="${labelY - 2}" width="${labelWidth}" height="32" fill="url(#${id}-label)"/>
+          <rect x="${labelX}" y="${labelY + 28}" width="${labelWidth}" height="2.5" fill="${liquid.color}"/>
+          <rect x="${labelX + 2}" y="${labelY + 35}" width="1.6" height="${footerY - 39}" fill="${liquid.shadow}" opacity=".65"/>
+          <text class="package-label-brand" x="90" y="${labelY + 16}" font-size="${small ? 13.5 : 16}" letter-spacing="1.1">ECOMAX</text>
+          <text class="package-label-series" x="90" y="${labelY + 24}" data-label-width="${labelWidth - 12}">ავტოქიმია / CAR CARE</text>
+          ${nameLines.map((line, index) => `<text class="package-label-name" lang="ka" x="${center}" y="${nameY + index * lineHeight}" style="font-size:${nameFontSize}px" data-label-width="${labelWidth - 14}">${escape(line)}</text>`).join('')}
+          ${englishLines.map((line, index) => `<text class="package-label-english" lang="en" x="${center}" y="${englishY + index * 7.5}" data-label-width="${labelWidth - 14}">${escape(line)}</text>`).join('')}
+          <path d="M${labelX + 7} ${labelY + footerY}h${labelWidth - 14}" stroke="#647b83" stroke-opacity=".35" stroke-width=".6"/>
+          <text class="package-label-caption" x="90" y="${labelBottom - 15}" data-label-width="${labelWidth - 14}">მოცულობა / NET VOL.</text>
+          <text class="package-label-volume" x="90" y="${labelBottom - 4}">${escape(size)} / L</text>
+          <path d="${labelPath}" fill="url(#${id}-laminate)" pointer-events="none"/>
+        </g>
+      </g>
+    </svg>`;
+    bottle.classList.add('ecomax-packaging');
+    bottle.dataset.packageShape = canister ? 'canister' : small ? 'bottle-500' : 'bottle-1000';
+    bottle.dataset.liquidColor = liquid.color;
+    bottle.setAttribute('role', 'img');
+    bottle.setAttribute('aria-label', `ECOMAX — ${name} / ${english}, ${size}`);
+    bottle.title = `ECOMAX — ${name} / ${english}, ${size}`;
+    bottle.querySelector('.ecomax-package-art')?.remove();
+    bottle.insertAdjacentHTML('beforeend', svg);
+    // Measure the actual font instead of stretching every line to a fixed width.
+    bottle.querySelectorAll('[data-label-width]').forEach(text => {
+      const width = Number(text.dataset.labelWidth);
+      if (typeof text.getComputedTextLength === 'function' && text.getComputedTextLength() > width) {
+        text.setAttribute('textLength', String(width));
+        text.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+      }
+    });
+  }
+
+  function init() {
+    const grid = document.getElementById('productsGrid');
+    if (!grid) return;
+    grid.querySelectorAll('.product-card').forEach(render);
+    grid.addEventListener('change', event => {
+      if (event.target.matches('.volume-select')) render(event.target.closest('.product-card'));
+    });
+    new MutationObserver(records => {
+      const cards = new Set();
+      records.forEach(record => record.addedNodes.forEach(node => {
+        if (node.nodeType !== 1) return;
+        if (node.matches('.product-card')) cards.add(node);
+        node.querySelectorAll('.product-card').forEach(card => cards.add(card));
+      }));
+      cards.forEach(render);
+    }).observe(grid, { childList: true, subtree: true });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
+})();
+
+</script>
+<style id="ecomax-storefront-refinement-live-css">
+/* Refinements to the existing catalog and its local product detail view. */
+#products .section-head h2 { line-height: 1.25; text-shadow: none !important; }
+#products .section-head p { color: #9eb3c0 !important; text-shadow: none !important; }
+#products .tools {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 210px auto;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #203b49;
+  border-radius: 18px;
+  background: #071620;
+}
+#products .tools .search, #products .tools .filter {
+  width: 100%; min-width: 0;
+  border: 1px solid #294654;
+  background: #04101a;
+  color: #e4f3fa;
+  box-shadow: none;
+}
+.catalog-reset, .catalog-view-button, .catalog-dialog-close, .catalog-dialog-add {
+  font: inherit; cursor: pointer;
+}
+#products .catalog-reset {
+  padding: 10px 14px; border: 1px solid #294654 !important; border-radius: 12px;
+  background: transparent; color: #b2ccd8; font-size: 12px;
+  box-shadow: none !important; text-shadow: none !important;
+}
+#products .catalog-reset:disabled { opacity: .4; cursor: default; }
+#products .catalog-results {
+  display: flex; justify-content: space-between; gap: 16px;
+  margin: 16px 2px 22px; color: #94adb9; font-size: 12px; line-height: 1.6;
+}
+#products .catalog-results p { margin: 0; }
+#products .catalog-results span { color: #698794; }
+#products .catalog-empty { padding: 34px 20px; text-align: center; border: 1px dashed #315262; border-radius: 18px; }
+#products .catalog-empty[hidden] { display: none; }
+#products .catalog-empty h3 { margin: 0 0 8px; color: #e5f4fa; }
+#products .catalog-empty p { color: #9eb3c0; font-size: 13px; }
+#productsGrid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 22px !important; }
+#productsGrid .product-card {
+  display: flex; flex-direction: column;
+  padding: 18px !important; border-radius: 22px !important;
+  border: 1px solid #24424f !important;
+  background: linear-gradient(155deg, #0b202e, #06121c 75%) !important;
+  box-shadow: 0 12px 30px #0003 !important;
+}
+#productsGrid .product-card::before, #productsGrid .product-card::after,
+#productsGrid .product-visual::before, #productsGrid .product-visual::after,
+#productsGrid .product-number::before, #productsGrid .product-number::after,
+#productsGrid .product-info::before, #productsGrid .product-info::after { display: none !important; }
+#productsGrid .product-card:hover { border-color: #4a8295 !important; box-shadow: 0 12px 30px #0003 !important; }
+#productsGrid .product-top { align-items: center; margin-bottom: 14px; color: #96aebb; }
+#productsGrid .product-number {
+  display: grid; place-items: center; width: 32px; height: 25px;
+  border: 1px solid #365461 !important; border-radius: 8px;
+  background: #0b2633; color: #b7e8f4; box-shadow: none !important; text-shadow: none !important;
+}
+#productsGrid .product-visual {
+  padding-bottom: 34px !important; height: 300px !important;
+  border: 1px solid #24424f !important; border-radius: 15px !important;
+  background: radial-gradient(ellipse at 50% 65%, #12364588, transparent 70%), #04111b !important;
+  box-shadow: inset 0 1px #ffffff05 !important;
+}
+#productsGrid .product-card h3 {
+  margin: 18px 0 8px !important; font-size: 17px !important;
+  line-height: 1.45 !important; color: #eef8fc !important; text-shadow: none !important;
+}
+#productsGrid .product-description { color: #a2b7c2 !important; line-height: 1.75 !important; text-shadow: none !important; }
+#productsGrid .product-info {
+  margin: 16px 0 !important; padding: 10px 12px !important;
+  border: 1px solid #203b49 !important; border-radius: 10px !important;
+  background: #081923 !important; box-shadow: none !important;
+  font-size: 10px !important; color: #91aab6 !important;
+}
+#productsGrid .product-info b { color: #c5e3ed !important; text-shadow: none !important; }
+#productsGrid .buy-area { margin-top: auto; }
+#productsGrid .price-row { margin-bottom: 10px; }
+#productsGrid .selected-price { color: #b7f1fa !important; font-size: 24px !important; text-shadow: none !important; }
+#productsGrid .selected-volume { color: #94aebc !important; font-size: 11px !important; }
+#productsGrid .volume-select { border-color: #355665 !important; background: #081a26 !important; box-shadow: none !important; }
+#productsGrid .add-cart {
+  border: 1px solid #8be4ef !important; border-radius: 11px !important;
+  background: #8be4ef !important; color: #04202b !important;
+  box-shadow: none !important; text-shadow: none !important; font-weight: 800;
+}
+#productsGrid .add-cart:hover { background: #b0f2fa !important; }
+#productsGrid .catalog-view-button {
+  display: flex; align-items: center; gap: 7px;
+  position: absolute; z-index: 8; left: 50%; bottom: 10px;
+  transform: translateX(-50%) !important; width: max-content; max-width: calc(100% - 20px);
+  padding: 7px 12px; border: 1px solid #426473 !important; border-radius: 30px;
+  background: #092330; color: #c7e7f1; font-size: 10px; line-height: 1.3;
+  text-shadow: none !important; box-shadow: none !important;
+}
+#productsGrid .catalog-view-button svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+.catalog-product-dialog {
+  width: min(920px, calc(100vw - 32px)); max-width: none;
+  max-height: calc(100dvh - 40px); margin: auto; padding: 0;
+  border: 1px solid #355969; border-radius: 24px; background: #081923;
+  color: #eaf5fa; box-shadow: 0 30px 100px #000a; overflow: auto;
+  font-family: "Noto Sans Georgian", Arial, sans-serif;
+}
+.catalog-product-dialog::backdrop { background: #010810d9; backdrop-filter: blur(8px); }
+.catalog-product-dialog * { text-shadow: none !important; }
+.catalog-product-dialog button, .catalog-product-dialog select { box-shadow: none !important; }
+.catalog-product-dialog .catalog-dialog-close { border-color: #3a5868 !important; }
+.catalog-product-dialog .catalog-dialog-volume { border-color: #3d6070 !important; }
+.catalog-product-dialog .catalog-dialog-info h2 { color: #eaf5fa !important; }
+.catalog-product-dialog .catalog-dialog-fact strong { color: #c3dce7 !important; }
+.catalog-product-dialog .catalog-dialog-price { color: #c0f5ff !important; }
+.catalog-product-dialog .catalog-dialog-add { color: #04202b !important; border: 0 !important; }
+.catalog-dialog-header {
+  position: sticky; top: 0; z-index: 2; display: flex;
+  align-items: center; justify-content: space-between; padding: 16px 22px;
+  border-bottom: 1px solid #29404c; background: #081923;
+}
+.catalog-dialog-header span { color: #9fc5d3; font-size: 11px; letter-spacing: 1px; }
+.catalog-dialog-close {
+  width: 36px; height: 36px; border: 1px solid #3a5868; border-radius: 50%;
+  color: #cbe2ec; background: #102a39; font-size: 24px; line-height: 1;
+}
+.catalog-dialog-content { display: grid; grid-template-columns: 1fr 1fr; }
+.catalog-dialog-preview {
+  display: grid; place-items: center; min-width: 0; padding: 22px 16px;
+  background: radial-gradient(ellipse at 50% 60%, #1b4c5d77, transparent 65%), #04111a;
+}
+.catalog-dialog-preview .ecomax-package-art { width: 100%; max-width: 330px; height: auto; max-height: 480px; }
+.catalog-dialog-info { padding: 28px 28px 32px; }
+.catalog-dialog-info h2 { margin: 0 0 10px; font-size: 25px; line-height: 1.45; text-shadow: none; }
+.catalog-dialog-english { color: #8ed8e6; font-size: 11px; letter-spacing: 1px; margin: 0 0 20px; }
+.catalog-dialog-description { font-size: 13px; line-height: 1.85; color: #aabfca; }
+.catalog-dialog-fact { display: flex; justify-content: space-between; gap: 14px; padding: 12px 0; margin: 18px 0; border-block: 1px solid #29404c; font-size: 12px; }
+.catalog-dialog-fact span { color: #8da9b9; }
+.catalog-dialog-info label { display: block; margin: 22px 0 8px; color: #aabfca; font-size: 12px; }
+.catalog-dialog-volume { width: 100%; padding: 13px; border: 1px solid #3d6070; border-radius: 10px; background: #0a2230; color: #eaf5fa; font: inherit; font-size: 13px; }
+.catalog-dialog-price-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 18px 0; }
+.catalog-dialog-price { font-size: 30px; color: #c0f5ff; }
+.catalog-dialog-unit { font-size: 12px; color: #95afbc; }
+.catalog-dialog-add { width: 100%; padding: 15px; border: 0; border-radius: 12px; background: #8be4ef; color: #04202b; font-weight: 800; font-size: 14px; }
+.catalog-dialog-hint { color: #7d9ba9; font-size: 10px; line-height: 1.6; margin: 12px 0 0; }
+.catalog-product-dialog :focus-visible, #products .catalog-view-button:focus-visible,
+#products .catalog-reset:focus-visible, #products .tools :focus-visible {
+  outline: 2px solid #97edf5; outline-offset: 3px;
+}
+@media(max-width: 1050px) {
+  #productsGrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+@media(max-width: 650px) {
+  #productsGrid { grid-template-columns: minmax(0, 1fr) !important; gap: 18px !important; }
+  #products .tools { grid-template-columns: minmax(0, 1fr) auto; padding: 12px; }
+  #products .tools .search { grid-column: 1 / -1; }
+  #products .catalog-results { flex-direction: column; gap: 4px; font-size: 11px; }
+  #productsGrid .product-card { padding: 15px !important; }
+  #productsGrid .product-visual { height: 290px !important; }
+  .catalog-product-dialog { width: calc(100vw - 20px); max-height: calc(100dvh - 20px); border-radius: 18px; }
+  .catalog-dialog-header { padding: 12px 16px; }
+  .catalog-dialog-content { grid-template-columns: 1fr; }
+  .catalog-dialog-preview { padding: 12px; }
+  .catalog-dialog-preview .ecomax-package-art { width: 208px; max-height: 300px; }
+  .catalog-dialog-info { padding: 22px; }
+  .catalog-dialog-info h2 { font-size: 22px; }
+}
+
+</style>
+<script id="ecomax-storefront-refinement-live-js">
+(function () {
+  'use strict';
+
+  function init() {
+    const grid = document.getElementById('productsGrid');
+    if (!grid || document.getElementById('catalogProductDialog')) return;
+    const dialog = document.createElement('dialog');
+    dialog.id = 'catalogProductDialog';
+    dialog.className = 'catalog-product-dialog';
+    dialog.setAttribute('aria-labelledby', 'catalogDialogTitle');
+    dialog.innerHTML = `
+      <div class="catalog-dialog-header"><span>ECOMAX / პროდუქტი ახლოდან</span><button type="button" class="catalog-dialog-close" aria-label="პროდუქტის ფანჯრის დახურვა" autofocus>×</button></div>
+      <div class="catalog-dialog-content">
+        <div class="catalog-dialog-preview" role="img"></div>
+        <div class="catalog-dialog-info">
+          <h2 id="catalogDialogTitle"></h2><p class="catalog-dialog-english" lang="en"></p>
+          <p class="catalog-dialog-description"></p>
+          <div class="catalog-dialog-fact"><span></span><strong></strong></div>
+          <label for="catalogDialogVolume">აირჩიე მოცულობა</label>
+          <select id="catalogDialogVolume" class="catalog-dialog-volume"></select>
+          <div class="catalog-dialog-price-row"><strong class="catalog-dialog-price"></strong><span class="catalog-dialog-unit"></span></div>
+          <button type="button" class="catalog-dialog-add">კალათაში დამატება →</button>
+          <p class="catalog-dialog-hint">მოცულობის შეცვლისას შეფუთვა და ფასი ავტომატურად განახლდება.</p>
+        </div>
+      </div>`;
+    document.body.appendChild(dialog);
+    let activeCard = null, opener = null, previousOverflow = '';
+    const volume = dialog.querySelector('select');
+    const preview = dialog.querySelector('.catalog-dialog-preview');
+
+    function close() {
+      if (!dialog.open) return;
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+      opener?.focus({ preventScroll: true });
+    }
+
+    function refresh() {
+      if (!activeCard) return;
+      const source = activeCard.querySelector('.ecomax-package-art');
+      if (!source) return;
+      const svg = source.cloneNode(true);
+      const ids = new Map();
+      svg.querySelectorAll('[id]').forEach(node => {
+        const oldId = node.id;
+        node.id = `${oldId}-detail`;
+        ids.set(oldId, node.id);
+      });
+      svg.querySelectorAll('*').forEach(node => {
+        Array.from(node.attributes).forEach(attribute => {
+          if (!attribute.value.includes('url(#')) return;
+          let value = attribute.value;
+          ids.forEach((replacement, original) => { value = value.replaceAll(`url(#${original})`, `url(#${replacement})`); });
+          node.setAttribute(attribute.name, value);
+        });
+      });
+      preview.replaceChildren(svg);
+      preview.setAttribute('aria-label', activeCard.querySelector('.product-bottle').getAttribute('aria-label'));
+      dialog.querySelector('.catalog-dialog-price').textContent = activeCard.querySelector('.selected-price').textContent;
+      dialog.querySelector('.catalog-dialog-unit').textContent = activeCard.querySelector('.selected-volume').textContent;
+      dialog.querySelector('.catalog-dialog-add').disabled = activeCard.querySelector('.add-cart').disabled;
+    }
+
+    function open(card, button) {
+      activeCard = card;
+      opener = button;
+      dialog.querySelector('h2').textContent = card.querySelector('h3').textContent.trim();
+      dialog.querySelector('.catalog-dialog-english').textContent = Array.from(card.querySelectorAll('.package-label-english')).map(node => node.textContent).join(' ');
+      dialog.querySelector('.catalog-dialog-description').textContent = card.querySelector('.product-description')?.textContent.trim() || '';
+      dialog.querySelector('.catalog-dialog-fact span').textContent = card.querySelector('.product-info span')?.textContent || '';
+      dialog.querySelector('.catalog-dialog-fact strong').textContent = card.querySelector('.product-info b')?.textContent || '';
+      const original = card.querySelector('.volume-select');
+      volume.replaceChildren(...Array.from(original.options, option => option.cloneNode(true)));
+      volume.value = original.value;
+      refresh();
+      previousOverflow = document.body.style.overflow;
+      dialog.showModal();
+      document.body.style.overflow = 'hidden';
+    }
+
+    volume.addEventListener('change', () => {
+      const original = activeCard?.querySelector('.volume-select');
+      if (!original) return;
+      original.value = volume.value;
+      original.dispatchEvent(new Event('change', { bubbles: true }));
+      refresh();
+    });
+    dialog.querySelector('.catalog-dialog-close').addEventListener('click', close);
+    dialog.addEventListener('keydown', event => {
+      if (event.key !== 'Tab') return;
+      const controls = Array.from(dialog.querySelectorAll('button:not(:disabled), select:not(:disabled)'));
+      const first = controls[0], last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault(); last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first.focus();
+      }
+    });
+    dialog.addEventListener('cancel', event => { event.preventDefault(); close(); });
+    dialog.addEventListener('click', event => {
+      if (event.target !== dialog) return;
+      const bounds = dialog.getBoundingClientRect();
+      if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) close();
+    });
+    dialog.querySelector('.catalog-dialog-add').addEventListener('click', () => {
+      const originalButton = activeCard?.querySelector('.add-cart');
+      close();
+      // Reuse the store's existing capture handlers and cart behavior unchanged.
+      originalButton?.click();
+    });
+
+    function enhance(card) {
+      const visual = card.querySelector('.product-visual');
+      if (!visual || !card.querySelector('.ecomax-package-art') || visual.querySelector('.catalog-view-button')) return;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'catalog-view-button';
+      button.innerHTML = '<span>ახლოდან ნახვა</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg>';
+      button.setAttribute('aria-haspopup', 'dialog');
+      button.setAttribute('aria-controls', dialog.id);
+      button.setAttribute('aria-label', `${card.querySelector('h3').textContent.trim()} — ახლოდან ნახვა`);
+      visual.appendChild(button);
+    }
+    grid.addEventListener('click', event => {
+      const button = event.target.closest('.catalog-view-button');
+      if (button) open(button.closest('.product-card'), button);
+    });
+    grid.querySelectorAll('.product-card').forEach(enhance);
+    new MutationObserver(records => {
+      const cards = new Set();
+      records.forEach(record => record.addedNodes.forEach(node => {
+        if (node.nodeType !== 1) return;
+        const card = node.closest('.product-card');
+        if (card) cards.add(card);
+        node.querySelectorAll('.product-card').forEach(child => cards.add(child));
+      }));
+      cards.forEach(enhance);
+    }).observe(grid, { childList: true, subtree: true });
+
+    const tools = document.querySelector('#products .tools');
+    const search = document.getElementById('searchInput');
+    const category = document.getElementById('categoryFilter');
+    if (!tools || !search || !category) return;
+    search.setAttribute('aria-label', 'პროდუქტის ძებნა');
+    category.setAttribute('aria-label', 'პროდუქტის კატეგორია');
+    const reset = document.createElement('button');
+    reset.className = 'catalog-reset'; reset.type = 'button'; reset.textContent = 'გასუფთავება';
+    tools.appendChild(reset);
+    const results = document.createElement('div');
+    results.className = 'catalog-results';
+    results.innerHTML = '<p role="status" aria-live="polite"></p><span>შეფუთვისა და ეტიკეტის სანახავად გამოიყენე „ახლოდან ნახვა“</span>';
+    tools.after(results);
+    const empty = document.createElement('div');
+    empty.className = 'catalog-empty'; empty.hidden = true;
+    empty.innerHTML = '<h3>პროდუქტი ვერ მოიძებნა</h3><p>სცადე სხვა სიტყვა ან გაასუფთავე ფილტრები.</p>';
+    results.after(empty);
+    function updateResults() {
+      const cards = Array.from(document.querySelectorAll('.product-card'));
+      const count = cards.filter(card => getComputedStyle(card).display !== 'none' && !card.hidden).length;
+      results.querySelector('p').textContent = `ნაჩვენებია ${count} პროდუქტი`;
+      empty.hidden = count !== 0;
+      reset.disabled = !search.value && !category.value;
+    }
+    search.addEventListener('input', updateResults);
+    category.addEventListener('change', updateResults);
+    reset.addEventListener('click', () => {
+      search.value = ''; category.value = '';
+      search.dispatchEvent(new Event('input', { bubbles: true }));
+      category.dispatchEvent(new Event('change', { bubbles: true }));
+      search.focus();
+    });
+    updateResults();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
+})();
+
+</script>
+<style id="ecomax-neon-storefront-live-css">
+/* Final home-page composition inspired by a premium automotive detailing studio. */
+:root {
+  --store-orange: #ff7418;
+  --store-orange-soft: #ff9a35;
+  --store-blue: #22c8ff;
+  --store-blue-deep: #0876ff;
+  --store-ink: #020811;
+  --store-panel: #071522;
+}
+body {
+  background:
+    radial-gradient(circle at 20% 10%, #053c6838, transparent 27%),
+    radial-gradient(circle at 78% 18%, #ff6b1915, transparent 24%),
+    linear-gradient(180deg, #01060d, #061522 42%, #020811) !important;
+}
+.header {
+  background: #020914f5 !important;
+  border-bottom: 1px solid #178bca80 !important;
+  box-shadow: 0 7px 24px #0009, 0 1px 0 #ff75182e !important;
+}
+.nav { max-width: 1500px !important; min-height: 72px !important; }
+.logo { font-style: italic; color: #fff !important; text-shadow: 0 0 18px #29bfff55 !important; }
+.logo span { color: var(--store-orange) !important; text-shadow: 0 0 16px #ff711866 !important; }
+.logo small { color: #a6c7d7 !important; font-style: normal; }
+.links a { border-radius: 10px !important; color: #d8eaf2 !important; }
+.links a[href="#products"] {
+  border: 1px solid #ff7618a8 !important;
+  background: #ff6f1618 !important;
+  color: #fff !important;
+  box-shadow: inset 0 0 13px #ff741819 !important;
+}
+.cart-button {
+  border-color: #ff7418 !important; background: linear-gradient(135deg, #ff8d24, #ef5410) !important;
+  color: #fff !important; box-shadow: 0 0 18px #ff74184d !important; text-shadow: none !important;
+}
+.cart-button b { background: #fff !important; color: #df4e0c !important; text-shadow: none !important; }
+
+.hero {
+  display: grid !important;
+  grid-template-columns: minmax(360px, .82fr) minmax(520px, 1.18fr) !important;
+  align-items: center !important;
+  gap: 28px !important;
+  min-height: 610px !important;
+  max-width: 1500px !important;
+  margin: 0 auto !important;
+  padding: 64px 34px 54px !important;
+  position: relative !important;
+  isolation: isolate;
+  overflow: hidden !important;
+  border-bottom: 1px solid #1678b740;
+  background:
+    linear-gradient(90deg, #020914 0 35%, transparent 68%),
+    radial-gradient(ellipse at 72% 47%, #086eaa3e, transparent 45%),
+    linear-gradient(180deg, #051422, #020811) !important;
+}
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent 0 49.8%, #1baeea15 50%, transparent 50.2%),
+    linear-gradient(0deg, transparent 0 49.8%, #1baeea11 50%, transparent 50.2%);
+  background-size: 66px 66px;
+  mask-image: linear-gradient(to bottom, #000, transparent 92%);
+}
+.hero::after {
+  content: ""; position: absolute; z-index: -1; left: -8%; right: -8%; bottom: 42px; height: 130px;
+  background: radial-gradient(ellipse, #009eea25, transparent 66%); transform: perspective(360px) rotateX(64deg);
+  border: 1px solid #1ec9ff1c; border-radius: 50%;
+}
+.hero-copy { position: relative !important; z-index: 5 !important; max-width: 610px !important; }
+.hero .eyebrow {
+  display: inline-flex !important; align-items: center; gap: 8px;
+  padding: 8px 11px !important; border: 1px solid #249ac166 !important; border-radius: 7px !important;
+  background: #071b27d9 !important; color: #a9dcea !important; font-size: 9px !important; letter-spacing: 1.5px !important;
+  box-shadow: none !important; text-shadow: none !important;
+}
+.hero .eyebrow::after { content: "NEW LOOK"; color: #ff9a3c; margin-left: 7px; }
+.hero h1 {
+  margin: 22px 0 16px !important; font-size: clamp(45px, 5.8vw, 86px) !important;
+  line-height: .98 !important; letter-spacing: -2px !important;
+  background: none !important; color: #f7fbff !important;
+  -webkit-background-clip: border-box !important; background-clip: border-box !important;
+  -webkit-text-fill-color: #f7fbff !important; text-shadow: 0 7px 28px #000b !important;
+}
+.hero h1 span {
+  background: none !important; color: var(--store-orange) !important;
+  -webkit-background-clip: border-box !important; background-clip: border-box !important;
+  -webkit-text-fill-color: var(--store-orange) !important; text-shadow: 0 0 22px #ff761857 !important;
+}
+.hero-description {
+  max-width: 580px !important; color: #b0c5d0 !important; font-size: 15px !important;
+  line-height: 1.82 !important; text-shadow: none !important;
+}
+.hero-actions { display: flex !important; flex-wrap: wrap; gap: 12px !important; margin-top: 28px !important; }
+.hero-actions a { min-width: 180px; justify-content: center; border-radius: 12px !important; text-shadow: none !important; }
+.hero-actions .primary {
+  border: 1px solid #ff9e3f !important; background: linear-gradient(135deg, #ff972d, #eb5010) !important;
+  color: #fff !important; box-shadow: 0 0 24px #ff74184a, inset 0 1px #fff6 !important;
+}
+.hero-actions .secondary {
+  border: 1px solid #2b7698 !important; background: #0a2130c7 !important; color: #d9f1fa !important;
+  box-shadow: none !important;
+}
+.metrics { margin-top: 28px !important; padding-top: 19px !important; border-top: 1px solid #27617a66; }
+.metric { border-right: 1px solid #23546a80; padding-right: 20px; }
+.metric:last-child { border-right: 0; }
+.metric strong { color: #eefaff !important; text-shadow: none !important; font-size: 22px !important; }
+.metric small { color: #7899a8 !important; }
+
+.hero-visual {
+  position: relative !important; z-index: 3 !important; width: 100% !important; height: 520px !important;
+  min-height: 520px !important; border: 0 !important; border-radius: 26px !important;
+  overflow: hidden !important; background:
+    linear-gradient(90deg, #ff741820 1px, transparent 1px) 0 100%/80px 30%,
+    linear-gradient(#118fdc22 1px, transparent 1px) 0 100%/100% 42px,
+    radial-gradient(circle at 62% 45%, #0f94df45, transparent 45%),
+    linear-gradient(145deg, #071826, #030a12) !important;
+  box-shadow: inset 0 0 60px #0008, 0 24px 70px #0008 !important;
+}
+.hero-visual > :not(.neon-hero-stage) { display: none !important; }
+.neon-hero-stage { position: absolute; inset: 0; overflow: hidden; }
+.neon-hero-stage::before {
+  content: ""; position: absolute; inset: 20px; border: 1px solid #159fdb4d; border-radius: 20px;
+  box-shadow: inset 0 0 35px #168ed51a;
+}
+.neon-hero-stage::after {
+  content: "ECOMAX  /  DETAILING STUDIO"; position: absolute; top: 37px; right: 38px;
+  padding: 8px 12px; border: 1px solid #178ed46b; border-radius: 8px; background: #04111dcf;
+  color: #8bdfff; font: 800 10px Arial,sans-serif; letter-spacing: 1.8px;
+  box-shadow: 0 0 18px #118fdd2e;
+}
+.neon-car-rig {
+  --car-tilt-x: 0deg; --car-tilt-y: 0deg; --car-shift-x: 0px; --car-shift-y: 0px;
+  position: absolute; z-index: 2; left: 0; right: 0; top: 0; bottom: 0;
+  transform: perspective(900px) translate3d(var(--car-shift-x),var(--car-shift-y),0) rotateX(var(--car-tilt-x)) rotateY(var(--car-tilt-y)) !important;
+  transform-style: preserve-3d; transition: transform .18s ease-out !important;
+  animation: neonCarRigFloat 4.8s ease-in-out infinite !important;
+}
+.neon-car-svg { position: absolute; z-index: 2; left: 4%; bottom: 52px; width: 79%; height: auto; overflow: visible; transform: translateZ(42px); }
+.neon-wheel { transform-box: fill-box; transform-origin: center; animation: neonWheelTurn 7s linear infinite !important; }
+.neon-wheel-back { animation-direction: reverse !important; }
+.neon-car-foam path:first-child { stroke-dasharray: 46 10; animation: neonFoamCrawl 2.8s linear infinite !important; }
+.neon-car-foam path:nth-child(2) { stroke-dasharray: 35 9; animation: neonFoamCrawl 3.4s linear infinite reverse !important; }
+.neon-car-foam circle { transform-box: fill-box; transform-origin: center; animation: neonFoamPulse 2s ease-in-out infinite !important; }
+.neon-car-foam circle:nth-of-type(even) { animation-delay: -.9s !important; }
+.neon-car-ground {
+  position: absolute; z-index: 1; left: 5%; right: 2%; bottom: 37px; height: 45px;
+  border-radius: 50%; background: radial-gradient(ellipse, #168dcc62, #ff71181f 38%, transparent 69%);
+  filter: blur(8px);
+}
+.neon-foam-cannon {
+  position: absolute; z-index: 7; right: 3%; top: 22%; width: 74px; height: 28px;
+  border: 2px solid #ff8a2c; border-radius: 18px 5px 5px 18px;
+  background: linear-gradient(180deg,#273a46,#09131b); box-shadow: 0 0 16px #ff74188c;
+  transform: rotate(157deg) translateZ(80px); transform-origin: left center;
+}
+.neon-foam-cannon::before { content:""; position:absolute; left:-31px; top:8px; width:34px; height:8px; border-radius:8px 0 0 8px; background:#ff7b20; box-shadow:0 0 11px #ff7418; }
+.neon-foam-cannon::after { content:""; position:absolute; right:8px; top:25px; width:18px; height:41px; border:2px solid #1ec9ff; border-top:0; border-radius:0 0 8px 8px; background:#081722; }
+.neon-foam-cannon span { position:absolute; left:16px; top:7px; width:31px; height:10px; border-radius:6px; border:1px solid #57d6ff; }
+.neon-foam-stream {
+  position: absolute; z-index: 6; right: 10%; top: 28%; width: 260px; height: 28px;
+  border-radius: 50%; background: linear-gradient(90deg,#f6ffffee,#b7efffd0 45%,transparent);
+  filter: blur(3px) drop-shadow(0 0 8px #8ce8ff); transform: rotate(151deg) translateZ(66px);
+  transform-origin: right center; opacity: .84; animation: neonFoamSpray 1.7s ease-in-out infinite !important;
+}
+.neon-foam-particles { position: absolute; z-index: 6; inset: 0; pointer-events: none; transform: translateZ(70px); }
+.neon-foam-particles i {
+  --foam-x: 70%; --foam-y: 31%; --foam-size: 8px; --foam-delay: 0s;
+  position: absolute; left: var(--foam-x); top: var(--foam-y); width: var(--foam-size); height: var(--foam-size);
+  border: 1px solid #e9fdff; border-radius: 50%; background: #d9f9ffb8;
+  box-shadow: 0 0 7px #9beeff; animation: neonFoamDrop 2.2s ease-in infinite !important; animation-delay: var(--foam-delay) !important;
+}
+.neon-foam-particles i:nth-child(2){--foam-x:64%;--foam-y:37%;--foam-size:6px;--foam-delay:-.3s}
+.neon-foam-particles i:nth-child(3){--foam-x:58%;--foam-y:40%;--foam-size:10px;--foam-delay:-.7s}
+.neon-foam-particles i:nth-child(4){--foam-x:52%;--foam-y:44%;--foam-size:5px;--foam-delay:-1.1s}
+.neon-foam-particles i:nth-child(5){--foam-x:76%;--foam-y:27%;--foam-size:5px;--foam-delay:-1.5s}
+.neon-foam-particles i:nth-child(6){--foam-x:68%;--foam-y:45%;--foam-size:7px;--foam-delay:-1.8s}
+.neon-foam-particles i:nth-child(7){--foam-x:47%;--foam-y:48%;--foam-size:9px;--foam-delay:-.9s}
+.neon-foam-particles i:nth-child(8){--foam-x:61%;--foam-y:29%;--foam-size:4px;--foam-delay:-1.3s}
+@keyframes neonCarRigFloat {
+  0%,100% { margin-top: 0; }
+  50% { margin-top: -6px; }
+}
+@keyframes neonWheelTurn { to { transform: rotate(360deg); } }
+@keyframes neonFoamCrawl { to { stroke-dashoffset: -112; } }
+@keyframes neonFoamPulse { 0%,100%{transform:scale(.86);opacity:.72}50%{transform:scale(1.18);opacity:1} }
+@keyframes neonFoamSpray { 0%,100%{opacity:.55;scale:.86 1}50%{opacity:.94;scale:1 1.12} }
+@keyframes neonFoamDrop {
+  0% { opacity:0; translate:0 0; scale:.5; }
+  25% { opacity:1; }
+  100% { opacity:0; translate:-110px 98px; scale:1.5; }
+}
+.neon-product-rack {
+  position: absolute; z-index: 4; right: 1.2%; bottom: 43px;
+  display: flex; align-items: flex-end; gap: 0;
+  width: 35%; min-width: 210px; height: 205px;
+  padding: 0 2px; overflow: visible;
+}
+.neon-product-rack[hidden] { display: none; }
+.neon-product-rack .neon-hero-package {
+  display: block; width: 29%; height: auto; max-height: 190px;
+  margin-left: -4%; overflow: visible;
+  filter: drop-shadow(0 10px 7px #0009) drop-shadow(0 0 7px #20c7ff50);
+}
+.neon-product-rack .neon-hero-package:first-child { margin-left: 0; }
+.neon-product-rack .neon-hero-package:nth-child(2) { transform: scale(.88); transform-origin: center bottom; }
+.neon-product-rack .neon-hero-package:nth-child(3) { transform: scale(.95); transform-origin: center bottom; }
+.neon-product-rack .neon-hero-package:nth-child(4) { transform: scale(.84); transform-origin: center bottom; }
+.neon-hero-note {
+  position: absolute; z-index: 5; left: 32px; bottom: 24px; display: flex; gap: 9px; align-items: center;
+  color: #a8ccda; font-size: 9px; letter-spacing: .8px;
+}
+.neon-hero-note i { width: 7px; height: 7px; border-radius: 50%; background: #ff7819; box-shadow: 0 0 10px #ff7819; }
+
+.neon-service-strip {
+  max-width: 1500px; margin: 0 auto; padding: 0 34px;
+  display: grid; grid-template-columns: repeat(4, 1fr); background: #030b13;
+  border-block: 1px solid #154563; box-shadow: 0 14px 32px #0005;
+}
+.neon-service {
+  min-height: 91px; display: grid; grid-template-columns: 42px 1fr; align-items: center; gap: 12px;
+  padding: 16px 20px; border-right: 1px solid #1e4f69;
+}
+.neon-service:last-child { border-right: 0; }
+.neon-service svg { width: 36px; height: 36px; fill: none; stroke: #25c9ff; stroke-width: 1.6; filter: drop-shadow(0 0 7px #19bfff99); }
+.neon-service:nth-child(even) svg { stroke: #ff7b20; filter: drop-shadow(0 0 7px #ff741899); }
+.neon-service strong { display: block; color: #edf9fd !important; font-size: 12px; text-shadow: none !important; }
+.neon-service span { display: block; margin-top: 4px; color: #7995a3; font-size: 9px; }
+
+.neon-category-section { max-width: 1500px; margin: 0 auto; padding: 35px 34px 10px; }
+.neon-category-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 17px; }
+.neon-category-head small { color: #ff8b2c; letter-spacing: 2px; font-weight: 800; }
+.neon-category-head h2 { margin: 4px 0 0; color: #edfaff !important; font-size: clamp(23px, 3vw, 36px); text-shadow: none !important; }
+.neon-category-head a { color: #ff8b2c; font-size: 12px; }
+.neon-category-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 13px; }
+.neon-category-card {
+  position: relative; min-height: 145px; overflow: hidden; padding: 18px; border: 1px solid var(--edge, #18bdfa) !important;
+  border-radius: 18px; background: linear-gradient(145deg, #0a1b29, #03101a) !important;
+  box-shadow: inset 0 0 25px color-mix(in srgb, var(--edge) 8%, transparent) !important;
+  text-shadow: none !important;
+}
+.neon-category-card::before {
+  content: ""; position: absolute; width: 120px; height: 120px; right: -26px; bottom: -38px;
+  border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--edge) 32%, transparent), transparent 67%);
+}
+.neon-category-card svg { position: absolute; right: 15px; bottom: 11px; width: 70px; height: 70px; fill: none; stroke: var(--edge); stroke-width: 1.6; opacity: .8; }
+.neon-category-card b { position: relative; display: block; max-width: 70%; color: #f4fbff; font-size: 15px; line-height: 1.45; }
+.neon-category-card span { position: absolute; left: 18px; bottom: 17px; color: #8ca9b7; font-size: 9px; }
+.neon-category-card i { position: absolute; right: 13px; top: 13px; display: grid; place-items: center; width: 27px; height: 27px; border-radius: 50%; background: var(--edge); color: #04101a; font-style: normal; }
+
+#products { padding-top: 55px !important; }
+#products .section-label { color: #ff8c2e !important; text-shadow: none !important; }
+#products .section-head h2 span { color: #2ad1ff !important; text-shadow: none !important; }
+#productsGrid .product-card:nth-child(3n+1) { --store-card-edge: #ff7e22; }
+#productsGrid .product-card:nth-child(3n+2) { --store-card-edge: #26c9ff; }
+#productsGrid .product-card:nth-child(3n) { --store-card-edge: #b557ff; }
+#productsGrid .product-card { border-color: color-mix(in srgb, var(--store-card-edge) 65%, #203744) !important; }
+#productsGrid .product-card:hover { border-color: var(--store-card-edge) !important; }
+#productsGrid .product-number { border-color: var(--store-card-edge) !important; color: var(--store-card-edge) !important; }
+#productsGrid .add-cart { background: linear-gradient(135deg, var(--store-card-edge), color-mix(in srgb, var(--store-card-edge) 62%, #08314a)) !important; border-color: var(--store-card-edge) !important; color: #fff !important; }
+
+@media(max-width: 1100px) {
+  .hero { grid-template-columns: 1fr 1.1fr !important; padding-inline: 22px !important; }
+  .hero h1 { font-size: clamp(42px, 6vw, 68px) !important; }
+  .hero-visual { height: 460px !important; min-height: 460px !important; }
+  .neon-category-grid { grid-template-columns: repeat(3, 1fr); }
+  .neon-service-strip { grid-template-columns: repeat(2, 1fr); padding-inline: 22px; }
+  .neon-service:nth-child(2) { border-right: 0; }
+  .neon-service:nth-child(-n+2) { border-bottom: 1px solid #1e4f69; }
+}
+@media(max-width: 760px) {
+  .nav { padding-inline: 14px !important; }
+  .hero {
+    grid-template-columns: 1fr !important; gap: 18px !important; min-height: auto !important;
+    padding: 40px 16px 24px !important; background: linear-gradient(180deg, #04111d, #020811) !important;
+  }
+  .hero h1 { font-size: clamp(38px, 11vw, 54px) !important; line-height: 1.03 !important; letter-spacing: -1px !important; }
+  .hero-description { font-size: 13px !important; }
+  .metrics { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 8px !important; }
+  .metric { padding-right: 8px; }
+  .metric strong { font-size: 18px !important; }
+  .hero-visual { height: 360px !important; min-height: 360px !important; }
+  .neon-car-svg { width: 90%; left: -3%; bottom: 38px; }
+  .neon-foam-cannon { transform: rotate(157deg) scale(.74); right: -1%; top: 18%; }
+  .neon-foam-stream { width: 180px; right: 7%; top: 25%; }
+  .neon-product-rack { right: 1%; bottom: 30px; width: 42%; min-width: 175px; height: 155px; transform: scale(.88); transform-origin: right bottom; }
+  .neon-hero-stage::after { top: 28px; right: 27px; font-size: 7px; }
+  .neon-service-strip { grid-template-columns: 1fr; padding: 0 16px; }
+  .neon-service { border-right: 0; border-bottom: 1px solid #1e4f69; min-height: 76px; }
+  .neon-service:last-child { border-bottom: 0; }
+  .neon-category-section { padding: 28px 16px 8px; }
+  .neon-category-grid { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 8px; scroll-snap-type: x mandatory; }
+  .neon-category-card { flex: 0 0 78vw; max-width: 280px; min-height: 132px; scroll-snap-align: start; }
+  .neon-category-head a { display: none; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .neon-car-rig, .neon-wheel, .neon-car-foam path, .neon-car-foam circle,
+  .neon-foam-stream, .neon-foam-particles i { animation: none !important; }
+  .neon-car-rig { transform: none !important; transition: none !important; }
+}
+@media(max-width: 430px) {
+  .hero-actions a { width: 100%; }
+  .hero-visual { height: 320px !important; min-height: 320px !important; }
+  .neon-product-rack { width: 48%; min-width: 160px; transform: scale(.8); }
+}
+
+</style>
+<script id="ecomax-neon-storefront-live-js">
+(function () {
+  'use strict';
+
+  function clonePackaging(source, index) {
+    const svg = source.cloneNode(true);
+    svg.classList.add('neon-hero-package');
+    const ids = new Map();
+    svg.querySelectorAll('[id]').forEach(node => {
+      const oldId = node.id;
+      node.id = `${oldId}-hero-${index}`;
+      ids.set(oldId, node.id);
+    });
+    svg.querySelectorAll('*').forEach(node => {
+      Array.from(node.attributes).forEach(attribute => {
+        let value = attribute.value;
+        ids.forEach((replacement, original) => {
+          value = value.replaceAll(`url(#${original})`, `url(#${replacement})`);
+        });
+        if (value !== attribute.value) node.setAttribute(attribute.name, value);
+      });
+    });
+    return svg;
+  }
+
+  function init() {
+    const hero = document.querySelector('.hero');
+    const visual = hero?.querySelector('.hero-visual');
+    if (!hero || !visual || visual.querySelector('.neon-hero-stage')) return;
+
+    const stage = document.createElement('div');
+    stage.className = 'neon-hero-stage';
+    stage.setAttribute('aria-hidden', 'true');
+    stage.innerHTML = `
+      <div class="neon-car-ground"></div>
+      <div class="neon-car-rig">
+      <svg class="neon-car-svg" viewBox="0 0 780 350" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="neonCarBody" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07101a"/><stop offset=".5" stop-color="#16445d"/><stop offset="1" stop-color="#02070d"/></linearGradient>
+          <linearGradient id="neonWindow" x1="0" y1="0" x2="1"><stop stop-color="#0d3852"/><stop offset=".55" stop-color="#020913"/><stop offset="1" stop-color="#167fb0"/></linearGradient>
+          <filter id="neonBlueGlow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="neonOrangeGlow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <path d="M88 238 Q106 181 177 161 L259 84 Q292 58 370 55 H482 Q524 58 566 91 L629 157 Q694 171 720 226 L727 251 H63Z" fill="url(#neonCarBody)" stroke="#36caff" stroke-width="3"/>
+        <path d="M269 94 Q297 71 372 69 H472 Q505 72 540 98 L580 151 H204Z" fill="url(#neonWindow)" stroke="#72ddff" stroke-width="2"/>
+        <path d="M377 72V150M478 72l58 79M250 153h335" fill="none" stroke="#179fd2" stroke-width="2"/>
+        <path d="M107 215 Q158 193 212 197M580 195q76-9 121 23" fill="none" stroke="#ff761b" stroke-width="5" filter="url(#neonOrangeGlow)"/>
+        <path d="M74 246H726M141 169q215 22 463-4" fill="none" stroke="#1bc6ff" stroke-width="4" opacity=".85" filter="url(#neonBlueGlow)"/>
+        <path d="M75 234l63-8 42 13-61 11zM661 220l47 10 11 17-68-9z" fill="#baf5ff" filter="url(#neonBlueGlow)"/>
+        <path d="M277 158l-25 88M535 155l30 89" fill="none" stroke="#115a79" stroke-width="2"/>
+        <g class="neon-wheel neon-wheel-front"><circle cx="205" cy="248" r="62" fill="#03080e" stroke="#25c9ff" stroke-width="4"/><circle cx="205" cy="248" r="38" fill="#172734" stroke="#ff7218" stroke-width="4"/><circle cx="205" cy="248" r="10" fill="#e4f8ff"/><path d="M205 211v74M168 248h74M179 222l52 52M231 222l-52 52" stroke="#7a9cae" stroke-width="5"/></g>
+        <g class="neon-wheel neon-wheel-back"><circle cx="591" cy="248" r="62" fill="#03080e" stroke="#25c9ff" stroke-width="4"/><circle cx="591" cy="248" r="38" fill="#172734" stroke="#ff7218" stroke-width="4"/><circle cx="591" cy="248" r="10" fill="#e4f8ff"/><path d="M591 211v74M554 248h74M565 222l52 52M617 222l-52 52" stroke="#7a9cae" stroke-width="5"/></g>
+        <path d="M101 266 Q390 309 708 267" fill="none" stroke="#159ed8" stroke-width="5" opacity=".75" filter="url(#neonBlueGlow)"/>
+        <path d="M304 170q12 8 20 0M479 170q12 8 20 0" fill="none" stroke="#9ceaff" stroke-width="4"/>
+        <g class="neon-car-foam" filter="url(#neonBlueGlow)">
+          <path d="M214 157c31-18 67-23 102-15 27 6 47 21 74 18 24-3 36-18 62-18 25 0 49 9 71 20" fill="none" stroke="#e9fbff" stroke-width="14" stroke-linecap="round" opacity=".92"/>
+          <path d="M280 105c29-16 61-19 94-17 24 2 43 11 66 10 20-1 36-9 56-4" fill="none" stroke="#c8f5ff" stroke-width="11" stroke-linecap="round" opacity=".88"/>
+          <path d="M254 151q8 28 2 55M334 153q-3 30 7 54M451 151q10 31 3 58M520 158q-2 24 7 43" fill="none" stroke="#efffff" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="301" cy="132" r="9" fill="#fff"/><circle cx="352" cy="145" r="7" fill="#dffaff"/><circle cx="423" cy="133" r="10" fill="#fff"/><circle cx="483" cy="145" r="6" fill="#e5fcff"/>
+        </g>
+        <text x="392" y="214" fill="#dff8ff" opacity=".7" text-anchor="middle" font-family="Arial" font-weight="800" font-size="19" letter-spacing="5">ECOMAX</text>
+      </svg>
+      <div class="neon-foam-cannon"><span></span></div>
+      <div class="neon-foam-stream" aria-hidden="true"></div>
+      <div class="neon-foam-particles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="neon-product-rack"></div>
+      <div class="neon-hero-note"><i></i><span>PROFESSIONAL AUTO CHEMISTRY / CAR CARE</span></div>`;
+    visual.appendChild(stage);
+
+    const rack = stage.querySelector('.neon-product-rack');
+    const featured = Array.from(document.querySelectorAll('#productsGrid .ecomax-package-art')).slice(0, 4);
+    featured.forEach((source, index) => rack.appendChild(clonePackaging(source, index)));
+    rack.hidden = featured.length === 0;
+
+    const rig = stage.querySelector('.neon-car-rig');
+    let frame = 0;
+    visual.addEventListener('pointermove', event => {
+      if (event.pointerType === 'touch') return;
+      const bounds = visual.getBoundingClientRect();
+      const x = ((event.clientX - bounds.left) / bounds.width - .5) * 2;
+      const y = ((event.clientY - bounds.top) / bounds.height - .5) * 2;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        rig.style.setProperty('--car-tilt-y', `${x * 4.5}deg`);
+        rig.style.setProperty('--car-tilt-x', `${y * -2.5}deg`);
+        rig.style.setProperty('--car-shift-x', `${x * 8}px`);
+        rig.style.setProperty('--car-shift-y', `${y * 4}px`);
+      });
+    });
+    visual.addEventListener('pointerleave', () => {
+      rig.style.removeProperty('--car-tilt-y');
+      rig.style.removeProperty('--car-tilt-x');
+      rig.style.removeProperty('--car-shift-x');
+      rig.style.removeProperty('--car-shift-y');
+    });
+
+    const serviceStrip = document.createElement('section');
+    serviceStrip.className = 'neon-service-strip';
+    serviceStrip.setAttribute('aria-label', 'ECOMAX-ის უპირატესობები');
+    serviceStrip.innerHTML = `
+      <article class="neon-service"><svg viewBox="0 0 48 48"><path d="M4 11h25v22H4zM29 18h8l7 8v7H29M11 38a5 5 0 1 0 0-10 5 5 0 0 0 0 10ZM36 38a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z"/></svg><div><strong>სწრაფი მიწოდება</strong><span>მთელი საქართველოს მასშტაბით</span></div></article>
+      <article class="neon-service"><svg viewBox="0 0 48 48"><path d="M24 4 41 10v12c0 11-7 18-17 22C14 40 7 33 7 22V10zM16 24l5 5 11-12"/></svg><div><strong>ორიგინალური პროდუქცია</strong><span>ხარისხი და სანდო ფორმულა</span></div></article>
+      <article class="neon-service"><svg viewBox="0 0 48 48"><path d="M38 16a17 17 0 1 0 2 17M38 7v11H27"/></svg><div><strong>მოცულობის არჩევანი</strong><span>0.5–20 ლიტრი ერთ სისტემაში</span></div></article>
+      <article class="neon-service"><svg viewBox="0 0 48 48"><path d="M9 26v-5a15 15 0 0 1 30 0v5M9 25H5v12h9V25zM39 25h4v12h-9V25zM34 40c-3 3-7 4-12 4"/></svg><div><strong>პროფესიონალური კონსულტაცია</strong><span>შერჩევა და სწორი გამოყენება</span></div></article>`;
+    hero.insertAdjacentElement('afterend', serviceStrip);
+
+    const categories = document.createElement('section');
+    categories.className = 'neon-category-section';
+    categories.setAttribute('aria-labelledby', 'neonCategoryTitle');
+    categories.innerHTML = `
+      <div class="neon-category-head"><div><small>ECOMAX COLLECTIONS</small><h2 id="neonCategoryTitle">აირჩიე მოვლის მიმართულება</h2></div><a href="#products">ყველა პროდუქტი →</a></div>
+      <div class="neon-category-grid">
+        <a class="neon-category-card" href="#products" style="--edge:#18c9ff"><b>ავტოქიმია და მოვლა</b><span>პროფესიონალური სერია</span><i>→</i><svg viewBox="0 0 80 80"><path d="M13 48h54l-7-20H24zM20 48v12h8m32-12v12h-8M27 28l8-9h18l7 9M29 41h4m18 0h4"/></svg></a>
+        <a class="neon-category-card" href="#products" style="--edge:#f05bff"><b>ბორბლები და საბურავები</b><span>წმენდა და ბზინვარება</span><i>→</i><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="29"/><circle cx="40" cy="40" r="13"/><path d="M40 11v16M40 53v16M11 40h16M53 40h16M20 20l11 11M60 20 49 31M20 60l11-11M60 60 49 49"/></svg></a>
+        <a class="neon-category-card" href="#products" style="--edge:#ff7a1a"><b>სალონის მოვლა</b><span>ქსოვილი და ტყავი</span><i>→</i><svg viewBox="0 0 80 80"><path d="M24 17v29h35V30c0-7-5-13-12-13zM24 34H13v25h54V46H24M18 59v7m44-7v7"/></svg></a>
+        <a class="neon-category-card" href="#home-care" style="--edge:#24c8ff"><b>სახლის ქიმია</b><span>სუფთა სივრცე ყოველდღე</span><i>→</i><svg viewBox="0 0 80 80"><path d="m12 38 28-23 28 23M20 34v31h40V34M32 65V46h16v19"/></svg></a>
+        <a class="neon-category-card" href="#sprays" style="--edge:#ff9a1f"><b>სპრეები და აქსესუარები</b><span>დეტეილინგის სრული ნაკრები</span><i>→</i><svg viewBox="0 0 80 80"><path d="M32 20h21l8 8-12 8H32zM32 28H18v8h14M39 36v9l-6 7v15h25V52l-6-7v-9"/></svg></a>
+      </div>`;
+    serviceStrip.insertAdjacentElement('afterend', categories);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
+})();
+
+</script>
 </body>
 </html>
