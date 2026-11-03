@@ -27,6 +27,38 @@
     const visual = hero?.querySelector('.hero-visual');
     if (!hero || !visual || visual.querySelector('.neon-hero-stage')) return;
 
+    const header = document.querySelector('.header');
+    const nav = header?.querySelector('.nav');
+    if (header && nav && !header.querySelector('.neon-topbar')) {
+      const topbar = document.createElement('div');
+      topbar.className = 'neon-topbar';
+      topbar.innerHTML = '<span>ECOMAX • LVL-CHEMICAL</span><b>პროფესიონალური ზრუნვა თქვენი ავტომობილისთვის →</b>';
+      header.prepend(topbar);
+    }
+    const links = nav?.querySelector('.links');
+    if (links && !links.querySelector('.neon-home-link')) {
+      const home = document.createElement('a');
+      home.href = 'index.html'; home.className = 'neon-home-link'; home.textContent = '⌂ მთავარი';
+      links.prepend(home);
+    }
+    if (nav && !nav.querySelector('.neon-header-search')) {
+      const searchBox = document.createElement('form');
+      searchBox.className = 'neon-header-search';
+      searchBox.setAttribute('role','search');
+      searchBox.innerHTML = '<input type="search" placeholder="მოძებნე პროდუქტი..." aria-label="მოძებნე პროდუქტი"><button type="submit" aria-label="ძებნა">⌕</button>';
+      nav.querySelector('.actions')?.insertAdjacentElement('beforebegin',searchBox);
+      searchBox.addEventListener('submit', event => {
+        event.preventDefault();
+        const query = searchBox.querySelector('input').value.trim();
+        const catalogSearch = document.getElementById('searchInput');
+        if (catalogSearch) {
+          catalogSearch.value = query;
+          catalogSearch.dispatchEvent(new Event('input',{bubbles:true}));
+        }
+        document.getElementById('products')?.scrollIntoView({behavior:'smooth'});
+      });
+    }
+
     const stage = document.createElement('div');
     stage.className = 'neon-hero-stage';
     stage.setAttribute('aria-hidden', 'true');
@@ -81,6 +113,8 @@
       const y = ((event.clientY - bounds.top) / bounds.height - .5) * 2;
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
+        stage.style.setProperty('--photo-pan-x', `${x * -7}px`);
+        stage.style.setProperty('--photo-pan-y', `${y * -4}px`);
         rig.style.setProperty('--car-tilt-y', `${x * 4.5}deg`);
         rig.style.setProperty('--car-tilt-x', `${y * -2.5}deg`);
         rig.style.setProperty('--car-shift-x', `${x * 8}px`);
@@ -88,6 +122,8 @@
       });
     });
     visual.addEventListener('pointerleave', () => {
+      stage.style.removeProperty('--photo-pan-x');
+      stage.style.removeProperty('--photo-pan-y');
       rig.style.removeProperty('--car-tilt-y');
       rig.style.removeProperty('--car-tilt-x');
       rig.style.removeProperty('--car-shift-x');

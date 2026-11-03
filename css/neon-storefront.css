@@ -302,3 +302,147 @@ body {
   .hero-visual { height: 320px !important; min-height: 320px !important; }
   .neon-product-rack { width: 48%; min-width: 160px; transform: scale(.8); }
 }
+
+/* =========================================================
+   PHOTO STOREFRONT — matches the approved wide composition
+   ========================================================= */
+.neon-topbar {
+  max-width: 1580px; height: 27px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  color: #7195a7; font: 700 8px/1 Arial,sans-serif; letter-spacing: 1.6px;
+  border-bottom: 1px solid #163349;
+}
+.neon-topbar b { color: #ff8a26; font-weight: 800; }
+.header .nav { max-width: 1580px !important; min-height: 88px !important; padding: 12px 28px !important; gap: 24px !important; }
+.header .logo {
+  min-width: 205px; font-size: 38px !important; line-height: .8 !important;
+  letter-spacing: 1px !important; -webkit-text-fill-color: initial !important;
+  background: none !important; color: #f5fbff !important;
+}
+.header .logo span { -webkit-text-fill-color: #ff7d1d !important; }
+.header .logo small { margin-top: 11px !important; font-size: 6px !important; letter-spacing: 1.4px !important; color: #bdd1da !important; }
+.header .links { justify-content: flex-start !important; gap: 4px !important; }
+.header .links a { padding: 10px 11px !important; font-size: 11px !important; white-space: nowrap; text-shadow: none !important; }
+.header .links .neon-home-link { border: 1px solid #ff7d1d !important; background: #ff721413 !important; }
+.neon-header-search {
+  flex: 1 1 280px; min-width: 180px; max-width: 340px; position: relative;
+}
+.neon-header-search input {
+  width: 100%; height: 42px; padding: 0 48px 0 16px;
+  border: 1px solid #2a9bcb !important; border-radius: 22px;
+  background: #071827 !important; color: #dff5fc; outline: 0;
+  box-shadow: inset 0 0 16px #0a7bac13 !important; text-shadow: none !important;
+}
+.neon-header-search input::placeholder { color: #6f91a2; }
+.neon-header-search button {
+  position: absolute; top: 3px; right: 3px; width: 36px; height: 36px;
+  display: grid; place-items: center; padding: 0; border: 0 !important; border-radius: 50%;
+  background: linear-gradient(135deg,#ff9c30,#f05a0e) !important; color: white;
+  box-shadow: 0 0 14px #ff741864 !important; text-shadow: none !important;
+}
+
+.hero {
+  display: block !important; max-width: 1580px !important; height: 470px !important; min-height: 470px !important;
+  margin: 0 auto !important; padding: 0 !important; border: 1px solid #1a4d6b !important;
+  border-top: 0 !important; background: #020914 !important; overflow: hidden !important;
+}
+.hero::before, .hero::after { display: none !important; }
+.hero-copy {
+  position: relative !important; z-index: 6 !important; width: 43% !important; max-width: 680px !important;
+  height: 100%; padding: 45px 0 32px 76px !important; display: flex; flex-direction: column; justify-content: center;
+}
+.hero .eyebrow {
+  align-self: flex-start; padding: 0 !important; border: 0 !important; background: none !important;
+  color: #75dcff !important; font-size: 9px !important; letter-spacing: 2.3px !important;
+}
+.hero .eyebrow::after { display: none; }
+.hero h1 {
+  margin: 17px 0 13px !important; max-width: 560px;
+  font-size: clamp(42px,4.25vw,70px) !important; line-height: 1.02 !important;
+  font-style: italic; letter-spacing: -2px !important;
+}
+.hero h1::before {
+  content: "ECOMAX"; display: block; margin-bottom: 14px;
+  color: #eef8ff; -webkit-text-fill-color: #eef8ff;
+  font: italic 900 clamp(44px,4.7vw,76px)/.85 Arial,sans-serif;
+  letter-spacing: -3px; text-shadow: 0 4px #7390a0,0 0 20px #159bd544;
+}
+.hero-description { max-width: 430px !important; margin: 0 !important; font-size: 13px !important; line-height: 1.65 !important; }
+.hero-actions { margin-top: 20px !important; }
+.hero-actions a { min-width: 205px; padding: 13px 20px !important; }
+.hero-actions .secondary { display: none !important; }
+.metrics { display: none !important; }
+.hero-visual {
+  position: absolute !important; z-index: 1 !important; inset: 0 !important;
+  width: 100% !important; height: 100% !important; min-height: 0 !important;
+  border: 0 !important; border-radius: 0 !important; background: #020914 !important;
+  box-shadow: none !important; overflow: hidden !important;
+}
+.hero-visual::before {
+  content: "" !important; display: block !important; position: absolute !important; inset: 0 !important; z-index: 3 !important;
+  background: linear-gradient(90deg,#020914 0%,#020914ec 25%,#0209148c 39%,transparent 58%) !important;
+  pointer-events: none;
+}
+.hero-visual::after {
+  content: "THE ART OF CAR CARE" !important; display: block !important;
+  position: absolute !important; z-index: 5 !important; right: 44px !important; bottom: 28px !important;
+  width: auto !important; height: auto !important; padding: 9px 12px !important;
+  border-left: 2px solid #ff7a1d !important; background: #020913ad !important;
+  color: #f2fbff !important; font: 800 9px/1 Arial,sans-serif !important; letter-spacing: 2px !important;
+}
+.neon-hero-stage {
+  inset: -8px !important; transform: translate3d(var(--photo-pan-x,0),var(--photo-pan-y,0),0) scale(1.015) !important;
+  background-image: url('assets/ecomax-foam-hero.webp') !important;
+  background-size: cover !important; background-position: center center !important; background-repeat: no-repeat !important;
+  transition: transform .22s ease-out !important;
+}
+.neon-hero-stage::before, .neon-hero-stage::after,
+.neon-car-rig, .neon-product-rack, .neon-hero-note { display: none !important; }
+
+.neon-service-strip { max-width: 1580px; grid-template-columns: repeat(4,1fr); padding: 0 !important; }
+.neon-service { min-height: 75px; padding: 12px 24px; }
+.neon-service svg { width: 31px; height: 31px; }
+.neon-category-section { max-width: 1450px; padding-top: 28px; }
+.neon-category-head { margin-bottom: 13px; }
+.neon-category-head h2 { font-size: 24px; }
+.neon-category-grid { gap: 13px; }
+.neon-category-card {
+  min-height: 125px; border-radius: 12px;
+  background-image:
+    linear-gradient(90deg,#03101ad9 0%,#03101a75 58%,transparent),
+    url('assets/ecomax-foam-hero.webp') !important;
+  background-size: auto, 430px auto !important;
+  background-position: center, var(--photo-pos,75%) center !important;
+}
+.neon-category-card:nth-child(1){--photo-pos:72%}.neon-category-card:nth-child(2){--photo-pos:59%}.neon-category-card:nth-child(3){--photo-pos:48%}.neon-category-card:nth-child(4){--photo-pos:82%}.neon-category-card:nth-child(5){--photo-pos:66%}
+.neon-category-card svg { opacity: .25; }
+
+@media(max-width: 1180px) {
+  .header .links a:nth-last-child(-n+3) { display: none; }
+  .neon-header-search { max-width: 260px; }
+  .hero-copy { padding-left: 42px !important; width: 48% !important; }
+}
+@media(max-width: 760px) {
+  .neon-topbar, .neon-header-search { display: none; }
+  .header .nav { min-height: 68px !important; padding: 8px 14px !important; }
+  .header .logo { min-width: 0; font-size: 24px !important; }
+  .header .logo small { font-size: 4px !important; margin-top: 7px !important; }
+  .hero { height: 620px !important; min-height: 620px !important; }
+  .hero-copy {
+    width: 100% !important; max-width: none !important; justify-content: flex-start;
+    padding: 38px 18px 20px !important; background: linear-gradient(180deg,#020914f2 0%,#020914c9 48%,transparent 75%);
+  }
+  .hero h1 { max-width: 360px; font-size: clamp(35px,10.7vw,49px) !important; }
+  .hero h1::before { font-size: clamp(38px,13vw,57px); }
+  .hero-description { max-width: 350px !important; font-size: 12px !important; }
+  .hero-actions a { min-width: 190px; width: auto; }
+  .hero-visual::before { background: linear-gradient(180deg,#020914c9 0 42%,transparent 72%) !important; }
+  .neon-hero-stage { background-position: 68% center !important; }
+  .neon-service-strip { grid-template-columns: 1fr 1fr; padding: 0 !important; }
+  .neon-service { min-height: 72px; padding: 10px 12px; }
+}
+@media(max-width: 430px) {
+  .hero { height: 570px !important; min-height: 570px !important; }
+  .hero-actions a { width: 100%; }
+  .neon-service-strip { grid-template-columns: 1fr; }
+}
