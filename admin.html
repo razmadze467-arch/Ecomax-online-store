@@ -818,6 +818,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 <link rel="stylesheet" href="ecomax-index-unified-theme.css?v=20261103-1">
 <link rel="stylesheet" href="styles/admin-order-preparation.css?v=20261103-1">
 <link rel="stylesheet" href="styles/admin-premium-command.css?v=20261103-2">
+<link rel="stylesheet" href="styles/admin-sidebar-dashboard-fix.css?v=20261103-1">
 </head>
 
 <body>
@@ -1008,8 +1009,6 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     <div class="sidebar-bottom">
 
       <a href="index.html" class="logout-btn" style="display:flex;align-items:center;justify-content:center;text-decoration:none;margin-bottom:8px;">🌐 <span class="nav-text">მთავარი საიტი</span></a>
-      <button type="button" class="logout-btn" onclick="showSection('couriers',this)" style="margin-bottom:8px;">🚚 <span class="nav-text">კურიერები</span></button>
-
       <button
         class="logout-btn"
         onclick="logout()"
@@ -1151,16 +1150,14 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
             ⚡ ბოლო შეკვეთები
           </h2>
 
-          <button
-            class="small-btn"
-            onclick="showSectionById('orders')"
-            type="button"
-          >
-            ყველას ნახვა →
-          </button>
+          <div class="dashboard-recent-actions">
+            <button id="dashboardRestoreCompleted" class="dashboard-restore-completed" type="button" hidden>↺ დამალულის დაბრუნება</button>
+            <button class="small-btn" onclick="showSectionById('orders')" type="button">📦 სრული ისტორია →</button>
+          </div>
 
         </div>
 
+        <p class="dashboard-history-help"><strong>Dashboard-ის გაწმენდა:</strong> მხოლოდ დასრულებულ შეკვეთასთან გამოჩნდება ×. დაჭერა მალავს მხოლოდ ამ სიიდან — <strong>📦 შეკვეთებში ჩანაწერი და ისტორია უცვლელად რჩება.</strong></p>
         <div class="table-scroll">
 
           <table>
@@ -1201,9 +1198,14 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
         <div class="section-header">
 
           <h2>
-            📦 შეკვეთების მართვა
+            📦 შეკვეთების სრული ისტორია
           </h2>
 
+        </div>
+
+        <div class="orders-history-explainer">
+          <strong>ყველა ნამდვილი შეკვეთა აქ რჩება.</strong>
+          Dashboard-ის × მხოლოდ მთავარ დაფაზე მალავს დასრულებულ შეკვეთას — მონაცემები, პროდუქტები, გადახდა, მიწოდება და შეკვეთის ისტორია არ იშლება. წითელი „🗑 წაშლა“ ღილაკი ცალკე, სამუდამო წაშლის ოპერაციაა.
         </div>
 
         <div class="toolbar">
