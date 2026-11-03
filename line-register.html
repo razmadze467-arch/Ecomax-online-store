@@ -240,12 +240,13 @@ const form=document.getElementById('form'),btn=document.getElementById('submit')
 function showErr(t){err.textContent=t;err.style.display='block';ok.style.display='none'}
 function showOk(t){ok.textContent=t;ok.style.display='block';err.style.display='none'}
 if(!db){showErr('Supabase ვერ ჩაიტვირთა. გვერდი განაახლე.');return}
+// Keep the form interactive even while a stored session is being checked.
+void (async()=>{
 let session=null;
 try{
   const result=await db.auth.getSession();
   session=result?.data?.session||null;
 }catch(ex){
-  // A transient session-check failure must not disable the registration form.
   console.warn('Courier registration session check:',ex);
 }
 if(session){
@@ -256,6 +257,7 @@ if(session){
   }
   // A normal customer session stays signed in.
 }
+})();
 form.addEventListener('submit',async e=>{
  e.preventDefault();err.style.display='none';ok.style.display='none';
  const name=document.getElementById('name').value.trim();
