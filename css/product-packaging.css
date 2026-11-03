@@ -1,7 +1,7 @@
 /* Packaging only: product data and purchase controls remain owned by the store. */
 #productsGrid .product-card .product-bottle.ecomax-packaging {
-  width: 174px !important;
-  height: 238px !important;
+  width: 188px !important;
+  height: 252px !important;
   max-width: 100% !important;
   background: none !important;
   border: 0 !important;
@@ -19,16 +19,34 @@
   height: 100%;
   overflow: visible;
 }
-.ecomax-package-art .package-label-text {
+.ecomax-package-art .package-label {
   font-family: "Noto Sans Georgian", Arial, sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  fill: #eefaff;
   text-anchor: middle;
 }
+.ecomax-package-art .package-label-brand {
+  font-family: Arial, sans-serif;
+  font-weight: 900;
+  fill: #f5fcff;
+}
+.ecomax-package-art .package-label-series {
+  font-size: 4.7px;
+  font-weight: 600;
+  letter-spacing: .35px;
+  fill: #b4d2da;
+}
+.ecomax-package-art .package-label-name { font-weight: 800; fill: #102632; }
+.ecomax-package-art .package-label-english {
+  font-family: Arial, sans-serif;
+  font-size: 6.1px;
+  font-weight: 700;
+  letter-spacing: .25px;
+  fill: #3b5663;
+}
+.ecomax-package-art .package-label-caption { font-size: 4.4px; font-weight: 600; fill: #526b74; }
+.ecomax-package-art .package-label-volume { font-size: 10.5px; font-weight: 800; fill: #102632; }
 @media (max-width: 600px) {
   #productsGrid .product-card .product-bottle.ecomax-packaging {
-    width: 152px !important;
-    height: 216px !important;
+    width: 168px !important;
+    height: 236px !important;
   }
 }
