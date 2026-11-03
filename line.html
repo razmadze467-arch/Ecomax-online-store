@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ka">
+<html lang="ka" data-ecomax-premium="line-console" data-ecomax-unified="line-console">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -247,10 +247,14 @@ main:before{
 @media(max-width:760px){.nav-head{flex-direction:column}.nav-actions{width:100%}.nav-actions>*{flex:1}.nav-status{grid-template-columns:1fr 1fr}#ecomaxLineMap{height:360px}}
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script></style></head>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script></style><link rel="stylesheet" href="ecomax-premium-cards.css?v=20261103-1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ecomax-index-unified-theme.css?v=20261103-1">
+</head>
 <body>
 <header><div class="nav">
-  <div class="brand"><div class="orb"></div><div><div class="logo">ECOMAX LINE</div><div class="sub">FUTURE DELIVERY NETWORK</div></div></div>
+  <div class="brand"><div class="orb"></div><div><div class="logo">ECOM<span class="ecomax-orange">AX</span> LINE</div><div class="sub">FUTURE DELIVERY NETWORK</div></div></div>
   <div class="navright"><a class="navbtn" href="index.html">← მთავარი</a><button class="navbtn" id="refresh">↻ განახლება</button><button class="navbtn logout" id="logout" type="button">⎋ საიტიდან გამოსვლა</button></div>
 </div></header>
 <main>
@@ -522,7 +526,7 @@ async function boot(){
  if(u){ $('courierName').textContent=u.user_metadata?.full_name||u.email||'ECOMAX LINE COURIER'; $('courierPhone').textContent=u.user_metadata?.phone||'COURIER • AUTHENTICATED'; }
  if(!u){location.replace('line-login.html');return;}
  const role=String(u?.app_metadata?.role||'').toLowerCase();
- if(role!=='courier'){await db.auth.signOut();location.replace('index.html');return;}
+ if(role!=='courier'){ /* Restrict courier dashboard without ending a customer's store session. */ location.replace('index.html');return;}
  $('access').textContent='COURIER • მხოლოდ მინიჭებული შეკვეთები';
  await load();
  await startLineRealtime();

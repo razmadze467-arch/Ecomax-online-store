@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ka">
+<html lang="ka" data-ecomax-premium="account" data-ecomax-unified="customer-gate">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -22,10 +22,14 @@ h1{font-size:30px;margin:8px 0}.sub{color:var(--muted);font-size:12px;line-heigh
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js?v=20260927-SESSION7"></script>
+<link rel="stylesheet" href="ecomax-premium-cards.css?v=20261103-1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ecomax-index-unified-theme.css?v=20261103-1">
 </head>
 <body>
 <main class="wrap"><section class="card">
-<div class="brand">ECOMAX</div><div class="label">ECOMAX ACCOUNT</div><h1>რეგისტრაცია</h1>
+<div class="brand">ECOM<span class="ecomax-orange">AX</span></div><div class="label">ECOMAX ACCOUNT</div><h1>რეგისტრაცია</h1>
 <div class="sub">შექმენი ECOMAX ანგარიში და შემდეგ იგივე ანგარიშით შედი ავტორიზაციაში.</div>
 <div id="msg" class="msg"></div>
 <form id="registerForm" novalidate>
@@ -56,10 +60,10 @@ async function client(){
 }
 async function finishSession(db,session){
  if(!session?.access_token||!session?.refresh_token)throw new Error('სესია ვერ შეიქმნა.');
- const r=await db.auth.setSession({access_token:session.access_token,refresh_token:session.refresh_token});
- if(r.error)throw r.error;
- try{sessionStorage.setItem('ecomax-auth-bridge-v1',JSON.stringify({access_token:r.data.session.access_token,refresh_token:r.data.session.refresh_token}))}catch(_){}
- return r.data.session;
+ // Supabase signInWithPassword/signUp already persists this session.
+ // Do not call setSession a second time (extra auth request/race).
+ try{sessionStorage.setItem('ecomax-auth-bridge-v1',JSON.stringify({access_token:session.access_token,refresh_token:session.refresh_token}))}catch(_){}
+ return session;
 }
 $('registerForm').addEventListener('submit',async e=>{
  e.preventDefault();if(btn.disabled)return;

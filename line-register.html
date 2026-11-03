@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ka">
+<html lang="ka" data-ecomax-premium="courier-gate" data-ecomax-variant="courier-register" data-ecomax-unified="line-gate">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -200,7 +200,11 @@ button:after{
  .ecomax-form-car{width:64px;height:29px}.ecomax-form-car .chassis{left:6px;top:10px;width:53px;height:16px}.ecomax-form-car .glass{left:21px;top:2px;width:27px;height:13px}.ecomax-form-car .lamp{top:15px;width:6px;height:4px}.ecomax-form-car .lamp.a{left:8px}.ecomax-form-car .lamp.b{right:8px}.ecomax-form-car .tyre{top:21px;width:10px;height:10px}.ecomax-form-car .tyre.a{left:12px}.ecomax-form-car .tyre.b{right:12px}.ecomax-form-car .beam{left:-30px;width:30px}
 }
 @media(prefers-reduced-motion:reduce){.ecomax-form-car,.ecomax-form-stage .pulse{animation:none!important}}
-</style></head>
+</style><link rel="stylesheet" href="ecomax-premium-cards.css?v=20261103-1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ecomax-index-unified-theme.css?v=20261103-1">
+</head>
 <body><div class="ecomax-traffic" aria-hidden="true">
 <div class="ecomax-road"></div>
 <div class="ecomax-car"><span class="body"></span><span class="roof"></span><span class="light l"></span><span class="light r"></span><span class="wheel w1"></span><span class="wheel w2"></span></div>
@@ -209,7 +213,8 @@ button:after{
 <div class="ecomax-car"><span class="body"></span><span class="roof"></span><span class="light l"></span><span class="light r"></span><span class="wheel w1"></span><span class="wheel w2"></span></div>
 </div>
 <main class="card">
-<div class="logo">ECOMAX</div><div class="line">LINE • COURIER REGISTRATION</div>
+<div class="premium-screen-badge">✦ ECOMAX LINE · PREMIUM REGISTRATION</div>
+<div class="logo">ECOM<span class="ecomax-orange">AX</span></div><div class="line">LINE • COURIER REGISTRATION</div>
 <div class="icon">✦</div>
 <h1>JOIN THE LINE</h1>
 <p class="desc">შექმენი შენი კურიერის იდენტობა და შეუერთდი ECOMAX LINE-ის მიწოდების ქსელს.</p>
@@ -238,15 +243,24 @@ const form=document.getElementById('form'),btn=document.getElementById('submit')
 function showErr(t){err.textContent=t;err.style.display='block';ok.style.display='none'}
 function showOk(t){ok.textContent=t;ok.style.display='block';err.style.display='none'}
 if(!db){showErr('Supabase ვერ ჩაიტვირთა. გვერდი განაახლე.');return}
-const {data:{session}}=await db.auth.getSession();
+// Keep the form interactive even while a stored session is being checked.
+void (async()=>{
+let session=null;
+try{
+  const result=await db.auth.getSession();
+  session=result?.data?.session||null;
+}catch(ex){
+  console.warn('Courier registration session check:',ex);
+}
 if(session){
   const sessionRole=String(session.user?.app_metadata?.role||'').toLowerCase();
   if(sessionRole==='courier'){
     location.replace('line.html');
     return;
   }
-  // A normal customer session stays in the customer area.
+  // A normal customer session stays signed in.
 }
+})();
 form.addEventListener('submit',async e=>{
  e.preventDefault();err.style.display='none';ok.style.display='none';
  const name=document.getElementById('name').value.trim();
@@ -257,11 +271,12 @@ form.addEventListener('submit',async e=>{
  if(password!==password2){showErr('პაროლები ერთმანეთს არ ემთხვევა.');return}
  if(password.length<8){showErr('პაროლი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს.');return}
  btn.disabled=true;btn.textContent='ანგარიში იქმნება...';
+ try{
  const {data,error}=await db.auth.signUp({
    email,
    password,
    options:{
-     emailRedirectTo:'https://ecomax.com.ge/line.html',
+     emailRedirectTo:'https://ecomax.com.ge/line-login.html',
      data:{
        full_name:name,
        phone:phone,
@@ -277,6 +292,10 @@ form.addEventListener('submit',async e=>{
    showOk('რეგისტრაცია მიღებულია. შეამოწმე ელფოსტა და დაადასტურე ანგარიში. შემდეგ დაელოდე ადმინისტრატორის ავტორიზაციას.');
  }
  form.reset();btn.disabled=false;btn.textContent='კურიერის ანგარიშის შექმნა';
+ }catch(ex){
+  showErr('რეგისტრაციისას მოხდა შეცდომა: '+(ex?.message||'ქსელთან დაკავშირება ვერ მოხერხდა.'));
+  btn.disabled=false;btn.textContent='კურიერის ანგარიშის შექმნა';
+ }
 });
 })();
 </script>
