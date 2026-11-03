@@ -58,12 +58,19 @@
     const nameLines = linesFor(name);
     const lineHeight = Math.min(14, 46 / nameLines.length);
     const body = canister
-      ? 'M35 58 Q35 48 47 48 H132 Q143 48 147 64 L160 92 V220 Q160 232 146 232 H34 Q20 232 20 218 V91 Q20 76 35 58 Z M68 62 Q62 62 62 69 V83 Q62 89 69 89 H123 Q130 89 127 81 L122 66 Q121 62 114 62 Z'
+      ? 'M35 58 V45 Q35 41 39 41 H67 Q71 41 71 45 V48 H132 Q143 48 147 64 L160 92 V220 Q160 232 146 232 H34 Q20 232 20 218 V91 Q20 76 35 58 Z M68 62 Q62 62 62 69 V83 Q62 89 69 89 H123 Q130 89 127 81 L122 66 Q121 62 114 62 Z'
       : small
         ? 'M70 65 H110 V80 Q110 88 122 98 Q132 106 132 123 V218 Q132 231 119 231 H61 Q48 231 48 218 V123 Q48 106 58 98 Q70 88 70 80 Z'
         : 'M68 35 H112 V57 Q112 68 127 78 Q142 89 142 109 V218 Q142 232 128 232 H52 Q38 232 38 218 V109 Q38 89 53 78 Q68 68 68 57 Z';
-    const capX = canister ? 33 : small ? 66 : 64;
-    const capY = canister ? 35 : small ? 51 : 21;
+    // A small overhang seats each screw cap on its own neck, including the jug spout.
+    const cap = canister ? { x: 32, y: 27, width: 42, height: 18 }
+      : small ? { x: 68, y: 50, width: 44, height: 17 }
+        : { x: 66, y: 18, width: 48, height: 19 };
+    const capRibs = Array.from({ length: Math.floor((cap.width - 8) / 3) }, (_, index) => {
+      const x = cap.x + 4 + index * 3;
+      return `<path d="M${x} ${cap.y + 5}v${cap.height - 8}" stroke="#020a10" stroke-opacity=".65"/>
+        <path d="M${x + .8} ${cap.y + 5}v${cap.height - 8}" stroke="#b5cbd3" stroke-opacity=".28" stroke-width=".65"/>`;
+    }).join('');
     const labelX = canister ? 36 : small ? 54 : 47;
     const labelWidth = canister ? 108 : small ? 72 : 86;
     const center = 90;
@@ -89,7 +96,11 @@
           <stop offset="1" stop-color="#020d19" stop-opacity=".24"/>
         </linearGradient>
         <linearGradient id="${id}-cap" x1="0" x2="1">
-          <stop stop-color="#102530"/><stop offset=".4" stop-color="#395362"/><stop offset="1" stop-color="#09151d"/>
+          <stop stop-color="#0c1820"/><stop offset=".25" stop-color="#4b606b"/>
+          <stop offset=".5" stop-color="#293d48"/><stop offset="1" stop-color="#09131a"/>
+        </linearGradient>
+        <linearGradient id="${id}-cap-top" x1="0" y1="0" x2="0" y2="1">
+          <stop stop-color="#526874"/><stop offset="1" stop-color="#243742"/>
         </linearGradient>
         <linearGradient id="${id}-label" x1="0" y1="0" x2="1" y2="1">
           <stop stop-color="#173545"/><stop offset=".5" stop-color="#071923"/><stop offset="1" stop-color="#15223e"/>
@@ -105,8 +116,14 @@
       <path d="${body}" fill="url(#${id}-plastic)" fill-rule="evenodd" stroke="#d3edff" stroke-opacity=".65" stroke-width="1.2"/>
       <path d="M${canister ? 29 : small ? 54 : 44} 128 V213 Q${canister ? 29 : small ? 54 : 44} 223 ${canister ? 40 : small ? 65 : 55} 223" fill="none" stroke="#fff" stroke-width="3" opacity=".42"/>
       <path d="${canister ? 'M43 56 H127 M26 217 H154' : small ? 'M75 73 H105 M54 218 H126' : 'M73 45 H107 M44 218 H136'}" fill="none" stroke="#d9f3ff" stroke-width="1.5" opacity=".4"/>
-      <rect x="${capX}" y="${capY}" width="52" height="19" rx="4" fill="url(#${id}-cap)" stroke="#78939e"/>
-      <path d="M${capX + 5} ${capY + 3}v12 m6 -12v12 m6 -12v12 m6 -12v12 m6 -12v12 m6 -12v12 m6 -12v12" stroke="#a8bdc7" opacity=".3"/>
+      <g class="package-cap">
+        <rect class="package-cap-ring" x="${cap.x + 1}" y="${cap.y + cap.height - 1.5}" width="${cap.width - 2}" height="4" rx="1.2" fill="url(#${id}-cap)" stroke="#9aafb8" stroke-opacity=".35" stroke-width=".6"/>
+        <rect class="package-cap-grip" x="${cap.x}" y="${cap.y + 3}" width="${cap.width}" height="${cap.height - 3}" rx="2" fill="url(#${id}-cap)" stroke="#90a5af" stroke-opacity=".6" stroke-width=".7"/>
+        ${capRibs}
+        <ellipse cx="${cap.x + cap.width / 2}" cy="${cap.y + 3}" rx="${cap.width / 2}" ry="3" fill="url(#${id}-cap-top)" stroke="#abc0ca" stroke-opacity=".55" stroke-width=".7"/>
+        <ellipse cx="${cap.x + cap.width / 2}" cy="${cap.y + 3}" rx="${cap.width / 2 - 3}" ry="1.6" fill="none" stroke="#a8bec9" stroke-opacity=".22" stroke-width=".6"/>
+        <path d="M${cap.x + 2} ${cap.y + cap.height - 1}h${cap.width - 4}" stroke="#020a10" stroke-opacity=".8" stroke-width=".8"/>
+      </g>
       <rect x="${labelX}" y="${labelY}" width="${labelWidth}" height="96" rx="5" fill="url(#${id}-label)" stroke="#00d4e5" stroke-opacity=".65"/>
       <path d="M${labelX + 6} ${labelY + 5}h${labelWidth - 12}" stroke="#fff" opacity=".16"/>
       <text x="${center}" y="${labelY + 22}" text-anchor="middle" fill="white" font-family="Arial,sans-serif" font-size="${small ? 13 : 16}" font-weight="900" letter-spacing="1">ECOMAX</text>
