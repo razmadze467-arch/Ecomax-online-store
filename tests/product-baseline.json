@@ -1,0 +1,1502 @@
+[
+  {
+    "name": "ძრავის სარეცხი",
+    "category": "engine",
+    "search": "ძრავის სარეცხი engine clean",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "ძრავის სარეცხი",
+    "description": "ძრავის ბლოკი, ცილინდრები, მექანიზმები, ზეთისა და მძიმე ჭუჭყის პროფესიონალური წმენდა.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "დისკების და ალუმინის სარეცხი",
+    "category": "wheel",
+    "search": "დისკების სარეცხი ალუმინის wheel clean",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "დისკების და ალუმინის სარეცხი",
+    "description": "დისკების, ალუმინის და დაბინძურებული მეტალის ზედაპირების ეფექტური წმენდა.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "რადიატორის სარეცხი",
+    "category": "engine",
+    "search": "რადიატორის სარეცხი radiator",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "რადიატორის და წყლის სისტემის გამწმენდი",
+    "description": "რადიატორისა და წყლის სისტემის პროფესიონალური გაწმენდისთვის.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "ნაჭრის ქიმწმენდა",
+    "category": "interior",
+    "search": "ნაჭრის ქიმწმენდა fabric clean",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "ნაჭრის ქიმწმენდა",
+    "description": "ავტომობილის ქსოვილის სავარძლები, დივნები და ტექსტილის ზედაპირები.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "ტყავის ქიმწმენდა",
+    "category": "interior",
+    "search": "ტყავის ქიმწმენდა leather clean",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "ტყავის ქიმწმენდა",
+    "description": "ავტომობილის ტყავის სავარძლებისა და ტყავის ზედაპირების პროფესიონალური წმენდა.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "საბურავის საპრიალებელი",
+    "category": "tire",
+    "search": "საბურავის საპრიალებელი tire shine",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "საბურავის საპრიალებელი",
+    "description": "საბურავის ზედაპირისთვის ეფექტური მოვლა და ვიზუალური ბზინვარება.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "ტორპედოს საპრიალებელი",
+    "category": "interior",
+    "search": "ტორპედოს საპრიალებელი dashboard polish",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "ტორპედოს საპრიალებელი",
+    "description": "ავტომობილის პლასტმასის და ტორპედოს ზედაპირების მოვლისთვის.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "ტყავის მკვებავი",
+    "category": "interior",
+    "search": "ტყავის მკვებავი leather conditioner",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "ტყავის მკვებავი",
+    "description": "ტყავის ზედაპირების მოვლა, კვება და დამცავი ეფექტი.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "პლასმასების საშავებელი",
+    "category": "interior",
+    "search": "პლასმასების საშავებელი plastic blackener",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "პლასმასების საშავებელი",
+    "description": "პლასტმასის ზედაპირების ვიზუალური აღდგენა და მოვლილი იერსახე.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "ქაფი — წითელი",
+    "category": "foam",
+    "search": "ქაფი წითელი pro foam",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "ქაფი — წითელი",
+    "description": "პროფესიონალური ავტოქაფი ავტომობილის რეცხვისთვის და ძლიერი დაბინძურების მოსაშორებლად.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "ქაფი — ღია ლურჯი",
+    "category": "foam",
+    "search": "ქაფი ღია ლურჯი light blue foam",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "ქაფი — ღია ლურჯი",
+    "description": "თეთრი პროფესიონალური ქაფი ავტომობილის ყოველდღიური და დეტალური რეცხვისთვის.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "ნაჭრის საწმენდი",
+    "category": "home",
+    "search": "ნაჭრის საწმენდი home care household home fabric",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "ნაჭრის საწმენდი",
+    "description": "დივნები, სავარძლები, სკამები და სხვა ნაჭრის/ტექსტილის ზედაპირები სახლისთვის.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "ტყავის საწმენდი",
+    "category": "home",
+    "search": "ტყავის საწმენდი home care household home leather",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "ტყავის საწმენდი",
+    "description": "ტყავის დივნები, სავარძლები, სკამები და სხვა ტყავის ზედაპირების პროფესიონალური წმენდა.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "აბაზანის საწმენდი",
+    "category": "home",
+    "search": "აბაზანის საწმენდი home care household bathroom pro",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "აბაზანის საწმენდი",
+    "description": "აბაზანისა და სანიტარული ზონისთვის — მარილების, ნადების და კოროზიის კვალის მოსაშორებლად.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "ჩაყვითლებული ჭუჭყის მოსაშორებელი",
+    "category": "home",
+    "search": "ჩაყვითლებული ჭუჭყის მოსაშორებელი home care household yellow attack",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "ჩაყვითლებული ჭუჭყის მოსაშორებელი",
+    "description": "ეფექტურად აშორებს ჩაყვითლებულ ჭუჭყს და დაგროვილ დაბინძურებას შესაბამის მყარ ზედაპირებზე.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "ფანჯრების საწმენდი",
+    "category": "home",
+    "search": "ფანჯრების საწმენდი home care household glass pro",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "ფანჯრების საწმენდი",
+    "description": "ფანჯრებისა და მინის ზედაპირებისთვის — სუფთა, გამჭვირვალე და ლაქებისგან თავისუფალი შედეგი.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "ხის საწმენდი",
+    "category": "home",
+    "search": "ხის საწმენდი home care household wood care",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "ხის საწმენდი",
+    "description": "ხისა და ხის მასალის ზედაპირების ნაზი და ეფექტური წმენდა სახლის პირობებში.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "იატაკის საწმენდი",
+    "category": "home",
+    "search": "იატაკის საწმენდი home care household floor pro",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "იატაკის საწმენდი",
+    "description": "სხვადასხვა ტიპის იატაკის ყოველდღიური და პროფესიონალური წმენდისთვის.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "სამზარეულოს საწმენდი",
+    "category": "home",
+    "search": "სამზარეულოს საწმენდი kitchen cleaner ცხიმი კედელზე მიმცხვარი ცხიმები",
+    "unitPrice": "10",
+    "price": "10",
+    "volume": "1 ლიტრი",
+    "title": "სამზარეულოს საწმენდი",
+    "description": "სამზარეულოს ზედაპირებზე დაგროვილი და კედელზე მიმხმარი ცხიმის, ზეთისა და ცხიმიანი ნადების მოსაშორებლად.",
+    "options": [
+      {
+        "value": "0.5",
+        "text": "500 მლ — 5 ₾",
+        "price": null
+      },
+      {
+        "value": "1",
+        "text": "1 ლ — 10 ₾",
+        "price": null
+      },
+      {
+        "value": "2",
+        "text": "2 ლ — 20 ₾",
+        "price": null
+      },
+      {
+        "value": "3",
+        "text": "3 ლ — 30 ₾",
+        "price": null
+      },
+      {
+        "value": "4",
+        "text": "4 ლ — 40 ₾",
+        "price": null
+      },
+      {
+        "value": "5",
+        "text": "5 ლ — 50 ₾",
+        "price": null
+      },
+      {
+        "value": "6",
+        "text": "6 ლ — 60 ₾",
+        "price": null
+      },
+      {
+        "value": "7",
+        "text": "7 ლ — 70 ₾",
+        "price": null
+      },
+      {
+        "value": "8",
+        "text": "8 ლ — 80 ₾",
+        "price": null
+      },
+      {
+        "value": "9",
+        "text": "9 ლ — 90 ₾",
+        "price": null
+      },
+      {
+        "value": "10",
+        "text": "10 ლ — 100 ₾",
+        "price": null
+      },
+      {
+        "value": "20",
+        "text": "20 ლ — 200 ₾",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "სტიკერის მოსაშორებელი",
+    "category": "spray",
+    "search": "sticker remover სტიკერის მოსაშორებელი სპრეი spray 450ml",
+    "unitPrice": "20",
+    "price": "20",
+    "volume": "450 მლ",
+    "title": "სტიკერის მოსაშორებელი",
+    "description": "სტიკერისა და წებოვანი ნარჩენების მოსაშორებლად.",
+    "options": []
+  },
+  {
+    "name": "საღებავის მოსაშორებელი",
+    "category": "spray",
+    "search": "paint remover საღებავის მოსაშორებელი სპრეი spray 450ml",
+    "unitPrice": "20",
+    "price": "20",
+    "volume": "450 მლ",
+    "title": "საღებავის მოსაშორებელი",
+    "description": "საღებავისა და შესაბამისი ორგანული ნარჩენების მოსაშორებლად.",
+    "options": []
+  },
+  {
+    "name": "Sunscreen Polish • Ocean",
+    "category": "spray",
+    "search": "sunscreen polish — ocean Sunscreen Polish • Ocean სპრეი spray 450ml",
+    "unitPrice": "20",
+    "price": "20",
+    "volume": "450 მლ",
+    "title": "Sunscreen Polish • Ocean",
+    "description": "პლასტმასისა და ინტერიერის ზედაპირების მოვლა, ბზინვარება და დაცვა.",
+    "options": []
+  },
+  {
+    "name": "Sunscreen Polish • Rose",
+    "category": "spray",
+    "search": "sunscreen polish — rose Sunscreen Polish • Rose სპრეი spray 450ml",
+    "unitPrice": "20",
+    "price": "20",
+    "volume": "450 მლ",
+    "title": "Sunscreen Polish • Rose",
+    "description": "პლასტმასისა და ინტერიერის ზედაპირების მოვლა, ბზინვარება და დაცვა.",
+    "options": []
+  },
+  {
+    "name": "Sunscreen Polish • Peach",
+    "category": "spray",
+    "search": "sunscreen polish — peach Sunscreen Polish • Peach სპრეი spray 450ml",
+    "unitPrice": "20",
+    "price": "20",
+    "volume": "450 მლ",
+    "title": "Sunscreen Polish • Peach",
+    "description": "პლასტმასისა და ინტერიერის ზედაპირების მოვლა, ბზინვარება და დაცვა.",
+    "options": []
+  },
+  {
+    "name": "Sunscreen Polish • Lemon",
+    "category": "spray",
+    "search": "sunscreen polish — lemon Sunscreen Polish • Lemon სპრეი spray 450ml",
+    "unitPrice": "20",
+    "price": "20",
+    "volume": "450 მლ",
+    "title": "Sunscreen Polish • Lemon",
+    "description": "პლასტმასისა და ინტერიერის ზედაპირების მოვლა, ბზინვარება და დაცვა.",
+    "options": []
+  },
+  {
+    "name": "Sunscreen Polish • Cologne",
+    "category": "spray",
+    "search": "sunscreen polish — cologne Sunscreen Polish • Cologne სპრეი spray 450ml",
+    "unitPrice": "20",
+    "price": "20",
+    "volume": "450 მლ",
+    "title": "Sunscreen Polish • Cologne",
+    "description": "პლასტმასისა და ინტერიერის ზედაპირების მოვლა, ბზინვარება და დაცვა.",
+    "options": []
+  },
+  {
+    "name": "KARO Soft — ზამშის სალფეთი 45×55 სმ",
+    "category": "accessories",
+    "search": "karo салфетка замша soft ზამშის სალფეთი მანქანის სალფეთი 45x55",
+    "unitPrice": "30",
+    "price": "30",
+    "volume": "1 ცალი",
+    "title": "KARO Soft — ზამშის სალფეთი",
+    "description": "რბილი და გამძლე სალფეთი ავტომობილის ზედაპირებიდან ტენისა და ჭუჭყის მოსაშორებლად.",
+    "options": []
+  },
+  {
+    "name": "Winso Car Perfume",
+    "category": "accessories",
+    "search": "winso car perfume მანქანის არომატიზატორი სურნელი",
+    "unitPrice": "15",
+    "price": "15",
+    "volume": "1 ცალი",
+    "title": "Winso Car Perfume",
+    "description": "ავტომობილის სალონისთვის ხანგრძლივი სასიამოვნო სურნელი.",
+    "options": []
+  },
+  {
+    "name": "Winso Air Bag — Wildberry",
+    "category": "accessories",
+    "search": "winso air bag wildberry ველური კენკრა არომატიზატორი",
+    "unitPrice": "5",
+    "price": "5",
+    "volume": "1 ცალი",
+    "title": "Winso Air Bag — Wildberry",
+    "description": "სურნელოვანი ჩანთა ავტომობილის სალონისთვის.",
+    "options": []
+  },
+  {
+    "name": "Winso Air Bag — Sport",
+    "category": "accessories",
+    "search": "winso air bag sport სპორტი არომატიზატორი",
+    "unitPrice": "5",
+    "price": "5",
+    "volume": "1 ცალი",
+    "title": "Winso Air Bag — Sport",
+    "description": "სურნელოვანი ჩანთა ავტომობილის სალონისთვის.",
+    "options": []
+  },
+  {
+    "name": "Winso Air Bag — Apple",
+    "category": "accessories",
+    "search": "winso air bag apple ვაშლი არომატიზატორი",
+    "unitPrice": "5",
+    "price": "5",
+    "volume": "1 ცალი",
+    "title": "Winso Air Bag — Apple",
+    "description": "სურნელოვანი ჩანთა ავტომობილის სალონისთვის.",
+    "options": []
+  }
+]

@@ -1,0 +1,228 @@
+/* ECOMAX NEON 3D MAX PREMIUM — account and checkout presentation.
+   Shared visual layer only: forms, authentication and checkout logic are unchanged. */
+:root {
+  --bg: #030813;
+  --text: #f1f6ff;
+  --muted: #9baac2;
+  --cyan: #28baff;
+  --blue: #238aff;
+  --orange: #ff7a18;
+  color-scheme: dark;
+}
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Noto Sans Georgian", "Segoe UI", Arial, sans-serif;
+}
+body::before {
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 12% 14%, #168cff18, transparent 45%),
+    radial-gradient(ellipse at 95% 50%, #ad58ff15, transparent 45%),
+    radial-gradient(ellipse at 50% 110%, #ff7a1810, transparent 50%);
+  background-size: auto;
+}
+.wrap {
+  position: relative;
+  z-index: 1;
+}
+.card,
+.box {
+  border: 1px solid #28baff42;
+  background: linear-gradient(145deg, #101d30eb, #070e1beb 70%);
+  border-radius: 22px;
+  box-shadow:
+    0 24px 80px #0007,
+    0 0 35px #168cff0c,
+    inset 0 1px 0 #ffffff0d;
+  backdrop-filter: blur(16px);
+}
+.card {
+  padding: 34px;
+}
+.card::before {
+  content: "";
+  display: block;
+  width: 52px;
+  height: 3px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  background: var(--orange);
+  box-shadow: 0 0 14px #ff7a1880;
+}
+.brand,
+.logo {
+  color: #f1f6ff;
+  font-style: italic;
+  font-size: 29px;
+  font-weight: 950;
+  letter-spacing: -1px;
+  text-shadow:
+    2px 2px 0 #0d2d45,
+    0 0 24px #28baff30;
+}
+.label {
+  color: var(--orange);
+  letter-spacing: 2px;
+}
+h1 {
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.6px;
+}
+h2 {
+  line-height: 1.4;
+}
+.sub,
+.muted,
+.row,
+.terms,
+.foot {
+  color: var(--muted);
+}
+.sub {
+  font-size: 13px;
+  line-height: 1.8;
+}
+.field label,
+#orderForm label {
+  color: #c0ccdf;
+  font-size: 12px;
+}
+.field input,
+#orderForm input,
+#orderForm select,
+#orderForm textarea {
+  border: 1px solid #7b9bc52e;
+  background: #040b17;
+  border-radius: 10px;
+  color: #f1f6ff;
+  font-family: inherit;
+  font-size: 16px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.field input:focus,
+#orderForm input:focus,
+#orderForm select:focus,
+#orderForm textarea:focus {
+  border-color: #28baff;
+  box-shadow: 0 0 0 3px #28baff1c;
+}
+input[type="checkbox"] {
+  accent-color: var(--orange);
+}
+a {
+  color: #73ceff;
+}
+a:hover {
+  color: #fff;
+}
+a,
+button {
+  -webkit-tap-highlight-color: #28baff22;
+}
+a:focus-visible,
+button:focus-visible,
+input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 4px;
+}
+.btn,
+.submit {
+  background: linear-gradient(135deg, #ff9a36, #ff6a0a);
+  border: 1px solid #ffaf58;
+  border-radius: 10px;
+  color: #160a02;
+  font-family: inherit;
+  font-weight: 800;
+  box-shadow:
+    0 6px 22px #ff7a181c,
+    inset 0 1px 0 #fff4;
+  transition:
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+.btn:hover:not(:disabled),
+.submit:hover:not(:disabled) {
+  filter: brightness(1.09);
+  box-shadow: 0 7px 26px #ff7a1838;
+}
+.btn:disabled,
+.submit:disabled {
+  filter: saturate(0.55);
+  box-shadow: none;
+}
+.back {
+  color: #b3c2d9;
+  border-color: #28baff35;
+  background: #28baff08;
+}
+.card .back {
+  background: transparent;
+}
+.item {
+  border-bottom-color: #28baff1c;
+}
+.item-name {
+  line-height: 1.6;
+}
+.item b,
+.total #total {
+  color: #ff9a36;
+}
+.total {
+  border-top: 1px solid #28baff26;
+  margin-top: 8px;
+}
+.secure span {
+  color: #a6b6cf;
+  background: #28baff07;
+  border-color: #28baff22;
+}
+.error {
+  color: #ffc2ce;
+}
+.success {
+  color: #b6ffdf;
+}
+@media (max-width: 430px) {
+  .card {
+    padding: 24px 20px;
+    border-radius: 18px;
+  }
+  .row {
+    gap: 12px;
+    flex-wrap: wrap;
+    line-height: 1.7;
+  }
+  .foot {
+    line-height: 1.9;
+  }
+  .brand,
+  .logo {
+    font-size: 26px;
+  }
+  .top {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .box {
+    border-radius: 18px;
+  }
+  h1 {
+    font-size: 26px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .submit,
+  .field input,
+  #orderForm input,
+  #orderForm select,
+  #orderForm textarea {
+    transition: none;
+  }
+}

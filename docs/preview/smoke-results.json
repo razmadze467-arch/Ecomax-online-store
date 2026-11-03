@@ -1,0 +1,95 @@
+{
+  "checks": [
+    {
+      "check": "homepage responds",
+      "status": "PASS",
+      "detail": "HTTP 200"
+    },
+    {
+      "check": "original product data",
+      "status": "PASS",
+      "detail": "All 31 product identities, categories, search data, prices and options preserved"
+    },
+    {
+      "check": "responsive layout 1440px",
+      "status": "PASS",
+      "detail": "1440px; all 31 products visible; no horizontal overflow"
+    },
+    {
+      "check": "responsive layout 390px",
+      "status": "PASS",
+      "detail": "390px; all 31 products visible; no horizontal overflow"
+    },
+    {
+      "check": "responsive layout 768px",
+      "status": "PASS",
+      "detail": "768px; all 31 products visible; no horizontal overflow"
+    },
+    {
+      "check": "responsive layout 320px",
+      "status": "PASS",
+      "detail": "320px; all 31 products visible; no horizontal overflow"
+    },
+    {
+      "check": "search and categories",
+      "status": "PASS",
+      "detail": "Search, empty results and all 8 categories including home work; active filters hide promotions and clearing restores them"
+    },
+    {
+      "check": "navigation search and category tiles",
+      "status": "PASS",
+      "detail": "Header search, all-products reset and 6 category tiles verified"
+    },
+    {
+      "check": "combined wheels and tires",
+      "status": "PASS",
+      "detail": "Combined tile and dropdown each return exactly the original wheel and tire products (2)"
+    },
+    {
+      "check": "cart workflow",
+      "status": "PASS",
+      "detail": "Volume price, exactly one add, total, +/−, persistence, remove and close verified"
+    },
+    {
+      "check": "keyboard cart focus and Escape",
+      "status": "PASS",
+      "detail": "Enter opens; Tab/Shift+Tab stay inside; Escape closes and restores trigger focus"
+    },
+    {
+      "check": "checkout navigation and auth guard",
+      "status": "PASS",
+      "detail": "Checkout receives cart and requires authentication; no order submitted"
+    },
+    {
+      "check": "mobile menu and auth links",
+      "status": "PASS",
+      "detail": "Menu opens/closes with click/Escape; anonymous login/register visible; account hidden"
+    },
+    {
+      "check": "local page /login.html",
+      "status": "PASS",
+      "detail": "HTTP 200; local form renders; no form submitted"
+    },
+    {
+      "check": "local page /register.html",
+      "status": "PASS",
+      "detail": "HTTP 200; local form renders; no form submitted"
+    },
+    {
+      "check": "local page /checkout.html",
+      "status": "PASS",
+      "detail": "HTTP 200; local form renders; no form submitted"
+    },
+    {
+      "check": "JavaScript runtime errors",
+      "status": "PASS",
+      "detail": "No uncaught page errors"
+    }
+  ],
+  "network_failures": [
+    "fonts.googleapis.com: net::ERR_TUNNEL_CONNECTION_FAILED"
+  ],
+  "limitations": [
+    "Authentication, live backend writes, native Android and order submission were not tested."
+  ]
+}

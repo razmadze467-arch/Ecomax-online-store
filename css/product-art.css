@@ -1,0 +1,587 @@
+/* Existing product packaging illustrations, preserved from the original storefront. */
+.product-glow {
+  position: absolute;
+
+  width: 210px;
+  height: 210px;
+
+  border-radius: 50%;
+
+  background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+
+  filter: blur(10px);
+}
+
+.product-bottle {
+  position: relative;
+
+  width: 128px;
+  height: 210px;
+
+  border-radius: 18px 18px 26px 26px;
+
+  background: var(--bottle);
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  box-shadow:
+    inset 12px 0 17px rgba(255, 255, 255, 0.08),
+    inset -15px 0 20px rgba(0, 0, 0, 0.72),
+    0 25px 45px rgba(0, 0, 0, 0.5);
+
+  transform: perspective(600px) rotateY(-5deg);
+}
+
+.product-bottle::before {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: -14px;
+
+  transform: translateX(-50%);
+
+  width: 58px;
+  height: 19px;
+
+  border-radius: 6px 6px 3px 3px;
+
+  background: #08131c;
+
+  border: 1px solid #3a525e;
+}
+
+.product-label {
+  position: absolute;
+
+  left: 10px;
+  right: 10px;
+
+  top: 61px;
+
+  height: 96px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  border: 1px solid var(--accent);
+
+  border-radius: 10px;
+
+  background: rgba(2, 12, 20, 0.9);
+
+  box-shadow: 0 0 25px var(--accent-glow);
+}
+
+.product-label strong {
+  font-size: 10px;
+
+  letter-spacing: 2px;
+}
+
+.product-label span {
+  margin-top: 5px;
+
+  color: var(--accent);
+
+  font-size: 7px;
+}
+
+.product-label b {
+  margin-top: 8px;
+
+  font-size: 20px;
+}
+
+/* COLORS */
+
+.red {
+  --accent: var(--red);
+  --accent-glow: rgba(255, 41, 69, 0.2);
+
+  --bottle: linear-gradient(
+    90deg,
+    #27060b,
+    #ff233e 20%,
+    #731321 45%,
+    #ff4c5d 68%,
+    #170307
+  );
+}
+
+.white {
+  --accent: var(--white);
+  --accent-glow: rgba(255, 255, 255, 0.16);
+
+  --bottle: linear-gradient(
+    90deg,
+    #7f898e,
+    #ffffff 22%,
+    #dce2e5 45%,
+    #ffffff 70%,
+    #737c82
+  );
+}
+
+.yellow {
+  --accent: var(--yellow);
+  --accent-glow: rgba(255, 213, 42, 0.2);
+
+  --bottle: linear-gradient(
+    90deg,
+    #443602,
+    #ffd21e 22%,
+    #a48408 45%,
+    #ffe95d 70%,
+    #292202
+  );
+}
+
+.blue {
+  --accent: var(--lightblue);
+  --accent-glow: rgba(57, 216, 255, 0.2);
+
+  --bottle: linear-gradient(
+    90deg,
+    #06303d,
+    #38d8ff 22%,
+    #0b718c 45%,
+    #61e2ff 70%,
+    #041e28
+  );
+}
+
+.pink {
+  --accent: var(--pink);
+  --accent-glow: rgba(255, 101, 183, 0.2);
+
+  --bottle: linear-gradient(
+    90deg,
+    #43091f,
+    #ff62b5 22%,
+    #8a2452 45%,
+    #ff8ac8 70%,
+    #25050f
+  );
+}
+
+/* ECOMAX SPRAY SERIES — 450ml aerosol-style product cards */
+.ecomax-spray-section {
+  padding-top: 38px !important;
+}
+.ecomax-spray-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+.ecomax-spray-card {
+  min-height: 530px !important;
+}
+.ecomax-spray-can {
+  width: 112px !important;
+  height: 196px !important;
+  border-radius: 18px 18px 14px 14px !important;
+  background: linear-gradient(
+    90deg,
+    #242a31 0%,
+    #e9edf0 13%,
+    #8b9298 28%,
+    #f8fafb 48%,
+    #8e969d 70%,
+    #f3f5f6 86%,
+    #343b41 100%
+  ) !important;
+  border: 1px solid rgba(255, 255, 255, 0.48) !important;
+  box-shadow:
+    inset 12px 0 16px rgba(255, 255, 255, 0.18),
+    inset -15px 0 19px rgba(0, 0, 0, 0.48),
+    0 22px 40px rgba(0, 0, 0, 0.55),
+    0 0 28px var(--accent-glow) !important;
+  transform: perspective(700px) rotateY(-4deg) !important;
+  overflow: visible !important;
+}
+.ecomax-spray-can::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 53px;
+  height: 108px;
+  border-radius: 8px;
+  background: linear-gradient(
+    145deg,
+    rgba(15, 24, 31, 0.96),
+    rgba(3, 10, 16, 0.98)
+  );
+  border: 1px solid color-mix(in srgb, var(--accent) 72%, white);
+  box-shadow:
+    0 0 16px var(--accent-glow),
+    inset 0 0 15px rgba(255, 255, 255, 0.04);
+}
+.spray-cap {
+  position: absolute;
+  z-index: 8;
+  left: 16px;
+  right: 16px;
+  top: -24px;
+  height: 38px;
+  border-radius: 10px 10px 5px 5px;
+  background: linear-gradient(
+    90deg,
+    #10151b,
+    #59636b 35%,
+    #dce1e4 55%,
+    #434b52 78%,
+    #11161b
+  );
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  box-shadow:
+    0 8px 14px rgba(0, 0, 0, 0.35),
+    0 0 12px var(--accent-glow);
+}
+.spray-cap::after {
+  content: "";
+  position: absolute;
+  left: 23px;
+  right: 12px;
+  top: -7px;
+  height: 10px;
+  border-radius: 7px 7px 2px 2px;
+  background: #151b21;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.spray-cap i {
+  position: absolute;
+  right: -7px;
+  top: 5px;
+  width: 18px;
+  height: 8px;
+  border-radius: 5px;
+  background: #20272d;
+  border: 1px solid #87929a;
+}
+.spray-label {
+  position: absolute;
+  z-index: 10;
+  left: 16px;
+  right: 16px;
+  top: 66px;
+  height: 82px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+.spray-label strong {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow:
+    0 0 7px #fff,
+    0 0 15px var(--accent);
+}
+.spray-label b {
+  font-size: 8px;
+  line-height: 1.15;
+  margin-top: 4px;
+  color: #fff;
+}
+.spray-label span {
+  font-size: 5.5px;
+  line-height: 1.25;
+  margin-top: 5px;
+  color: var(--accent);
+  font-weight: 900;
+}
+.spray-label em {
+  font-style: normal;
+  font-size: 7px;
+  margin-top: 4px;
+  color: #dcecf2;
+  letter-spacing: 1px;
+}
+.ecomax-spray-card .product-visual {
+  height: 255px !important;
+}
+.ecomax-spray-card .home-purpose {
+  margin-top: -2px;
+}
+.ecomax-spray-card .product-info {
+  margin-top: 8px;
+}
+.ecomax-spray-card .buy-area .price-row {
+  margin-top: 10px;
+}
+.ecomax-spray-card .add-cart {
+  width: 100%;
+}
+@media (max-width: 1100px) {
+  .ecomax-spray-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+@media (max-width: 900px) {
+  .ecomax-spray-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+@media (max-width: 600px) {
+  .ecomax-spray-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .ecomax-spray-card {
+    min-height: 500px !important;
+  }
+}
+
+.ecomax-accessories-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.ecomax-chamois-pack {
+  position: relative;
+  width: 185px;
+  height: 205px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 9px 9px 16px 16px;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 72% 43%,
+      rgba(255, 219, 25, 0.82),
+      transparent 23%
+    ),
+    linear-gradient(135deg, #0a1117 0%, #182027 48%, #05090d 100%);
+  box-shadow:
+    inset 0 0 30px rgba(255, 255, 255, 0.05),
+    0 18px 45px rgba(0, 0, 0, 0.55),
+    0 0 28px rgba(0, 234, 255, 0.12);
+  transform: perspective(500px) rotateY(-5deg);
+}
+.ecomax-chamois-pack::before {
+  content: "";
+  position: absolute;
+  left: -15%;
+  top: 54px;
+  width: 130%;
+  height: 45px;
+  background: linear-gradient(90deg, #f4d20b, #fff21b, #e8c800);
+  transform: rotate(-2deg);
+  box-shadow: 0 0 18px rgba(255, 216, 20, 0.16);
+}
+.ecomax-chamois-pack::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.11),
+    transparent 18%,
+    transparent 72%,
+    rgba(255, 255, 255, 0.06)
+  );
+  pointer-events: none;
+}
+.chamois-hook {
+  position: absolute;
+  left: 50%;
+  top: -5px;
+  transform: translateX(-50%);
+  width: 46px;
+  height: 22px;
+  border: 2px solid #8c969b;
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0;
+}
+.chamois-pack-top {
+  position: absolute;
+  left: 18px;
+  top: 17px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 900;
+  z-index: 2;
+}
+.chamois-pack-title {
+  position: absolute;
+  left: 15px;
+  top: 74px;
+  color: #fff;
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: 0.5px;
+  z-index: 2;
+}
+.chamois-pack-soft {
+  position: absolute;
+  left: 15px;
+  top: 120px;
+  color: #111;
+  background: #ffd900;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 900;
+  z-index: 2;
+}
+.chamois-pack-car {
+  position: absolute;
+  right: 13px;
+  top: 80px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 24px;
+  font-weight: 900;
+  z-index: 2;
+}
+.chamois-pack-size {
+  position: absolute;
+  right: 12px;
+  bottom: 13px;
+  color: #ffd900;
+  font-size: 11px;
+  font-weight: 900;
+  z-index: 2;
+}
+@media (max-width: 1100px) {
+  .ecomax-accessories-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 900px) {
+  .ecomax-accessories-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .ecomax-accessories-grid {
+    grid-template-columns: 1fr;
+  }
+  .ecomax-chamois-pack {
+    width: 175px;
+    height: 195px;
+  }
+}
+
+.ecomax-fragrance-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.winso-perfume-bottle {
+  position: relative;
+  width: 105px;
+  height: 175px;
+  border-radius: 14px 14px 24px 24px;
+  overflow: hidden;
+  background: linear-gradient(90deg, #08752f, #19c95c, #08752f);
+  box-shadow:
+    inset 8px 0 15px rgba(255, 255, 255, 0.12),
+    inset -8px 0 15px rgba(0, 0, 0, 0.25),
+    0 0 30px rgba(0, 255, 120, 0.2);
+}
+.winso-cap {
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  top: -5px;
+  height: 45px;
+  border-radius: 9px;
+  background: linear-gradient(90deg, #090909, #292929, #050505);
+}
+.winso-liquid {
+  position: absolute;
+  inset: 42px 0 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 255, 120, 0.15),
+    rgba(0, 40, 15, 0.3)
+  );
+}
+.winso-perfume-bottle b,
+.winso-perfume-bottle span,
+.winso-perfume-bottle em {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  text-align: center;
+  z-index: 2;
+}
+.winso-perfume-bottle b {
+  top: 62px;
+  font-size: 16px;
+}
+.winso-perfume-bottle span {
+  top: 84px;
+  font-size: 7px;
+}
+.winso-perfume-bottle em {
+  top: 112px;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 900;
+}
+.airbag-pack {
+  position: relative;
+  width: 145px;
+  height: 185px;
+  border-radius: 10px 10px 20px 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  box-shadow:
+    0 0 30px rgba(0, 234, 255, 0.14),
+    inset 0 0 22px rgba(255, 255, 255, 0.06);
+}
+.airbag-pack b {
+  font-size: 15px;
+}
+.airbag-pack strong {
+  font-size: 22px;
+  margin-top: 12px;
+}
+.airbag-pack span {
+  margin-top: 18px;
+  font-size: 14px;
+  font-weight: 900;
+}
+.airbag-pack i {
+  position: absolute;
+  bottom: 14px;
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 800;
+}
+.airbag-pack.wildberry {
+  background: linear-gradient(160deg, #4b164d, #b74a9d 55%, #efd0e8);
+}
+.airbag-pack.sport {
+  background: linear-gradient(160deg, #0b4f93, #55bfe9 55%, #d5f4ff);
+}
+.airbag-pack.apple {
+  background: linear-gradient(160deg, #0b7b31, #a5dc45 58%, #edf8d2);
+}
+@media (max-width: 1100px) {
+  .ecomax-fragrance-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 900px) {
+  .ecomax-fragrance-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .ecomax-fragrance-grid {
+    grid-template-columns: 1fr;
+  }
+  .winso-perfume-bottle {
+    width: 100px;
+  }
+  .airbag-pack {
+    width: 140px;
+  }
+}
