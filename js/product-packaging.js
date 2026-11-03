@@ -18,7 +18,15 @@
     { match: /ტორპედო|dashboard/i, color: '#f4f8fc', shadow: '#a6bdcd', opaque: true },
     { match: /ქაფი.*წითელ/i, color: '#ef334e', shadow: '#860b2a' },
     { match: /ქაფი.*ლურჯ/i, color: '#63d7f4', shadow: '#147dba' },
-    { match: /პლას[ტმ]მას|პლასმას|plastic/i, color: '#465465', shadow: '#172531' }
+    { match: /პლას[ტმ]მას|პლასმას|plastic/i, color: '#465465', shadow: '#172531' },
+    { match: /ნაჭრის საწმენდი|home fabric/i, color: '#159cc7', shadow: '#07516f' },
+    { match: /ტყავის საწმენდი|home leather/i, color: '#f1c735', shadow: '#9d6b08' },
+    { match: /აბაზან|bathroom/i, color: '#30d5d0', shadow: '#087a86' },
+    { match: /ჩაყვითლებულ|yellow attack/i, color: '#ffb51e', shadow: '#a95a05' },
+    { match: /ფანჯრ|glass pro/i, color: '#e9f7ff', shadow: '#6ba8bf' },
+    { match: /ხის საწმენდი|wood care/i, color: '#ec76ae', shadow: '#92325f' },
+    { match: /იატაკ|floor pro/i, color: '#49d47b', shadow: '#087242' },
+    { match: /სამზარეულ|kitchen pro/i, color: '#ff8c24', shadow: '#9d3f05' }
   ];
 
   function liquidFor(name) {
@@ -38,7 +46,15 @@
     ['პლასმასების საშავებელი', 'PLASTIC BLACKENER'],
     ['ქაფი — წითელი', 'RED CAR WASH FOAM'],
     ['ქაფი — ღია ლურჯი', 'LIGHT BLUE CAR WASH FOAM'],
-    ['ფოსფორი მანქანის', 'CAR PHOSPHOR']
+    ['ფოსფორი მანქანის', 'CAR PHOSPHOR'],
+    ['ნაჭრის საწმენდი', 'HOME FABRIC CLEANER'],
+    ['ტყავის საწმენდი', 'HOME LEATHER CLEANER'],
+    ['აბაზანის საწმენდი', 'BATHROOM PRO CLEANER'],
+    ['ჩაყვითლებული ჭუჭყის მოსაშორებელი', 'YELLOW ATTACK CLEANER'],
+    ['ფანჯრების საწმენდი', 'GLASS PRO CLEANER'],
+    ['ხის საწმენდი', 'WOOD CARE CLEANER'],
+    ['იატაკის საწმენდი', 'FLOOR PRO CLEANER'],
+    ['სამზარეულოს საწმენდი', 'KITCHEN PRO CLEANER']
   ]);
 
   // Wrap the existing product name without substituting a separate product catalog.
@@ -64,16 +80,20 @@
     const liquid = liquidFor(name);
     const english = englishNames.get(name) || 'CAR CARE';
     const size = `${volume} ლ`;
-    const signature = `${name}|${english}|${volume}|${liquid.color}`;
+    const isHome = card.dataset.category === 'home';
+    const isFoam = /ქაფი|foam/i.test(`${name} ${english}`);
+    const series = isHome ? 'სახლის ქიმია / HOME CARE' : 'ავტოქიმია / CAR CARE';
+    const signature = `${name}|${english}|${volume}|${liquid.color}|${series}`;
     if (bottle.dataset.packagingSignature === signature) return;
     bottle.dataset.packagingSignature = signature;
     const id = `ecomax-package-${++nextId}`;
-    const canister = volume >= 2;
+    const canister = volume >= 5;
+    const midJug = volume >= 2 && volume < 5;
     const small = volume === 0.5;
-    const labelY = canister ? 110 : small ? 116 : 106;
-    const labelHeight = canister ? 107 : small ? 106 : 110;
-    const nameLines = linesFor(name, canister ? 23 : small ? 16 : 18);
-    const englishLines = linesFor(english, canister ? 29 : small ? 20 : 23);
+    const labelY = canister ? 110 : midJug ? 107 : small ? 116 : 106;
+    const labelHeight = canister ? 107 : midJug ? 109 : small ? 106 : 110;
+    const nameLines = linesFor(name, canister ? 23 : midJug ? 21 : small ? 16 : 18);
+    const englishLines = linesFor(english, canister ? 29 : midJug ? 26 : small ? 20 : 23);
     const footerY = labelHeight - 22;
     // Separate text regions keep long bilingual names clear of the volume footer.
     const lineHeight = Math.min(10.5,
@@ -84,11 +104,14 @@
     const englishY = nameY + (nameLines.length - 1) * lineHeight + 10.5;
     const body = canister
       ? 'M35 58 V45 Q35 41 39 41 H67 Q71 41 71 45 V48 H132 Q143 48 147 64 L160 92 V220 Q160 232 146 232 H34 Q20 232 20 218 V91 Q20 76 35 58 Z M68 62 Q62 62 62 69 V83 Q62 89 69 89 H123 Q130 89 127 81 L122 66 Q121 62 114 62 Z'
+      : midJug
+        ? 'M48 56 V43 Q48 39 53 39 H82 Q87 39 87 45 V52 H124 Q136 52 141 66 L151 94 V220 Q151 232 138 232 H42 Q29 232 29 219 V94 Q29 73 48 56 Z M83 65 Q76 65 76 72 V86 Q76 91 83 91 H119 Q125 91 123 84 L119 70 Q118 65 112 65 Z'
       : small
         ? 'M70 65 H110 V80 Q110 88 122 98 Q132 106 132 123 V218 Q132 231 119 231 H61 Q48 231 48 218 V123 Q48 106 58 98 Q70 88 70 80 Z'
         : 'M68 35 H112 V57 Q112 68 127 78 Q142 89 142 109 V218 Q142 232 128 232 H52 Q38 232 38 218 V109 Q38 89 53 78 Q68 68 68 57 Z';
     // A small overhang seats each screw cap on its own neck, including the jug spout.
     const cap = canister ? { x: 32, y: 27, width: 42, height: 18 }
+      : midJug ? { x: 45, y: 25, width: 45, height: 18 }
       : small ? { x: 68, y: 50, width: 44, height: 17 }
         : { x: 66, y: 18, width: 48, height: 19 };
     const capRibs = Array.from({ length: Math.floor((cap.width - 8) / 3) }, (_, index) => {
@@ -96,13 +119,17 @@
       return `<path d="M${x} ${cap.y + 5}v${cap.height - 8}" stroke="#020a10" stroke-opacity=".65"/>
         <path d="M${x + .8} ${cap.y + 5}v${cap.height - 8}" stroke="#b5cbd3" stroke-opacity=".28" stroke-width=".65"/>`;
     }).join('');
-    const labelX = canister ? 32 : small ? 52 : 45;
-    const labelWidth = canister ? 116 : small ? 76 : 90;
+    const labelX = canister ? 32 : midJug ? 38 : small ? 52 : 45;
+    const labelWidth = canister ? 116 : midJug ? 104 : small ? 76 : 90;
     const center = 90;
     const labelRight = labelX + labelWidth;
     const labelBottom = labelY + labelHeight;
     const labelPath = `M${labelX} ${labelY + 2} Q90 ${labelY - 3} ${labelRight} ${labelY + 2} V${labelBottom - 3} Q90 ${labelBottom + 3} ${labelX} ${labelBottom - 3} Z`;
-    const liquidY = canister ? 101 : small ? 107 : 88;
+    const liquidY = canister ? 101 : midJug ? 96 : small ? 107 : 88;
+    const foamBubbles = [
+      [42, 0, 2.4, 0], [58, 5, 1.7, .7], [76, 1, 2.1, 1.25], [94, 5, 1.5, .35],
+      [111, 0, 2.8, 1.6], [128, 4, 1.8, .95], [143, 1, 2.2, 2.1], [66, 9, 1.3, 1.9]
+    ].map(([x, y, radius, delay], index) => `<circle class="package-foam-bubble package-foam-bubble-${index + 1}" cx="${x}" cy="${liquidY + y}" r="${radius}" style="--bubble-delay:${delay}s"/>`).join('');
     const svg = `<svg class="ecomax-package-art" viewBox="0 0 180 250" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
         <linearGradient id="${id}-plastic" x1="0" x2="1">
@@ -150,11 +177,15 @@
       <g clip-path="url(#${id}-body)">
         <rect class="package-liquid" x="20" y="${liquidY}" width="140" height="145" fill="url(#${id}-liquid)"/>
         <ellipse cx="90" cy="${liquidY}" rx="72" ry="4" fill="${liquid.color}" opacity=".65"/>
+        <g class="package-foam ${isFoam ? 'is-active' : ''}">
+          <path class="package-foam-wave" d="M20 ${liquidY + 1} Q38 ${liquidY - 4} 56 ${liquidY + 1} T92 ${liquidY + 1} T128 ${liquidY + 1} T164 ${liquidY + 1} V${liquidY + 9} H20Z"/>
+          ${foamBubbles}
+        </g>
         <rect x="20" y="${liquidY}" width="140" height="145" fill="url(#${id}-depth)"/>
       </g>
       <path d="${body}" fill="url(#${id}-plastic)" fill-rule="evenodd" stroke="#d3edff" stroke-opacity=".65" stroke-width="1.2"/>
-      <path d="M${canister ? 29 : small ? 54 : 44} 128 V213 Q${canister ? 29 : small ? 54 : 44} 223 ${canister ? 40 : small ? 65 : 55} 223" fill="none" stroke="#fff" stroke-width="3" opacity=".42"/>
-      <path d="${canister ? 'M43 56 H127 M26 217 H154' : small ? 'M75 73 H105 M54 218 H126' : 'M73 45 H107 M44 218 H136'}" fill="none" stroke="#d9f3ff" stroke-width="1.5" opacity=".4"/>
+      <path class="package-glass-highlight" d="M${canister ? 29 : midJug ? 36 : small ? 54 : 44} 128 V213 Q${canister ? 29 : midJug ? 36 : small ? 54 : 44} 223 ${canister ? 40 : midJug ? 48 : small ? 65 : 55} 223" fill="none" stroke="#fff" stroke-width="3" opacity=".42"/>
+      <path d="${canister ? 'M43 56 H127 M26 217 H154' : midJug ? 'M55 54 H124 M35 218 H145' : small ? 'M75 73 H105 M54 218 H126' : 'M73 45 H107 M44 218 H136'}" fill="none" stroke="#d9f3ff" stroke-width="1.5" opacity=".4"/>
       <g class="package-cap">
         <rect class="package-cap-ring" x="${cap.x + 1}" y="${cap.y + cap.height - 1.5}" width="${cap.width - 2}" height="4" rx="1.2" fill="url(#${id}-cap)" stroke="#9aafb8" stroke-opacity=".35" stroke-width=".6"/>
         <rect class="package-cap-grip" x="${cap.x}" y="${cap.y + 3}" width="${cap.width}" height="${cap.height - 3}" rx="2" fill="url(#${id}-cap)" stroke="#90a5af" stroke-opacity=".6" stroke-width=".7"/>
@@ -170,7 +201,7 @@
           <rect x="${labelX}" y="${labelY + 28}" width="${labelWidth}" height="2.5" fill="${liquid.color}"/>
           <rect x="${labelX + 2}" y="${labelY + 35}" width="1.6" height="${footerY - 39}" fill="${liquid.shadow}" opacity=".65"/>
           <text class="package-label-brand" x="90" y="${labelY + 16}" font-size="${small ? 13.5 : 16}" letter-spacing="1.1">ECOMAX</text>
-          <text class="package-label-series" x="90" y="${labelY + 24}" data-label-width="${labelWidth - 12}">ავტოქიმია / CAR CARE</text>
+          <text class="package-label-series" x="90" y="${labelY + 24}" data-label-width="${labelWidth - 12}">${escape(series)}</text>
           ${nameLines.map((line, index) => `<text class="package-label-name" lang="ka" x="${center}" y="${nameY + index * lineHeight}" style="font-size:${nameFontSize}px" data-label-width="${labelWidth - 14}">${escape(line)}</text>`).join('')}
           ${englishLines.map((line, index) => `<text class="package-label-english" lang="en" x="${center}" y="${englishY + index * 7.5}" data-label-width="${labelWidth - 14}">${escape(line)}</text>`).join('')}
           <path d="M${labelX + 7} ${labelY + footerY}h${labelWidth - 14}" stroke="#647b83" stroke-opacity=".35" stroke-width=".6"/>
@@ -181,8 +212,11 @@
       </g>
     </svg>`;
     bottle.classList.add('ecomax-packaging');
-    bottle.dataset.packageShape = canister ? 'canister' : small ? 'bottle-500' : 'bottle-1000';
+    bottle.dataset.packageShape = canister ? 'canister-5plus' : midJug ? 'jug-2-4' : small ? 'bottle-500' : 'bottle-1000';
     bottle.dataset.liquidColor = liquid.color;
+    card.style.setProperty('--product-accent', liquid.color);
+    card.style.setProperty('--product-shadow', liquid.shadow);
+    card.classList.toggle('ecomax-foam-product', isFoam);
     bottle.setAttribute('role', 'img');
     bottle.setAttribute('aria-label', `ECOMAX — ${name} / ${english}, ${size}`);
     bottle.title = `ECOMAX — ${name} / ${english}, ${size}`;
@@ -199,10 +233,10 @@
   }
 
   function init() {
-    const grid = document.getElementById('productsGrid');
-    if (!grid) return;
-    grid.querySelectorAll('.product-card').forEach(render);
-    grid.addEventListener('change', event => {
+    const catalog = document.querySelector('main');
+    if (!catalog) return;
+    catalog.querySelectorAll('.product-card').forEach(render);
+    catalog.addEventListener('change', event => {
       if (event.target.matches('.volume-select')) render(event.target.closest('.product-card'));
     });
     new MutationObserver(records => {
@@ -213,7 +247,7 @@
         node.querySelectorAll('.product-card').forEach(card => cards.add(card));
       }));
       cards.forEach(render);
-    }).observe(grid, { childList: true, subtree: true });
+    }).observe(catalog, { childList: true, subtree: true });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
   else init();

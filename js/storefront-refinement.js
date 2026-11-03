@@ -2,8 +2,8 @@
   'use strict';
 
   function init() {
-    const grid = document.getElementById('productsGrid');
-    if (!grid || document.getElementById('catalogProductDialog')) return;
+    const catalog = document.querySelector('main');
+    if (!catalog || document.getElementById('catalogProductDialog')) return;
     const dialog = document.createElement('dialog');
     dialog.id = 'catalogProductDialog';
     dialog.className = 'catalog-product-dialog';
@@ -11,7 +11,15 @@
     dialog.innerHTML = `
       <div class="catalog-dialog-header"><span>ECOMAX / პროდუქტი ახლოდან</span><button type="button" class="catalog-dialog-close" aria-label="პროდუქტის ფანჯრის დახურვა" autofocus>×</button></div>
       <div class="catalog-dialog-content">
-        <div class="catalog-dialog-preview" role="img"></div>
+        <div class="catalog-dialog-preview" role="img">
+          <div class="catalog-dialog-stage"></div>
+          <div class="catalog-zoom-controls" aria-label="პროდუქტის გამოსახულების მასშტაბი">
+            <button type="button" class="catalog-zoom-out" aria-label="დაპატარავება">−</button>
+            <input type="range" min="80" max="170" value="100" step="5" aria-label="მასშტაბი">
+            <output>100%</output>
+            <button type="button" class="catalog-zoom-in" aria-label="გადიდება">+</button>
+          </div>
+        </div>
         <div class="catalog-dialog-info">
           <h2 id="catalogDialogTitle"></h2><p class="catalog-dialog-english" lang="en"></p>
           <p class="catalog-dialog-description"></p>
@@ -27,6 +35,9 @@
     let activeCard = null, opener = null, previousOverflow = '';
     const volume = dialog.querySelector('select');
     const preview = dialog.querySelector('.catalog-dialog-preview');
+    const stage = dialog.querySelector('.catalog-dialog-stage');
+    const zoom = dialog.querySelector('.catalog-zoom-controls input');
+    const zoomOutput = dialog.querySelector('.catalog-zoom-controls output');
 
     function close() {
       if (!dialog.open) return;
@@ -35,18 +46,25 @@
       opener?.focus({ preventScroll: true });
     }
 
+    function applyZoom(value) {
+      const normalized = Math.max(80, Math.min(170, Number(value) || 100));
+      zoom.value = String(normalized);
+      zoomOutput.value = `${normalized}%`;
+      stage.style.setProperty('--catalog-zoom', String(normalized / 100));
+    }
+
     function refresh() {
       if (!activeCard) return;
-      const source = activeCard.querySelector('.ecomax-package-art');
+      const source = activeCard.querySelector('.ecomax-package-art') || activeCard.querySelector('.product-bottle, .ecomax-chamois-pack, .winso-perfume-bottle, .airbag-pack');
       if (!source) return;
-      const svg = source.cloneNode(true);
+      const art = source.cloneNode(true);
       const ids = new Map();
-      svg.querySelectorAll('[id]').forEach(node => {
+      art.querySelectorAll('[id]').forEach(node => {
         const oldId = node.id;
         node.id = `${oldId}-detail`;
         ids.set(oldId, node.id);
       });
-      svg.querySelectorAll('*').forEach(node => {
+      art.querySelectorAll('*').forEach(node => {
         Array.from(node.attributes).forEach(attribute => {
           if (!attribute.value.includes('url(#')) return;
           let value = attribute.value;
@@ -54,8 +72,9 @@
           node.setAttribute(attribute.name, value);
         });
       });
-      preview.replaceChildren(svg);
-      preview.setAttribute('aria-label', activeCard.querySelector('.product-bottle').getAttribute('aria-label'));
+      art.classList.add('catalog-dialog-preview-art');
+      stage.replaceChildren(art);
+      preview.setAttribute('aria-label', activeCard.querySelector('.product-bottle')?.getAttribute('aria-label') || activeCard.querySelector('h3').textContent.trim());
       dialog.querySelector('.catalog-dialog-price').textContent = activeCard.querySelector('.selected-price').textContent;
       dialog.querySelector('.catalog-dialog-unit').textContent = activeCard.querySelector('.selected-volume').textContent;
       dialog.querySelector('.catalog-dialog-add').disabled = activeCard.querySelector('.add-cart').disabled;
@@ -65,13 +84,20 @@
       activeCard = card;
       opener = button;
       dialog.querySelector('h2').textContent = card.querySelector('h3').textContent.trim();
-      dialog.querySelector('.catalog-dialog-english').textContent = Array.from(card.querySelectorAll('.package-label-english')).map(node => node.textContent).join(' ');
+      dialog.querySelector('.catalog-dialog-english').textContent = Array.from(card.querySelectorAll('.package-label-english')).map(node => node.textContent).join(' ') || card.querySelector('.product-top > span:first-child')?.textContent.trim() || 'PROFESSIONAL SERIES';
       dialog.querySelector('.catalog-dialog-description').textContent = card.querySelector('.product-description')?.textContent.trim() || '';
       dialog.querySelector('.catalog-dialog-fact span').textContent = card.querySelector('.product-info span')?.textContent || '';
       dialog.querySelector('.catalog-dialog-fact strong').textContent = card.querySelector('.product-info b')?.textContent || '';
       const original = card.querySelector('.volume-select');
-      volume.replaceChildren(...Array.from(original.options, option => option.cloneNode(true)));
-      volume.value = original.value;
+      const volumeLabel = dialog.querySelector('label[for="catalogDialogVolume"]');
+      if (original) {
+        volume.replaceChildren(...Array.from(original.options, option => option.cloneNode(true)));
+        volume.value = original.value;
+        volume.hidden = false; volumeLabel.hidden = false;
+      } else {
+        volume.replaceChildren(); volume.hidden = true; volumeLabel.hidden = true;
+      }
+      applyZoom(100);
       refresh();
       previousOverflow = document.body.style.overflow;
       dialog.showModal();
@@ -85,10 +111,13 @@
       original.dispatchEvent(new Event('change', { bubbles: true }));
       refresh();
     });
+    zoom.addEventListener('input', () => applyZoom(zoom.value));
+    dialog.querySelector('.catalog-zoom-out').addEventListener('click', () => applyZoom(Number(zoom.value) - 10));
+    dialog.querySelector('.catalog-zoom-in').addEventListener('click', () => applyZoom(Number(zoom.value) + 10));
     dialog.querySelector('.catalog-dialog-close').addEventListener('click', close);
     dialog.addEventListener('keydown', event => {
       if (event.key !== 'Tab') return;
-      const controls = Array.from(dialog.querySelectorAll('button:not(:disabled), select:not(:disabled)'));
+      const controls = Array.from(dialog.querySelectorAll('button:not(:disabled), select:not(:disabled):not([hidden]), input:not(:disabled):not([hidden])'));
       const first = controls[0], last = controls[controls.length - 1];
       if (event.shiftKey && document.activeElement === first) {
         event.preventDefault(); last.focus();
@@ -111,7 +140,15 @@
 
     function enhance(card) {
       const visual = card.querySelector('.product-visual');
-      if (!visual || !card.querySelector('.ecomax-package-art') || visual.querySelector('.catalog-view-button')) return;
+      if (!visual || visual.querySelector('.catalog-view-button')) return;
+      card.classList.add('ecomax-premium-card');
+      if (card.querySelector('.ecomax-packaging') && !visual.querySelector('.catalog-ambient-foam')) {
+        const foam = document.createElement('span');
+        foam.className = 'catalog-ambient-foam';
+        foam.setAttribute('aria-hidden', 'true');
+        foam.innerHTML = '<i></i><i></i><i></i><i></i><i></i><i></i><i></i>';
+        visual.prepend(foam);
+      }
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'catalog-view-button';
@@ -121,11 +158,11 @@
       button.setAttribute('aria-label', `${card.querySelector('h3').textContent.trim()} — ახლოდან ნახვა`);
       visual.appendChild(button);
     }
-    grid.addEventListener('click', event => {
+    catalog.addEventListener('click', event => {
       const button = event.target.closest('.catalog-view-button');
       if (button) open(button.closest('.product-card'), button);
     });
-    grid.querySelectorAll('.product-card').forEach(enhance);
+    catalog.querySelectorAll('.product-card').forEach(enhance);
     new MutationObserver(records => {
       const cards = new Set();
       records.forEach(record => record.addedNodes.forEach(node => {
@@ -135,7 +172,7 @@
         node.querySelectorAll('.product-card').forEach(child => cards.add(child));
       }));
       cards.forEach(enhance);
-    }).observe(grid, { childList: true, subtree: true });
+    }).observe(catalog, { childList: true, subtree: true });
 
     const tools = document.querySelector('#products .tools');
     const search = document.getElementById('searchInput');

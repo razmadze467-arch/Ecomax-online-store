@@ -160,3 +160,177 @@
   .catalog-dialog-info { padding: 22px; }
   .catalog-dialog-info h2 { font-size: 22px; }
 }
+
+/* =========================================================
+   PREMIUM CATALOG — unified presentation for all 31 products
+   ========================================================= */
+.section .grid .product-card.ecomax-premium-card {
+  --product-accent: #22d3ee;
+  --product-shadow: #075985;
+  position: relative !important; isolation: isolate; display: flex; flex-direction: column;
+  min-width: 0; min-height: 0 !important; padding: 17px !important; overflow: clip !important;
+  border: 1px solid color-mix(in srgb, var(--product-accent) 58%, #193545) !important;
+  border-radius: 24px !important;
+  background:
+    radial-gradient(circle at 80% 12%, color-mix(in srgb, var(--product-accent) 18%, transparent), transparent 25%),
+    linear-gradient(155deg,#0a1f2d 0%,#06131e 58%,#040d16 100%) !important;
+  box-shadow: inset 0 1px #ffffff0a, 0 24px 55px #0007, 0 0 26px color-mix(in srgb, var(--product-accent) 12%, transparent) !important;
+  transform: translateZ(0); transition: transform .28s ease,border-color .28s ease,box-shadow .28s ease !important;
+}
+.section .grid .product-card.ecomax-premium-card::before {
+  content: "" !important; display: block !important; position: absolute; z-index: 0; inset: 0;
+  background: linear-gradient(115deg,transparent 15%,#ffffff0a 34%,transparent 52%);
+  background-size:250% 100%; background-position:180% 0; transition:background-position .7s ease; pointer-events: none;
+}
+.section .grid .product-card.ecomax-premium-card::after {
+  content: "" !important; display: block !important; position: absolute; z-index: 0;
+  left: 22px; right: 22px; top: 7px; height: 2px; border-radius: 99px;
+  background: linear-gradient(90deg,transparent,var(--product-accent),#fff,var(--product-accent),transparent);
+  box-shadow: 0 0 13px var(--product-accent); opacity: .8; pointer-events: none;
+  animation: ecomaxPremiumPulse 3.8s ease-in-out infinite;
+}
+.section .grid .product-card.ecomax-premium-card:hover {
+  transform: translateY(-7px) !important; border-color: var(--product-accent) !important;
+  box-shadow: inset 0 1px #ffffff14,0 32px 70px #0009,0 0 34px color-mix(in srgb,var(--product-accent) 24%,transparent) !important;
+}
+.section .grid .product-card.ecomax-premium-card:hover::before { background-position:-90% 0; }
+.ecomax-premium-card.red { --product-accent:#ff594f;--product-shadow:#8d1220 }
+.ecomax-premium-card.white { --product-accent:#d9f8ff;--product-shadow:#577b8c }
+.ecomax-premium-card.yellow { --product-accent:#ffd43b;--product-shadow:#986307 }
+.ecomax-premium-card.blue,.ecomax-premium-card.cyan,.ecomax-premium-card.lightfoam { --product-accent:#29d5ff;--product-shadow:#086b98 }
+.ecomax-premium-card.pink { --product-accent:#ff68bd;--product-shadow:#95235f }
+.ecomax-premium-card.green,.ecomax-premium-card.lime { --product-accent:#50e68a;--product-shadow:#087340 }
+.ecomax-premium-card.orange { --product-accent:#ff8a27;--product-shadow:#9b4007 }
+.ecomax-premium-card.purple { --product-accent:#b476ff;--product-shadow:#63279c }
+.section .ecomax-premium-card > * { position: relative; z-index: 2; }
+.section .ecomax-premium-card .product-top {
+  min-height: 29px; margin: 0 0 12px !important; padding: 0 3px;
+  color: #c9dce5 !important; font: 800 8px/1.2 Arial,sans-serif !important; letter-spacing: 1.8px !important;
+}
+.section .ecomax-premium-card .product-number {
+  width: 34px !important; height: 26px !important; display: grid !important; place-items: center;
+  border: 1px solid var(--product-accent) !important; border-radius: 14px !important;
+  background: #03121c !important; color: var(--product-accent) !important;
+  box-shadow: 0 0 13px color-mix(in srgb,var(--product-accent) 30%,transparent) !important;
+}
+.section .ecomax-premium-card .product-visual {
+  position: relative !important; height: 305px !important; min-height: 305px !important;
+  display: grid !important; place-items: center !important; padding: 10px 10px 38px !important;
+  border: 1px solid color-mix(in srgb,var(--product-accent) 27%,#153442) !important; border-radius: 18px !important;
+  background:
+    radial-gradient(ellipse at 50% 73%,color-mix(in srgb,var(--product-accent) 22%,transparent),transparent 55%),
+    linear-gradient(180deg,#03101a 0%,#051824 100%) !important;
+  box-shadow: inset 0 1px #ffffff0a,inset 0 -30px 60px #0004 !important;
+  overflow: hidden !important;
+}
+.section .ecomax-premium-card .product-visual::before {
+  content:"" !important; display:block !important; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(110deg,transparent 25%,#ffffff0c 43%,transparent 60%);
+  transform:translateX(-100%); animation:ecomaxVisualSweep 5.5s ease-in-out infinite;
+}
+.section .ecomax-premium-card .product-visual::after {
+  content:"PROFESSIONAL SERIES" !important; display:block !important; position:absolute; z-index:1;
+  right:12px; top:11px; color:color-mix(in srgb,var(--product-accent) 72%,#fff);
+  font:700 7px/1 Arial,sans-serif; letter-spacing:1.25px; opacity:.75;
+}
+.section .ecomax-premium-card h3 {
+  margin: 17px 0 8px !important; color:#f4fbff !important; font-size:18px !important;
+  line-height:1.42 !important; text-shadow:none !important;
+}
+.section .ecomax-premium-card .product-description { color:#91aab7 !important; line-height:1.72 !important; text-shadow:none !important; }
+.section .ecomax-premium-card .home-purpose {
+  margin: 13px 0 0 !important; padding: 10px 11px !important; border:1px solid #1c3c4c !important;
+  border-radius:11px !important; background:#061722 !important; color:#9bb5c2 !important;
+}
+.section .ecomax-premium-card .home-purpose b { color:#d7e8ef !important; }
+.section .ecomax-premium-card .product-info {
+  margin:14px 0 !important; padding:10px 12px !important; border:1px solid #214253 !important;
+  border-radius:11px !important; background:#061722 !important; color:#8faab8 !important; box-shadow:none !important;
+}
+.section .ecomax-premium-card .product-info::before,.section .ecomax-premium-card .product-info::after { display:none !important; }
+.section .ecomax-premium-card .product-info b { color:#d1e6ee !important; }
+.section .ecomax-premium-card .buy-area { margin-top:auto !important; }
+.section .ecomax-premium-card .price-row { border-top:1px solid #17303e; padding-top:12px; }
+.section .ecomax-premium-card .selected-price { color:#eefcff !important; text-shadow:0 0 14px color-mix(in srgb,var(--product-accent) 45%,transparent) !important; }
+.section .ecomax-premium-card .volume-select { border-color:#315769 !important;background:#071b28 !important;color:#e2f2f8 !important; }
+.section .ecomax-premium-card .add-cart {
+  border:1px solid color-mix(in srgb,var(--product-accent) 80%,#fff) !important;
+  background:linear-gradient(135deg,var(--product-accent),color-mix(in srgb,var(--product-accent) 65%,var(--product-shadow))) !important;
+  color:#021019 !important; box-shadow:0 8px 24px color-mix(in srgb,var(--product-accent) 20%,transparent) !important;
+}
+.section .ecomax-premium-card .add-cart:hover { filter:brightness(1.12); transform:translateY(-1px); }
+.section .ecomax-premium-card .catalog-view-button {
+  display:flex !important; align-items:center; justify-content:center; gap:7px;
+  position:absolute !important; z-index:12 !important; left:50% !important; right:auto !important; top:auto !important; bottom:10px !important;
+  width:max-content !important; max-width:calc(100% - 20px); min-height:0 !important; padding:7px 12px !important;
+  transform:translateX(-50%) !important; border-radius:30px !important;
+  border-color:color-mix(in srgb,var(--product-accent) 62%,#274653) !important;
+  background:#04131dde !important; color:#e8f9ff !important;
+  box-shadow:0 0 17px color-mix(in srgb,var(--product-accent) 16%,transparent) !important;
+  font-size:10px !important; line-height:1.3 !important;
+}
+.section .ecomax-premium-card .catalog-view-button svg { width:12px !important;height:12px !important;fill:none !important;stroke:currentColor !important;stroke-width:1.5 !important; }
+#productsGrid .product-card.ecomax-premium-card {
+  border-color:color-mix(in srgb,var(--product-accent) 58%,#193545) !important;
+  background:radial-gradient(circle at 80% 12%,color-mix(in srgb,var(--product-accent) 18%,transparent),transparent 25%),linear-gradient(155deg,#0a1f2d 0%,#06131e 58%,#040d16 100%) !important;
+  box-shadow:inset 0 1px #ffffff0a,0 24px 55px #0007,0 0 26px color-mix(in srgb,var(--product-accent) 12%,transparent) !important;
+}
+#productsGrid .product-card.ecomax-premium-card:hover { border-color:var(--product-accent) !important; }
+#productsGrid .product-card.ecomax-premium-card .product-visual {
+  height:305px !important;min-height:305px !important;padding:10px 10px 38px !important;
+  border-color:color-mix(in srgb,var(--product-accent) 27%,#153442) !important;
+  background:radial-gradient(ellipse at 50% 73%,color-mix(in srgb,var(--product-accent) 22%,transparent),transparent 55%),linear-gradient(180deg,#03101a 0%,#051824 100%) !important;
+}
+#productsGrid .product-card.ecomax-premium-card .product-number { border-color:var(--product-accent) !important;color:var(--product-accent) !important; }
+#productsGrid .product-card.ecomax-premium-card .add-cart {
+  border-color:color-mix(in srgb,var(--product-accent) 80%,#fff) !important;
+  background:linear-gradient(135deg,var(--product-accent),color-mix(in srgb,var(--product-accent) 65%,var(--product-shadow))) !important;
+}
+.catalog-ambient-foam { position:absolute !important; z-index:1 !important; inset:0; pointer-events:none; overflow:hidden; }
+.catalog-ambient-foam i {
+  --bubble-x:50%; position:absolute; left:var(--bubble-x); bottom:21%; width:8px; height:8px;
+  border:1px solid #eafcffaa; border-radius:50%; background:#fff2; opacity:0;
+  animation:ecomaxAmbientBubble 4.4s ease-in infinite;
+}
+.catalog-ambient-foam i:nth-child(1){--bubble-x:18%;animation-delay:-.3s}.catalog-ambient-foam i:nth-child(2){--bubble-x:30%;width:5px;height:5px;animation-delay:-2.1s}.catalog-ambient-foam i:nth-child(3){--bubble-x:42%;width:11px;height:11px;animation-delay:-1.2s}.catalog-ambient-foam i:nth-child(4){--bubble-x:59%;width:6px;height:6px;animation-delay:-3.4s}.catalog-ambient-foam i:nth-child(5){--bubble-x:72%;animation-delay:-2.7s}.catalog-ambient-foam i:nth-child(6){--bubble-x:82%;width:4px;height:4px;animation-delay:-1.7s}.catalog-ambient-foam i:nth-child(7){--bubble-x:11%;width:4px;height:4px;animation-delay:-3.8s}
+.ecomax-foam-product .catalog-ambient-foam i { animation-duration:2.8s; box-shadow:0 0 8px #fff8; }
+
+.home-chemistry-grid,.ecomax-spray-grid { grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:22px !important; }
+.ecomax-fragrance-grid { grid-template-columns:repeat(4,minmax(0,1fr)) !important; gap:20px !important; }
+.ecomax-accessories-grid { grid-template-columns:minmax(0,460px) !important; }
+.section .ecomax-spray-card .product-visual,.section .ecomax-fragrance-card .product-visual { height:285px !important;min-height:285px !important; }
+
+.catalog-dialog-preview { position:relative; display:grid !important; grid-template-rows:minmax(360px,1fr) auto; padding:18px !important; overflow:hidden; }
+.catalog-dialog-stage {
+  --catalog-zoom:1; min-width:0; min-height:360px; display:grid; place-items:center; overflow:hidden;
+  border:1px solid #173848; border-radius:18px;
+  background:radial-gradient(circle at 50% 62%,#1a5265aa,transparent 55%),linear-gradient(180deg,#020c14,#061722);
+}
+.catalog-dialog-stage .catalog-dialog-preview-art { transform:scale(var(--catalog-zoom)); transform-origin:center; transition:transform .2s ease; }
+.catalog-dialog-stage .ecomax-package-art { width:330px !important; max-width:82% !important; max-height:410px !important; }
+.catalog-dialog-stage .product-bottle,.catalog-dialog-stage .ecomax-chamois-pack,.catalog-dialog-stage .winso-perfume-bottle,.catalog-dialog-stage .airbag-pack { margin:0 !important; }
+.catalog-zoom-controls {
+  display:grid; grid-template-columns:36px minmax(110px,1fr) 54px 36px; align-items:center; gap:10px;
+  width:min(330px,100%); margin:13px auto 0; padding:7px; border:1px solid #284b5b; border-radius:14px;
+  background:#061722e8;
+}
+.catalog-zoom-controls button { width:36px;height:32px;border:1px solid #31586a !important;border-radius:9px;background:#0a2735 !important;color:#dff7ff;font-size:20px; }
+.catalog-zoom-controls input { width:100%; accent-color:#27d8ff; }
+.catalog-zoom-controls output { color:#9edcea;font:700 11px/1 Arial,sans-serif;text-align:center; }
+
+@keyframes ecomaxPremiumPulse { 0%,100%{opacity:.45;transform:scaleX(.92)}50%{opacity:1;transform:scaleX(1)} }
+@keyframes ecomaxVisualSweep { 0%,58%{transform:translateX(-120%)}78%,100%{transform:translateX(120%)} }
+@keyframes ecomaxAmbientBubble { 0%{transform:translateY(20px) scale(.5);opacity:0}25%{opacity:.55}100%{transform:translateY(-170px) scale(1.25);opacity:0} }
+@media(max-width:1050px){.home-chemistry-grid,.ecomax-spray-grid,.ecomax-fragrance-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}
+@media(max-width:650px){
+  .home-chemistry-grid,.ecomax-spray-grid,.ecomax-fragrance-grid,.ecomax-accessories-grid{grid-template-columns:minmax(0,1fr) !important}
+  .section .grid .product-card.ecomax-premium-card{padding:14px !important;border-radius:20px !important}
+  .section .ecomax-premium-card .product-visual{height:285px !important;min-height:285px !important}
+  .catalog-dialog-preview{grid-template-rows:minmax(270px,1fr) auto;padding:10px !important}
+  .catalog-dialog-stage{min-height:270px}
+  .catalog-dialog-stage .ecomax-package-art{width:220px !important;max-height:270px !important}
+  .catalog-zoom-controls{grid-template-columns:34px minmax(70px,1fr) 48px 34px;gap:7px}
+}
+@media(prefers-reduced-motion:reduce){
+  .section .grid .product-card.ecomax-premium-card::after,.section .ecomax-premium-card .product-visual::before,.catalog-ambient-foam i{animation:none !important}
+}

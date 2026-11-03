@@ -1,5 +1,5 @@
 /* Packaging only: product data and purchase controls remain owned by the store. */
-#productsGrid .product-card .product-bottle.ecomax-packaging {
+.product-card .product-bottle.ecomax-packaging {
   width: 188px !important;
   height: 252px !important;
   max-width: 100% !important;
@@ -10,10 +10,10 @@
   overflow: visible !important;
   filter: drop-shadow(0 15px 12px #0007) drop-shadow(0 0 9px #00eaff20) !important;
 }
-#productsGrid .ecomax-packaging::before,
-#productsGrid .ecomax-packaging::after { display: none !important; }
-#productsGrid .ecomax-packaging > :not(.ecomax-package-art) { display: none !important; }
-#productsGrid .ecomax-packaging .ecomax-package-art {
+.product-card .ecomax-packaging::before,
+.product-card .ecomax-packaging::after { display: none !important; }
+.product-card .ecomax-packaging > :not(.ecomax-package-art) { display: none !important; }
+.product-card .ecomax-packaging .ecomax-package-art {
   display: block !important;
   width: 100%;
   height: 100%;
@@ -44,9 +44,53 @@
 }
 .ecomax-package-art .package-label-caption { font-size: 4.4px; font-weight: 600; fill: #526b74; }
 .ecomax-package-art .package-label-volume { font-size: 10.5px; font-weight: 800; fill: #102632; }
+.ecomax-package-art .package-liquid { filter: saturate(1.12); }
+.ecomax-package-art .package-foam-wave {
+  fill: #f5fdff; opacity: .45; transform-box: fill-box; transform-origin: center;
+  animation: ecomaxLiquidSway 3.8s ease-in-out infinite;
+}
+.ecomax-package-art .package-foam-bubble {
+  fill: #fff; opacity: .42;
+  animation: ecomaxBottleBubble 3.4s ease-in infinite;
+  animation-delay: calc(var(--bubble-delay, 0s) * -1);
+}
+.ecomax-package-art .package-foam.is-active .package-foam-wave { opacity: .92; }
+.ecomax-package-art .package-foam.is-active .package-foam-bubble {
+  opacity: .85; animation-duration: 2.4s;
+}
+.ecomax-package-art .package-glass-highlight {
+  animation: ecomaxGlassGlint 4.8s ease-in-out infinite;
+}
+.product-card .ecomax-packaging[data-package-shape="canister-5plus"] {
+  width: 218px !important;
+}
+.product-card .ecomax-packaging[data-package-shape="jug-2-4"] {
+  width: 204px !important;
+}
+@keyframes ecomaxLiquidSway {
+  0%,100% { transform: translateX(-2px) scaleX(1.03); }
+  50% { transform: translateX(3px) scaleX(.98); }
+}
+@keyframes ecomaxBottleBubble {
+  0% { transform: translateY(24px) scale(.6); opacity: 0; }
+  25% { opacity: .72; }
+  80% { opacity: .35; }
+  100% { transform: translateY(-19px) scale(1.12); opacity: 0; }
+}
+@keyframes ecomaxGlassGlint {
+  0%,65%,100% { opacity: .32; }
+  78% { opacity: .78; }
+}
 @media (max-width: 600px) {
-  #productsGrid .product-card .product-bottle.ecomax-packaging {
+  .product-card .product-bottle.ecomax-packaging {
     width: 168px !important;
     height: 236px !important;
   }
+  .product-card .ecomax-packaging[data-package-shape="canister-5plus"],
+  .product-card .ecomax-packaging[data-package-shape="jug-2-4"] { width: 188px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ecomax-package-art .package-foam-wave,
+  .ecomax-package-art .package-foam-bubble,
+  .ecomax-package-art .package-glass-highlight { animation: none !important; }
 }
