@@ -240,14 +240,21 @@ const form=document.getElementById('form'),btn=document.getElementById('submit')
 function showErr(t){err.textContent=t;err.style.display='block';ok.style.display='none'}
 function showOk(t){ok.textContent=t;ok.style.display='block';err.style.display='none'}
 if(!db){showErr('Supabase ვერ ჩაიტვირთა. გვერდი განაახლე.');return}
-const {data:{session}}=await db.auth.getSession();
+let session=null;
+try{
+  const result=await db.auth.getSession();
+  session=result?.data?.session||null;
+}catch(ex){
+  // A transient session-check failure must not disable the registration form.
+  console.warn('Courier registration session check:',ex);
+}
 if(session){
   const sessionRole=String(session.user?.app_metadata?.role||'').toLowerCase();
   if(sessionRole==='courier'){
     location.replace('line.html');
     return;
   }
-  // A normal customer session stays in the customer area.
+  // A normal customer session stays signed in.
 }
 form.addEventListener('submit',async e=>{
  e.preventDefault();err.style.display='none';ok.style.display='none';
@@ -263,7 +270,7 @@ form.addEventListener('submit',async e=>{
    email,
    password,
    options:{
-     emailRedirectTo:'https://ecomax.com.ge/line.html',
+     emailRedirectTo:'https://ecomax.com.ge/line-login.html',
      data:{
        full_name:name,
        phone:phone,
