@@ -817,6 +817,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="ecomax-index-unified-theme.css?v=20261103-1">
 <link rel="stylesheet" href="styles/admin-order-preparation.css?v=20261103-1">
+<link rel="stylesheet" href="styles/admin-premium-command.css?v=20261103-2">
 </head>
 
 <body>
@@ -1291,6 +1292,13 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
         <input id="preparationSearch" type="search" autocomplete="off"
                placeholder="🔎 ნომერი, სახელი, ტელეფონი, ქალაქი..." aria-label="შეკვეთების ძებნა">
         <div id="preparationStatusTabs" class="ecomax-prep-tabs" role="group" aria-label="შეკვეთების სტატუსების ფილტრები"></div>
+        <div class="ecomax-prep-bulkbar" aria-label="შეკვეთების ჯგუფური მართვა">
+          <label class="ecomax-prep-select-all"><input id="preparationSelectAll" type="checkbox"> <span>მონიშნე ყველა ხილული</span></label>
+          <strong id="preparationSelectedCount" aria-live="polite">მონიშნულია: 0</strong>
+          <button type="button" id="preparationClearSelection" class="ecomax-prep-clear" disabled>მონიშვნის გაუქმება</button>
+          <button type="button" id="preparationDeleteSelected" class="ecomax-prep-delete-selected" disabled>🗑 მონიშნულების წაშლა</button>
+        </div>
+
       </div>
 
       <div id="preparationResultCount" class="ecomax-prep-caption" aria-live="polite">შეკვეთები იტვირთება…</div>
@@ -2707,6 +2715,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
         <td>
           <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
             <button class="small-btn" onclick="viewOrder('${esc(order.id)}')" type="button">👁 ნახვა</button>
+            <button class="small-btn ecomax-admin-delete-btn" data-admin-delete-order="${esc(order.id)}" type="button">🗑 წაშლა</button>
           </div>
           <div class="ecomax-status-buttons" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
             <button type="button" class="small-btn ecomax-status-btn" onclick="quickOrderStatus('${esc(order.id)}','new')">ახალი</button>
@@ -2817,6 +2826,64 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       window.renderOrderPreparationBoard();
     toast("შეკვეთის სტატუსი განახლდა ✓");
   }
+
+
+  /* Order deletion: irreversible; protect with admin session + explicit confirmation.
+     ON DELETE CASCADE removes order_status_history and courier_order_events. */
+  let orderDeletionBusy=false;
+  async function deleteAdminOrders(rawIds){
+    if(orderDeletionBusy){toast("წაშლა უკვე მიმდინარეობს.");return false;}
+    const ids=[...new Set((Array.isArray(rawIds)?rawIds:[rawIds]).map(x=>String(x||"").trim()).filter(Boolean))];
+    const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if(!ids.length||ids.some(x=>!uuid.test(x))){toast("აირჩიე შეკვეთა.");return false;}
+    const selected=ids.map(id=>orders.find(o=>String(o.id)===id));
+    if(selected.some(x=>!x)){toast("შეკვეთა ვერ მოიძებნა. განაახლე სია.");return false;}
+    if(!db||String(currentUser?.email||"").trim().toLowerCase()!==ADMIN_EMAIL){
+      toast("წაშლის უფლება მხოლოდ ადმინისტრატორს აქვს.");return false;
+    }
+    const title=ids.length===1?String(selected[0].order_number||ids[0]):ids.length+" შეკვეთა";
+    const active=selected.filter(x=>!["new","processing","cancelled"].includes(x.status)).length;
+    const warning="\n\nმოქმედება შეუქცევადია! შეკვეთასთან ერთად წაიშლება სტატუსების ისტორია და კურიერის მოვლენები. GPS ისტორიიდან შეკვეთის ბმა მოიხსნება.";
+    const activeWarning=active?"\n⚠️ "+active+" შეკვეთა უკვე დატვირთული, გზაში ან ჩაბარებულია.":"";
+    if(!window.confirm("ნამდვილად გინდა წაშალო "+title+"?"+warning+activeWarning))return false;
+    if(ids.length>1 && window.prompt("ჯგუფური წაშლისთვის ზუსტად აკრიფე: წაშლა","")!=="წაშლა"){
+      toast("ჯგუფური წაშლა გაუქმდა.");return false;
+    }
+    orderDeletionBusy=true;
+    try{
+      const {data:{user},error:authError}=await db.auth.getUser();
+      if(authError||String(user?.email||"").trim().toLowerCase()!==ADMIN_EMAIL){
+        throw new Error("Admin სესია ვერ დადასტურდა.");
+      }
+      const {data,error}=await db.from("orders").delete().in("id",ids).select("id");
+      if(error)throw error;
+      const deleted=new Set((data||[]).map(x=>String(x.id)));
+      if(deleted.size!==ids.length||ids.some(id=>!deleted.has(id))){
+        await loadOrders();
+        renderOrders();
+        if(typeof window.renderOrderPreparationBoard==="function")window.renderOrderPreparationBoard();
+        throw new Error("წაშლილი რაოდენობა არ ემთხვევა მოთხოვნას. გადაამოწმე სია.");
+      }
+      orders=orders.filter(x=>!deleted.has(String(x.id)));
+      if(typeof window.ecomaxOnOrdersDeleted==="function")window.ecomaxOnOrdersDeleted([...deleted]);
+      closeOrderModal();
+      updateDashboard();
+      renderOrders();
+      if(typeof window.renderOrderPreparationBoard==="function")window.renderOrderPreparationBoard();
+      if(typeof renderAnalytics==="function")renderAnalytics();
+      toast("წაიშალა "+ids.length+" შეკვეთა ✓");
+      return true;
+    }catch(e){
+      console.error("Delete orders:",e);
+      toast("წაშლა ვერ მოხერხდა: "+(e?.message||"უცნობი შეცდომა"));
+      return false;
+    }finally{orderDeletionBusy=false;}
+  }
+  // Only reacts to deliberate button presses on the orders table.
+  $("ordersTable").addEventListener("click",event=>{
+    const btn=event.target.closest("[data-admin-delete-order]");
+    if(btn)void deleteAdminOrders([btn.dataset.adminDeleteOrder]);
+  });
 
   let ecomaxLiveTrack = null;
 
