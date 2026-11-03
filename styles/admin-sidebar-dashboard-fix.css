@@ -1,0 +1,227 @@
+/*
+ * ECOMAX Admin • sidebar containment + reversible Dashboard cleanup.
+ * Pure UI layer; nothing here deletes or changes a database row.
+ */
+html[data-ecomax-unified="admin"] #adminApp.app > .sidebar {
+  display:flex!important;
+  flex-direction:column!important;
+  height:100vh!important;
+  height:100dvh!important;
+  min-height:0!important;
+  max-height:100dvh!important;
+  overflow:hidden!important;
+  overscroll-behavior:contain;
+  padding-bottom:12px!important;
+}
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .brand,
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .admin-avatar,
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .admin-name,
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .admin-role {
+  flex-shrink:0!important;
+}
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .nav {
+  display:flex!important;
+  flex:1 1 auto!important;
+  flex-direction:column!important;
+  min-height:0!important;
+  margin:14px 0 0!important;
+  padding:2px 5px 12px 0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  scroll-behavior:smooth;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(34,200,255,.48) rgba(4,24,38,.3);
+}
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .nav::-webkit-scrollbar {width:5px}
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .nav::-webkit-scrollbar-thumb {
+  background:rgba(34,200,255,.42);border-radius:999px
+}
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .nav button {
+  flex:0 0 auto!important;
+  min-height:42px;
+  margin:2px 0!important;
+  padding:10px 12px!important;
+  border-radius:11px!important;
+  white-space:normal;
+}
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .nav .nav-text {
+  min-width:0;
+  overflow-wrap:anywhere;
+  line-height:1.35;
+}
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .sidebar-bottom {
+  position:static!important;
+  inset:auto!important;
+  left:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  flex:0 0 auto!important;
+  width:100%;
+  margin:0!important;
+  padding:11px 0 0!important;
+  border-top:1px solid rgba(34,200,255,.24);
+  background:linear-gradient(180deg,rgba(5,23,37,.96),rgba(3,12,23,.99));
+  z-index:1;
+}
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .sidebar-bottom .logout-btn {
+  display:flex!important;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  min-height:38px;
+  margin-bottom:7px!important;
+  padding:8px 10px!important;
+  line-height:1.25;
+  white-space:normal;
+  font-size:12px!important;
+  border-radius:10px!important;
+}
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .sidebar-bottom .logout-btn:last-child {
+  margin-bottom:0!important;
+}
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .sidebar-bottom a.logout-btn {
+  border:1px solid rgba(34,200,255,.39)!important;
+  color:#d6f3ff!important;
+  background:rgba(16,63,91,.23)!important;
+}
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .sidebar-bottom a.logout-btn:hover {
+  border-color:rgba(255,116,24,.60)!important;
+  color:#ffb68b!important;
+}
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .sidebar-bottom button.logout-btn {
+  border-color:rgba(255,98,116,.36)!important;
+  color:#ffb4c1!important;
+}
+html[data-ecomax-unified="admin"] #adminApp .sidebar > .sidebar-bottom button.logout-btn:hover {
+  color:#fff!important;background:rgba(172,42,68,.18)!important
+}
+
+/* The Dashboard is only an inbox snapshot. Dismiss completed rows without deletion. */
+html[data-ecomax-unified="admin"] #section-dashboard .dashboard-dismiss-completed {
+  display:inline-grid;place-items:center;
+  width:32px;height:32px;
+  border:1px solid rgba(248,161,97,.48);
+  background:rgba(255,116,24,.075);
+  border-radius:9px;
+  color:#ffd6b7;
+  font-size:19px;font-weight:750;line-height:1;
+  cursor:pointer;
+  transition:background .18s,border-color .18s,transform .18s;
+}
+html[data-ecomax-unified="admin"] #section-dashboard .dashboard-dismiss-completed:hover {
+  border-color:#ff9a35;background:rgba(255,116,24,.18);
+  color:#fff;transform:scale(1.04)
+}
+html[data-ecomax-unified="admin"] #section-dashboard .dashboard-restore-completed {
+  min-height:34px;
+  border:1px solid rgba(34,200,255,.36);
+  background:rgba(34,200,255,.065);
+  color:#aee8ff;
+  border-radius:9px;
+  padding:8px 10px;
+  font-size:11px;
+  font-weight:800;
+}
+html[data-ecomax-unified="admin"] #section-dashboard .dashboard-restore-completed:hover {
+  border-color:#ff9a35!important;
+  color:#ffbd8c!important;
+}
+html[data-ecomax-unified="admin"] #section-dashboard .dashboard-history-help {
+  margin:0 0 12px;
+  padding:10px 13px;
+  color:#a1c7d9;
+  font-size:11px;line-height:1.7;
+  border:1px solid rgba(35,140,199,.20);
+  background:rgba(6,30,47,.35);
+  border-radius:11px;
+}
+html[data-ecomax-unified="admin"] #section-dashboard .dashboard-history-help strong {
+  color:#ffb17b;
+}
+html[data-ecomax-unified="admin"] #section-dashboard .dashboard-recent-actions {
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+}
+html[data-ecomax-unified="admin"] #section-dashboard td.dashboard-row-actions {
+  white-space:nowrap;
+}
+html[data-ecomax-unified="admin"] #section-dashboard td.dashboard-row-actions > div {
+  display:flex;align-items:center;gap:6px;
+}
+html[data-ecomax-unified="admin"] #section-dashboard .dashboard-empty {
+  padding:30px 16px!important;text-align:center;color:#abc4d0
+}
+html[data-ecomax-unified="admin"] #section-dashboard .dashboard-empty small {
+  display:block;margin-top:10px;color:#81a6ba;font-size:11px
+}
+
+/* Long-term order records remain in their own history list, not the Dashboard. */
+html[data-ecomax-unified="admin"] #section-orders .orders-history-explainer {
+  display:flex;flex-wrap:wrap;gap:7px;align-items:center;
+  margin:0 0 15px;padding:12px 14px;
+  background:linear-gradient(112deg,rgba(7,48,70,.62),rgba(255,116,24,.035));
+  border:1px solid rgba(34,200,255,.28);
+  border-left:3px solid #ff7418;border-radius:10px;
+  color:#c8e9f5;font-size:12px;line-height:1.7;
+}
+html[data-ecomax-unified="admin"] #section-orders .orders-history-explainer strong {color:#ffbb85}
+html[data-ecomax-unified="admin"] #orderModal .order-record-metadata {
+  margin-top:13px;
+  padding:13px;
+  background:rgba(9,36,55,.50);
+  border:1px solid rgba(45,151,204,.29);
+  border-radius:13px;
+}
+html[data-ecomax-unified="admin"] #orderModal .order-record-metadata h3 {
+  margin:0 0 12px;font-size:13px;font-weight:900;
+  color:#ffb783;
+}
+html[data-ecomax-unified="admin"] #orderModal .order-record-grid {
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;
+}
+html[data-ecomax-unified="admin"] #orderModal .order-record-grid .order-record-field {
+  background:rgba(3,14,26,.5);border:1px solid rgba(43,131,173,.19);
+  border-radius:10px;padding:9px 11px;min-width:0;
+}
+html[data-ecomax-unified="admin"] #orderModal .order-record-field small {
+  display:block;color:#8baec0;font-size:10px;margin-bottom:5px;
+}
+html[data-ecomax-unified="admin"] #orderModal .order-record-field strong {
+  display:block;color:#e8f6ff;font-size:12px;overflow-wrap:anywhere;
+  line-height:1.55;
+}
+html[data-ecomax-unified="admin"] #orderModal #orderStatusTimeline {
+  margin-top:12px;
+  max-height:320px;
+  overflow-y:auto;
+}
+html[data-ecomax-unified="admin"] #orderModal #orderStatusTimeline .order-status-event {
+  padding:11px 0;
+  border-bottom:1px solid rgba(34,200,255,.16);
+  font-size:12px;
+  color:#d4edf8;
+}
+html[data-ecomax-unified="admin"] #orderModal #orderStatusTimeline .order-status-event:last-child {
+  border-bottom:0
+}
+html[data-ecomax-unified="admin"] #orderModal #orderStatusTimeline .order-status-event time {
+  display:block;margin-top:4px;color:#85a8bb;font-size:10px;
+}
+@media(max-height:735px) and (min-width:751px) {
+  html[data-ecomax-unified="admin"] #adminApp .sidebar .brand {padding-bottom:14px!important;margin-bottom:8px!important}
+  html[data-ecomax-unified="admin"] #adminApp .sidebar .admin-avatar {width:48px;height:48px;font-size:21px;margin:5px auto!important}
+  html[data-ecomax-unified="admin"] #adminApp .sidebar > .nav {margin-top:8px!important}
+  html[data-ecomax-unified="admin"] #adminApp .sidebar > .nav button {min-height:38px;padding:8px 10px!important}
+}
+@media(max-width:750px) {
+  html[data-ecomax-unified="admin"] #adminApp.app > .sidebar {padding-bottom:8px!important}
+  html[data-ecomax-unified="admin"] #adminApp .sidebar > .nav button {padding:10px 4px!important;justify-content:center!important}
+  html[data-ecomax-unified="admin"] #adminApp .sidebar > .sidebar-bottom {padding:7px 0 0!important}
+  html[data-ecomax-unified="admin"] #adminApp .sidebar > .sidebar-bottom .logout-btn {padding:9px 3px!important;min-height:34px}
+  html[data-ecomax-unified="admin"] #section-dashboard .dashboard-recent-actions {margin-top:10px}
+  html[data-ecomax-unified="admin"] #orderModal .order-record-grid {grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce) {
+  html[data-ecomax-unified="admin"] #section-dashboard .dashboard-dismiss-completed {transition:none!important}
+  html[data-ecomax-unified="admin"] #adminApp .sidebar > .nav {scroll-behavior:auto}
+}

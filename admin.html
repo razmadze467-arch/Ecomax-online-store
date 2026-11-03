@@ -818,6 +818,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 <link rel="stylesheet" href="ecomax-index-unified-theme.css?v=20261103-1">
 <link rel="stylesheet" href="styles/admin-order-preparation.css?v=20261103-1">
 <link rel="stylesheet" href="styles/admin-premium-command.css?v=20261103-2">
+<link rel="stylesheet" href="styles/admin-sidebar-dashboard-fix.css?v=20261103-1">
 </head>
 
 <body>
@@ -1008,8 +1009,6 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     <div class="sidebar-bottom">
 
       <a href="index.html" class="logout-btn" style="display:flex;align-items:center;justify-content:center;text-decoration:none;margin-bottom:8px;">🌐 <span class="nav-text">მთავარი საიტი</span></a>
-      <button type="button" class="logout-btn" onclick="showSection('couriers',this)" style="margin-bottom:8px;">🚚 <span class="nav-text">კურიერები</span></button>
-
       <button
         class="logout-btn"
         onclick="logout()"
@@ -1151,16 +1150,14 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
             ⚡ ბოლო შეკვეთები
           </h2>
 
-          <button
-            class="small-btn"
-            onclick="showSectionById('orders')"
-            type="button"
-          >
-            ყველას ნახვა →
-          </button>
+          <div class="dashboard-recent-actions">
+            <button id="dashboardRestoreCompleted" class="dashboard-restore-completed" type="button" hidden>↺ დამალულის დაბრუნება</button>
+            <button class="small-btn" onclick="showSectionById('orders')" type="button">📦 სრული ისტორია →</button>
+          </div>
 
         </div>
 
+        <p class="dashboard-history-help"><strong>Dashboard-ის გაწმენდა:</strong> მხოლოდ დასრულებულ შეკვეთასთან გამოჩნდება ×. დაჭერა მალავს მხოლოდ ამ სიიდან — <strong>📦 შეკვეთებში ჩანაწერი და ისტორია უცვლელად რჩება.</strong></p>
         <div class="table-scroll">
 
           <table>
@@ -1201,9 +1198,14 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
         <div class="section-header">
 
           <h2>
-            📦 შეკვეთების მართვა
+            📦 შეკვეთების სრული ისტორია
           </h2>
 
+        </div>
+
+        <div class="orders-history-explainer">
+          <strong>ყველა ნამდვილი შეკვეთა აქ რჩება.</strong>
+          Dashboard-ის × მხოლოდ მთავარ დაფაზე მალავს დასრულებულ შეკვეთას — მონაცემები, პროდუქტები, გადახდა, მიწოდება და შეკვეთის ისტორია არ იშლება. წითელი „🗑 წაშლა“ ღილაკი ცალკე, სამუდამო წაშლის ოპერაციაა.
         </div>
 
         <div class="toolbar">
@@ -2401,32 +2403,89 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     renderRecentOrders();
   }
 
-  function renderRecentOrders() {
-    const tbody = $("recentOrders");
-    if (!tbody) return;
 
-    const rows = [...orders]
-      .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))
-      .slice(0, 8);
+  /* Dashboard is a temporary inbox, not the order database.
+     Dismissed completed orders are browser-local and reversible. */
+  const dashboardHiddenFallback=new Map();
 
-    if (!rows.length) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px">შეკვეთები ჯერ არ არის.</td></tr>';
+  function dashboardHiddenKey(){
+    return "ecomax:admin:hidden-completed:v1:"+String(currentUser?.id||ADMIN_EMAIL).toLowerCase();
+  }
+
+  function dashboardHiddenCompleted(){
+    const key=dashboardHiddenKey();
+    let persisted=[];
+    try{
+      const parsed=JSON.parse(window.localStorage.getItem(key)||"[]");
+      if(Array.isArray(parsed))persisted=parsed.filter(id=>typeof id==="string");
+    }catch(e){console.warn("Saved Dashboard view read:",e);}
+    return new Set([...persisted,...(dashboardHiddenFallback.get(key)||[])]);
+  }
+
+  function saveDashboardHiddenCompleted(hidden){
+    const key=dashboardHiddenKey();
+    const ids=[...hidden].slice(-1500);
+    dashboardHiddenFallback.set(key,ids);
+    try{window.localStorage.setItem(key,JSON.stringify(ids));}
+    catch(e){console.warn("Saved Dashboard view write:",e);}
+  }
+
+  function hideCompletedFromDashboard(orderId){
+    const order=orders.find(x=>String(x.id)===String(orderId));
+    if(!order||order.status!=="completed"){
+      toast("× მხოლოდ დასრულებულ შეკვეთებზე მოქმედებს.");
       return;
     }
-
-    tbody.innerHTML = rows.map(order => `
-      <tr>
-        <td><b>${esc(order.order_number || "—")}</b></td>
-        <td>${esc(order.customer_name || "—")}</td>
-        <td><b>${money(order.total)}</b></td>
-        <td>${statusBadge(order.status)}</td>
-        <td>${esc(date(order.created_at))}</td>
-        <td>
-          <button class="small-btn" type="button" onclick="viewOrder('${esc(order.id)}')">👁 ნახვა</button>
-        </td>
-      </tr>
-    `).join("");
+    const hidden=dashboardHiddenCompleted();
+    hidden.add(String(order.id));
+    saveDashboardHiddenCompleted(hidden);
+    renderRecentOrders();
+    toast("Dashboard გასუფთავდა ✓ შეკვეთის ჩანაწერი და ისტორია დარჩა 📦 შეკვეთებში.");
   }
+
+  function restoreCompletedToDashboard(){
+    saveDashboardHiddenCompleted(new Set());
+    renderRecentOrders();
+    toast("Dashboard-ზე დასრულებული შეკვეთები კვლავ გამოჩნდა ✓");
+  }
+
+  function renderRecentOrders(){
+    const tbody=$("recentOrders");
+    if(!tbody)return;
+    const hidden=dashboardHiddenCompleted();
+    const restore=$("dashboardRestoreCompleted");
+    if(restore)restore.hidden=!orders.some(o=>o.status==="completed"&&hidden.has(String(o.id)));
+
+    const rows=[...orders]
+      .filter(o=>o.status!=="completed"||!hidden.has(String(o.id)))
+      .sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0))
+      .slice(0,8);
+    if(!rows.length){
+      tbody.innerHTML='<tr><td colspan="6" class="dashboard-empty">📭 Dashboard-ზე საჩვენებელი შეკვეთები არ არის.'+
+        '<small>ყველა შეკვეთა ინახება 📦 შეკვეთების ისტორიაში. დასრულებული ჩანაწერების დაბრუნება შეგიძლია ზედა ღილაკით.</small></td></tr>';
+      return;
+    }
+    tbody.innerHTML=rows.map(order=>
+      '<tr>'+
+        '<td><b>'+esc(order.order_number||"—")+'</b></td>'+
+        '<td>'+esc(order.customer_name||"—")+'</td>'+
+        '<td><b>'+money(order.total)+'</b></td>'+
+        '<td>'+statusBadge(order.status)+'</td>'+
+        '<td>'+esc(date(order.created_at))+'</td>'+
+        '<td class="dashboard-row-actions"><div>'+
+          '<button class="small-btn" type="button" onclick="viewOrder(\''+esc(order.id)+'\')">👁 ნახვა</button>'+
+          (order.status==="completed"?
+            '<button class="dashboard-dismiss-completed" type="button" data-dashboard-hide="'+esc(order.id)+'" aria-label="დასრულებული შეკვეთის მხოლოდ Dashboard-იდან დამალვა" title="× Dashboard-დან დამალვა — ისტორია რჩება">×</button>':"")+
+        '</div></td>'+
+      '</tr>'
+    ).join("");
+  }
+
+  $("recentOrders")?.addEventListener("click",event=>{
+    const button=event.target.closest("[data-dashboard-hide]");
+    if(button)hideCompletedFromDashboard(button.dataset.dashboardHide);
+  });
+  $("dashboardRestoreCompleted")?.addEventListener("click",restoreCompletedToDashboard);
 
   async function refreshAll() {
 
@@ -2750,6 +2809,43 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     }).join("");
   }
 
+
+  // Read-only order record metadata and authoritative server-side status history.
+  function orderRecordField(label,value){
+    return '<div class="order-record-field"><small>'+esc(label)+'</small>'+
+      '<strong>'+esc(value==null||value===""?"—":String(value))+'</strong></div>';
+  }
+
+  async function loadOrderStatusTimeline(orderId){
+    const modal=$("orderModal");
+    const target=$("orderStatusTimeline");
+    if(!modal||!target)return;
+    try{
+      const {data,error}=await db.from("order_status_history")
+        .select("old_status,new_status,note,created_at")
+        .eq("order_id",orderId)
+        .order("created_at",{ascending:false});
+      if(error)throw error;
+      if(modal.dataset.orderId!==String(orderId)||!modal.classList.contains("show"))return;
+      if(!Array.isArray(data)||!data.length){
+        target.textContent="ამ შეკვეთის სტატუსის ცვლილებები ჯერ არ არის დაფიქსირებული.";
+        return;
+      }
+      target.innerHTML=data.map(change=>
+        '<div class="order-status-event">'+
+          '<b>'+esc(statusName(change.old_status))+' → '+esc(statusName(change.new_status))+'</b>'+
+          (change.note?'<div>'+esc(change.note)+'</div>':"")+
+          '<time>'+esc(date(change.created_at))+'</time>'+
+        '</div>'
+      ).join("");
+    }catch(error){
+      console.warn("Order status history:",error);
+      if(modal.dataset.orderId===String(orderId)){
+        target.textContent="ისტორიის ჩატვირთვა ვერ მოხერხდა. შეკვეთის ჩანაწერი უცვლელია.";
+      }
+    }
+  }
+
   function viewOrder(orderId){
     const order=orders.find(x=>String(x.id)===String(orderId));
     const box=$("orderDetails");
@@ -2784,9 +2880,31 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       '<div style="display:flex;gap:7px;flex-wrap:wrap">'+
         ['new','processing','loaded','picked_up','shipped','completed','cancelled'].map(s=>'<button class="small-btn" type="button" onclick="quickOrderStatus(\''+esc(order.id)+'\',\''+s+'\')">'+esc(statusName(s))+'</button>').join("")+
       '</div>'+
-      '<div style="margin-top:14px;color:var(--muted);font-size:11px">შექმნილია: '+esc(date(order.created_at))+'</div>';
+      '<div style="margin-top:14px;color:var(--muted);font-size:11px">შექმნილია: '+esc(date(order.created_at))+'</div>'+
+      '<section class="order-record-metadata">'+
+        '<h3>📑 შეკვეთის სრული ინფორმაცია</h3>'+
+        '<div class="order-record-grid">'+
+          orderRecordField("შექმნილია",date(order.created_at))+
+          orderRecordField("ბოლო განახლება",date(order.updated_at))+
+          orderRecordField("მიწოდების მეთოდი",order.delivery_method==="pickup"?"თვითგატანა":order.delivery_method==="delivery"?"კურიერით მიწოდება":order.delivery_method)+
+          orderRecordField("გადახდის მეთოდი",order.payment_method==="cash"?"ნაღდი":order.payment_method==="card"?"ბარათი":order.payment_method)+
+          orderRecordField("გადახდის სტატუსი",order.payment_status)+
+          orderRecordField("კურიერი",order.courier_name||"არ არის მინიჭებული")+
+          orderRecordField("კურიერის ტელეფონი",order.courier_phone)+
+          orderRecordField("შეკვეთის ID",order.id)+
+          (order.admin_note?orderRecordField("ადმინის შენიშვნა",order.admin_note):"")+
+          (order.cancellation_reason?orderRecordField("გაუქმების მიზეზი",order.cancellation_reason):"")+
+          (order.return_reason?orderRecordField("დაბრუნების მიზეზი",order.return_reason):"")+
+        '</div>'+
+      '</section>'+
+      '<section class="order-record-metadata">'+
+        '<h3>🕓 სტატუსის ცვლილებების ისტორია</h3>'+
+        '<div id="orderStatusTimeline" aria-live="polite">ისტორია იტვირთება…</div>'+
+      '</section>';
 
+    modal.dataset.orderId=String(order.id);
     modal.classList.add("show");
+    void loadOrderStatusTimeline(String(order.id));
   }
 
   async function quickOrderStatus(orderId,status){
