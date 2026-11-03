@@ -185,3 +185,87 @@
  #section-preparation .ecomax-prep-order *,
  #section-preparation .ecomax-prep-tab{transition:none!important;animation:none!important}
 }
+
+
+/* PREMIUM ORDER SELECTION — destructive controls are clearly separated. */
+#section-preparation .ecomax-prep-bulkbar{
+ display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;
+ gap:10px;margin-top:12px;padding:13px 14px;
+ border:1px solid rgba(47,142,190,.38);
+ background:linear-gradient(115deg,#0a2434e8,#061522ed);
+ border-radius:14px;box-shadow:inset 0 1px rgba(180,233,255,.06)
+}
+#section-preparation .ecomax-prep-bulkbar .ecomax-prep-select-all{
+ display:inline-flex;align-items:center;gap:8px;
+ color:#d3eaf6;font-size:12px;font-weight:850;cursor:pointer
+}
+#section-preparation .ecomax-prep-bulkbar input[type=checkbox],
+#section-preparation .ecomax-prep-check-label input[type=checkbox]{
+ width:19px;height:19px;min-width:19px;cursor:pointer;
+ accent-color:#ff7418;outline-offset:2px
+}
+#section-preparation .ecomax-prep-bulkbar strong{
+ border-radius:8px;padding:7px 10px;
+ background:rgba(34,200,255,.08);color:#9ceaff;font-size:11px;
+ font-variant-numeric:tabular-nums
+}
+#section-preparation .ecomax-prep-bulkbar button{
+ min-height:38px;padding:7px 12px;border-radius:10px;
+ font-size:11px;font-weight:850;cursor:pointer;
+ transition:background .17s,box-shadow .17s,transform .17s
+}
+#section-preparation .ecomax-prep-clear{
+ background:rgba(34,200,255,.065);border:1px solid rgba(49,155,209,.36);
+ color:#bedeea
+}
+#section-preparation .ecomax-prep-clear:hover:not(:disabled){
+ border-color:#22c8ff;background:rgba(34,200,255,.12)
+}
+#section-preparation .ecomax-prep-delete-selected{
+ margin-left:auto;
+ background:linear-gradient(135deg,#b92546,#76152f);
+ border:1px solid #f5667b;color:#fff;
+ box-shadow:0 0 21px rgba(234,57,94,.13)
+}
+#section-preparation .ecomax-prep-delete-selected:hover:not(:disabled){
+ transform:translateY(-1px);box-shadow:0 0 24px rgba(234,57,94,.32)
+}
+#section-preparation .ecomax-prep-bulkbar button:disabled{
+ opacity:.46;cursor:not-allowed;box-shadow:none
+}
+#section-preparation .ecomax-prep-check-label{
+ display:flex;align-items:flex-start;justify-content:center;flex:none;
+ margin:2px 0 0;padding:5px;border-radius:9px;
+ border:1px solid rgba(43,149,197,.35);
+ background:rgba(35,126,175,.10);cursor:pointer
+}
+#section-preparation .ecomax-prep-check-label:has(input:checked){
+ border-color:#ff9a35;background:rgba(255,116,24,.14)
+}
+#section-preparation .ecomax-prep-order:has(.ecomax-prep-check-label input:checked){
+ border-color:rgba(255,151,55,.70)!important;
+ box-shadow:0 20px 48px #0005,0 0 25px rgba(255,116,24,.09)!important
+}
+#section-preparation .ecomax-prep-order-top>div{
+ flex:1;min-width:0
+}
+#section-preparation .ecomax-prep-delete{
+ grid-column:1/-1;min-height:40px;
+ color:#ffdbe0;background:rgba(195,28,58,.12);
+ border:1px solid rgba(255,94,117,.48);
+ border-radius:10px;font-weight:850;
+ box-shadow:inset 0 1px rgba(255,255,255,.045)
+}
+#section-preparation .ecomax-prep-delete:hover:not(:disabled){
+ border-color:#ff6979!important;color:#fff!important;
+ background:rgba(235,45,74,.21)!important;
+ box-shadow:0 0 22px rgba(255,72,102,.17)!important
+}
+#section-preparation .ecomax-prep-delete:disabled{opacity:.43;cursor:not-allowed}
+@media(max-width:680px){
+ #section-preparation .ecomax-prep-bulkbar{gap:9px;padding:12px}
+ #section-preparation .ecomax-prep-bulkbar strong{margin-right:auto}
+ #section-preparation .ecomax-prep-bulkbar .ecomax-prep-select-all{width:100%}
+ #section-preparation .ecomax-prep-delete-selected{margin:0;width:100%}
+ #section-preparation .ecomax-prep-clear{flex:1}
+}
