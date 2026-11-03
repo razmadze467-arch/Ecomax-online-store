@@ -523,7 +523,7 @@ async function boot(){
  if(u){ $('courierName').textContent=u.user_metadata?.full_name||u.email||'ECOMAX LINE COURIER'; $('courierPhone').textContent=u.user_metadata?.phone||'COURIER • AUTHENTICATED'; }
  if(!u){location.replace('line-login.html');return;}
  const role=String(u?.app_metadata?.role||'').toLowerCase();
- if(role!=='courier'){await db.auth.signOut();location.replace('index.html');return;}
+ if(role!=='courier'){ /* Restrict courier dashboard without ending a customer's store session. */ location.replace('index.html');return;}
  $('access').textContent='COURIER • მხოლოდ მინიჭებული შეკვეთები';
  await load();
  await startLineRealtime();
