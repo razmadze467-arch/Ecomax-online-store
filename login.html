@@ -102,10 +102,10 @@ $('recoveryForm').addEventListener('submit',async e=>{
 
 async function finishSession(db,session){
  if(!session?.access_token||!session?.refresh_token)throw new Error('სესია ვერ შეიქმნა.');
- const r=await db.auth.setSession({access_token:session.access_token,refresh_token:session.refresh_token});
- if(r.error)throw r.error;
- try{sessionStorage.setItem('ecomax-auth-bridge-v1',JSON.stringify({access_token:r.data.session.access_token,refresh_token:r.data.session.refresh_token}))}catch(_){}
- return r.data.session;
+ // Supabase signInWithPassword/signUp already persists this session.
+ // Do not call setSession a second time (extra auth request/race).
+ try{sessionStorage.setItem('ecomax-auth-bridge-v1',JSON.stringify({access_token:session.access_token,refresh_token:session.refresh_token}))}catch(_){}
+ return session;
 }
 $('loginForm').addEventListener('submit',async e=>{
  e.preventDefault();if(btn.disabled)return;
