@@ -268,6 +268,7 @@ form.addEventListener('submit',async e=>{
  if(password!==password2){showErr('პაროლები ერთმანეთს არ ემთხვევა.');return}
  if(password.length<8){showErr('პაროლი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს.');return}
  btn.disabled=true;btn.textContent='ანგარიში იქმნება...';
+ try{
  const {data,error}=await db.auth.signUp({
    email,
    password,
@@ -288,6 +289,10 @@ form.addEventListener('submit',async e=>{
    showOk('რეგისტრაცია მიღებულია. შეამოწმე ელფოსტა და დაადასტურე ანგარიში. შემდეგ დაელოდე ადმინისტრატორის ავტორიზაციას.');
  }
  form.reset();btn.disabled=false;btn.textContent='კურიერის ანგარიშის შექმნა';
+ }catch(ex){
+  showErr('რეგისტრაციისას მოხდა შეცდომა: '+(ex?.message||'ქსელთან დაკავშირება ვერ მოხერხდა.'));
+  btn.disabled=false;btn.textContent='კურიერის ანგარიშის შექმნა';
+ }
 });
 })();
 </script>
