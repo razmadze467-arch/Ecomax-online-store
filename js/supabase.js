@@ -161,6 +161,10 @@
       }).catch(() => {});
 
       client.auth.onAuthStateChange((event, session) => {
+        // A recovery event can occur before page-level listeners attach.
+        // Keep only a boolean, never credentials or reset tokens.
+        if (event === 'PASSWORD_RECOVERY') window.ECOMAX_RECOVERY_SESSION = true;
+        else if (event === 'SIGNED_OUT') window.ECOMAX_RECOVERY_SESSION = false;
         if (session) {
           saveBridge(session);
           window.ECOMAX_CURRENT_SESSION = session;
