@@ -260,6 +260,8 @@ document.getElementById('recoveryForm').addEventListener('submit',async event=>{
  finally{save.disabled=false;save.textContent='პაროლის განახლება'}
 });
 
+// Do not block form event handler registration on asynchronous session hydration.
+void (async()=>{
 try{
   const {data:{session}}=await db.auth.getSession();
   if(session){
@@ -268,6 +270,7 @@ try{
     // Do not sign out a customer simply for visiting the courier login page.
   }
 }catch(e){console.warn('Session check:',e)}
+})();
 
 form.addEventListener('submit',async e=>{
   e.preventDefault();
