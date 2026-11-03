@@ -475,3 +475,31 @@ html[data-ecomax-unified="checkout"] #authGateTitle{color:#ffad6e!important}
   }
   html[data-ecomax-unified] :where(.stat-card,.stat,.order-card,.btn):hover{transform:none!important}
 }
+
+/* High-specificity overrides for earlier premium courier gate CSS.
+   Keep existing forms and mobile fixes, but match the storefront orange/blue. */
+html[data-ecomax-unified="line-gate"][data-ecomax-premium="courier-gate"] .card{
+  border-color:rgba(34,164,222,.54)!important;
+  background:linear-gradient(155deg,#0b202ef5,#050e1af8 72%)!important;
+  box-shadow:0 24px 68px #0008,0 0 33px #169ad015,inset 0 1px #d7f7ff1c!important
+}
+html[data-ecomax-unified="line-gate"][data-ecomax-premium="courier-gate"] .card .logo{
+  color:#fff!important;text-shadow:0 0 17px #22c8ff4a!important
+}
+html[data-ecomax-unified="line-gate"][data-ecomax-premium="courier-gate"] .card .premium-screen-badge{
+  border-color:#ff741888!important;background:#ff741816!important;color:#ffb680!important
+}
+html[data-ecomax-unified="line-gate"][data-ecomax-premium="courier-gate"] .card input:not([type="checkbox"]){
+  border:1px solid #228bb86a!important;background:#04101b!important;color:#f5fbff!important
+}
+html[data-ecomax-unified="line-gate"][data-ecomax-premium="courier-gate"] .card input:not([type="checkbox"]):focus{
+  border-color:#22c8ff!important;box-shadow:0 0 0 3px #22c8ff26!important
+}
+html[data-ecomax-unified="line-gate"][data-ecomax-premium="courier-gate"] .card form>button[type="submit"]{
+  min-height:52px!important;border:1px solid #ff9a35!important;border-radius:12px!important;
+  background:linear-gradient(135deg,#ff972d,#eb5010)!important;color:#fff!important;
+  box-shadow:0 0 26px #ff74183d,inset 0 1px #fff5!important
+}
+html[data-ecomax-unified="line-gate"][data-ecomax-premium="courier-gate"] .card .icon{
+  border-color:#ff74187a!important;background:radial-gradient(circle at 25% 20%,#ff741838,#071724 74%)!important
+}
