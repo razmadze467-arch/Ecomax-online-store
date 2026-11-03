@@ -1,0 +1,187 @@
+/* ECOMAX — Dedicated Admin Order Preparation (visuals only).
+   Scoped to section-preparation; matches storefront cyan/orange theme.
+*/
+#section-preparation{min-width:0;color:#f6fbff}
+#section-preparation .ecomax-prep-heading{
+ display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;
+ gap:16px;margin-bottom:20px;padding:clamp(18px,3vw,26px);
+ border:1px solid #2376a477;border-radius:19px;
+ background:radial-gradient(ellipse at 82% 10%,#ff74181d,transparent 45%),linear-gradient(145deg,#0c2231,#06121d);
+ box-shadow:0 20px 50px #0006,inset 0 1px #f5fdff16;position:relative;overflow:hidden
+}
+#section-preparation .ecomax-prep-heading::before{
+ content:"";position:absolute;left:0;right:0;top:0;height:3px;
+ background:linear-gradient(90deg,#ff7418,#22c8ff,transparent)
+}
+#section-preparation .ecomax-prep-heading h2{
+ margin:0 0 9px;font-size:clamp(20px,2.8vw,28px);
+ color:#fff;letter-spacing:-.02em
+}
+#section-preparation .ecomax-prep-heading p{
+ margin:0;max-width:670px;line-height:1.75;font-size:12px;color:#abc5d4
+}
+#section-preparation .ecomax-prep-heading button{
+ border:1px solid #298db9;border-radius:11px;
+ background:#071b2d;color:#d8f2ff;padding:12px 16px;
+ min-height:43px;font-weight:800;cursor:pointer
+}
+#section-preparation .ecomax-prep-heading button:hover{border-color:#ff9a35;color:#ffc19b}
+#section-preparation .ecomax-prep-toolbar{display:grid;gap:13px;margin-bottom:18px}
+#section-preparation .ecomax-prep-toolbar input{
+ display:block;width:100%;max-width:620px;min-height:47px;
+ border:1px solid #2785b372;border-radius:12px;
+ background:#041322;color:#eaf9ff;padding:11px 15px;font-size:13px;
+ outline:none;box-shadow:inset 0 2px 8px #0003
+}
+#section-preparation .ecomax-prep-toolbar input:focus{
+ border-color:#36c5ff;box-shadow:0 0 0 3px #22c8ff22
+}
+#section-preparation .ecomax-prep-tabs{display:flex;flex-wrap:wrap;gap:7px}
+#section-preparation .ecomax-prep-tab{
+ display:inline-flex;align-items:center;justify-content:center;gap:7px;
+ border:1px solid #1e5274;border-radius:11px;
+ background:#071a28;color:#b4d0e0;min-height:40px;padding:8px 10px;
+ font-size:11px;font-weight:800;cursor:pointer;transition:background .17s,border-color .17s,transform .17s
+}
+#section-preparation .ecomax-prep-tab:hover{border-color:#38bdec;transform:translateY(-1px)}
+#section-preparation .ecomax-prep-tab.is-active{
+ border-color:#ff9438;background:linear-gradient(130deg,#ff741831,#11405a);
+ color:#fff;box-shadow:0 0 16px #ff74181b,inset 3px 0 #ff7418
+}
+#section-preparation .ecomax-prep-tab b{
+ font-variant-numeric:tabular-nums;padding:3px 7px;border-radius:9px;
+ color:#fff;background:#24668c70;font-size:11px
+}
+#section-preparation .ecomax-prep-tab.is-active b{background:#ff741835;color:#ffe8d8}
+#section-preparation .ecomax-prep-caption{
+ font-size:11px;color:#98b7ca;margin:10px 2px 14px;letter-spacing:.04em
+}
+#section-preparation .ecomax-prep-grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px
+}
+#section-preparation .ecomax-prep-order{
+ position:relative;min-width:0;display:flex;flex-direction:column;
+ border:1px solid #246b9a92;border-radius:18px;overflow:hidden;
+ background:linear-gradient(153deg,#0b2233,#04101c 82%);
+ box-shadow:0 18px 48px #0005,inset 0 1px #d4f3ff0b
+}
+#section-preparation .ecomax-prep-order::before{
+ content:"";height:3px;display:block;flex:none;
+ background:linear-gradient(90deg,#ff7418 0%,#22c8ff 45%,transparent)
+}
+#section-preparation .ecomax-prep-order-top{
+ padding:16px 17px 13px;display:flex;justify-content:space-between;
+ align-items:flex-start;gap:12px;border-bottom:1px solid #1f597b6b
+}
+#section-preparation .ecomax-prep-order-top>div{min-width:0}
+#section-preparation .ecomax-prep-order-number{
+ font-weight:950;letter-spacing:.02em;color:#fff;font-size:15px;overflow-wrap:anywhere
+}
+#section-preparation .ecomax-prep-order-top small{
+ display:block;margin-top:8px;color:#93b6c6;line-height:1.5;font-size:10px
+}
+#section-preparation .ecomax-prep-status{
+ flex:none;display:inline-flex;align-items:center;justify-content:center;
+ max-width:48%;min-height:30px;text-align:center;border-radius:9px;
+ padding:6px 8px;border:1px solid #2485b58a;background:#22c8ff19;
+ font-size:10px;font-weight:850;color:#82ddff
+}
+#section-preparation .ecomax-prep-status.new,
+#section-preparation .ecomax-prep-status.processing{border-color:#ff9a357d;background:#ff74181a;color:#ffbe8c}
+#section-preparation .ecomax-prep-status.completed{border-color:#2bbf9b66;background:#21c68a15;color:#95f4d3}
+#section-preparation .ecomax-prep-status.cancelled{border-color:#e7737c68;background:#cf34501a;color:#ffb0ba}
+#section-preparation .ecomax-prep-order-content{
+ display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+ gap:13px;padding:17px;flex:1
+}
+#section-preparation .ecomax-prep-customer{display:flex;flex-direction:column;gap:8px;overflow-wrap:anywhere}
+#section-preparation .ecomax-prep-customer strong{font-size:14px;color:#fff}
+#section-preparation .ecomax-prep-customer span{font-size:11px;color:#b6d1df}
+#section-preparation .ecomax-prep-products{
+ background:#051725;border:1px solid #256a903e;border-radius:12px;padding:11px;
+ min-width:0
+}
+#section-preparation .ecomax-prep-products>strong{
+ display:block;font-size:11px;color:#92dffd;margin-bottom:8px
+}
+#section-preparation .ecomax-prep-items{
+ display:grid;gap:7px;margin:0;padding:0;list-style:none
+}
+#section-preparation .ecomax-prep-items li{
+ display:flex;justify-content:space-between;gap:9px;font-size:11px;line-height:1.5;
+ color:#c8dfeb;overflow-wrap:anywhere
+}
+#section-preparation .ecomax-prep-items li strong{white-space:nowrap;color:#ffb17b}
+#section-preparation .ecomax-prep-muted{font-size:11px;color:#839faf}
+#section-preparation .ecomax-prep-order-total{
+ display:flex;align-items:center;justify-content:space-between;gap:10px;
+ padding:12px 17px;border-top:1px solid #21557561;
+ color:#9ec4d7;font-size:12px
+}
+#section-preparation .ecomax-prep-order-total b{
+ font-size:17px;color:#ffb477;font-variant-numeric:tabular-nums
+}
+#section-preparation .ecomax-prep-order-actions{
+ background:#061523;padding:15px 17px 17px;border-top:1px solid #1a58787a
+}
+#section-preparation .ecomax-prep-order-actions label{
+ display:block;font-weight:850;font-size:12px;color:#dbf5ff;margin:0 0 10px
+}
+#section-preparation .ecomax-prep-action-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px}
+#section-preparation .ecomax-prep-action-row select{
+ min-width:0;width:100%;max-width:100%;height:44px;
+ border:1px solid #2f94c0a1;border-radius:10px;padding:8px 10px;
+ color:#f5faff;background:#041321;font-size:12px;font-weight:750;outline:none
+}
+#section-preparation .ecomax-prep-action-row select:focus{
+ border-color:#24c1ff;box-shadow:0 0 0 3px #22c8ff20
+}
+#section-preparation .ecomax-prep-action-row button{
+ min-height:44px;border-radius:10px;padding:9px 13px;
+ cursor:pointer;font-size:11px;font-weight:850;transition:.2s ease
+}
+#section-preparation .ecomax-prep-save{
+ border:1px solid #ff9535;background:linear-gradient(130deg,#ff902b,#e85814);
+ color:#fff;box-shadow:0 0 16px #ff741821
+}
+#section-preparation .ecomax-prep-save:hover:not(:disabled){
+ box-shadow:0 0 24px #ff741857;transform:translateY(-1px)
+}
+#section-preparation .ecomax-prep-save:disabled{
+ cursor:not-allowed;opacity:.52;box-shadow:none
+}
+#section-preparation .ecomax-prep-detail{
+ grid-column:1/-1;border:1px solid #3282b073;background:#10324b61;
+ color:#9edfff
+}
+#section-preparation .ecomax-prep-detail:hover{border-color:#ff9a35;color:#ffc496}
+#section-preparation .ecomax-prep-save-hint{
+ display:block;min-height:18px;margin-top:9px;color:#92adbb;font-size:10px;line-height:1.7
+}
+#section-preparation .ecomax-prep-empty{
+ grid-column:1/-1;padding:36px 18px;border:1px dashed #2678a17d;
+ border-radius:16px;text-align:center;color:#cce5f2;font-size:14px;
+ background:#071927ad
+}
+#section-preparation .ecomax-prep-empty small{
+ display:block;margin-top:12px;color:#8faebd;line-height:1.6;font-size:11px
+}
+@media(max-width:1200px){
+ #section-preparation .ecomax-prep-grid{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:700px){
+ #section-preparation .ecomax-prep-heading{padding:16px}
+ #section-preparation .ecomax-prep-heading button{width:100%}
+ #section-preparation .ecomax-prep-order-content{grid-template-columns:1fr}
+ #section-preparation .ecomax-prep-order-top{padding:14px}
+ #section-preparation .ecomax-prep-status{max-width:50%}
+ #section-preparation .ecomax-prep-order-actions{padding:14px}
+ #section-preparation .ecomax-prep-action-row{grid-template-columns:1fr}
+ #section-preparation .ecomax-prep-detail{grid-column:auto}
+ #section-preparation .ecomax-prep-action-row button{width:100%}
+ #section-preparation .ecomax-prep-tab{min-height:40px;font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+ #section-preparation .ecomax-prep-order *,
+ #section-preparation .ecomax-prep-tab{transition:none!important;animation:none!important}
+}

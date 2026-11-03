@@ -816,6 +816,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="ecomax-index-unified-theme.css?v=20261103-1">
+<link rel="stylesheet" href="styles/admin-order-preparation.css?v=20261103-1">
 </head>
 
 <body>
@@ -944,6 +945,11 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
       >
         <span class="nav-icon">📦</span>
         <span class="nav-text">შეკვეთები</span>
+      </button>
+
+      <button onclick="showSection('preparation',this)" type="button">
+        <span class="nav-icon">🧰</span>
+        <span class="nav-text">შეკვეთების მომზადება</span>
       </button>
 
       <button
@@ -1268,6 +1274,30 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
     </section>
 
+
+
+    <!-- ORDER PREPARATION CENTER -->
+    <section id="section-preparation" class="section" aria-labelledby="preparationTitle">
+      <div class="ecomax-prep-heading">
+        <div>
+          <h2 id="preparationTitle">🧰 შეკვეთების მომზადება</h2>
+          <p>აქ შეკვეთები ცალკე ნაწილდება სტატუსის მიხედვით. მონიშნე საჭირო ეტაპი და დააჭირე „სტატუსის შენახვა“. ყველა ცვლილება ინახება Supabase-ში და გამოჩნდება შეკვეთის ისტორიაში.</p>
+        </div>
+        <button id="preparationRefresh" type="button">⟳ განახლება</button>
+      </div>
+
+      <div class="ecomax-prep-toolbar">
+        <label for="preparationSearch" style="font-size:12px;color:#c8eaf8;font-weight:800">შეკვეთის ძებნა</label>
+        <input id="preparationSearch" type="search" autocomplete="off"
+               placeholder="🔎 ნომერი, სახელი, ტელეფონი, ქალაქი..." aria-label="შეკვეთების ძებნა">
+        <div id="preparationStatusTabs" class="ecomax-prep-tabs" role="group" aria-label="შეკვეთების სტატუსების ფილტრები"></div>
+      </div>
+
+      <div id="preparationResultCount" class="ecomax-prep-caption" aria-live="polite">შეკვეთები იტვირთება…</div>
+      <div id="preparationOrderCards" class="ecomax-prep-grid">
+        <div class="ecomax-prep-empty">შეკვეთები იტვირთება…</div>
+      </div>
+    </section>
 
     <!-- PRODUCTS -->
 
@@ -2158,6 +2188,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     const titles = {
       dashboard: "Dashboard",
       orders: "შეკვეთები",
+      preparation: "შეკვეთების მომზადება",
       products: "პროდუქტები",
       customers: "მომხმარებლები",
       couriers: "კურიერები",
@@ -2175,6 +2206,9 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
     if (name === "orders")
       renderOrders();
+
+    if (name === "preparation" && typeof window.renderOrderPreparationBoard === "function")
+      window.renderOrderPreparationBoard();
 
 
     if (name === "products")
@@ -2625,6 +2659,9 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     orders =
       data || [];
 
+    if (typeof window.renderOrderPreparationBoard === "function")
+      window.renderOrderPreparationBoard();
+
   }
 
 
@@ -2776,6 +2813,8 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
     renderOrders();
     if(typeof renderRecentOrders==="function") renderRecentOrders();
     if($("orderModal")?.classList.contains("show")) viewOrder(orderId);
+    if (typeof window.renderOrderPreparationBoard === "function")
+      window.renderOrderPreparationBoard();
     toast("შეკვეთის სტატუსი განახლდა ✓");
   }
 
@@ -3379,5 +3418,6 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 2px rgba(0,246,255,.08)
 
 </script>
 
+<script src="js/admin-order-preparation.js?v=20261103-1"></script>
 </body>
 </html>
