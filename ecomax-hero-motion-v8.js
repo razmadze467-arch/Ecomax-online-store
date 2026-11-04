@@ -20,11 +20,10 @@
     const wheelSize = 384;
     const wheelData = [];
     let running = false;
-    let lastTime = 0;
-    let stopAt = 0;
+    let spinStart = 0;
+    const spinDuration = 3100;
     let resizeFrame = 0;
     let motionFrame = 0;
-    let spinAngle = 0;
 
     function makeWater() {
       if (layer.querySelector('.ecomax-v8-floor')) return;
@@ -59,19 +58,17 @@
           visible, ctx: visible.getContext('2d', { alpha: true }),
           sourceCtx: source.getContext('2d', { alpha: true })
         });
-        // Capture phase takes priority over the older click listener.
+        // Consume the old handler before it can rotate the incorrect photo crop.
         control.addEventListener('click', event => {
           event.stopImmediatePropagation();
           if (isReduced.matches) return;
           if (!wheelData.every(item => item.ready)) rebuildSprites();
-          stopAt = performance.now() + 3300;
-          if (!running) {
-            running = true;
-            lastTime = 0;
-            spinAngle = 0;
-            stage.classList.add('hero-wheels-spinning');
-            motionFrame = requestAnimationFrame(render);
-          }
+          if (!wheelData.every(item => item.ready)) return;
+          cancelAnimationFrame(motionFrame);
+          running = true;
+          spinStart = performance.now();
+          stage.classList.add('hero-wheels-spinning');
+          motionFrame = requestAnimationFrame(render);
         }, { capture: true });
       });
     }
@@ -106,30 +103,67 @@
         const srcH = height / photoScale;
         sourceCtx.clearRect(0, 0, wheelSize, wheelSize);
         sourceCtx.drawImage(photo, srcX, srcY, srcW, srcH, 0, 0, wheelSize, wheelSize);
+        // Preserve red brake components in their original place during rotation.
+        if (!item.brake) {
+          item.brake = document.createElement('canvas');
+          item.brake.width = item.brake.height = wheelSize;
+        }
+        const brakeCtx = item.brake.getContext('2d');
+        const image = sourceCtx.getImageData(0, 0, wheelSize, wheelSize);
+        const pixels = image.data;
+        const mid = wheelSize / 2, radius = mid * .69;
+        for (let y = 0; y < wheelSize; y++) {
+          for (let x = 0; x < wheelSize; x++) {
+            const n = (y * wheelSize + x) * 4;
+            const red = pixels[n], green = pixels[n + 1], blue = pixels[n + 2];
+            const distance = Math.hypot(x - mid, y - mid);
+            const strongRed = red > 82 && red > green * 1.34 + 13 && red > blue * 1.25 + 8;
+            pixels[n + 3] = strongRed && distance < radius
+              ? Math.round(pixels[n + 3] * Math.min(1, (radius - distance) / 7)) : 0;
+          }
+        }
+        brakeCtx.clearRect(0, 0, wheelSize, wheelSize);
+        brakeCtx.putImageData(image, 0, 0);
         item.ready = true;
       });
     }
 
+    // A complete number of rotations ends at the original, matching spokes.
+    // Clip tightly to the rim: the tyre, foam, fender and brake stay stationary.
     function render(now) {
       if (!running) return;
-      const delta = Math.min(50, Math.max(0, now - (lastTime || now)));
-      lastTime = now;
-      spinAngle += (delta / 1000) * Math.PI * 3.4;
+      const progress = Math.min(1, Math.max(0, (now - spinStart) / spinDuration));
+      const smooth = progress * progress * (3 - 2 * progress);
+      const angle = Math.PI * 2 * 2 * smooth;
       wheelData.forEach(item => {
         if (!item.ready) return;
         const ctx = item.ctx;
+        const half = wheelSize / 2;
         ctx.clearRect(0, 0, wheelSize, wheelSize);
         ctx.save();
-        ctx.translate(wheelSize / 2, wheelSize / 2);
-        ctx.rotate(spinAngle);
-        ctx.drawImage(item.source, -wheelSize / 2, -wheelSize / 2, wheelSize, wheelSize);
+        ctx.translate(half, half);
+        ctx.rotate(angle);
+        ctx.drawImage(item.source, -half, -half, wheelSize, wheelSize);
         ctx.restore();
+
+        // The wheel is an ellipse in the perspective photograph. Mask in
+        // square source coordinates; CSS then projects the disc to that ellipse.
+        ctx.save();
+        ctx.globalCompositeOperation = 'destination-in';
+        const mask = ctx.createRadialGradient(half, half, 0, half, half, half * .745);
+        mask.addColorStop(0, '#000');
+        mask.addColorStop(.86, '#000');
+        mask.addColorStop(1, 'transparent');
+        ctx.fillStyle = mask;
+        ctx.fillRect(0, 0, wheelSize, wheelSize);
+        ctx.restore();
+        // Red brake calipers are fixed relative to the car, not to the wheel.
+        if (item.brake) ctx.drawImage(item.brake, 0, 0);
       });
-      if (now < stopAt && !isReduced.matches) {
+      if (progress < 1 && !isReduced.matches) {
         motionFrame = requestAnimationFrame(render);
       } else {
         running = false;
-        lastTime = 0;
         stage.classList.remove('hero-wheels-spinning');
         wheelData.forEach(item => item.ctx.clearRect(0, 0, wheelSize, wheelSize));
       }
