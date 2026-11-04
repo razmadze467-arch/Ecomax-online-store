@@ -225,34 +225,28 @@ function init(){
 
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 
-/* ECOMAX_HERO_V8_LOADER — isolated home hero enhancement. */
-(function () {
+/* ECOMAX_STATIC_WHEELS_V12: keep car wheels entirely static. */
+(() => {
   'use strict';
-  function loadHeroMotionV8() {
+  function loadPhotoEffects() {
     if (!document.querySelector('.hero-visual')) return;
-    if (document.querySelector('script[data-ecomax-hero-v8]')) return;
-
-    const stylesheet = document.createElement('link');
-    stylesheet.rel = 'stylesheet';
-    stylesheet.href = 'ecomax-hero-motion-v8.css?v=20261104-v11';
-    stylesheet.setAttribute('data-ecomax-hero-v8-css', '');
-    document.head.appendChild(stylesheet);
-
-    const wheelStyles = document.createElement('link');
-    wheelStyles.rel = 'stylesheet';
-    wheelStyles.href = 'ecomax-wheel-overlay-v11.css?v=20261104-v11';
-    wheelStyles.setAttribute('data-ecomax-wheel-v11-css', '');
-    document.head.appendChild(wheelStyles);
-
+    if (document.querySelector('script[data-ecomax-no-wheels-v12]')) return;
+    for (const href of [
+      'ecomax-hero-motion-v8.css?v=20261104-v12',
+      'ecomax-no-wheels-v12.css?v=20261104-v12'
+    ]) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = href;
+      document.head.appendChild(link);
+    }
     const script = document.createElement('script');
-    script.src = 'ecomax-wheel-overlay-v11.js?v=20261104-v11';
+    script.src = 'ecomax-no-wheels-v12.js?v=20261104-v12';
     script.async = true;
-    script.setAttribute('data-ecomax-hero-v8', '');
+    script.setAttribute('data-ecomax-no-wheels-v12', '');
     document.body.appendChild(script);
   }
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadHeroMotionV8, { once: true });
-  } else {
-    loadHeroMotionV8();
-  }
+    document.addEventListener('DOMContentLoaded', loadPhotoEffects, { once: true });
+  } else loadPhotoEffects();
 })();
