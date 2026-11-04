@@ -7704,6 +7704,100 @@ body {
 .neon-hero-stage::before, .neon-hero-stage::after,
 .neon-car-rig, .neon-product-rack, .neon-hero-note { display: none !important; }
 
+/* Interactive motion layer for the photographic car. */
+.hero-photo-motion {
+  position:absolute; z-index:7; inset:0; overflow:hidden; pointer-events:none;
+  isolation:isolate;
+}
+.hero-foam-flow {
+  position:absolute; inset:0; width:100%; height:100%; overflow:visible;
+  mix-blend-mode:screen; filter:drop-shadow(0 0 7px #b9f5ff7d);
+}
+.hero-foam-flow path { fill:none; stroke-linecap:round; stroke-linejoin:round; vector-effect:non-scaling-stroke; }
+.hero-foam-shadow {
+  stroke:#2ac8f4; stroke-width:10; opacity:.2; filter:blur(4px);
+}
+.hero-foam-trace {
+  stroke:#f1fdff; stroke-width:4.5; opacity:.65;
+  stroke-dasharray:3 16 34 20; animation:heroFoamTravel 4.2s linear infinite !important;
+}
+.hero-foam-trace.foam-path-b { stroke-width:6; animation-duration:3.2s !important; animation-direction:reverse !important; }
+.hero-foam-trace.foam-path-c { stroke-width:3.5; animation-duration:5.3s !important; }
+.hero-foam-beads circle {
+  fill:#f5feff; opacity:.78; transform-box:fill-box; transform-origin:center;
+  animation:heroFoamBead 2.2s ease-in-out infinite !important;
+}
+.hero-foam-beads circle:nth-child(even){animation-delay:-1.1s}.hero-foam-beads circle:nth-child(3n){animation-delay:-.55s}
+.hero-water-drops { position:absolute; inset:0; overflow:hidden; }
+.hero-water-drops i {
+  position:absolute; left:var(--drop-x); top:var(--drop-y); width:var(--drop-size); height:calc(var(--drop-size) * 2.8);
+  border-radius:70% 70% 55% 55%/45% 45% 80% 80%;
+  background:linear-gradient(90deg,#fff3,#d9f8ffef 52%,#43cfff88);
+  border:1px solid #e8fbff75; box-shadow:0 0 5px #72dcff8c;
+  opacity:0; animation:heroWaterSlide var(--drop-time) ease-in infinite !important; animation-delay:var(--drop-delay) !important;
+}
+.hero-headlight {
+  position:absolute; z-index:4; pointer-events:none; transform:skewX(-12deg) rotate(2deg);
+  border-radius:45% 20% 55% 30%; mix-blend-mode:screen;
+  background:linear-gradient(180deg,#f8ffff 0 18%,#69efff 35%,#00a7ff 68%,transparent 78%);
+  filter:blur(1.4px) drop-shadow(0 0 8px #25d8ff) drop-shadow(0 0 20px #008cff);
+  opacity:.46; animation:heroHeadlightBreathe 3.7s ease-in-out infinite !important;
+}
+.hero-headlight-main { left:62.2%; top:38.2%; width:14.2%; height:8.7%; clip-path:polygon(0 18%,100% 0,89% 62%,20% 100%); }
+.hero-headlight-far { left:91.2%; top:39%; width:5.1%; height:7.4%; clip-path:polygon(0 12%,100% 0,90% 70%,15% 100%); animation-delay:-1.15s; }
+.hero-water-splash { position:absolute; z-index:2; left:48%; right:4%; bottom:2.5%; height:13%; opacity:.45; }
+.hero-water-splash i {
+  position:absolute; left:8%; bottom:0; width:5px; height:5px;
+  border:1px solid #bfefff; border-radius:50%; box-shadow:0 0 6px #20c8ff;
+  animation:heroWaterSplash 2.6s ease-out infinite !important;
+}
+.hero-water-splash i:nth-child(1){left:8%;animation-delay:-.3s}.hero-water-splash i:nth-child(2){left:25%;animation-delay:-1.5s}.hero-water-splash i:nth-child(3){left:42%;animation-delay:-.8s}.hero-water-splash i:nth-child(4){left:59%;animation-delay:-2.1s}.hero-water-splash i:nth-child(5){left:76%;animation-delay:-1.15s}
+
+.hero-wheel-control {
+  position:absolute !important; z-index:12 !important; padding:0 !important; border:1px solid transparent !important;
+  border-radius:50% !important; background:transparent !important; cursor:pointer; touch-action:manipulation;
+  box-shadow:none !important; -webkit-tap-highlight-color:transparent;
+}
+.hero-wheel-control::before,.hero-wheel-control::after{display:none !important}
+.hero-wheel-rear { left:34.2%; top:42.5%; width:7.5%; aspect-ratio:1; transform:rotate(-5deg); }
+.hero-wheel-front { left:50.8%; top:43%; width:11.5%; aspect-ratio:1; transform:rotate(-5deg); }
+.hero-wheel-disc {
+  position:absolute; inset:7%; display:block; border-radius:50%; opacity:.12;
+  background:repeating-conic-gradient(from 8deg,#b8edff 0 3deg,transparent 3deg 28deg);
+  -webkit-mask:radial-gradient(circle,transparent 0 16%,#000 17% 54%,transparent 55%);
+  mask:radial-gradient(circle,transparent 0 16%,#000 17% 54%,transparent 55%);
+  filter:drop-shadow(0 0 3px #35d5ff); transition:opacity .2s ease,filter .2s ease;
+}
+.hero-wheel-control:hover,.hero-wheel-control:focus-visible {
+  border-color:#73eaff99 !important; box-shadow:0 0 0 3px #05253a66,0 0 20px #1fcfff7a !important;
+  outline:0;
+}
+.hero-wheel-control:hover .hero-wheel-disc,.hero-wheel-control:focus-visible .hero-wheel-disc { opacity:.52; }
+.hero-wheel-hint {
+  position:absolute; left:50%; top:-25px; translate:-50% 4px; padding:5px 8px; border:1px solid #2fcfff7d;
+  border-radius:12px; background:#020c15df; color:#dffaff; font:700 7px/1 Arial,sans-serif; letter-spacing:.7px;
+  white-space:nowrap; opacity:0; transition:opacity .2s ease,translate .2s ease; pointer-events:none;
+}
+.hero-wheel-control:hover .hero-wheel-hint,.hero-wheel-control:focus-visible .hero-wheel-hint { opacity:1; translate:-50% 0; }
+.hero-wheels-spinning .hero-wheel-disc { opacity:.78; animation:heroPhotoWheelSpin .58s linear infinite !important; filter:drop-shadow(0 0 6px #40dfff); }
+.hero-wheels-spinning .hero-wheel-control { border-color:#43ddffb8 !important; box-shadow:0 0 24px #20caff7d !important; }
+.hero-wheels-spinning .hero-headlight { animation-duration:.78s !important; opacity:.92; }
+
+@keyframes heroFoamTravel { to{stroke-dashoffset:-146} }
+@keyframes heroFoamBead { 0%,100%{scale:.72;opacity:.42}50%{scale:1.35;opacity:1} }
+@keyframes heroWaterSlide {
+  0%{opacity:0;transform:translate3d(0,-9px,0) scaleY(.65)}
+  14%{opacity:.85} 72%{opacity:.52}
+  100%{opacity:0;transform:translate3d(var(--drop-drift),72px,0) scaleY(1.35)}
+}
+@keyframes heroHeadlightBreathe {
+  0%,100%{opacity:.32;filter:blur(1.8px) drop-shadow(0 0 5px #28d9ff) drop-shadow(0 0 13px #008cff)}
+  48%{opacity:.92;filter:blur(.8px) drop-shadow(0 0 12px #d9ffff) drop-shadow(0 0 30px #00a7ff)}
+  68%{opacity:.57}
+}
+@keyframes heroWaterSplash { 0%{opacity:0;transform:translate(0,6px) scale(.5)}25%{opacity:.8}100%{opacity:0;transform:translate(12px,-38px) scale(1.4)} }
+@keyframes heroPhotoWheelSpin { to{rotate:360deg} }
+
 .neon-service-strip { max-width: 1580px; grid-template-columns: repeat(4,1fr); padding: 0 !important; }
 .neon-service { min-height: 75px; padding: 12px 24px; }
 .neon-service svg { width: 31px; height: 31px; }
@@ -7743,6 +7837,12 @@ body {
   .hero-actions a { min-width: 190px; width: auto; }
   .hero-visual::before { background: linear-gradient(180deg,#020914c9 0 42%,transparent 72%) !important; }
   .neon-hero-stage { background-position: 68% center !important; }
+  .hero-foam-flow,.hero-water-drops { left:-193%; right:auto; width:383%; }
+  .hero-wheel-rear { display:none !important; }
+  .hero-wheel-front { left:4%; top:49%; width:36%; }
+  .hero-headlight-main { left:58%; top:39%; width:35%; height:7.5%; }
+  .hero-headlight-far { display:none; }
+  .hero-water-splash { left:6%; right:2%; }
   .neon-service-strip { grid-template-columns: 1fr 1fr; padding: 0 !important; }
   .neon-service { min-height: 72px; padding: 10px 12px; }
 }
@@ -7750,6 +7850,10 @@ body {
   .hero { height: 570px !important; min-height: 570px !important; }
   .hero-actions a { width: 100%; }
   .neon-service-strip { grid-template-columns: 1fr; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .hero-foam-trace,.hero-foam-beads circle,.hero-water-drops i,.hero-headlight,.hero-water-splash i,.hero-wheel-disc { animation:none !important; }
+  .hero-water-drops i,.hero-water-splash i { display:none; }
 }
 
 </style>
@@ -7817,7 +7921,6 @@ body {
 
     const stage = document.createElement('div');
     stage.className = 'neon-hero-stage';
-    stage.setAttribute('aria-hidden', 'true');
     stage.innerHTML = `
       <div class="neon-car-ground"></div>
       <div class="neon-car-rig">
@@ -7854,6 +7957,43 @@ body {
       <div class="neon-product-rack"></div>
       <div class="neon-hero-note"><i></i><span>PROFESSIONAL AUTO CHEMISTRY / CAR CARE</span></div>`;
     visual.appendChild(stage);
+
+    const droplets = Array.from({ length: 26 }, (_, index) => {
+      const x = 36 + ((index * 23) % 60);
+      const y = 10 + ((index * 17) % 58);
+      const size = 2 + (index % 5);
+      const duration = 2.4 + (index % 7) * .34;
+      const delay = -((index * .37) % 3.8);
+      const drift = -8 + (index % 6) * 3;
+      return `<i style="--drop-x:${x}%;--drop-y:${y}%;--drop-size:${size}px;--drop-time:${duration}s;--drop-delay:${delay}s;--drop-drift:${drift}px"></i>`;
+    }).join('');
+    stage.insertAdjacentHTML('beforeend', `
+      <div class="hero-photo-motion" aria-hidden="true">
+        <svg class="hero-foam-flow" viewBox="0 0 1000 470" preserveAspectRatio="none">
+          <path class="hero-foam-shadow foam-path-a" d="M455 82 C515 69 548 91 589 126 S684 151 737 169"/>
+          <path class="hero-foam-trace foam-path-a" d="M455 82 C515 69 548 91 589 126 S684 151 737 169"/>
+          <path class="hero-foam-shadow foam-path-b" d="M550 160 C624 128 702 148 771 183 S882 215 943 244"/>
+          <path class="hero-foam-trace foam-path-b" d="M550 160 C624 128 702 148 771 183 S882 215 943 244"/>
+          <path class="hero-foam-shadow foam-path-c" d="M471 205 C526 216 569 248 631 261 S770 263 835 289"/>
+          <path class="hero-foam-trace foam-path-c" d="M471 205 C526 216 569 248 631 261 S770 263 835 289"/>
+          <g class="hero-foam-beads"><circle cx="590" cy="132" r="4"/><circle cx="655" cy="151" r="3"/><circle cx="741" cy="172" r="5"/><circle cx="781" cy="185" r="3"/><circle cx="856" cy="217" r="4"/><circle cx="622" cy="259" r="4"/></g>
+        </svg>
+        <div class="hero-water-drops">${droplets}</div>
+        <div class="hero-headlight hero-headlight-main"></div>
+        <div class="hero-headlight hero-headlight-far"></div>
+        <div class="hero-water-splash"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <button type="button" class="hero-wheel-control hero-wheel-rear" aria-label="უკანა და წინა ბორბლების დატრიალება" title="დააჭირე — ორივე ბორბალი დატრიალდება"><span class="hero-wheel-disc" aria-hidden="true"></span><span class="hero-wheel-hint" aria-hidden="true">დააჭირე</span></button>
+      <button type="button" class="hero-wheel-control hero-wheel-front" aria-label="წინა და უკანა ბორბლების დატრიალება" title="დააჭირე — ორივე ბორბალი დატრიალდება"><span class="hero-wheel-disc" aria-hidden="true"></span><span class="hero-wheel-hint" aria-hidden="true">დააჭირე</span></button>`);
+
+    let wheelTimer = 0;
+    stage.querySelectorAll('.hero-wheel-control').forEach(control => control.addEventListener('click', () => {
+      window.clearTimeout(wheelTimer);
+      stage.classList.remove('hero-wheels-spinning');
+      void stage.offsetWidth;
+      stage.classList.add('hero-wheels-spinning');
+      wheelTimer = window.setTimeout(() => stage.classList.remove('hero-wheels-spinning'), 2800);
+    }));
 
     const rack = stage.querySelector('.neon-product-rack');
     const featured = Array.from(document.querySelectorAll('#productsGrid .ecomax-package-art')).slice(0, 4);

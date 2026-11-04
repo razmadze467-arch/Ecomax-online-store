@@ -61,7 +61,6 @@
 
     const stage = document.createElement('div');
     stage.className = 'neon-hero-stage';
-    stage.setAttribute('aria-hidden', 'true');
     stage.innerHTML = `
       <div class="neon-car-ground"></div>
       <div class="neon-car-rig">
@@ -98,6 +97,43 @@
       <div class="neon-product-rack"></div>
       <div class="neon-hero-note"><i></i><span>PROFESSIONAL AUTO CHEMISTRY / CAR CARE</span></div>`;
     visual.appendChild(stage);
+
+    const droplets = Array.from({ length: 26 }, (_, index) => {
+      const x = 36 + ((index * 23) % 60);
+      const y = 10 + ((index * 17) % 58);
+      const size = 2 + (index % 5);
+      const duration = 2.4 + (index % 7) * .34;
+      const delay = -((index * .37) % 3.8);
+      const drift = -8 + (index % 6) * 3;
+      return `<i style="--drop-x:${x}%;--drop-y:${y}%;--drop-size:${size}px;--drop-time:${duration}s;--drop-delay:${delay}s;--drop-drift:${drift}px"></i>`;
+    }).join('');
+    stage.insertAdjacentHTML('beforeend', `
+      <div class="hero-photo-motion" aria-hidden="true">
+        <svg class="hero-foam-flow" viewBox="0 0 1000 470" preserveAspectRatio="none">
+          <path class="hero-foam-shadow foam-path-a" d="M455 82 C515 69 548 91 589 126 S684 151 737 169"/>
+          <path class="hero-foam-trace foam-path-a" d="M455 82 C515 69 548 91 589 126 S684 151 737 169"/>
+          <path class="hero-foam-shadow foam-path-b" d="M550 160 C624 128 702 148 771 183 S882 215 943 244"/>
+          <path class="hero-foam-trace foam-path-b" d="M550 160 C624 128 702 148 771 183 S882 215 943 244"/>
+          <path class="hero-foam-shadow foam-path-c" d="M471 205 C526 216 569 248 631 261 S770 263 835 289"/>
+          <path class="hero-foam-trace foam-path-c" d="M471 205 C526 216 569 248 631 261 S770 263 835 289"/>
+          <g class="hero-foam-beads"><circle cx="590" cy="132" r="4"/><circle cx="655" cy="151" r="3"/><circle cx="741" cy="172" r="5"/><circle cx="781" cy="185" r="3"/><circle cx="856" cy="217" r="4"/><circle cx="622" cy="259" r="4"/></g>
+        </svg>
+        <div class="hero-water-drops">${droplets}</div>
+        <div class="hero-headlight hero-headlight-main"></div>
+        <div class="hero-headlight hero-headlight-far"></div>
+        <div class="hero-water-splash"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <button type="button" class="hero-wheel-control hero-wheel-rear" aria-label="უკანა და წინა ბორბლების დატრიალება" title="დააჭირე — ორივე ბორბალი დატრიალდება"><span class="hero-wheel-disc" aria-hidden="true"></span><span class="hero-wheel-hint" aria-hidden="true">დააჭირე</span></button>
+      <button type="button" class="hero-wheel-control hero-wheel-front" aria-label="წინა და უკანა ბორბლების დატრიალება" title="დააჭირე — ორივე ბორბალი დატრიალდება"><span class="hero-wheel-disc" aria-hidden="true"></span><span class="hero-wheel-hint" aria-hidden="true">დააჭირე</span></button>`);
+
+    let wheelTimer = 0;
+    stage.querySelectorAll('.hero-wheel-control').forEach(control => control.addEventListener('click', () => {
+      window.clearTimeout(wheelTimer);
+      stage.classList.remove('hero-wheels-spinning');
+      void stage.offsetWidth;
+      stage.classList.add('hero-wheels-spinning');
+      wheelTimer = window.setTimeout(() => stage.classList.remove('hero-wheels-spinning'), 2800);
+    }));
 
     const rack = stage.querySelector('.neon-product-rack');
     const featured = Array.from(document.querySelectorAll('#productsGrid .ecomax-package-art')).slice(0, 4);
