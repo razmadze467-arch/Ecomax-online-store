@@ -1,0 +1,14 @@
+/* ECOMAX V12: the photographic car has completely stationary wheels.
+   Keep animated floor water and headlight glows; remove all wheel overlays. */
+.neon-hero-stage .hero-wheel-control,
+.neon-hero-stage .hero-wheel-disc,
+.neon-hero-stage .hero-wheel-live,
+.neon-hero-stage .ecomax-v11-wheel-assembly {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  animation: none !important;
+}
+.neon-hero-stage.ecomax-no-wheels-v12 .ecomax-v8-floor {
+  pointer-events: none;
+}
