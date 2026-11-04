@@ -7760,38 +7760,6 @@ body {
 }
 .hero-water-splash i:nth-child(1){left:8%;animation-delay:-.3s}.hero-water-splash i:nth-child(2){left:25%;animation-delay:-1.5s}.hero-water-splash i:nth-child(3){left:42%;animation-delay:-.8s}.hero-water-splash i:nth-child(4){left:59%;animation-delay:-2.1s}.hero-water-splash i:nth-child(5){left:76%;animation-delay:-1.15s}
 
-.hero-wheel-control {
-  position:absolute !important; z-index:12 !important; padding:0 !important; border:1px solid transparent !important;
-  border-radius:50% !important; background:transparent !important; cursor:pointer; touch-action:manipulation; overflow:hidden;
-  box-shadow:none !important; -webkit-tap-highlight-color:transparent;
-}
-.hero-wheel-control::before,.hero-wheel-control::after{display:none !important}
-.hero-wheel-rear { --wheel-scale:.058;--wheel-bg-x:37.3%;--wheel-bg-y:55%;left:35.1%; top:46.5%; width:5.8%; aspect-ratio:1; transform:rotate(-5deg); }
-.hero-wheel-front { --wheel-scale:.095;--wheel-bg-x:57.4%;--wheel-bg-y:62%;left:51.9%; top:46%; width:9.5%; aspect-ratio:1; transform:rotate(-5deg); }
-.hero-wheel-disc {
-  position:absolute; inset:0; display:block; border-radius:50%; opacity:0;
-  background-image:url('assets/ecomax-foam-hero.webp');
-  background-repeat:no-repeat; background-size:calc(100% / var(--wheel-scale)) auto;
-  background-position:var(--wheel-bg-x) var(--wheel-bg-y);
-  -webkit-mask-image:radial-gradient(circle,#000 0 67%,#000c 78%,transparent 98%);
-  mask-image:radial-gradient(circle,#000 0 67%,#000c 78%,transparent 98%);
-  filter:none; transition:filter .2s ease;
-}
-.hero-wheel-control:hover,.hero-wheel-control:focus-visible {
-  border-color:#73eaff42 !important; box-shadow:0 0 0 1px #0a34496b,0 0 10px #1fcfff2e !important;
-  outline:0;
-}
-.hero-wheel-control:hover .hero-wheel-disc,.hero-wheel-control:focus-visible .hero-wheel-disc { filter:brightness(1.08); }
-.hero-wheel-hint {
-  position:absolute; left:50%; top:-25px; translate:-50% 4px; padding:5px 8px; border:1px solid #2fcfff7d;
-  border-radius:12px; background:#020c15df; color:#dffaff; font:700 7px/1 Arial,sans-serif; letter-spacing:.7px;
-  white-space:nowrap; opacity:0; transition:opacity .2s ease,translate .2s ease; pointer-events:none;
-}
-.hero-wheel-control:hover .hero-wheel-hint,.hero-wheel-control:focus-visible .hero-wheel-hint { opacity:1; translate:-50% 0; }
-.hero-wheels-spinning .hero-wheel-disc { opacity:1; animation:heroPhotoWheelSpin .62s linear infinite !important; filter:brightness(1.05); }
-.hero-wheels-spinning .hero-wheel-control { border-color:#9befff38 !important; box-shadow:0 0 12px #20caff25 !important; }
-.hero-wheels-spinning .hero-headlight { animation-duration:.78s !important; opacity:.92; }
-
 @keyframes heroFoamTravel { to{stroke-dashoffset:-146} }
 @keyframes heroFoamBead { 0%,100%{scale:.28;opacity:.12}50%{scale:.68;opacity:.52} }
 @keyframes heroFoamSheen { 0%,18%{background-position:145% 0;opacity:.15}48%{opacity:.55}75%,100%{background-position:-80% 0;opacity:.15} }
@@ -7806,7 +7774,6 @@ body {
   68%{opacity:.34}
 }
 @keyframes heroWaterSplash { 0%{opacity:0;transform:translate(0,6px) scale(.5)}25%{opacity:.8}100%{opacity:0;transform:translate(12px,-38px) scale(1.4)} }
-@keyframes heroPhotoWheelSpin { to{rotate:360deg} }
 
 .neon-service-strip { max-width: 1580px; grid-template-columns: repeat(4,1fr); padding: 0 !important; }
 .neon-service { min-height: 75px; padding: 12px 24px; }
@@ -7848,9 +7815,6 @@ body {
   .hero-visual::before { background: linear-gradient(180deg,#020914c9 0 42%,transparent 72%) !important; }
   .neon-hero-stage { background-position: 68% center !important; }
   .hero-foam-flow,.hero-water-drops { left:-193%; right:auto; width:383%; }
-  .hero-wheel-rear { display:none !important; }
-  .hero-wheel-front { --wheel-height-scale:.205;--wheel-bg-x:56.5%;--wheel-bg-y:62%;left:7%; top:49%; width:30%; }
-  .hero-wheel-front .hero-wheel-disc { background-size:auto calc(100% / var(--wheel-height-scale)); }
   .hero-headlight-main { left:58%; top:39%; width:35%; height:7.5%; }
   .hero-headlight-far { display:none; }
   .hero-water-splash { left:6%; right:2%; }
@@ -7863,7 +7827,7 @@ body {
   .neon-service-strip { grid-template-columns: 1fr; }
 }
 @media(prefers-reduced-motion:reduce) {
-  .hero-foam-trace,.hero-foam-beads circle,.hero-foam-sheen,.hero-water-drops i,.hero-headlight,.hero-water-splash i,.hero-wheel-disc { animation:none !important; }
+  .hero-foam-trace,.hero-foam-beads circle,.hero-foam-sheen,.hero-water-drops i,.hero-headlight,.hero-water-splash i { animation:none !important; }
   .hero-water-drops i,.hero-water-splash i { display:none; }
 }
 
@@ -8009,32 +7973,6 @@ body {
     const featured = Array.from(document.querySelectorAll('#productsGrid .ecomax-package-art')).slice(0, 4);
     featured.forEach((source, index) => rack.appendChild(clonePackaging(source, index)));
     rack.hidden = featured.length === 0;
-
-    const rig = stage.querySelector('.neon-car-rig');
-    let frame = 0;
-    visual.addEventListener('pointermove', event => {
-      if (event.pointerType === 'touch') return;
-      const bounds = visual.getBoundingClientRect();
-      const x = ((event.clientX - bounds.left) / bounds.width - .5) * 2;
-      const y = ((event.clientY - bounds.top) / bounds.height - .5) * 2;
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        stage.style.setProperty('--photo-pan-x', `${x * -7}px`);
-        stage.style.setProperty('--photo-pan-y', `${y * -4}px`);
-        rig.style.setProperty('--car-tilt-y', `${x * 4.5}deg`);
-        rig.style.setProperty('--car-tilt-x', `${y * -2.5}deg`);
-        rig.style.setProperty('--car-shift-x', `${x * 8}px`);
-        rig.style.setProperty('--car-shift-y', `${y * 4}px`);
-      });
-    });
-    visual.addEventListener('pointerleave', () => {
-      stage.style.removeProperty('--photo-pan-x');
-      stage.style.removeProperty('--photo-pan-y');
-      rig.style.removeProperty('--car-tilt-y');
-      rig.style.removeProperty('--car-tilt-x');
-      rig.style.removeProperty('--car-shift-x');
-      rig.style.removeProperty('--car-shift-y');
-    });
 
     const serviceStrip = document.createElement('section');
     serviceStrip.className = 'neon-service-strip';
