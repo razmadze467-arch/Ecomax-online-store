@@ -1,0 +1,80 @@
+/* ECOMAX V11 photo-aligned 3D-look alloy wheels.
+   The rubber/foam/body stay in the original image. */
+.neon-hero-stage.ecomax-wheel-v11 .hero-wheel-control {
+  box-sizing:border-box !important;
+  z-index:20 !important;
+  padding:0 !important;
+  margin:0 !important;
+  display:block !important;
+  overflow:hidden !important;
+  border:0 !important;
+  background:transparent !important;
+  border-radius:50% !important;
+  box-shadow:none !important;
+  transform:none !important;
+  outline-offset:4px;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+.neon-hero-stage.ecomax-wheel-v11 .hero-wheel-control::before,
+.neon-hero-stage.ecomax-wheel-v11 .hero-wheel-control::after,
+.neon-hero-stage.ecomax-wheel-v11 .hero-wheel-disc,
+.neon-hero-stage.ecomax-wheel-v11 .hero-wheel-live,
+.neon-hero-stage.ecomax-wheel-v11 .hero-wheel-hint {
+  display:none !important;
+}
+.neon-hero-stage.ecomax-wheel-v11 .hero-wheel-control:focus-visible {
+  outline:2px solid #8deeff !important;
+}
+.neon-hero-stage.ecomax-wheel-v11 .hero-wheel-control:hover,
+.neon-hero-stage.ecomax-wheel-v11 .hero-wheel-control:focus-visible,
+.neon-hero-stage.ecomax-wheel-v11.hero-wheels-spinning .hero-wheel-control {
+  border:0 !important;
+  box-shadow:none !important;
+}
+.neon-hero-stage.ecomax-wheel-v11 .ecomax-v11-wheel-assembly {
+  position:absolute;
+  display:block;
+  inset:0;
+  height:100%;
+  width:100%;
+  border-radius:50%;
+  pointer-events:none;
+  overflow:hidden;
+  /* Gentle feather so a vector rim seats inside the photographic tyre. */
+  -webkit-mask-image:radial-gradient(ellipse at center,#000 0%,#000 89%,#000d 95%,transparent 100%);
+  mask-image:radial-gradient(ellipse at center,#000 0%,#000 89%,#000d 95%,transparent 100%);
+  filter:drop-shadow(1px 0 2px rgba(0,0,0,.4));
+}
+.neon-hero-stage.ecomax-wheel-v11 .ecomax-v11-wheel-svg {
+  display:block;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  shape-rendering:geometricPrecision;
+}
+.neon-hero-stage.ecomax-wheel-v11 .ecomax-v11-spoke-rotor {
+  transform-origin:100px 100px;
+  transform-box:view-box;
+  will-change:transform;
+}
+.neon-hero-stage.ecomax-wheel-v11.ecomax-v11-spinning .ecomax-v11-spoke-rotor {
+  filter:blur(.18px);
+}
+/* V8 keeps its water/headlight effects; avoid extra neon hoops. */
+.neon-hero-stage.ecomax-wheel-v11 .hero-wheel-rear {
+  opacity:.94;
+}
+.neon-hero-stage.ecomax-wheel-v11 .hero-wheel-front {
+  opacity:.98;
+}
+@media(max-width:760px){
+  .neon-hero-stage.ecomax-wheel-v11 .hero-wheel-rear {display:none !important;}
+  .neon-hero-stage.ecomax-wheel-v11 .hero-wheel-front {display:block !important;}
+}
+@media(prefers-reduced-motion:reduce){
+  .neon-hero-stage.ecomax-wheel-v11 .ecomax-v11-spoke-rotor {
+    filter:none !important;
+    transition:none !important;
+  }
+}
