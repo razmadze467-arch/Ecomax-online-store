@@ -234,12 +234,12 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 
     const stylesheet = document.createElement('link');
     stylesheet.rel = 'stylesheet';
-    stylesheet.href = 'ecomax-hero-motion-v8.css?v=20261104-v8';
+    stylesheet.href = 'ecomax-hero-motion-v8.css?v=20261104-v9';
     stylesheet.setAttribute('data-ecomax-hero-v8-css', '');
     document.head.appendChild(stylesheet);
 
     const script = document.createElement('script');
-    script.src = 'ecomax-hero-motion-v8.js?v=20261104-v8';
+    script.src = 'ecomax-hero-motion-v8.js?v=20261104-v9';
     script.async = true;
     script.setAttribute('data-ecomax-hero-v8', '');
     document.body.appendChild(script);
