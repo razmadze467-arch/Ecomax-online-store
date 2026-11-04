@@ -224,3 +224,29 @@ function init(){
 }
 
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
+
+/* ECOMAX_HERO_V8_LOADER — isolated home hero enhancement. */
+(function () {
+  'use strict';
+  function loadHeroMotionV8() {
+    if (!document.querySelector('.hero-visual')) return;
+    if (document.querySelector('script[data-ecomax-hero-v8]')) return;
+
+    const stylesheet = document.createElement('link');
+    stylesheet.rel = 'stylesheet';
+    stylesheet.href = 'ecomax-hero-motion-v8.css?v=20261104-v8';
+    stylesheet.setAttribute('data-ecomax-hero-v8-css', '');
+    document.head.appendChild(stylesheet);
+
+    const script = document.createElement('script');
+    script.src = 'ecomax-hero-motion-v8.js?v=20261104-v8';
+    script.async = true;
+    script.setAttribute('data-ecomax-hero-v8', '');
+    document.body.appendChild(script);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadHeroMotionV8, { once: true });
+  } else {
+    loadHeroMotionV8();
+  }
+})();
