@@ -118,6 +118,7 @@
           <path class="hero-foam-trace foam-path-c" d="M471 205 C526 216 569 248 631 261 S770 263 835 289"/>
           <g class="hero-foam-beads"><circle cx="590" cy="132" r="4"/><circle cx="655" cy="151" r="3"/><circle cx="741" cy="172" r="5"/><circle cx="781" cy="185" r="3"/><circle cx="856" cy="217" r="4"/><circle cx="622" cy="259" r="4"/></g>
         </svg>
+        <div class="hero-foam-sheen"></div>
         <div class="hero-water-drops">${droplets}</div>
         <div class="hero-headlight hero-headlight-main"></div>
         <div class="hero-headlight hero-headlight-far"></div>
