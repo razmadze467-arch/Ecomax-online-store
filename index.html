@@ -7867,6 +7867,15 @@ body {
   .hero-water-drops i,.hero-water-splash i { display:none; }
 }
 
+/* Wheel controls are permanently disabled: original car photo stays static. */
+.neon-hero-stage .hero-wheel-control,
+.neon-hero-stage .hero-wheel-disc,
+.neon-hero-stage .hero-wheel-live,
+.neon-hero-stage .ecomax-v11-wheel-assembly {
+  display:none !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
 </style>
 <script id="ecomax-neon-storefront-live-js">
 (function () {
@@ -7995,17 +8004,6 @@ body {
         <div class="hero-headlight hero-headlight-far"></div>
         <div class="hero-water-splash"><i></i><i></i><i></i><i></i><i></i></div>
       </div>
-      <button type="button" class="hero-wheel-control hero-wheel-rear" aria-label="უკანა და წინა ბორბლების დატრიალება" title="დააჭირე — ორივე ბორბალი დატრიალდება"><span class="hero-wheel-disc" aria-hidden="true"></span><span class="hero-wheel-hint" aria-hidden="true">დააჭირე</span></button>
-      <button type="button" class="hero-wheel-control hero-wheel-front" aria-label="წინა და უკანა ბორბლების დატრიალება" title="დააჭირე — ორივე ბორბალი დატრიალდება"><span class="hero-wheel-disc" aria-hidden="true"></span><span class="hero-wheel-hint" aria-hidden="true">დააჭირე</span></button>`);
-
-    let wheelTimer = 0;
-    stage.querySelectorAll('.hero-wheel-control').forEach(control => control.addEventListener('click', () => {
-      window.clearTimeout(wheelTimer);
-      stage.classList.remove('hero-wheels-spinning');
-      void stage.offsetWidth;
-      stage.classList.add('hero-wheels-spinning');
-      wheelTimer = window.setTimeout(() => stage.classList.remove('hero-wheels-spinning'), 2800);
-    }));
 
     const rack = stage.querySelector('.neon-product-rack');
     const featured = Array.from(document.querySelectorAll('#productsGrid .ecomax-package-art')).slice(0, 4);
