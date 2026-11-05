@@ -1,0 +1,395 @@
+/* ECOMAX ATELIER V17 — editorial premium auto-care storefront.
+   New visual design layered over existing working commerce infrastructure.
+   No duplicate car, no spinning wheels or incorrect foam paths. */
+:root{
+  --atelier-bg:#080d12;--atelier-panel:#101b23;--atelier-panel2:#0b151d;
+  --atelier-ink:#f3f5f4;--atelier-soft:#a0afb9;
+  --atelier-cyan:#78dce5;--atelier-orange:#f78132;
+  --atelier-border:rgba(133,182,192,.19);
+  --atelier-radius:19px;
+}
+body{
+  background:radial-gradient(ellipse at 80% 0%,rgba(47,120,139,.12),transparent 37%),
+  linear-gradient(180deg,#0b1118,#080d12 45%,#090f15) !important;
+  color:var(--atelier-ink) !important;
+}
+.header{
+  background:rgba(8,14,20,.97) !important;
+  border-bottom:1px solid rgba(158,206,216,.14) !important;
+  box-shadow:0 7px 24px rgba(0,0,0,.2) !important;
+}
+.header .nav{
+  max-width:1600px !important;min-height:85px !important;
+  padding-left:clamp(14px,3vw,48px) !important;
+  padding-right:clamp(14px,3vw,48px) !important;
+}
+.neon-topbar{
+  background:#0b131a !important;
+  border-color:rgba(151,198,211,.13) !important;
+  color:#a5c2ca !important;letter-spacing:1.5px !important;
+}
+.header .links{
+  gap:clamp(3px,.55vw,12px) !important;
+}
+.header .links a{
+  font-weight:650 !important;
+  color:#c8d5da !important;
+  border-radius:9px !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+  transition:color .2s ease,background .2s ease !important;
+}
+.header .links a:hover,.header .links a:focus-visible{
+  color:#fff !important;
+  background:rgba(93,171,189,.12) !important;
+}
+.header .logo,
+.header .brand{
+  filter:none !important;
+  text-shadow:0 0 14px rgba(34,187,223,.1) !important;
+}
+.neon-header-search{
+  border:1px solid rgba(151,201,214,.25) !important;
+  background:#0d1c27 !important;border-radius:999px !important;
+  box-shadow:none !important;
+}
+.neon-header-search input{color:#edf7f9 !important}
+.header .cart-button,.header #cartButton{
+  border-radius:12px !important;
+  background:linear-gradient(125deg,#f69238,#e95c1b) !important;
+  border:1px solid rgba(255,174,103,.48) !important;
+  box-shadow:0 7px 22px rgba(238,112,39,.2) !important;
+}
+.hero{
+  position:relative !important;
+  max-width:1600px !important;
+  min-height:610px !important;height:clamp(610px,41vw,710px) !important;
+  background:#080f16 !important;
+  border:1px solid rgba(136,185,199,.19) !important;
+  border-top:0 !important;
+  margin:0 auto !important;
+  overflow:hidden !important;isolation:isolate !important;
+}
+.hero>.hero-visual{
+  position:absolute !important;inset:0 !important;
+  width:100% !important;height:100% !important;min-height:0 !important;
+  background:#071018 !important;
+  border:0 !important;border-radius:0 !important;
+  box-shadow:none !important;z-index:0 !important;
+}
+.hero>.hero-visual>.neon-hero-stage{
+  position:absolute !important;inset:0 !important;
+  background:url('assets/ecomax-foam-hero.webp') center center/cover no-repeat #071018 !important;
+  transform:none !important;transition:none !important;
+  animation:none !important;
+}
+.hero>.hero-visual>.neon-hero-stage::before,
+.hero>.hero-visual>.neon-hero-stage::after,
+.hero>.hero-visual::after{display:none !important;content:none !important}
+.hero>.hero-visual::before{
+  position:absolute !important;inset:0 !important;z-index:4 !important;
+  content:"" !important;display:block !important;
+  pointer-events:none !important;
+  background:linear-gradient(90deg,#091019 0%,rgba(9,16,25,.99) 19%,
+    rgba(9,16,25,.89) 32%,rgba(9,16,25,.34) 48%,
+    transparent 66%),
+    linear-gradient(0deg,rgba(6,13,20,.28),transparent 29%) !important;
+}
+.hero>.hero-copy{
+  position:relative !important;z-index:9 !important;
+  width:min(56%,790px) !important;max-width:none !important;
+  height:100% !important;
+  margin:0 !important;
+  padding:clamp(40px,5vw,80px) 18px 38px clamp(26px,5.8vw,96px) !important;
+  display:flex !important;flex-direction:column !important;justify-content:center !important;
+  align-items:flex-start !important;background:none !important;
+}
+.hero .eyebrow{
+  color:#9de4ec !important;letter-spacing:2.2px !important;
+  font-size:10px !important;line-height:1.5 !important;
+  margin:0 0 18px !important;
+}
+.hero h1{
+  color:#f5f6f3 !important;-webkit-text-fill-color:#f5f6f3 !important;
+  margin:0 0 18px !important;
+  max-width:790px !important;
+  font-size:clamp(44px,4.15vw,76px) !important;
+  line-height:1.07 !important;
+  letter-spacing:-2px !important;
+  font-weight:900 !important;font-style:normal !important;
+  text-shadow:0 7px 28px rgba(0,0,0,.33) !important;
+  text-wrap:balance;
+}
+.hero h1::before{
+  display:block !important;content:"ECOMAX" !important;
+  margin:0 0 28px !important;
+  padding:0 0 12px !important;
+  width:max-content;max-width:100%;
+  border-bottom:3px solid var(--atelier-orange) !important;
+  color:#fff !important;-webkit-text-fill-color:#fff !important;
+  text-shadow:0 4px 19px rgba(61,200,226,.24) !important;
+  font:italic 900 clamp(48px,5vw,85px)/.94 Arial,sans-serif !important;
+  letter-spacing:-3.4px !important;
+}
+.hero h1 span{
+  color:#f88a3a !important;-webkit-text-fill-color:#f88a3a !important;
+  text-shadow:none !important;
+}
+.hero .hero-description{
+  max-width:460px !important;width:100%;
+  color:#b4c4cc !important;
+  font-size:clamp(13px,1.12vw,15px) !important;
+  line-height:1.8 !important;margin:0 !important;
+  text-shadow:none !important;
+}
+.hero .hero-actions{display:flex !important;margin-top:29px !important;gap:12px !important}
+.hero .hero-actions .primary{
+  display:inline-flex !important;align-items:center;justify-content:center;
+  min-height:56px;min-width:228px !important;padding:15px 26px !important;
+  background:linear-gradient(120deg,#fa993d,#ec6b26) !important;
+  border:1px solid rgba(255,190,123,.7) !important;
+  border-radius:12px !important;
+  color:#10171b !important;-webkit-text-fill-color:#10171b !important;
+  font-weight:900 !important;
+  box-shadow:0 12px 28px rgba(233,107,34,.19) !important;
+  transition:transform .18s,box-shadow .18s !important;
+}
+.hero .hero-actions .primary:hover{
+  transform:translateY(-3px) !important;
+  box-shadow:0 15px 36px rgba(238,116,30,.31) !important;
+}
+.hero .hero-actions .secondary{display:none !important}
+.hero .metrics{display:none !important}
+.hero .neon-car-rig,.hero .neon-car-ground,.hero .neon-product-rack,.hero .hero-photo-motion,
+.hero .ecmx14-effects,.hero .ecmx15-light-layer,
+.hero .hero-wheel-control,.hero .neon-car-svg{
+  display:none !important;
+}
+.neon-service-strip{
+  max-width:1600px !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  background:#101a22 !important;
+  border-top:1px solid var(--atelier-border) !important;
+  border-bottom:1px solid var(--atelier-border) !important;
+  gap:0 !important;
+}
+.neon-service{
+  background:transparent !important;
+  border-color:rgba(133,183,199,.14) !important;
+  padding:20px 24px !important;min-height:96px !important;
+  transition:background .2s ease !important;
+}
+.neon-service:hover{background:#152731 !important}
+.neon-service strong{
+  font-size:14px !important;line-height:1.35 !important;color:#f2f7f7 !important;
+}
+.neon-service span{color:#94aeb9 !important;font-size:11px !important}
+.neon-service svg{stroke:#80dce4 !important;filter:none !important}
+.neon-category-section{
+  max-width:1510px !important;
+  padding:59px clamp(17px,3vw,40px) 25px !important;
+  margin:auto !important;
+}
+.neon-category-head{align-items:end !important;margin-bottom:23px !important}
+.neon-category-head small{
+  letter-spacing:2.5px !important;color:#83cbd6 !important;
+}
+.neon-category-head h2{
+  font-size:clamp(28px,3vw,44px) !important;
+  letter-spacing:-1px !important;
+  color:#f2f3ef !important;
+}
+.neon-category-grid{
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:13px !important;
+}
+.neon-category-card{
+  min-height:178px !important;
+  display:flex !important;flex-direction:column;justify-content:flex-end !important;
+  padding:18px !important;
+  background-image:linear-gradient(170deg,rgba(25,59,75,.08),rgba(3,12,19,.86) 76%),
+    url('assets/ecomax-foam-hero.webp') !important;
+  background-size:cover,auto 280px !important;
+  border:1px solid var(--atelier-border) !important;
+  border-radius:16px !important;
+  box-shadow:none !important;
+  transition:transform .23s ease,border-color .23s ease !important;
+}
+.neon-category-card:hover{transform:translateY(-5px) !important;border-color:rgba(125,219,233,.55) !important}
+.neon-category-card b{font-size:15px !important;color:#f3f6f5 !important;line-height:1.45 !important}
+.neon-category-card span{color:#a4c6ce !important}
+.neon-category-card svg{opacity:.09 !important}
+#products.ecmx16-unified{
+  max-width:1510px !important;
+  background:transparent !important;border:0 !important;
+  box-shadow:none !important;
+  padding:clamp(18px,3vw,40px) !important;
+  margin:15px auto 50px !important;
+  width:100% !important;
+}
+#products.ecmx16-unified .section-head{
+  padding-bottom:14px !important;
+  border-bottom:1px solid var(--atelier-border);
+  margin-bottom:26px !important;
+}
+#products.ecmx16-unified .section-head h2{
+  font-size:clamp(30px,3.3vw,46px) !important;
+  color:#f3f6f5 !important;
+}
+#products.ecmx16-unified .tools{
+  background:#0e1921 !important;
+  padding:14px !important;
+  border:1px solid var(--atelier-border) !important;
+  border-radius:15px !important;
+  margin-bottom:19px !important;
+}
+#products.ecmx16-unified .tools input,
+#products.ecmx16-unified .tools select{
+  background:#08131a !important;
+  color:#dfeaed !important;
+  border:1px solid rgba(137,188,200,.27) !important;
+  border-radius:10px !important;
+  box-shadow:none !important;
+}
+#products.ecmx16-unified .ecmx16-categories{gap:9px !important;margin-bottom:22px !important}
+.ecmx16-categories button{
+  background:#101e27 !important;color:#b7cbd0 !important;
+  border:1px solid rgba(152,202,212,.19) !important;
+  border-radius:11px !important;
+  padding:12px 17px !important;
+  box-shadow:none !important;white-space:nowrap !important;
+}
+.ecmx16-categories button[aria-pressed="true"]{
+  color:#101a1e !important;
+  border:1px solid #f8a25d !important;
+  background:#f7994a !important;
+}
+#products.ecmx16-unified #productsGrid{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:19px !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card{
+  background:linear-gradient(165deg,#13222b,#0b171f 55%,#0a151d) !important;
+  border:1px solid rgba(158,198,209,.17) !important;
+  border-radius:18px !important;
+  padding:13px !important;
+  box-shadow:0 15px 26px rgba(0,0,0,.12) !important;
+  animation:none !important;contain:none !important;transform:none;
+  transition:transform .24s,border-color .24s,box-shadow .24s !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card:hover{
+  transform:translateY(-5px) !important;
+  border-color:rgba(122,205,216,.5) !important;
+  box-shadow:0 20px 40px rgba(0,0,0,.28) !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card .product-visual{
+  min-height:240px !important;height:240px !important;
+  border-radius:13px !important;
+  background:radial-gradient(ellipse at 50% 39%,rgba(80,162,177,.14),transparent 61%),#0c1b24 !important;
+  border:1px solid rgba(134,190,204,.12) !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card .product-number{
+  border-color:rgba(96,191,213,.35) !important;
+  box-shadow:none !important;text-shadow:none !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card .product-number::before,
+#products.ecmx16-unified #productsGrid>.product-card .product-number::after{
+  display:none !important;animation:none !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card h3{
+  color:#eff5f3 !important;
+  font-size:clamp(15px,1.3vw,18px) !important;
+  line-height:1.42 !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card .product-description{
+  color:#9fb4bc !important;font-size:12px !important;line-height:1.55 !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card .price-row{
+  border-color:rgba(133,190,208,.16) !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card .price-row strong{
+  color:#fff !important;font-size:20px !important;text-shadow:none !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card .add-cart{
+  min-height:48px !important;border:0 !important;
+  background:#ed8a3e !important;color:#151d21 !important;
+  border-radius:11px !important;font-weight:900 !important;
+  text-shadow:none !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card .add-cart:hover{
+  background:#ffab67 !important;
+}
+#products.ecmx16-unified .ecmx16-bubble-field{
+  opacity:.25 !important;mask-image:linear-gradient(#000,transparent 78%);
+}
+#products.ecmx16-unified .ecmx16-count{
+  color:#90adb5 !important;font-size:12px !important;
+}
+.site-foam-rails,.section-foam-atmosphere,
+.section-water-ring,.section::before{display:none !important}
+#about,#care-guide,#safety{
+  max-width:1440px !important;margin:auto !important;
+  background:none !important;
+}
+#about .info-card,#care-guide .info-card,#safety .info-card{
+  border-radius:17px !important;
+  background:#101e28 !important;
+  border:1px solid var(--atelier-border) !important;
+  box-shadow:none !important;
+}
+.footer{
+  border-top:1px solid rgba(147,204,217,.19) !important;
+  background:#080e14 !important;
+}
+@media(max-width:1350px){
+  .header .nav{gap:10px !important}
+  .neon-category-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
+  #products.ecmx16-unified #productsGrid{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
+}
+@media(max-width:900px){
+  .hero{height:600px !important;min-height:600px !important}
+  .hero>.hero-copy{width:64% !important;padding-left:36px !important}
+  .hero h1{font-size:clamp(42px,5vw,57px) !important}
+  #products.ecmx16-unified #productsGrid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  .neon-category-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  .neon-service-strip{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+}
+@media(max-width:760px){
+  .hero{height:655px !important;min-height:655px !important}
+  .hero>.hero-copy{
+    width:100% !important;
+    justify-content:flex-start !important;
+    padding:39px 20px 24px !important;
+    background:linear-gradient(180deg,rgba(8,15,22,.98) 0%,rgba(8,15,22,.8) 43%,transparent 72%) !important;
+  }
+  .hero h1{font-size:clamp(35px,9.5vw,49px) !important}
+  .hero h1::before{font-size:clamp(43px,12.5vw,66px) !important;margin-bottom:18px !important}
+  .hero .hero-description{max-width:370px !important;font-size:12px !important;line-height:1.6 !important}
+  .hero>.hero-visual>.neon-hero-stage{
+    background-size:auto 64% !important;
+    background-position:77% 100% !important;
+  }
+  .hero>.hero-visual::before{
+    background:linear-gradient(180deg,rgba(7,15,23,.92),rgba(7,15,23,.79) 35%,transparent 68%) !important;
+  }
+  .neon-category-section{padding-top:34px !important}
+  .neon-category-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  .neon-category-card{min-height:150px !important}
+  #products.ecmx16-unified{padding:16px !important}
+  #products.ecmx16-unified #productsGrid{gap:11px !important}
+  #products.ecmx16-unified #productsGrid>.product-card .product-visual{height:205px !important;min-height:205px !important}
+  #products.ecmx16-unified #productsGrid>.product-card h3{font-size:14px !important}
+}
+@media(max-width:430px){
+  .hero{height:620px !important;min-height:620px !important}
+  .hero h1{font-size:clamp(31px,8.5vw,39px) !important}
+  .hero .hero-actions .primary{min-width:0 !important}
+  .neon-category-grid{grid-template-columns:1fr 1fr !important}
+  .neon-category-card{min-height:145px !important;padding:14px !important}
+  #products.ecmx16-unified #productsGrid{grid-template-columns:minmax(0,1fr) !important}
+  #products.ecmx16-unified #productsGrid>.product-card .product-visual{height:240px !important;min-height:240px !important}
+}
+@media(prefers-reduced-motion:reduce){
+  .product-card,.neon-category-card,.header a,.hero .hero-actions .primary{transition:none !important;animation:none !important}
+}
