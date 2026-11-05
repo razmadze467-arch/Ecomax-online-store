@@ -7840,7 +7840,7 @@ body {
 }
 
 .hero {
-  display: block !important; max-width: 1580px !important; height: 470px !important; min-height: 470px !important;
+  display: block !important; max-width: 1580px !important; height: 570px !important; min-height: 570px !important;
   margin: 0 auto !important; padding: 0 !important; border: 1px solid #1a4d6b !important;
   border-top: 0 !important; background: #020914 !important; overflow: hidden !important;
 }
@@ -7889,9 +7889,9 @@ body {
   color: #f2fbff !important; font: 800 9px/1 Arial,sans-serif !important; letter-spacing: 2px !important;
 }
 .neon-hero-stage {
-  inset: -8px !important; transform: translate3d(var(--photo-pan-x,0),var(--photo-pan-y,0),0) scale(1.015) !important;
+  inset: 0 !important; transform: translate3d(var(--photo-pan-x,0),var(--photo-pan-y,0),0) !important;
   background-image: url('assets/ecomax-foam-hero.webp') !important;
-  background-size: cover !important; background-position: center center !important; background-repeat: no-repeat !important;
+  background-size: contain !important; background-position: center center !important; background-repeat: no-repeat !important;
   transition: transform .22s ease-out !important;
 }
 .neon-hero-stage::before, .neon-hero-stage::after,
@@ -8034,7 +8034,7 @@ body {
   .hero-description { max-width: 350px !important; font-size: 12px !important; }
   .hero-actions a { min-width: 190px; width: auto; }
   .hero-visual::before { background: linear-gradient(180deg,#020914c9 0 42%,transparent 72%) !important; }
-  .neon-hero-stage { background-position: 68% center !important; }
+  .neon-hero-stage { background-position:68% center !important; background-size:cover !important; }
   .hero-foam-flow,.hero-water-drops { left:-193%; right:auto; width:383%; }
   .hero-headlight-main { left:35.8%; top:33.4%; width:62.3%; }
   .hero-headlight-far { display:none; }
