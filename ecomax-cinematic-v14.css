@@ -1,0 +1,287 @@
+/* ECOMAX CINEMATIC PREMIUM V14
+   Scope: homepage hero + non-destructive store presentation.
+   Uses the ORIGINAL full-car photograph. No fake rotating wheels or drawn foam stripes. */
+:root {
+  --ecmx14-ink:#030a12;
+  --ecmx14-glass:#061724;
+  --ecmx14-cyan:#36daff;
+  --ecmx14-orange:#ff791b;
+}
+.hero {
+  max-width:1680px !important;
+  height:clamp(540px,38vw,620px) !important;
+  min-height:clamp(540px,38vw,620px) !important;
+  isolation:isolate;
+  background:#020911 !important;
+  border:1px solid rgba(48,183,232,.22) !important;
+  border-top:0 !important;
+}
+.hero .hero-visual {
+  height:100% !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+  background:#020911 !important;
+}
+.hero .neon-hero-stage.ecmx14-ready {
+  position:absolute !important;
+  inset:0 !important;
+  transform:none !important;
+  background-image:url('assets/ecomax-foam-hero.webp') !important;
+  background-size:cover !important;
+  background-position:50% 51% !important;
+  background-repeat:no-repeat !important;
+  filter:none !important;
+  transition:none !important;
+  isolation:isolate;
+}
+.hero .neon-hero-stage.ecmx14-ready::before,
+.hero .neon-hero-stage.ecmx14-ready::after {
+  content:none !important;
+  display:none !important;
+}
+.hero .hero-visual::before {
+  display:block !important;
+  content:"" !important;
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  z-index:3 !important;
+  pointer-events:none !important;
+  background:linear-gradient(90deg,
+    #020913 0%,rgba(2,9,19,.98) 17%,
+    rgba(2,9,19,.84) 29%,rgba(2,9,19,.40) 44%,
+    rgba(2,9,19,.04) 62%,transparent 80%),
+    linear-gradient(0deg,rgba(1,9,16,.26),transparent 18%) !important;
+}
+.hero .hero-visual::after {display:none !important}
+.hero .hero-copy {
+  position:relative !important;
+  z-index:10 !important;
+  width:53% !important;
+  max-width:800px !important;
+  height:100%;
+  padding:40px 12px 38px clamp(24px,4.3vw,80px) !important;
+  justify-content:center;
+}
+.hero .hero-copy h1 {
+  max-width:720px !important;
+  font-size:clamp(42px,4vw,72px) !important;
+  letter-spacing:-1.5px !important;
+  line-height:1.045 !important;
+  text-wrap:balance;
+  filter:drop-shadow(0 4px 17px rgba(0,0,0,.56));
+}
+.hero .hero-copy h1::before {
+  font-size:clamp(46px,4.7vw,81px) !important;
+  margin-bottom:16px !important;
+  letter-spacing:-3px !important;
+  text-shadow:0 5px #7297aa,0 0 23px rgba(29,195,255,.27) !important;
+}
+.hero .hero-description {
+  max-width:440px !important;
+  color:#b9d0de !important;
+  font-size:clamp(12px,1vw,14px) !important;
+  line-height:1.75 !important;
+}
+.hero .hero-actions {margin-top:26px !important}
+.hero .hero-actions .primary {
+  background:linear-gradient(115deg,#ff992e,#f05b0e) !important;
+  border:1px solid #ffb35d !important;
+  border-radius:13px !important;
+  box-shadow:0 9px 28px rgba(255,102,24,.22),inset 0 1px rgba(255,255,255,.32) !important;
+  transition:transform .2s ease,box-shadow .2s ease !important;
+}
+.hero .hero-actions .primary:hover,
+.hero .hero-actions .primary:focus-visible {
+  transform:translateY(-2px) !important;
+  box-shadow:0 13px 35px rgba(255,116,20,.35) !important;
+}
+.hero .neon-car-rig,
+.hero .neon-car-svg,
+.hero .neon-car-ground,
+.hero .neon-product-rack,
+.hero .neon-foam-cannon,
+.hero .neon-foam-stream,
+.hero .neon-foam-particles,
+.hero .hero-photo-motion,
+.hero .hero-wheel-control,
+.hero .ecomax-v11-wheel-assembly {
+  display:none !important;
+}
+/* Isolated effects: they never draw replacement bodywork or false foam lines. */
+.hero .ecmx14-effects {
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  overflow:hidden;
+  isolation:isolate;
+}
+.hero .ecmx14-lamp {
+  position:absolute;
+  opacity:.16;
+  mix-blend-mode:screen;
+  transform:translateZ(0);
+  background:radial-gradient(ellipse at 45% 48%,
+   rgba(225,255,255,.67) 0%,rgba(76,224,255,.43) 23%,
+   rgba(24,178,254,.17) 54%,transparent 78%);
+  filter:blur(2px) drop-shadow(0 0 5px rgba(63,230,255,.58));
+  animation:ecmx14-headlight 4.9s ease-in-out infinite;
+}
+.hero .ecmx14-lamp.main {
+  clip-path:polygon(0 12%,39% 7%,82% 25%,100% 45%,88% 73%,65% 79%,28% 69%,6% 48%);
+}
+.hero .ecmx14-lamp.far {
+  clip-path:polygon(8% 30%,78% 0,100% 36%,88% 79%,28% 100%,0 70%);
+  animation-delay:-.7s;
+}
+.hero .ecmx14-headlight-haze {
+  position:absolute;
+  width:200px;
+  height:105px;
+  border-radius:50%;
+  background:radial-gradient(ellipse,rgba(39,205,255,.22),rgba(11,125,230,.08) 40%,transparent 74%);
+  filter:blur(17px);
+  mix-blend-mode:screen;
+  animation:ecmx14-haze 4.9s ease-in-out infinite;
+}
+.hero .ecmx14-foam-light {
+  position:absolute;
+  mix-blend-mode:screen;
+  border-radius:45%;
+  opacity:.13;
+  filter:blur(7px);
+  background:linear-gradient(105deg,transparent 0%,rgba(228,250,255,.06) 36%,rgba(234,251,255,.22) 49%,transparent 62%);
+  background-size:220% 100%;
+  clip-path:polygon(0 22%,41% 0,100% 45%,86% 80%,37% 100%,0 65%);
+  animation:ecmx14-foam-shimmer 8.4s ease-in-out infinite;
+}
+.hero .ecmx14-floor-light {
+  position:absolute;
+  height:80px;
+  max-width:65%;
+  width:620px;
+  border-radius:50%;
+  opacity:.28;
+  filter:blur(23px);
+  transform-origin:center bottom;
+  background:linear-gradient(90deg,transparent,rgba(39,186,246,.38) 26%,
+    rgba(255,154,52,.11) 51%,rgba(44,188,244,.28) 79%,transparent);
+  mix-blend-mode:screen;
+  animation:ecmx14-floor-shimmer 7.3s ease-in-out infinite;
+}
+.hero .ecmx14-ripple {
+  position:absolute;
+  width:120px;
+  height:20px;
+  border-radius:50%;
+  border:1px solid rgba(166,229,241,.28);
+  opacity:0;
+  transform:scale(.65,.85);
+  filter:blur(.5px);
+  mix-blend-mode:screen;
+  animation:ecmx14-ripple 6.7s ease-out infinite;
+}
+.hero .ecmx14-ripple:nth-of-type(even) {animation-delay:-2.7s}
+@keyframes ecmx14-headlight {
+  0%,100% {opacity:.15;filter:blur(1.8px) drop-shadow(0 0 5px rgba(43,189,255,.45))}
+  50% {opacity:.52;filter:blur(1.2px) drop-shadow(0 0 12px rgba(89,228,255,.85))}
+}
+@keyframes ecmx14-haze {
+  0%,100% {opacity:.18;transform:scale(.94)}
+  50% {opacity:.48;transform:scale(1.08)}
+}
+@keyframes ecmx14-foam-shimmer {
+  0%,100%{opacity:.09;background-position:160% center}
+  50% {opacity:.22;background-position:0% center}
+}
+@keyframes ecmx14-floor-shimmer {
+  0%,100% {opacity:.22;transform:scaleX(.92)}
+  50% {opacity:.42;transform:scaleX(1.04)}
+}
+@keyframes ecmx14-ripple {
+  0% {opacity:0;transform:scale(.65,.85)}
+  20% {opacity:.32}
+  100% {opacity:0;transform:scale(1.95,1.5)}
+}
+/* Consistent premium detailing throughout existing cards: preserve layout and behavior. */
+.neon-service-strip {
+  max-width:1680px !important;
+  background:rgba(3,13,23,.93) !important;
+  border-bottom:1px solid rgba(36,161,212,.28) !important;
+}
+.neon-service-strip .neon-service {
+  background:linear-gradient(145deg,rgba(4,21,32,.65),rgba(3,10,19,.45)) !important;
+  transition:background .25s ease !important;
+}
+.neon-service-strip .neon-service:hover {
+  background:rgba(9,34,50,.9) !important;
+}
+.neon-category-card {
+  border-radius:16px !important;
+  border:1px solid rgba(67,192,225,.20) !important;
+  box-shadow:0 13px 34px rgba(0,0,0,.19),inset 0 1px rgba(255,255,255,.04) !important;
+  transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease !important;
+}
+.neon-category-card:hover,
+.neon-category-card:focus-visible {
+  transform:translateY(-4px) !important;
+  border-color:rgba(73,218,255,.53) !important;
+  box-shadow:0 18px 40px rgba(0,0,0,.32),0 0 22px rgba(27,179,225,.09) !important;
+}
+.header .nav a:focus-visible,
+.hero-actions a:focus-visible,
+.neon-category-card:focus-visible {
+  outline:2px solid #86e6ff !important;
+  outline-offset:3px;
+}
+@media(max-width:1180px) {
+  .hero .hero-copy {width:59% !important;}
+  .hero .hero-copy h1 {font-size:clamp(37px,4.5vw,62px) !important;}
+}
+@media(max-width:760px) {
+  .hero {
+    height:645px !important;
+    min-height:645px !important;
+    border-radius:0 !important;
+  }
+  .hero .hero-copy {
+    width:100% !important;
+    max-width:none !important;
+    height:100% !important;
+    justify-content:flex-start !important;
+    padding:30px 19px 18px !important;
+    background:linear-gradient(180deg,rgba(2,9,19,.94),rgba(2,9,19,.85) 44%,transparent 65%) !important;
+  }
+  .hero .hero-copy h1 {
+    max-width:440px !important;
+    font-size:clamp(32px,9.5vw,48px) !important;
+    margin-top:17px !important;
+    text-wrap:balance;
+  }
+  .hero .hero-copy h1::before {font-size:clamp(42px,12vw,62px) !important;}
+  .hero .hero-description {max-width:370px !important;line-height:1.5 !important;}
+  .hero .hero-actions {margin-top:17px !important;}
+  .hero .neon-hero-stage.ecmx14-ready {
+    background-position:77% 92% !important;
+    background-size:auto 65% !important;
+    background-color:#030a12 !important;
+  }
+  .hero .hero-visual::before {
+    background:linear-gradient(180deg,rgba(2,9,19,.94) 0%,rgba(2,9,19,.56) 39%,
+      transparent 65%,rgba(2,9,19,.2) 100%) !important;
+  }
+  .hero .ecmx14-foam-light {opacity:.11}
+  .neon-service-strip {grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+}
+@media(max-width:430px) {
+  .hero {height:600px !important;min-height:600px !important;}
+  .hero .hero-description {font-size:11px !important;}
+  .hero .hero-copy h1 {font-size:clamp(31px,9vw,39px) !important;}
+  .neon-service-strip {grid-template-columns:1fr !important;}
+}
+@media(prefers-reduced-motion:reduce) {
+  .hero .ecmx14-effects * {animation:none !important;transition:none !important;}
+  .neon-category-card,.hero .hero-actions .primary {transition:none !important;}
+}
