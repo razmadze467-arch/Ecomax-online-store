@@ -13,6 +13,38 @@ body {
     radial-gradient(circle at 78% 18%, #ff6b1915, transparent 24%),
     linear-gradient(180deg, #01060d, #061522 42%, #020811) !important;
 }
+.site-foam-rails {
+  position:fixed; z-index:1; inset:0; overflow:hidden; pointer-events:none;
+  -webkit-mask-image:linear-gradient(90deg,#000 0 11%,transparent 19% 81%,#000 89% 100%);
+  mask-image:linear-gradient(90deg,#000 0 11%,transparent 19% 81%,#000 89% 100%);
+}
+.site-foam-rails::before,.site-foam-rails::after {
+  content:""; position:absolute; top:0; bottom:0; width:15%; opacity:.34;
+  background:
+    radial-gradient(circle at 32% 12%,transparent 0 18px,#7cecff4d 19px 20px,transparent 22px),
+    radial-gradient(circle at 72% 34%,transparent 0 11px,#fff7 12px 13px,transparent 15px),
+    radial-gradient(circle at 38% 63%,transparent 0 23px,#ff75da32 24px 25px,transparent 27px),
+    radial-gradient(circle at 76% 84%,transparent 0 14px,#ffb55b3d 15px 16px,transparent 18px);
+  background-size:220px 520px; animation:siteFoamRailDrift 18s linear infinite !important;
+}
+.site-foam-rails::before { left:0; }
+.site-foam-rails::after { right:0; scale:-1 1; animation-delay:-9s !important; }
+.site-foam-rails i {
+  position:absolute; left:var(--rail-x); bottom:-45px; width:var(--rail-size); height:var(--rail-size);
+  border:1px solid #d9fbff9e; border-radius:50%;
+  background:radial-gradient(circle at 31% 28%,#fff 0 7%,#b9f6ff72 12%,#35d8ff20 48%,transparent 72%);
+  box-shadow:inset -3px -3px 8px #0a7ba84d,0 0 13px #28dcff45; opacity:0;
+  animation:siteFoamRailRise var(--rail-time) linear infinite !important;
+  animation-delay:var(--rail-delay) !important;
+}
+.site-foam-rails i:nth-of-type(3n) { border-color:#ff91e18c; box-shadow:inset -3px -3px 8px #b42b7d3b,0 0 13px #ff52cf35; }
+.site-foam-rails i:nth-of-type(5n) { border-color:#ffd09a8c; box-shadow:inset -3px -3px 8px #c35f1538,0 0 13px #ff8a3035; }
+@keyframes siteFoamRailRise {
+  0%{opacity:0;transform:translate3d(0,35px,0) scale(.55)}
+  12%{opacity:.68} 76%{opacity:.36}
+  100%{opacity:0;transform:translate3d(var(--rail-drift),-115vh,0) scale(1.28)}
+}
+@keyframes siteFoamRailDrift { to{background-position:0 -520px} }
 .header {
   background: #020914f5 !important;
   border-bottom: 1px solid #178bca80 !important;
@@ -258,6 +290,72 @@ body {
 #productsGrid .product-number { border-color: var(--store-card-edge) !important; color: var(--store-card-edge) !important; }
 #productsGrid .add-cart { background: linear-gradient(135deg, var(--store-card-edge), color-mix(in srgb, var(--store-card-edge) 62%, #08314a)) !important; border-color: var(--store-card-edge) !important; color: #fff !important; }
 
+/* Unified premium information system: professional care, guide and safety. */
+#about,#care-guide,#safety { padding-top:72px !important; padding-bottom:76px !important; }
+#about .section-head,#care-guide .section-head,#safety .section-head { margin-bottom:28px !important; align-items:end; }
+#about .section-head h2,#care-guide .section-head h2,#safety .section-head h2 {
+  font-size:clamp(34px,4.4vw,64px) !important; line-height:1.05 !important; letter-spacing:-1.5px;
+}
+#about .section-head p,#care-guide .section-head p,#safety .section-head p {
+  max-width:560px; color:#9eb8c6 !important; font-size:13px !important; line-height:1.8 !important;
+}
+#about .info-grid,#care-guide .info-grid,#safety .info-grid { gap:20px !important; }
+#about .info-card,#care-guide .info-card,#safety .info-card {
+  --info-accent:#24d8ff; position:relative !important; isolation:isolate; min-height:245px !important;
+  padding:27px 28px 25px !important; overflow:hidden !important; border-radius:24px !important;
+  border:1px solid color-mix(in srgb,var(--info-accent) 62%,#244250) !important;
+  background:
+    radial-gradient(circle at 83% 13%,color-mix(in srgb,var(--info-accent) 17%,transparent),transparent 26%),
+    linear-gradient(145deg,#0a2230f5 0%,#05141ef8 54%,#020b13fc 100%) !important;
+  box-shadow:inset 0 1px #ffffff12,inset 0 -42px 70px #0004,0 24px 55px #0008,0 0 30px color-mix(in srgb,var(--info-accent) 13%,transparent) !important;
+}
+#about .info-card:nth-child(2),#care-guide .info-card:nth-child(2),#care-guide .info-card:nth-child(5),#safety .info-card:nth-child(2){--info-accent:#ff63d8}
+#about .info-card:nth-child(3),#care-guide .info-card:nth-child(3),#care-guide .info-card:nth-child(6),#safety .info-card:nth-child(3){--info-accent:#ff9a32}
+#care-guide .info-card:nth-child(4){--info-accent:#66ef9b}
+#about .info-card::before,#care-guide .info-card::before,#safety .info-card::before {
+  content:attr(data-icon) !important; position:absolute !important; z-index:0 !important; inset:auto 21px auto auto !important;
+  top:22px !important; display:block !important; width:auto !important; height:auto !important;
+  color:var(--info-accent) !important; background:none !important; border:0 !important; border-radius:0 !important;
+  font:900 48px/1 Arial,sans-serif !important; letter-spacing:-3px; opacity:.13;
+  filter:drop-shadow(0 0 13px var(--info-accent)); transform:none !important;
+  -webkit-mask:none !important; mask:none !important; animation:premiumInfoIcon 4.8s ease-in-out infinite !important;
+}
+#about .info-card::after,#care-guide .info-card::after,#safety .info-card::after {
+  content:"" !important; position:absolute !important; z-index:1 !important; inset:0 auto 0 -60% !important;
+  display:block !important; width:38% !important; height:100% !important; padding:0 !important; border:0 !important;
+  background:linear-gradient(100deg,transparent,#ffffff04,#ffffff16,#69e9ff0d,transparent) !important;
+  box-shadow:none !important; opacity:1 !important; transform:skewX(-18deg) !important;
+  -webkit-mask:none !important; mask:none !important; animation:premiumInfoSweep 7s ease-in-out infinite !important;
+}
+#about .info-card:nth-child(2)::after,#care-guide .info-card:nth-child(2n)::after,#safety .info-card:nth-child(2)::after { animation-delay:-3.5s !important; }
+#about .info-card > *,#care-guide .info-card > *,#safety .info-card > * { position:relative; z-index:3; }
+#about .info-card .hud-index,#care-guide .info-card .hud-index,#safety .info-card .hud-index {
+  width:max-content; min-height:48px; margin:0 0 21px !important; padding:5px 13px 5px 5px !important;
+  border:1px solid color-mix(in srgb,var(--info-accent) 38%,#173645) !important; border-radius:28px !important;
+  background:#03111bd6 !important; box-shadow:0 0 18px color-mix(in srgb,var(--info-accent) 12%,transparent) !important;
+}
+#about .info-card .hud-index b,#care-guide .info-card .hud-index b,#safety .info-card .hud-index b {
+  width:38px !important; height:38px !important; flex-basis:38px !important; border-color:var(--info-accent) !important;
+  color:#fff !important; background:radial-gradient(circle,#123c50,#020b13 72%) !important;
+  box-shadow:0 0 13px color-mix(in srgb,var(--info-accent) 55%,transparent),inset 0 0 10px #ffffff0c !important;
+}
+#about .info-card .hud-index i,#care-guide .info-card .hud-index i,#safety .info-card .hud-index i { color:var(--info-accent) !important; }
+#about .info-card h3,#care-guide .info-card h3,#safety .info-card h3 {
+  max-width:85%; margin:0 0 11px !important; color:#f4fbff !important; font-size:20px !important; line-height:1.35 !important;
+  text-shadow:0 0 15px color-mix(in srgb,var(--info-accent) 30%,transparent) !important;
+}
+#about .info-card p,#care-guide .info-card p,#safety .info-card p {
+  max-width:94%; margin:0 !important; color:#a8c0cc !important; font-size:12px !important; line-height:1.78 !important; text-shadow:none !important;
+}
+#about .info-card:hover,#care-guide .info-card:hover,#safety .info-card:hover {
+  border-color:var(--info-accent) !important;
+  box-shadow:inset 0 1px #ffffff18,0 30px 70px #0009,0 0 42px color-mix(in srgb,var(--info-accent) 24%,transparent) !important;
+}
+.premium-guide-grid { grid-template-columns:repeat(3,minmax(0,1fr)) !important; }
+.premium-guide-section { max-width:1500px !important; }
+@keyframes premiumInfoIcon { 0%,100%{opacity:.1;translate:0 0;scale:.92}50%{opacity:.2;translate:0 -5px;scale:1.04} }
+@keyframes premiumInfoSweep { 0%,58%{left:-60%;opacity:0}70%{opacity:1}90%,100%{left:125%;opacity:0} }
+
 /* Animated foam atmosphere fills the large catalog gaps without covering content. */
 .section-with-foam-atmosphere {
   position:relative !important; isolation:isolate; overflow:hidden !important;
@@ -316,6 +414,7 @@ body {
   .hero-visual { height: 460px !important; min-height: 460px !important; }
   .neon-category-grid { grid-template-columns: repeat(3, 1fr); }
   .neon-service-strip { grid-template-columns: repeat(2, 1fr); padding-inline: 22px; }
+  .premium-guide-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
   .neon-service:nth-child(2) { border-right: 0; }
   .neon-service:nth-child(-n+2) { border-bottom: 1px solid #1e4f69; }
 }
@@ -532,41 +631,6 @@ body {
 }
 .hero-water-splash i:nth-child(1){left:8%;animation-delay:-.3s}.hero-water-splash i:nth-child(2){left:25%;animation-delay:-1.5s}.hero-water-splash i:nth-child(3){left:42%;animation-delay:-.8s}.hero-water-splash i:nth-child(4){left:59%;animation-delay:-2.1s}.hero-water-splash i:nth-child(5){left:76%;animation-delay:-1.15s}
 
-.hero-wheel-control {
-  position:absolute !important; z-index:12 !important; padding:0 !important; border:1px solid transparent !important;
-  border-radius:50% !important; background:transparent !important; cursor:pointer; touch-action:manipulation; overflow:visible;
-  box-shadow:none !important; -webkit-tap-highlight-color:transparent;
-}
-.hero-wheel-control::before,.hero-wheel-control::after{display:none !important}
-.hero-wheel-rear { left:35.38%; top:46.6%; width:5.12%; aspect-ratio:1; }
-.hero-wheel-front { left:51.97%; top:46.1%; width:9.06%; aspect-ratio:1; }
-.hero-wheel-viewport {
-  position:absolute; inset:0; display:block; overflow:hidden; border-radius:50%; pointer-events:none;
-  -webkit-mask-image:radial-gradient(circle,#000 0 88%,#000d 92%,transparent 100%);
-  mask-image:radial-gradient(circle,#000 0 88%,#000d 92%,transparent 100%);
-}
-.hero-wheel-disc {
-  position:absolute; inset:0; display:block; border-radius:50%; opacity:0;
-  background-repeat:no-repeat; background-size:100% 100%; background-position:center;
-  filter:none; transition:filter .2s ease;
-}
-.hero-wheel-front .hero-wheel-disc { background-image:url('assets/ecomax-front-wheel.webp'); }
-.hero-wheel-rear .hero-wheel-disc { background-image:url('assets/ecomax-rear-wheel.webp'); }
-.hero-wheel-control:hover,.hero-wheel-control:focus-visible {
-  border-color:#73eaff42 !important; box-shadow:0 0 0 1px #0a34496b,0 0 10px #1fcfff2e !important;
-  outline:0;
-}
-.hero-wheel-control:hover .hero-wheel-disc,.hero-wheel-control:focus-visible .hero-wheel-disc { filter:brightness(1.08); }
-.hero-wheel-hint {
-  position:absolute; left:50%; top:-25px; translate:-50% 4px; padding:5px 8px; border:1px solid #2fcfff7d;
-  border-radius:12px; background:#020c15df; color:#dffaff; font:700 7px/1 Arial,sans-serif; letter-spacing:.7px;
-  white-space:nowrap; opacity:0; transition:opacity .2s ease,translate .2s ease; pointer-events:none;
-}
-.hero-wheel-control:hover .hero-wheel-hint,.hero-wheel-control:focus-visible .hero-wheel-hint { opacity:1; translate:-50% 0; }
-.hero-wheels-spinning .hero-wheel-disc { opacity:1; animation:heroPhotoWheelSpin .62s linear infinite !important; filter:brightness(1.05); }
-.hero-wheels-spinning .hero-wheel-control { border-color:#9befff38 !important; box-shadow:0 0 12px #20caff25 !important; }
-.hero-wheels-spinning .hero-headlight { animation-duration:.78s !important; opacity:.92; }
-
 @keyframes heroFoamTravel { to{stroke-dashoffset:-146} }
 @keyframes heroFoamBead { 0%,100%{scale:.28;opacity:.12}50%{scale:.68;opacity:.52} }
 @keyframes heroFoamSheen { 0%,18%{background-position:145% 0;opacity:.15}48%{opacity:.55}75%,100%{background-position:-80% 0;opacity:.15} }
@@ -581,7 +645,6 @@ body {
   68%{opacity:.34}
 }
 @keyframes heroWaterSplash { 0%{opacity:0;transform:translate(0,6px) scale(.5)}25%{opacity:.8}100%{opacity:0;transform:translate(12px,-38px) scale(1.4)} }
-@keyframes heroPhotoWheelSpin { to{rotate:360deg} }
 @keyframes heroGroundRipple { to{background-position:230px 100%} }
 @keyframes heroGroundCurrent { to{transform:translateX(82px) skewX(-12deg)} }
 @keyframes heroGroundGlow { 0%,100%{opacity:.25;transform:scaleX(.82)}50%{opacity:.85;transform:scaleX(1.06)} }
@@ -626,12 +689,15 @@ body {
   .hero-visual::before { background: linear-gradient(180deg,#020914c9 0 42%,transparent 72%) !important; }
   .neon-hero-stage { background-position: 68% center !important; }
   .hero-foam-flow,.hero-water-drops { left:-193%; right:auto; width:383%; }
-  .hero-wheel-rear { display:none !important; }
-  .hero-wheel-front { left:6.8%; top:49%; width:34.7%; }
   .hero-headlight-main { left:35.8%; top:33.4%; width:62.3%; }
   .hero-headlight-far { display:none; }
   .hero-ground-water { left:0; right:-7%; bottom:-1%; height:22%; }
   .hero-water-splash { left:6%; right:2%; }
+  #about,#care-guide,#safety { padding-top:50px !important; padding-bottom:54px !important; }
+  #about .section-head h2,#care-guide .section-head h2,#safety .section-head h2 { font-size:clamp(31px,10vw,44px) !important; letter-spacing:-.7px; }
+  #about .info-card,#care-guide .info-card,#safety .info-card { min-height:220px !important; padding:22px 20px !important; border-radius:19px !important; }
+  .premium-guide-grid { grid-template-columns:minmax(0,1fr) !important; }
+  .site-foam-rails { opacity:.55; -webkit-mask-image:linear-gradient(90deg,#000 0 7%,transparent 15% 85%,#000 93% 100%); mask-image:linear-gradient(90deg,#000 0 7%,transparent 15% 85%,#000 93% 100%); }
   .neon-service-strip { grid-template-columns: 1fr 1fr; padding: 0 !important; }
   .neon-service { min-height: 72px; padding: 10px 12px; }
 }
@@ -641,6 +707,6 @@ body {
   .neon-service-strip { grid-template-columns: 1fr; }
 }
 @media(prefers-reduced-motion:reduce) {
-  .hero-foam-trace,.hero-foam-beads circle,.hero-foam-sheen,.hero-water-drops i,.hero-headlight,.hero-water-splash i,.hero-wheel-disc,.hero-ground-water i,.section-foam-atmosphere i,.section-foam-atmosphere::before,.section-foam-atmosphere::after,.section-water-ring { animation:none !important; }
-  .hero-water-drops i,.hero-water-splash i,.section-foam-atmosphere i { display:none; }
+  .hero-foam-trace,.hero-foam-beads circle,.hero-foam-sheen,.hero-water-drops i,.hero-headlight,.hero-water-splash i,.hero-ground-water i,.section-foam-atmosphere i,.section-foam-atmosphere::before,.section-foam-atmosphere::after,.section-water-ring,.site-foam-rails i,.site-foam-rails::before,.site-foam-rails::after,#about .info-card::before,#about .info-card::after,#care-guide .info-card::before,#care-guide .info-card::after,#safety .info-card::before,#safety .info-card::after { animation:none !important; }
+  .hero-water-drops i,.hero-water-splash i,.section-foam-atmosphere i,.site-foam-rails i { display:none; }
 }

@@ -27,6 +27,22 @@
     const visual = hero?.querySelector('.hero-visual');
     if (!hero || !visual || visual.querySelector('.neon-hero-stage')) return;
 
+    if (!document.querySelector('.site-foam-rails')) {
+      const rails = document.createElement('div');
+      rails.className = 'site-foam-rails';
+      rails.setAttribute('aria-hidden', 'true');
+      rails.innerHTML = Array.from({ length: 32 }, (_, index) => {
+        const side = index % 2;
+        const x = side ? 90 + ((index * 7) % 9) : 1 + ((index * 11) % 9);
+        const size = 6 + ((index * 9) % 25);
+        const drift = side ? -18 - (index % 4) * 8 : 18 + (index % 4) * 8;
+        const duration = 10 + (index % 8) * 1.25;
+        const delay = -((index * 1.73) % 15);
+        return `<i style="--rail-x:${x}%;--rail-size:${size}px;--rail-drift:${drift}px;--rail-time:${duration}s;--rail-delay:${delay}s"></i>`;
+      }).join('');
+      document.body.prepend(rails);
+    }
+
     const header = document.querySelector('.header');
     const nav = header?.querySelector('.nav');
     if (header && nav && !header.querySelector('.neon-topbar')) {
@@ -124,18 +140,7 @@
         <div class="hero-headlight hero-headlight-far"></div>
         <div class="hero-ground-water"><i></i><i></i><i></i><span></span></div>
         <div class="hero-water-splash"><i></i><i></i><i></i><i></i><i></i></div>
-      </div>
-      <button type="button" class="hero-wheel-control hero-wheel-rear" aria-label="უკანა და წინა ბორბლების დატრიალება" title="დააჭირე — ორივე ბორბალი დატრიალდება"><span class="hero-wheel-viewport" aria-hidden="true"><span class="hero-wheel-disc"></span></span><span class="hero-wheel-hint" aria-hidden="true">დააჭირე</span></button>
-      <button type="button" class="hero-wheel-control hero-wheel-front" aria-label="წინა და უკანა ბორბლების დატრიალება" title="დააჭირე — ორივე ბორბალი დატრიალდება"><span class="hero-wheel-viewport" aria-hidden="true"><span class="hero-wheel-disc"></span></span><span class="hero-wheel-hint" aria-hidden="true">დააჭირე</span></button>`);
-
-    let wheelTimer = 0;
-    stage.querySelectorAll('.hero-wheel-control').forEach(control => control.addEventListener('click', () => {
-      window.clearTimeout(wheelTimer);
-      stage.classList.remove('hero-wheels-spinning');
-      void stage.offsetWidth;
-      stage.classList.add('hero-wheels-spinning');
-      wheelTimer = window.setTimeout(() => stage.classList.remove('hero-wheels-spinning'), 2800);
-    }));
+      </div>`);
 
     const rack = stage.querySelector('.neon-product-rack');
     const featured = Array.from(document.querySelectorAll('#productsGrid .ecomax-package-art')).slice(0, 4);
@@ -192,11 +197,11 @@
       </div>`;
     serviceStrip.insertAdjacentElement('afterend', categories);
 
-    const ambientSections = ['products','about','safety','home-care','sprays','accessories','fragrances'];
+    const ambientSections = ['products','about','care-guide','safety','home-care','sprays','accessories','fragrances'];
     ambientSections.forEach((id, sectionIndex) => {
       const section = document.getElementById(id);
       if (!section || section.querySelector(':scope > .section-foam-atmosphere')) return;
-      const bubbles = Array.from({ length: 22 }, (_, index) => {
+      const bubbles = Array.from({ length: 28 }, (_, index) => {
         const x = 3 + ((index * 19 + sectionIndex * 11) % 94);
         const size = 5 + ((index * 7 + sectionIndex * 3) % 22);
         const drift = -28 + ((index * 13) % 57);
