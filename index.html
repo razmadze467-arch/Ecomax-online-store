@@ -7889,10 +7889,10 @@ body {
   color: #f2fbff !important; font: 800 9px/1 Arial,sans-serif !important; letter-spacing: 2px !important;
 }
 .neon-hero-stage {
-  inset: 0 !important; transform: translate3d(var(--photo-pan-x,0),var(--photo-pan-y,0),0) !important;
-  background-image: url('assets/ecomax-foam-hero.webp') !important;
-  background-size: contain !important; background-position: center center !important; background-repeat: no-repeat !important;
-  transition: transform .22s ease-out !important;
+  inset: 0 !important; transform: none !important;
+  background-image: url('assets/ecomax-hero-preview-clean-v13.webp') !important;
+  background-size: cover !important; background-position: center center !important; background-repeat: no-repeat !important;
+  transition: none !important;
 }
 .neon-hero-stage::before, .neon-hero-stage::after,
 .neon-car-rig, .neon-product-rack, .neon-hero-note { display: none !important; }
@@ -8058,6 +8058,34 @@ body {
   .hero-water-drops i,.hero-water-splash i,.section-foam-atmosphere i,.site-foam-rails i { display:none; }
 }
 
+/* ECOMAX hero V13: previously approved photorealistic concept.
+   One image only; no second rig or floating wheel effects. */
+.hero-visual::after { display:none !important; }
+.hero-visual::before {
+  background:linear-gradient(90deg,#020914 0%,#020914ee 18%,#0209147a 36%,transparent 57%) !important;
+}
+.neon-car-ground, .neon-car-rig, .neon-car-svg,
+.neon-foam-cannon, .neon-foam-stream, .neon-foam-particles {
+  display:none !important;
+}
+.neon-hero-stage .hero-foam-flow,
+.neon-hero-stage .hero-foam-sheen,
+.neon-hero-stage .hero-headlight {
+  display:none !important;
+}
+.neon-hero-stage .hero-water-drops { opacity:.22 !important; }
+.neon-hero-stage .hero-ground-water { opacity:.20 !important; }
+.neon-hero-stage .hero-water-splash { opacity:.26 !important; }
+@media(max-width:760px) {
+  .neon-hero-stage { background-position:78% center !important; }
+  .hero-visual::before { background:linear-gradient(180deg,#020914cf 0 39%,transparent 79%) !important; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .neon-hero-stage .hero-water-drops i,
+  .neon-hero-stage .hero-ground-water i,
+  .neon-hero-stage .hero-water-splash i {animation:none !important;}
+}
+
 </style>
 <script id="ecomax-neon-storefront-live-js">
 (function () {
@@ -8141,37 +8169,6 @@ body {
     stage.className = 'neon-hero-stage';
     stage.innerHTML = `
       <div class="neon-car-ground"></div>
-      <div class="neon-car-rig">
-      <svg class="neon-car-svg" viewBox="0 0 780 350" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="neonCarBody" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07101a"/><stop offset=".5" stop-color="#16445d"/><stop offset="1" stop-color="#02070d"/></linearGradient>
-          <linearGradient id="neonWindow" x1="0" y1="0" x2="1"><stop stop-color="#0d3852"/><stop offset=".55" stop-color="#020913"/><stop offset="1" stop-color="#167fb0"/></linearGradient>
-          <filter id="neonBlueGlow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <filter id="neonOrangeGlow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        </defs>
-        <path d="M88 238 Q106 181 177 161 L259 84 Q292 58 370 55 H482 Q524 58 566 91 L629 157 Q694 171 720 226 L727 251 H63Z" fill="url(#neonCarBody)" stroke="#36caff" stroke-width="3"/>
-        <path d="M269 94 Q297 71 372 69 H472 Q505 72 540 98 L580 151 H204Z" fill="url(#neonWindow)" stroke="#72ddff" stroke-width="2"/>
-        <path d="M377 72V150M478 72l58 79M250 153h335" fill="none" stroke="#179fd2" stroke-width="2"/>
-        <path d="M107 215 Q158 193 212 197M580 195q76-9 121 23" fill="none" stroke="#ff761b" stroke-width="5" filter="url(#neonOrangeGlow)"/>
-        <path d="M74 246H726M141 169q215 22 463-4" fill="none" stroke="#1bc6ff" stroke-width="4" opacity=".85" filter="url(#neonBlueGlow)"/>
-        <path d="M75 234l63-8 42 13-61 11zM661 220l47 10 11 17-68-9z" fill="#baf5ff" filter="url(#neonBlueGlow)"/>
-        <path d="M277 158l-25 88M535 155l30 89" fill="none" stroke="#115a79" stroke-width="2"/>
-        <g class="neon-wheel neon-wheel-front"><circle cx="205" cy="248" r="62" fill="#03080e" stroke="#25c9ff" stroke-width="4"/><circle cx="205" cy="248" r="38" fill="#172734" stroke="#ff7218" stroke-width="4"/><circle cx="205" cy="248" r="10" fill="#e4f8ff"/><path d="M205 211v74M168 248h74M179 222l52 52M231 222l-52 52" stroke="#7a9cae" stroke-width="5"/></g>
-        <g class="neon-wheel neon-wheel-back"><circle cx="591" cy="248" r="62" fill="#03080e" stroke="#25c9ff" stroke-width="4"/><circle cx="591" cy="248" r="38" fill="#172734" stroke="#ff7218" stroke-width="4"/><circle cx="591" cy="248" r="10" fill="#e4f8ff"/><path d="M591 211v74M554 248h74M565 222l52 52M617 222l-52 52" stroke="#7a9cae" stroke-width="5"/></g>
-        <path d="M101 266 Q390 309 708 267" fill="none" stroke="#159ed8" stroke-width="5" opacity=".75" filter="url(#neonBlueGlow)"/>
-        <path d="M304 170q12 8 20 0M479 170q12 8 20 0" fill="none" stroke="#9ceaff" stroke-width="4"/>
-        <g class="neon-car-foam" filter="url(#neonBlueGlow)">
-          <path d="M214 157c31-18 67-23 102-15 27 6 47 21 74 18 24-3 36-18 62-18 25 0 49 9 71 20" fill="none" stroke="#e9fbff" stroke-width="14" stroke-linecap="round" opacity=".92"/>
-          <path d="M280 105c29-16 61-19 94-17 24 2 43 11 66 10 20-1 36-9 56-4" fill="none" stroke="#c8f5ff" stroke-width="11" stroke-linecap="round" opacity=".88"/>
-          <path d="M254 151q8 28 2 55M334 153q-3 30 7 54M451 151q10 31 3 58M520 158q-2 24 7 43" fill="none" stroke="#efffff" stroke-width="7" stroke-linecap="round"/>
-          <circle cx="301" cy="132" r="9" fill="#fff"/><circle cx="352" cy="145" r="7" fill="#dffaff"/><circle cx="423" cy="133" r="10" fill="#fff"/><circle cx="483" cy="145" r="6" fill="#e5fcff"/>
-        </g>
-        <text x="392" y="214" fill="#dff8ff" opacity=".7" text-anchor="middle" font-family="Arial" font-weight="800" font-size="19" letter-spacing="5">ECOMAX</text>
-      </svg>
-      <div class="neon-foam-cannon"><span></span></div>
-      <div class="neon-foam-stream" aria-hidden="true"></div>
-      <div class="neon-foam-particles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-      </div>
       <div class="neon-product-rack"></div>
       <div class="neon-hero-note"><i></i><span>PROFESSIONAL AUTO CHEMISTRY / CAR CARE</span></div>`;
     visual.appendChild(stage);
@@ -8208,32 +8205,6 @@ body {
     const featured = Array.from(document.querySelectorAll('#productsGrid .ecomax-package-art')).slice(0, 4);
     featured.forEach((source, index) => rack.appendChild(clonePackaging(source, index)));
     rack.hidden = featured.length === 0;
-
-    const rig = stage.querySelector('.neon-car-rig');
-    let frame = 0;
-    visual.addEventListener('pointermove', event => {
-      if (event.pointerType === 'touch') return;
-      const bounds = visual.getBoundingClientRect();
-      const x = ((event.clientX - bounds.left) / bounds.width - .5) * 2;
-      const y = ((event.clientY - bounds.top) / bounds.height - .5) * 2;
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        stage.style.setProperty('--photo-pan-x', `${x * -7}px`);
-        stage.style.setProperty('--photo-pan-y', `${y * -4}px`);
-        rig.style.setProperty('--car-tilt-y', `${x * 4.5}deg`);
-        rig.style.setProperty('--car-tilt-x', `${y * -2.5}deg`);
-        rig.style.setProperty('--car-shift-x', `${x * 8}px`);
-        rig.style.setProperty('--car-shift-y', `${y * 4}px`);
-      });
-    });
-    visual.addEventListener('pointerleave', () => {
-      stage.style.removeProperty('--photo-pan-x');
-      stage.style.removeProperty('--photo-pan-y');
-      rig.style.removeProperty('--car-tilt-y');
-      rig.style.removeProperty('--car-tilt-x');
-      rig.style.removeProperty('--car-shift-x');
-      rig.style.removeProperty('--car-shift-y');
-    });
 
     const serviceStrip = document.createElement('section');
     serviceStrip.className = 'neon-service-strip';
