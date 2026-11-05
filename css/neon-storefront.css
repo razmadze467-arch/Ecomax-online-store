@@ -258,6 +258,58 @@ body {
 #productsGrid .product-number { border-color: var(--store-card-edge) !important; color: var(--store-card-edge) !important; }
 #productsGrid .add-cart { background: linear-gradient(135deg, var(--store-card-edge), color-mix(in srgb, var(--store-card-edge) 62%, #08314a)) !important; border-color: var(--store-card-edge) !important; color: #fff !important; }
 
+/* Animated foam atmosphere fills the large catalog gaps without covering content. */
+.section-with-foam-atmosphere {
+  position:relative !important; isolation:isolate; overflow:hidden !important;
+  background:
+    radial-gradient(ellipse at 12% 28%,#13c8ff0c,transparent 26%),
+    radial-gradient(ellipse at 88% 68%,#ff5fd60a,transparent 27%),
+    linear-gradient(180deg,#06152224,transparent 35%,#03111c33) !important;
+}
+.section-with-foam-atmosphere > :not(.section-foam-atmosphere) { position:relative; z-index:2; }
+.section-foam-atmosphere {
+  position:absolute; z-index:1; inset:0; overflow:hidden; pointer-events:none;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 7%,#000 94%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 7%,#000 94%,transparent 100%);
+}
+.section-foam-atmosphere::before,
+.section-foam-atmosphere::after {
+  content:""; position:absolute; width:520px; height:220px; border-radius:50%; opacity:.4;
+  background:
+    radial-gradient(circle at 12% 62%,transparent 0 8px,#bdf8ff80 9px 10px,transparent 11px),
+    radial-gradient(circle at 29% 45%,transparent 0 15px,#73e7ff62 16px 17px,transparent 18px),
+    radial-gradient(circle at 51% 72%,transparent 0 10px,#fff8 11px 12px,transparent 13px),
+    radial-gradient(circle at 72% 37%,transparent 0 19px,#5ce2ff55 20px 21px,transparent 22px),
+    radial-gradient(circle at 89% 66%,transparent 0 12px,#fff7 13px 14px,transparent 15px);
+  filter:drop-shadow(0 0 9px #27d8ff66); animation:sectionFoamBank 13s ease-in-out infinite !important;
+}
+.section-foam-atmosphere::before { left:-95px; top:19%; transform:rotate(-13deg); }
+.section-foam-atmosphere::after { right:-110px; bottom:15%; transform:rotate(12deg) scale(.8); animation-delay:-6.5s !important; }
+.section-foam-atmosphere i {
+  position:absolute; left:var(--bubble-x); bottom:-36px; width:var(--bubble-size); height:var(--bubble-size);
+  border:1px solid #ddfbffb8; border-radius:50%;
+  background:radial-gradient(circle at 31% 27%,#fff 0 7%,#c9f8ff75 13%,#43cfff2f 42%,transparent 70%);
+  box-shadow:inset -2px -2px 6px #1688b34f,0 0 11px #24d8ff55; opacity:0;
+  animation:sectionFoamRise var(--bubble-time) linear infinite !important;
+  animation-delay:var(--bubble-delay) !important;
+}
+.section-foam-atmosphere i:nth-of-type(3n) { border-color:#ff83e870; box-shadow:inset -2px -2px 5px #b72b8c24,0 0 9px #ff4bd52c; }
+.section-foam-atmosphere i:nth-of-type(4n) { border-color:#ffd39b66; box-shadow:inset -2px -2px 5px #ff7b2024,0 0 9px #ff7b2028; }
+.section-water-ring {
+  position:absolute; width:58%; height:210px; left:21%; border:1px solid #28d7ff24; border-radius:50%;
+  transform:perspective(340px) rotateX(70deg); box-shadow:0 0 28px #19c9ff0d,inset 0 0 38px #19c9ff0b;
+  animation:sectionWaterRing 9s ease-in-out infinite !important;
+}
+.section-water-ring-a { top:20%; }
+.section-water-ring-b { bottom:8%; border-color:#ff55d520; animation-delay:-4.5s !important; }
+@keyframes sectionFoamRise {
+  0%{opacity:0;transform:translate3d(0,20px,0) scale(.55)}
+  12%{opacity:.72} 72%{opacity:.42}
+  100%{opacity:0;transform:translate3d(var(--bubble-drift),-760px,0) scale(1.25)}
+}
+@keyframes sectionFoamBank { 0%,100%{translate:0 0;opacity:.28}50%{translate:28px -18px;opacity:.5} }
+@keyframes sectionWaterRing { 0%,100%{opacity:.16;scale:.88}50%{opacity:.5;scale:1.08} }
+
 @media(max-width: 1100px) {
   .hero { grid-template-columns: 1fr 1.1fr !important; padding-inline: 22px !important; }
   .hero h1 { font-size: clamp(42px, 6vw, 68px) !important; }
@@ -439,14 +491,39 @@ body {
   opacity:0; animation:heroWaterSlide var(--drop-time) ease-in infinite !important; animation-delay:var(--drop-delay) !important;
 }
 .hero-headlight {
-  position:absolute; z-index:4; pointer-events:none; transform:skewX(-10deg) rotate(1deg);
-  border-radius:45% 25% 55% 35%; mix-blend-mode:screen;
-  background:radial-gradient(ellipse at 50% 44%,#eaffffbd 0 5%,#57eaff7a 19%,#008cff2e 47%,transparent 72%);
-  filter:blur(1px) drop-shadow(0 0 5px #25d8ff) drop-shadow(0 0 12px #008cff);
-  opacity:.3; animation:heroHeadlightBreathe 3.7s ease-in-out infinite !important;
+  position:absolute; z-index:4; pointer-events:none; mix-blend-mode:screen;
+  background-repeat:no-repeat; background-position:center; background-size:100% 100%;
+  filter:brightness(1.12) drop-shadow(0 0 5px #25d8ff) drop-shadow(0 0 12px #008cff);
+  opacity:.22; animation:heroHeadlightBreathe 3.7s ease-in-out infinite !important;
 }
-.hero-headlight-main { left:61.8%; top:37.8%; width:15.2%; height:9.4%; clip-path:polygon(0 22%,100% 0,88% 58%,22% 100%); }
-.hero-headlight-far { left:92.1%; top:39.2%; width:3.6%; height:5.7%; clip-path:polygon(0 18%,100% 0,88% 64%,12% 100%); animation-delay:-1.15s; }
+.hero-headlight-main { left:59.55%; top:33.2%; width:16.24%; aspect-ratio:330/120; background-image:url('assets/ecomax-headlight-main.webp'); }
+.hero-headlight-far { left:89.05%; top:33.4%; width:5.42%; aspect-ratio:110/105; background-image:url('assets/ecomax-headlight-far.webp'); animation-delay:-1.15s !important; }
+.hero-ground-water {
+  position:absolute; z-index:3; left:29%; right:-3%; bottom:-2%; height:25%; overflow:hidden;
+  opacity:.62; pointer-events:none; mix-blend-mode:screen;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 13%,#000 92%,transparent),linear-gradient(0deg,#000,transparent 96%);
+  mask-image:linear-gradient(90deg,transparent,#000 13%,#000 92%,transparent),linear-gradient(0deg,#000,transparent 96%);
+}
+.hero-ground-water i {
+  position:absolute; inset:0; background-repeat:repeat-x; will-change:transform,background-position;
+}
+.hero-ground-water i:nth-child(1) {
+  background-image:repeating-radial-gradient(ellipse at 50% 100%,transparent 0 27px,#8cecff6b 29px 30px,transparent 32px 58px);
+  background-size:230px 58px; background-position:0 100%; transform:perspective(240px) rotateX(68deg) scaleX(1.2);
+  animation:heroGroundRipple 7s linear infinite !important;
+}
+.hero-ground-water i:nth-child(2) {
+  inset:19% -6% 5%; background:repeating-linear-gradient(100deg,transparent 0 34px,#d9ffff55 36px 38px,transparent 41px 82px);
+  filter:blur(1px); transform:skewX(-12deg); animation:heroGroundCurrent 5.5s linear infinite !important;
+}
+.hero-ground-water i:nth-child(3) {
+  inset:43% 2% 2%; background:linear-gradient(90deg,transparent,#20cfff66 22%,#fff8 48%,#ff7a243d 70%,transparent);
+  filter:blur(3px); animation:heroGroundGlow 4.8s ease-in-out infinite !important;
+}
+.hero-ground-water span {
+  position:absolute; left:18%; right:4%; bottom:8%; height:3px; border-radius:50%;
+  background:linear-gradient(90deg,transparent,#bdf8ff,#2bd2ff,transparent); filter:blur(1px); opacity:.65;
+}
 .hero-water-splash { position:absolute; z-index:2; left:48%; right:4%; bottom:2.5%; height:13%; opacity:.45; }
 .hero-water-splash i {
   position:absolute; left:8%; bottom:0; width:5px; height:5px;
@@ -457,21 +534,24 @@ body {
 
 .hero-wheel-control {
   position:absolute !important; z-index:12 !important; padding:0 !important; border:1px solid transparent !important;
-  border-radius:50% !important; background:transparent !important; cursor:pointer; touch-action:manipulation; overflow:hidden;
+  border-radius:50% !important; background:transparent !important; cursor:pointer; touch-action:manipulation; overflow:visible;
   box-shadow:none !important; -webkit-tap-highlight-color:transparent;
 }
 .hero-wheel-control::before,.hero-wheel-control::after{display:none !important}
-.hero-wheel-rear { --wheel-scale:.058;--wheel-bg-x:37.3%;--wheel-bg-y:55%;left:35.1%; top:46.5%; width:5.8%; aspect-ratio:1; transform:rotate(-5deg); }
-.hero-wheel-front { --wheel-scale:.095;--wheel-bg-x:57.4%;--wheel-bg-y:62%;left:51.9%; top:46%; width:9.5%; aspect-ratio:1; transform:rotate(-5deg); }
+.hero-wheel-rear { left:35.38%; top:46.6%; width:5.12%; aspect-ratio:1; }
+.hero-wheel-front { left:51.97%; top:46.1%; width:9.06%; aspect-ratio:1; }
+.hero-wheel-viewport {
+  position:absolute; inset:0; display:block; overflow:hidden; border-radius:50%; pointer-events:none;
+  -webkit-mask-image:radial-gradient(circle,#000 0 88%,#000d 92%,transparent 100%);
+  mask-image:radial-gradient(circle,#000 0 88%,#000d 92%,transparent 100%);
+}
 .hero-wheel-disc {
   position:absolute; inset:0; display:block; border-radius:50%; opacity:0;
-  background-image:url('assets/ecomax-foam-hero.webp');
-  background-repeat:no-repeat; background-size:calc(100% / var(--wheel-scale)) auto;
-  background-position:var(--wheel-bg-x) var(--wheel-bg-y);
-  -webkit-mask-image:radial-gradient(circle,#000 0 67%,#000c 78%,transparent 98%);
-  mask-image:radial-gradient(circle,#000 0 67%,#000c 78%,transparent 98%);
+  background-repeat:no-repeat; background-size:100% 100%; background-position:center;
   filter:none; transition:filter .2s ease;
 }
+.hero-wheel-front .hero-wheel-disc { background-image:url('assets/ecomax-front-wheel.webp'); }
+.hero-wheel-rear .hero-wheel-disc { background-image:url('assets/ecomax-rear-wheel.webp'); }
 .hero-wheel-control:hover,.hero-wheel-control:focus-visible {
   border-color:#73eaff42 !important; box-shadow:0 0 0 1px #0a34496b,0 0 10px #1fcfff2e !important;
   outline:0;
@@ -496,12 +576,15 @@ body {
   100%{opacity:0;transform:translate3d(var(--drop-drift),72px,0) scaleY(1.35)}
 }
 @keyframes heroHeadlightBreathe {
-  0%,100%{opacity:.16;filter:blur(1.6px) drop-shadow(0 0 3px #28d9ff) drop-shadow(0 0 8px #008cff)}
-  48%{opacity:.58;filter:blur(.7px) drop-shadow(0 0 7px #d9ffff) drop-shadow(0 0 17px #00a7ff)}
+  0%,100%{opacity:.12;filter:brightness(.92) drop-shadow(0 0 3px #28d9ff) drop-shadow(0 0 8px #008cff)}
+  48%{opacity:.68;filter:brightness(1.5) drop-shadow(0 0 7px #d9ffff) drop-shadow(0 0 18px #00a7ff)}
   68%{opacity:.34}
 }
 @keyframes heroWaterSplash { 0%{opacity:0;transform:translate(0,6px) scale(.5)}25%{opacity:.8}100%{opacity:0;transform:translate(12px,-38px) scale(1.4)} }
 @keyframes heroPhotoWheelSpin { to{rotate:360deg} }
+@keyframes heroGroundRipple { to{background-position:230px 100%} }
+@keyframes heroGroundCurrent { to{transform:translateX(82px) skewX(-12deg)} }
+@keyframes heroGroundGlow { 0%,100%{opacity:.25;transform:scaleX(.82)}50%{opacity:.85;transform:scaleX(1.06)} }
 
 .neon-service-strip { max-width: 1580px; grid-template-columns: repeat(4,1fr); padding: 0 !important; }
 .neon-service { min-height: 75px; padding: 12px 24px; }
@@ -544,10 +627,10 @@ body {
   .neon-hero-stage { background-position: 68% center !important; }
   .hero-foam-flow,.hero-water-drops { left:-193%; right:auto; width:383%; }
   .hero-wheel-rear { display:none !important; }
-  .hero-wheel-front { --wheel-height-scale:.205;--wheel-bg-x:56.5%;--wheel-bg-y:62%;left:7%; top:49%; width:30%; }
-  .hero-wheel-front .hero-wheel-disc { background-size:auto calc(100% / var(--wheel-height-scale)); }
-  .hero-headlight-main { left:58%; top:39%; width:35%; height:7.5%; }
+  .hero-wheel-front { left:6.8%; top:49%; width:34.7%; }
+  .hero-headlight-main { left:35.8%; top:33.4%; width:62.3%; }
   .hero-headlight-far { display:none; }
+  .hero-ground-water { left:0; right:-7%; bottom:-1%; height:22%; }
   .hero-water-splash { left:6%; right:2%; }
   .neon-service-strip { grid-template-columns: 1fr 1fr; padding: 0 !important; }
   .neon-service { min-height: 72px; padding: 10px 12px; }
@@ -558,6 +641,6 @@ body {
   .neon-service-strip { grid-template-columns: 1fr; }
 }
 @media(prefers-reduced-motion:reduce) {
-  .hero-foam-trace,.hero-foam-beads circle,.hero-foam-sheen,.hero-water-drops i,.hero-headlight,.hero-water-splash i,.hero-wheel-disc { animation:none !important; }
-  .hero-water-drops i,.hero-water-splash i { display:none; }
+  .hero-foam-trace,.hero-foam-beads circle,.hero-foam-sheen,.hero-water-drops i,.hero-headlight,.hero-water-splash i,.hero-wheel-disc,.hero-ground-water i,.section-foam-atmosphere i,.section-foam-atmosphere::before,.section-foam-atmosphere::after,.section-water-ring { animation:none !important; }
+  .hero-water-drops i,.hero-water-splash i,.section-foam-atmosphere i { display:none; }
 }

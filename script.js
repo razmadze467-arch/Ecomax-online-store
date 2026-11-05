@@ -224,29 +224,3 @@ function init(){
 }
 
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
-
-/* ECOMAX_STATIC_WHEELS_V12: keep car wheels entirely static. */
-(() => {
-  'use strict';
-  function loadPhotoEffects() {
-    if (!document.querySelector('.hero-visual')) return;
-    if (document.querySelector('script[data-ecomax-no-wheels-v12]')) return;
-    for (const href of [
-      'ecomax-hero-motion-v8.css?v=20261104-v12',
-      'ecomax-no-wheels-v12.css?v=20261104-v12'
-    ]) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = href;
-      document.head.appendChild(link);
-    }
-    const script = document.createElement('script');
-    script.src = 'ecomax-no-wheels-v12.js?v=20261104-v12';
-    script.async = true;
-    script.setAttribute('data-ecomax-no-wheels-v12', '');
-    document.body.appendChild(script);
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadPhotoEffects, { once: true });
-  } else loadPhotoEffects();
-})();

@@ -122,10 +122,11 @@
         <div class="hero-water-drops">${droplets}</div>
         <div class="hero-headlight hero-headlight-main"></div>
         <div class="hero-headlight hero-headlight-far"></div>
+        <div class="hero-ground-water"><i></i><i></i><i></i><span></span></div>
         <div class="hero-water-splash"><i></i><i></i><i></i><i></i><i></i></div>
       </div>
-      <button type="button" class="hero-wheel-control hero-wheel-rear" aria-label="უკანა და წინა ბორბლების დატრიალება" title="დააჭირე — ორივე ბორბალი დატრიალდება"><span class="hero-wheel-disc" aria-hidden="true"></span><span class="hero-wheel-hint" aria-hidden="true">დააჭირე</span></button>
-      <button type="button" class="hero-wheel-control hero-wheel-front" aria-label="წინა და უკანა ბორბლების დატრიალება" title="დააჭირე — ორივე ბორბალი დატრიალდება"><span class="hero-wheel-disc" aria-hidden="true"></span><span class="hero-wheel-hint" aria-hidden="true">დააჭირე</span></button>`);
+      <button type="button" class="hero-wheel-control hero-wheel-rear" aria-label="უკანა და წინა ბორბლების დატრიალება" title="დააჭირე — ორივე ბორბალი დატრიალდება"><span class="hero-wheel-viewport" aria-hidden="true"><span class="hero-wheel-disc"></span></span><span class="hero-wheel-hint" aria-hidden="true">დააჭირე</span></button>
+      <button type="button" class="hero-wheel-control hero-wheel-front" aria-label="წინა და უკანა ბორბლების დატრიალება" title="დააჭირე — ორივე ბორბალი დატრიალდება"><span class="hero-wheel-viewport" aria-hidden="true"><span class="hero-wheel-disc"></span></span><span class="hero-wheel-hint" aria-hidden="true">დააჭირე</span></button>`);
 
     let wheelTimer = 0;
     stage.querySelectorAll('.hero-wheel-control').forEach(control => control.addEventListener('click', () => {
@@ -190,6 +191,22 @@
         <a class="neon-category-card" href="#sprays" style="--edge:#ff9a1f"><b>სპრეები და აქსესუარები</b><span>დეტეილინგის სრული ნაკრები</span><i>→</i><svg viewBox="0 0 80 80"><path d="M32 20h21l8 8-12 8H32zM32 28H18v8h14M39 36v9l-6 7v15h25V52l-6-7v-9"/></svg></a>
       </div>`;
     serviceStrip.insertAdjacentElement('afterend', categories);
+
+    const ambientSections = ['products','about','safety','home-care','sprays','accessories','fragrances'];
+    ambientSections.forEach((id, sectionIndex) => {
+      const section = document.getElementById(id);
+      if (!section || section.querySelector(':scope > .section-foam-atmosphere')) return;
+      const bubbles = Array.from({ length: 22 }, (_, index) => {
+        const x = 3 + ((index * 19 + sectionIndex * 11) % 94);
+        const size = 5 + ((index * 7 + sectionIndex * 3) % 22);
+        const drift = -28 + ((index * 13) % 57);
+        const duration = 8 + (index % 7) * 1.15;
+        const delay = -((index * 1.31 + sectionIndex) % 11);
+        return `<i style="--bubble-x:${x}%;--bubble-size:${size}px;--bubble-drift:${drift}px;--bubble-time:${duration}s;--bubble-delay:${delay}s"></i>`;
+      }).join('');
+      section.insertAdjacentHTML('afterbegin', `<div class="section-foam-atmosphere" aria-hidden="true"><span class="section-water-ring section-water-ring-a"></span><span class="section-water-ring section-water-ring-b"></span>${bubbles}</div>`);
+      section.classList.add('section-with-foam-atmosphere');
+    });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
   else init();
