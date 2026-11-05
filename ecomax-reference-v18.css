@@ -1,0 +1,388 @@
+/* ECOMAX V18 — faithful functional rebuild of the approved reference mockup.
+   Layout and graphic system only. Product data, checkout and authentication unchanged. */
+:root{
+  --ref-bg:#080f16;
+  --ref-card:#101b24;
+  --ref-line:rgba(158,201,216,.25);
+  --ref-orange:#ff7822;
+  --ref-orange2:#ff9b44;
+  --ref-cyan:#51d7e6;
+  --ref-ink:#f7faff;
+  --ref-muted:#a7bbc7;
+}
+html,body{overflow-x:clip !important;max-width:100% !important}
+body{
+  color:var(--ref-ink) !important;
+  background:#09121a !important;
+  background-image:linear-gradient(160deg,#09111a,#080f15 45%,#0a141d 80%) !important;
+}
+.header{background:rgba(8,15,22,.97) !important;box-shadow:none !important;border-color:#31475377 !important}
+.header .nav{
+  width:100% !important;max-width:1600px !important;
+  min-height:77px !important;gap:15px !important;
+  padding:9px clamp(15px,3vw,50px) !important;
+}
+.header .links a{
+  color:#e7edf0 !important;
+  background:transparent !important;
+  border:0 !important;box-shadow:none !important;
+  text-shadow:none !important;font-weight:700 !important;font-size:12px !important;
+}
+.header .links a:hover{color:var(--ref-orange2) !important}
+.header .logo{filter:none !important}
+.neon-header-search{
+  background:#101c26 !important;
+  border:1px solid #53657380 !important;
+  box-shadow:none !important;border-radius:12px !important;
+}
+.header .cart-button,.header #cartButton{
+  background:linear-gradient(125deg,#fa8a30,#eb641c) !important;
+  box-shadow:none !important;border-radius:10px !important;
+}
+.hero{
+  position:relative !important;
+  width:100% !important;max-width:1600px !important;
+  height:clamp(475px,38vw,585px) !important;min-height:475px !important;
+  margin:0 auto !important;overflow:hidden !important;
+  border:0 !important;border-bottom:1px solid #5c92a355 !important;
+  background:#08111a !important;
+}
+.hero>.hero-visual{
+  position:absolute !important;inset:0 !important;
+  z-index:0 !important;width:100% !important;height:100% !important;
+  min-height:0 !important;border:0 !important;border-radius:0 !important;
+  overflow:hidden !important;box-shadow:none !important;
+}
+.hero>.hero-visual>.neon-hero-stage{
+  inset:0 !important;
+  background-image:url('assets/ecomax-foam-hero.webp') !important;
+  background-size:cover !important;
+  background-position:54% 50% !important;
+  background-repeat:no-repeat !important;
+  transform:none !important;animation:none !important;
+}
+.hero>.hero-visual>.neon-hero-stage::before,
+.hero>.hero-visual>.neon-hero-stage::after,
+.hero>.hero-visual::after{display:none !important;content:none !important}
+.hero>.hero-visual::before{
+  display:block !important;content:"" !important;position:absolute !important;
+  z-index:4 !important;inset:0 !important;pointer-events:none !important;
+  background:linear-gradient(90deg,#071019 0%,rgba(7,16,25,.99) 17%,
+    rgba(7,16,25,.81) 30%,rgba(7,16,25,.24) 44%,transparent 60%),
+    linear-gradient(0deg,rgba(2,9,15,.2),transparent 25%) !important;
+}
+.hero>.hero-copy{
+  position:relative !important;z-index:8 !important;
+  display:flex !important;flex-direction:column !important;
+  justify-content:center !important;align-items:flex-start !important;
+  width:min(52%,730px) !important;max-width:none !important;
+  height:100% !important;
+  padding:30px 8px 35px clamp(22px,4.5vw,78px) !important;
+  background:none !important;
+}
+.hero .eyebrow{
+  font:800 10px/1.5 "Noto Sans Georgian",Arial,sans-serif !important;
+  color:#bed5dc !important;letter-spacing:2px !important;
+  margin-bottom:20px !important;
+}
+.hero h1{
+  margin:0 0 15px !important;max-width:650px !important;
+  color:#f5f8fb !important;-webkit-text-fill-color:#f5f8fb !important;
+  font-size:clamp(39px,3.9vw,69px) !important;
+  line-height:1.07 !important;
+  font-style:italic !important;font-weight:900 !important;
+  letter-spacing:-1.8px !important;
+  text-wrap:balance !important;
+  text-shadow:0 4px 12px #0007 !important;
+}
+.hero h1::before{display:none !important;content:none !important}
+.hero h1 span{
+  color:#ff8128 !important;-webkit-text-fill-color:#ff8128 !important;
+  text-shadow:0 3px 14px rgba(227,105,22,.18) !important;
+}
+.hero .hero-description{
+  max-width:460px !important;color:#d7e1e6 !important;
+  font-size:clamp(12px,1vw,14px) !important;
+  line-height:1.62 !important;letter-spacing:0 !important;
+  text-shadow:0 2px 6px #0008 !important;
+}
+.hero .hero-actions{
+  display:flex !important;flex-wrap:wrap !important;
+  gap:12px !important;margin-top:23px !important;
+}
+.hero .hero-actions a{
+  min-height:49px !important;min-width:0 !important;
+  padding:13px 22px !important;border-radius:11px !important;
+  font-weight:800 !important;font-size:13px !important;
+}
+.hero .hero-actions .primary{
+  background:linear-gradient(115deg,#ff993b,#f46817) !important;
+  border:1px solid #ffb15c !important;
+  box-shadow:0 7px 22px #ef6c1d3a !important;
+  color:#fff !important;-webkit-text-fill-color:#fff !important;
+}
+.hero .hero-actions .secondary{
+  display:inline-flex !important;background:#071823c9 !important;
+  color:#edfaff !important;border:1px solid #74dfe9 !important;
+  box-shadow:none !important;
+}
+.hero .metrics{display:none !important}
+.hero .hero-halo,.hero .energy-ring,.hero .float-card,
+.hero .neon-car-ground,.hero .neon-car-rig,.hero .neon-car-svg,
+.hero .neon-product-rack,.hero .neon-hero-note,.hero .hero-photo-motion,
+.hero .ecmx14-effects,.hero .ecmx15-light-layer,.hero .hero-wheel-control{
+  display:none !important;
+}
+.neon-service-strip{
+  display:grid !important;grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  max-width:1600px !important;
+  padding:0 clamp(10px,2.5vw,43px) !important;
+  background:#111b23 !important;
+  border-top:1px solid var(--ref-line) !important;
+  border-bottom:1px solid var(--ref-line) !important;
+}
+.neon-service{
+  min-height:82px !important;
+  display:flex !important;align-items:center !important;gap:15px !important;
+  padding:13px 18px !important;background:transparent !important;
+  border:0 !important;border-right:1px solid rgba(179,217,227,.2) !important;
+}
+.neon-service:last-child{border-right:0 !important}
+.neon-service svg{width:33px !important;height:33px !important;stroke:var(--ref-orange) !important;filter:none !important}
+.neon-service strong{color:#f4f6f7 !important;font-size:12px !important;line-height:1.4 !important}
+.neon-service span{color:#9db2be !important;font-size:10px !important}
+.neon-category-section{
+  max-width:1510px !important;margin:0 auto !important;
+  padding:44px clamp(16px,2.6vw,40px) 30px !important;
+  background:transparent !important;
+}
+.neon-category-head{margin-bottom:21px !important;align-items:flex-end !important}
+.neon-category-head small{
+  display:block !important;color:#9dc4cd !important;
+  letter-spacing:2px !important;font-size:10px !important;
+}
+.neon-category-head h2{
+  color:#f7f9fa !important;
+  font-size:clamp(27px,2.4vw,40px) !important;
+  letter-spacing:-.5px !important;
+}
+.neon-category-head a{color:#ff962c !important;font-weight:800 !important}
+.neon-category-grid{
+  display:grid !important;grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:12px !important;
+}
+.neon-category-card{
+  position:relative !important;min-height:185px !important;
+  border:1px solid rgba(166,207,222,.27) !important;
+  border-radius:12px !important;
+  display:flex !important;flex-direction:column !important;
+  justify-content:flex-end !important;align-items:flex-start !important;
+  padding:15px !important;
+  overflow:hidden !important;
+  box-shadow:inset 0 -70px 95px rgba(0,0,0,.5) !important;
+  background-image:linear-gradient(180deg,rgba(5,11,16,.03),rgba(2,9,15,.96) 92%),url('assets/ecomax-foam-hero.webp') !important;
+  background-size:cover,auto 280px !important;
+  background-position:center,var(--photo-pos,65%) center !important;
+  transition:transform .2s,border-color .2s !important;
+}
+.neon-category-card:nth-child(1){--photo-pos:71%}
+.neon-category-card:nth-child(2){--photo-pos:56%}
+.neon-category-card:nth-child(3){--photo-pos:39%}
+.neon-category-card:nth-child(4){--photo-pos:87%}
+.neon-category-card:nth-child(5){--photo-pos:64%}
+.neon-category-card:hover{transform:translateY(-3px) !important;border-color:#ff8b3e !important}
+.neon-category-card b{font-size:14px !important;line-height:1.45 !important;color:#fff !important}
+.neon-category-card span{font-size:10px !important;color:#b4c7ce !important}
+.neon-category-card i{color:#ff9535 !important}
+.neon-category-card svg{opacity:.15 !important}
+#products.ecmx16-unified{
+  max-width:1510px !important;width:100% !important;
+  margin:0 auto 35px !important;
+  padding:25px clamp(16px,2.6vw,40px) 35px !important;
+  background:transparent !important;border:0 !important;box-shadow:none !important;
+}
+#products.ecmx16-unified .section-head{
+  border:0 !important;display:flex !important;
+  align-items:flex-end !important;gap:15px !important;
+  margin:0 0 18px !important;padding:0 !important;
+}
+#products.ecmx16-unified .section-head h2{
+  color:#fff !important;font-size:clamp(28px,2.7vw,42px) !important;
+}
+#products.ecmx16-unified .ecmx18-shop-layout{
+  display:grid !important;grid-template-columns:250px minmax(0,1fr) !important;
+  gap:14px !important;align-items:start !important;
+}
+#products.ecmx16-unified .ecmx18-sidebar{
+  position:relative;z-index:5;
+  min-width:0;padding:15px !important;
+  background:#101c26 !important;
+  border:1px solid rgba(157,196,214,.28) !important;
+  border-radius:13px !important;
+  box-shadow:none !important;
+}
+#products.ecmx16-unified .ecmx18-sidebar h3{
+  color:#e9f1f4;font-size:15px;margin:0 0 12px;letter-spacing:.2px;
+}
+#products.ecmx16-unified .tools{
+  display:flex !important;flex-direction:column !important;
+  width:100% !important;max-width:none !important;
+  gap:11px !important;margin:0 0 13px !important;padding:0 !important;
+  background:none !important;border:0 !important;border-radius:0 !important;
+}
+#products.ecmx16-unified .tools .search,
+#products.ecmx16-unified .tools .filter{
+  flex:initial !important;width:100% !important;min-width:0 !important;max-width:none !important;
+  background:#0a141b !important;border:1px solid rgba(173,210,225,.32) !important;
+  padding:12px 11px !important;color:#fff !important;
+  border-radius:9px !important;font-size:12px !important;
+}
+#products.ecmx16-unified .ecmx16-categories{
+  display:flex !important;flex-direction:column !important;gap:6px !important;
+  max-height:none !important;overflow:visible !important;
+  margin:0 !important;padding:0 !important;
+}
+#products.ecmx16-unified .ecmx16-categories button{
+  width:100% !important;min-height:38px !important;
+  background:#0a1821 !important;border:1px solid rgba(150,190,208,.11) !important;
+  border-radius:7px !important;
+  color:#c5d6dd !important;text-align:left !important;
+  padding:8px 11px !important;
+  font-size:12px !important;font-weight:700 !important;white-space:normal !important;
+}
+#products.ecmx16-unified .ecmx16-categories button[aria-pressed="true"]{
+  background:rgba(255,124,38,.13) !important;border-color:#ff8c3e !important;
+  color:#ffaf77 !important;
+}
+#products.ecmx16-unified .ecmx16-count{
+  font-size:11px !important;margin:11px 0 0 !important;color:#9fb6bf !important;
+}
+#products.ecmx16-unified .ecmx18-product-area{min-width:0}
+#products.ecmx16-unified .ecmx18-feature-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  min-height:45px;margin:0 0 12px;gap:10px;
+  border-bottom:1px solid rgba(156,194,210,.19);
+}
+#products.ecmx16-unified .ecmx18-feature-bar strong{
+  color:#e7f1f4;font-size:13px !important;font-weight:800;
+}
+#products.ecmx16-unified .ecmx18-feature-bar span{color:#ff983e;font-size:11px}
+#products.ecmx16-unified #productsGrid{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:13px !important;margin:0 !important;padding:0 !important;
+  align-items:stretch !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card{
+  width:100% !important;min-width:0 !important;
+  padding:11px !important;border:1px solid rgba(159,207,224,.29) !important;
+  border-radius:13px !important;
+  background:linear-gradient(160deg,#15252f,#0b1720 70%) !important;
+  box-shadow:none !important;
+  animation:none !important;transform:none !important;
+  contain:none !important;content-visibility:visible !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card::before,
+#products.ecmx16-unified #productsGrid>.product-card::after,
+#products.ecmx16-unified #productsGrid>.product-card .product-top::before,
+#products.ecmx16-unified #productsGrid>.product-card .product-top::after{
+  display:none !important;animation:none !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card .product-visual{
+  height:220px !important;min-height:220px !important;
+  border-radius:10px !important;border:0 !important;
+  background:radial-gradient(ellipse at center,rgba(41,110,139,.2),transparent 68%),#0b1923 !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card h3{
+  color:#f6f8f9 !important;font-size:13px !important;line-height:1.4 !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card .product-description{font-size:10px !important;color:#adc0c8 !important}
+#products.ecmx16-unified #productsGrid>.product-card .add-cart{
+  min-height:40px !important;border-radius:8px !important;
+  background:linear-gradient(120deg,#fa8c2c,#f36b19) !important;
+  color:#fff !important;text-shadow:none !important;
+}
+#products.ecmx16-unified #productsGrid>.product-card .add-cart:hover{background:#ff9e47 !important}
+#products.ecmx16-unified #productsGrid>.product-card .selected-price{color:#fff !important;font-size:18px !important}
+#products.ecmx16-unified .ecmx16-bubble-field{opacity:.16 !important;pointer-events:none}
+.ecmx18-results{
+  display:grid;grid-template-columns:1fr minmax(300px,1.15fr) 1fr;gap:25px;
+  max-width:1480px;margin:12px auto 30px;padding:20px 35px;
+  border-top:1px solid rgba(143,196,214,.21);
+  border-bottom:1px solid rgba(143,196,214,.21);
+  align-items:center;
+}
+.ecmx18-results .ecmx18-label{
+  display:block;letter-spacing:1.8px;text-transform:uppercase;
+  color:#8dbbc9;font-size:10px;margin-bottom:9px;
+}
+.ecmx18-results h2{
+  color:#fff;font-size:clamp(24px,2.5vw,40px);line-height:1.15;margin:0 0 13px;
+}
+.ecmx18-results p{color:#a1b8c4;font-size:12px;line-height:1.7;margin:0 0 13px}
+.ecmx18-results .ecmx18-results-image{
+  width:100%;height:220px;border-radius:14px;border:1px solid rgba(141,197,216,.25);
+  overflow:hidden;background:url('assets/ecomax-foam-hero.webp') 80% 65%/cover no-repeat;
+}
+.ecmx18-results .ecmx18-benefits{display:grid;gap:18px}
+.ecmx18-results .ecmx18-benefits p{
+  margin:0;display:flex;align-items:flex-start;gap:12px;
+  color:#c2d6de;font-weight:700;
+}
+.ecmx18-results .ecmx18-benefits b{
+  color:#ff8a24;font-size:22px;line-height:1;min-width:20px;
+}
+.ecmx18-results .ecmx18-results-cta{
+  display:inline-block;padding:10px 18px;border-radius:10px;
+  background:#f78129;color:#fff;font-size:12px;font-weight:800;text-decoration:none;
+}
+.site-foam-rails,.section-foam-atmosphere,.section::before{display:none !important}
+@media(max-width:1450px){
+  #products.ecmx16-unified #productsGrid{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
+}
+@media(max-width:1100px){
+  .neon-category-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
+  #products.ecmx16-unified .ecmx18-shop-layout{grid-template-columns:205px minmax(0,1fr) !important}
+  #products.ecmx16-unified #productsGrid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  .ecmx18-results{grid-template-columns:1fr 1fr !important}
+  .ecmx18-results .ecmx18-benefits{grid-column:1/-1;grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:760px){
+  .hero{height:665px !important;min-height:665px !important}
+  .hero>.hero-copy{
+    width:100% !important;max-width:none !important;
+    justify-content:flex-start !important;
+    padding:32px 18px 20px !important;
+    background:linear-gradient(180deg,rgba(4,12,19,.95),rgba(4,12,19,.77) 47%,transparent 75%) !important;
+  }
+  .hero h1{font-size:clamp(34px,9vw,48px) !important;max-width:520px !important}
+  .hero .hero-description{font-size:12px !important;max-width:400px !important}
+  .hero>.hero-visual>.neon-hero-stage{
+    background-size:auto 65% !important;background-position:77% 100% !important;
+  }
+  .hero>.hero-visual::before{
+    background:linear-gradient(180deg,rgba(6,13,21,.94),rgba(6,13,21,.6) 40%,transparent 75%) !important;
+  }
+  .neon-service-strip{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  .neon-service{border-bottom:1px solid rgba(151,189,200,.17) !important;padding:12px 10px !important}
+  .neon-category-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  .neon-category-card{min-height:145px !important}
+  #products.ecmx16-unified .ecmx18-shop-layout{grid-template-columns:minmax(0,1fr) !important}
+  #products.ecmx16-unified .ecmx18-sidebar{padding:11px !important}
+  #products.ecmx16-unified .ecmx16-categories{flex-direction:row !important;flex-wrap:nowrap;overflow-x:auto !important;scrollbar-width:thin}
+  #products.ecmx16-unified .ecmx16-categories button{flex:0 0 auto;width:auto !important;white-space:nowrap !important}
+  #products.ecmx16-unified .tools{flex-direction:row !important;flex-wrap:wrap !important}
+  #products.ecmx16-unified .tools .search,#products.ecmx16-unified .tools .filter{flex:1 1 150px !important}
+  .ecmx18-results{grid-template-columns:1fr !important;padding:20px 18px}
+  .ecmx18-results .ecmx18-benefits{grid-column:auto;grid-template-columns:1fr}
+}
+@media(max-width:430px){
+  .hero{height:625px !important;min-height:625px !important}
+  .hero h1{font-size:clamp(30px,8.6vw,39px) !important}
+  .hero .hero-actions a{font-size:11px !important;padding:12px 14px !important}
+  .neon-category-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  .neon-category-card{min-height:125px !important;padding:10px !important}
+  #products.ecmx16-unified #productsGrid{grid-template-columns:minmax(0,1fr) !important}
+}
+@media(prefers-reduced-motion:reduce){
+  .neon-category-card,.product-card,.hero-actions a{animation:none !important;transition:none !important}
+}
