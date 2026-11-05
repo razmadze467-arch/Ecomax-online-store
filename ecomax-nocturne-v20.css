@@ -1,0 +1,334 @@
+/* ECOMAX NOCTURNE V20 — dimensional neo-luxury, 2026.
+   Replaces V19's visual language without rebuilding products/commerce.
+   GPU-friendly ribbons, layered glass, static wheels, and reduced-motion support. */
+:root{
+ --n20-bg:#050911;--n20-panel:#0c1723;--n20-panel2:#101e2b;
+ --n20-text:#f2f8fc;--n20-muted:#a2bdc9;
+ --n20-cyan:#42e3f4;--n20-coral:#ff8742;--n20-violet:#8a76ff;
+ --n20-line:rgba(113,210,236,.24);
+}
+body.ecomax-origins-v19{
+ color:var(--n20-text) !important;
+ background:radial-gradient(ellipse 80% 36% at 100% 2%,rgba(30,89,139,.18),transparent 78%),
+ radial-gradient(ellipse 70% 40% at 3% 44%,rgba(71,37,121,.13),transparent 75%),
+ linear-gradient(180deg,#050a14,#09121d 42%,#060b15) !important;
+}
+body.ecomax-origins-v19::before{
+ content:"" !important;display:block !important;position:fixed;inset:0;
+ pointer-events:none;z-index:-1;
+ background-image:linear-gradient(rgba(97,184,217,.025) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(97,184,217,.025) 1px,transparent 1px) !important;
+ background-size:52px 52px !important;mask-image:linear-gradient(to bottom,transparent,#000 25%,transparent 85%);
+}
+body.ecomax-origins-v19 .header{
+ background:rgba(5,12,22,.94) !important;
+ border-bottom:1px solid rgba(99,214,236,.26) !important;
+ backdrop-filter:blur(16px) !important;-webkit-backdrop-filter:blur(16px) !important;
+ box-shadow:0 8px 30px rgba(0,0,0,.24) !important;
+}
+body.ecomax-origins-v19 .header .logo{
+ color:#f3fbfd !important;-webkit-text-fill-color:#f3fbfd !important;
+ text-shadow:0 0 17px rgba(78,209,244,.25) !important;
+}
+body.ecomax-origins-v19 .header .logo span{
+ color:#ff8b40 !important;-webkit-text-fill-color:#ff8b40 !important;
+}
+body.ecomax-origins-v19 .header .logo small{color:#9ebac8 !important}
+body.ecomax-origins-v19 .header .links a,
+body.ecomax-origins-v19 .header .links button{
+ color:#d0e1e9 !important;-webkit-text-fill-color:#d0e1e9 !important;
+}
+body.ecomax-origins-v19 .header .links a:hover{
+ color:#fff !important;-webkit-text-fill-color:#fff !important;
+ background:rgba(55,170,208,.13) !important;
+}
+body.ecomax-origins-v19 .header .links .ecomax-line-link{
+ background:rgba(12,63,82,.46) !important;
+ border:1px solid rgba(79,218,241,.5) !important;
+ color:#dffaff !important;-webkit-text-fill-color:#dffaff !important;
+}
+body.ecomax-origins-v19 .header .cart-button,
+body.ecomax-origins-v19 .header #cartButton{
+ background:linear-gradient(125deg,#ff9b4e,#f46a28) !important;
+ color:#15202a !important;-webkit-text-fill-color:#15202a !important;
+ box-shadow:0 6px 23px rgba(251,115,52,.26) !important;
+}
+body.ecomax-origins-v19 .header #cartCount{background:#fff !important;color:#17212c !important}
+body.ecomax-origins-v19 #mobileNav{background:#0c1b29 !important;border-color:#2d6478 !important}
+body.ecomax-origins-v19 #mobileNav a{color:#e5f3f9 !important;border-color:#254454 !important}
+body.ecomax-origins-v19 .hero{
+ position:relative !important;
+ background:#07121f !important;
+ border:1px solid rgba(104,218,242,.3) !important;
+ border-radius:28px !important;
+ box-shadow:0 25px 75px rgba(0,0,0,.35),0 0 65px rgba(31,155,205,.1),inset 0 1px rgba(255,255,255,.1) !important;
+ isolation:isolate !important;
+}
+body.ecomax-origins-v19 .hero>.hero-copy{
+ background:linear-gradient(135deg,#091522 8%,#0d1e2e 73%,#0a1c2d) !important;
+ overflow:hidden !important;
+}
+body.ecomax-origins-v19 .hero>.hero-copy::after{
+ height:2px !important;background:linear-gradient(90deg,var(--n20-cyan),var(--n20-violet),transparent) !important;
+ box-shadow:0 0 19px var(--n20-cyan) !important;
+}
+body.ecomax-origins-v19 .hero .eyebrow{color:#84e9f2 !important;letter-spacing:2.2px !important}
+body.ecomax-origins-v19 .hero h1{
+ color:#f8fdff !important;-webkit-text-fill-color:#f8fdff !important;
+ font-size:clamp(39px,3.65vw,64px) !important;
+ text-shadow:0 4px 23px rgba(24,177,210,.12) !important;
+}
+body.ecomax-origins-v19 .hero h1 span{
+ color:#ff9450 !important;-webkit-text-fill-color:#ff9450 !important;
+ text-shadow:0 0 28px rgba(243,119,55,.22) !important;
+}
+body.ecomax-origins-v19 .hero .hero-description{color:#b9d0dd !important}
+body.ecomax-origins-v19 .hero .hero-actions .primary{
+ background:linear-gradient(115deg,#ffab64,#ff7938) !important;
+ color:#152633 !important;-webkit-text-fill-color:#152633 !important;
+ box-shadow:0 9px 27px rgba(249,115,48,.3) !important;
+}
+body.ecomax-origins-v19 .hero .hero-actions .secondary{
+ background:rgba(14,48,67,.55) !important;
+ border-color:rgba(91,218,237,.7) !important;
+ box-shadow:inset 0 1px rgba(255,255,255,.07) !important;
+}
+body.ecomax-origins-v19 .hero>.hero-visual{
+ background:#07131d !important;overflow:hidden !important;isolation:isolate !important;
+}
+body.ecomax-origins-v19 .hero>.hero-visual>.neon-hero-stage{
+ background-position:57% 50% !important;
+ filter:contrast(1.06) saturate(1.11) !important;
+}
+body.ecomax-origins-v19 .n20-hero-atmosphere{
+ position:absolute;z-index:3;inset:0;overflow:hidden;pointer-events:none;
+ transform:translateZ(0);
+}
+body.ecomax-origins-v19 .n20-hero-atmosphere .n20-arc{
+ position:absolute;border-radius:50%;
+ border:1px solid rgba(105,224,252,.42);
+ box-shadow:inset 0 0 23px rgba(79,197,235,.12),0 0 30px rgba(49,199,241,.15);
+ transform:perspective(700px) rotateX(65deg) rotateZ(-24deg);
+ animation:n20ArcFloat 8s ease-in-out infinite;
+}
+body.ecomax-origins-v19 .n20-hero-atmosphere .n20-arc.a{
+ width:84%;height:58%;left:8%;top:23%;
+ border-width:2px;border-color:rgba(87,231,246,.42);
+}
+body.ecomax-origins-v19 .n20-hero-atmosphere .n20-arc.b{
+ width:60%;height:48%;left:34%;top:28%;
+ border-color:rgba(144,112,255,.36);
+ animation-delay:-3s;
+}
+body.ecomax-origins-v19 .n20-hero-atmosphere .n20-trace{
+ position:absolute;left:8%;bottom:5%;width:86%;height:2px;
+ background:linear-gradient(90deg,transparent,rgba(93,229,248,.25),rgba(110,228,252,.85),transparent);
+ box-shadow:0 0 14px rgba(55,209,247,.6);
+ transform:skewY(-3deg);opacity:.7;
+}
+body.ecomax-origins-v19 .n20-hero-atmosphere .n20-haze{
+ position:absolute;width:44%;height:23%;right:0;bottom:3%;
+ background:radial-gradient(ellipse,rgba(55,166,225,.21),transparent 70%);
+ filter:blur(20px);mix-blend-mode:screen;
+ animation:n20Haze 6s ease-in-out infinite;
+}
+@keyframes n20ArcFloat{
+ 0%,100%{transform:perspective(700px) rotateX(65deg) rotateZ(-24deg) translateY(0);opacity:.5}
+ 50%{transform:perspective(700px) rotateX(64deg) rotateZ(-23deg) translateY(-9px);opacity:.8}
+}
+@keyframes n20Haze{0%,100%{opacity:.48}50%{opacity:.9}}
+body.ecomax-origins-v19 .n20-hero-graphic{
+ position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;opacity:.7;
+}
+body.ecomax-origins-v19 .n20-hero-graphic::before{
+ content:"";position:absolute;width:70%;height:40%;left:-31%;top:2%;
+ border:1px solid rgba(105,216,236,.2);border-radius:50%;
+ transform:rotate(-26deg);box-shadow:0 0 40px rgba(39,190,229,.08);
+}
+body.ecomax-origins-v19 .n20-hero-graphic::after{
+ content:"";position:absolute;right:-20%;top:-35%;width:77%;height:83%;
+ border:1px solid rgba(135,101,251,.2);border-radius:50%;
+ transform:rotate(35deg);box-shadow:inset 0 0 35px rgba(128,74,241,.06);
+}
+body.ecomax-origins-v19 .neon-service-strip{
+ background:rgba(10,24,35,.8) !important;
+ border:1px solid rgba(94,197,220,.2) !important;border-top:0 !important;
+ border-radius:0 0 21px 21px !important;
+}
+body.ecomax-origins-v19 .neon-service{
+ border-right:1px solid rgba(112,189,204,.18) !important;
+}
+body.ecomax-origins-v19 .neon-service strong{color:#e5f4fa !important}
+body.ecomax-origins-v19 .neon-service span{color:#8daebb !important}
+body.ecomax-origins-v19 .neon-service svg{stroke:var(--n20-cyan) !important}
+body.ecomax-origins-v19 .neon-category-head h2,
+body.ecomax-origins-v19 #products.ecmx16-unified .section-head h2{
+ color:#f0f9fb !important;
+ text-shadow:none !important;
+}
+body.ecomax-origins-v19 .neon-category-head small{color:#76bacd !important}
+body.ecomax-origins-v19 .neon-category-card{
+ border:1px solid rgba(108,192,216,.24) !important;
+ background-image:linear-gradient(180deg,rgba(6,14,24,.07),rgba(5,14,25,.92)),
+ url('assets/ecomax-foam-hero.webp') !important;
+ border-radius:20px !important;
+ box-shadow:0 12px 30px rgba(0,0,0,.19),inset 0 1px rgba(255,255,255,.06) !important;
+ transform:perspective(900px) rotateX(0deg) translateY(0) !important;
+ transition:transform .32s ease,border-color .32s ease,box-shadow .32s ease !important;
+}
+body.ecomax-origins-v19 .neon-category-card:hover{
+ transform:perspective(900px) rotateX(2deg) translateY(-7px) !important;
+ border-color:rgba(97,224,248,.66) !important;
+ box-shadow:0 22px 34px rgba(0,0,0,.28),0 0 25px rgba(34,180,220,.13) !important;
+}
+body.ecomax-origins-v19 .neon-category-card b{color:#f4fbfd !important}
+body.ecomax-origins-v19 .neon-category-card span{color:#abcbd7 !important}
+body.ecomax-origins-v19 #products.ecmx16-unified .section-head{
+ border-bottom:1px solid rgba(115,199,221,.2) !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified .section-head h2 span{
+ color:var(--n20-cyan) !important;-webkit-text-fill-color:var(--n20-cyan) !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified .section-head p{color:#a5bdcb !important}
+body.ecomax-origins-v19 #products.ecmx16-unified .ecmx19-filters{
+ background:rgba(13,28,41,.85) !important;
+ border:1px solid rgba(111,196,224,.27) !important;
+ box-shadow:0 9px 32px rgba(0,0,0,.16),inset 0 1px rgba(255,255,255,.05) !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified .tools input{
+ background:#091724 !important;color:#ebf8fd !important;
+ -webkit-text-fill-color:#ebf8fd !important;
+ border-color:rgba(128,195,218,.26) !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified .ecmx16-categories button{
+ color:#abc6d4 !important;border-radius:9px !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified .ecmx16-categories button[aria-pressed="true"]{
+ background:linear-gradient(130deg,#197b92,#174f74) !important;
+ color:#f1fcff !important;
+ border-color:rgba(106,231,247,.64) !important;
+ box-shadow:0 0 14px rgba(40,179,224,.23) !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified .ecmx16-count{color:#91b7c6 !important}
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card{
+ background:linear-gradient(153deg,#122534,#0b1726 73%) !important;
+ border:1px solid rgba(123,198,222,.25) !important;
+ border-radius:20px !important;
+ box-shadow:0 17px 35px rgba(0,0,0,.2),inset 0 1px rgba(255,255,255,.04) !important;
+ transform:translateY(0) !important;
+ transition:transform .27s ease,box-shadow .27s ease,border-color .27s ease !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card:hover{
+ transform:translateY(-6px) !important;
+ border-color:rgba(91,222,244,.64) !important;
+ box-shadow:0 25px 44px rgba(0,0,0,.32),0 0 27px rgba(34,170,229,.13) !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card .product-visual{
+ background:radial-gradient(ellipse at center,rgba(52,146,177,.18),transparent 68%),#091521 !important;
+ border:1px solid rgba(119,203,224,.18) !important;
+ border-radius:14px !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card .product-top,
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card .product-top span{
+ color:#a0c6d3 !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card .product-number{
+ background:#142a37 !important;color:#77ddeb !important;
+ border:1px solid rgba(116,211,228,.34) !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card h3{
+ color:#eefbff !important;-webkit-text-fill-color:#eefbff !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card p,
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card .product-description{
+ color:#9cb8c8 !important;-webkit-text-fill-color:#9cb8c8 !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card .home-purpose{
+ background:#112b37 !important;border-color:rgba(112,190,209,.2) !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card .home-purpose *{
+ color:#bbd9e1 !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card .product-info,
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card .buy-area{
+ color:#c3dbe5 !important;border-color:rgba(122,202,220,.2) !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card .product-info *{
+ color:#c3dbe5 !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card .selected-price,
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card .price-row strong{
+ color:#f8fcff !important;-webkit-text-fill-color:#f8fcff !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card .volume-select{
+ color:#e1f4f8 !important;background:#0d2533 !important;
+ border-color:rgba(110,194,218,.34) !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card .add-cart{
+ background:linear-gradient(125deg,#ff9d55,#f37733) !important;
+ color:#182530 !important;-webkit-text-fill-color:#182530 !important;
+ border:0 !important;
+ box-shadow:0 7px 20px rgba(241,112,47,.18) !important;
+}
+body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card .add-cart:hover{
+ background:linear-gradient(125deg,#ffb879,#fa844a) !important;
+}
+body.ecomax-origins-v19 .ecmx19-statement{
+ background:linear-gradient(135deg,#13313d,#15213c) !important;
+ border:1px solid rgba(91,218,240,.25) !important;
+ box-shadow:0 16px 45px rgba(0,0,0,.22) !important;
+}
+body.ecomax-origins-v19 .ecmx19-statement h2{color:#f0fbff !important}
+body.ecomax-origins-v19 .ecmx19-statement p{color:#b0cad6 !important}
+body.ecomax-origins-v19 .ecmx19-statement a{
+ background:#ff9654 !important;color:#1d2930 !important;
+}
+body.ecomax-origins-v19 .section:not(#products) .section-head h2,
+body.ecomax-origins-v19 .section:not(#products) .home-chemistry-heading h2{
+ color:#eefaff !important;
+}
+body.ecomax-origins-v19 #about .info-card,
+body.ecomax-origins-v19 #safety .info-card{
+ background:#102230 !important;color:#d8ecf4 !important;
+ border-color:rgba(98,196,226,.22) !important;
+}
+body.ecomax-origins-v19 .footer{
+ background:#07131e !important;color:#d1e2ec !important;
+ border-top:1px solid rgba(112,212,233,.2) !important;
+}
+body.ecomax-origins-v19 .n20-floating-line{
+ position:fixed;left:0;right:0;bottom:0;height:1px;
+ background:linear-gradient(90deg,transparent,rgba(52,220,247,.44),transparent);
+ pointer-events:none;z-index:0;opacity:.35;
+}
+@media(max-width:990px){
+ body.ecomax-origins-v19 .header .menu{color:#eaf9fd !important}
+}
+@media(max-width:720px){
+ body.ecomax-origins-v19 .hero{
+   border-radius:20px !important;
+ }
+ body.ecomax-origins-v19 .hero>.hero-copy{
+   padding:30px 24px !important;
+ }
+ body.ecomax-origins-v19 .hero h1{font-size:clamp(31px,8vw,46px) !important}
+ body.ecomax-origins-v19 .hero>.hero-visual{
+   height:260px !important;min-height:260px !important;flex-basis:260px !important;
+ }
+ body.ecomax-origins-v19 .n20-hero-atmosphere .n20-arc{opacity:.35 !important}
+ body.ecomax-origins-v19 .neon-service-strip{border-radius:0 0 18px 18px !important}
+ body.ecomax-origins-v19 #products.ecmx16-unified .ecmx19-filters{gap:10px !important}
+}
+@media(max-width:430px){
+ body.ecomax-origins-v19 .hero>.hero-copy{padding:25px 19px !important}
+ body.ecomax-origins-v19 .neon-category-grid{gap:10px !important}
+ body.ecomax-origins-v19 #products.ecmx16-unified #productsGrid>.product-card{padding:11px !important}
+}
+@media(prefers-reduced-motion:reduce){
+ body.ecomax-origins-v19 .n20-hero-atmosphere *,
+ body.ecomax-origins-v19 .n20-hero-graphic *,
+ body.ecomax-origins-v19 .product-card,
+ body.ecomax-origins-v19 .neon-category-card{
+   animation:none !important;transition:none !important;
+ }
+}
