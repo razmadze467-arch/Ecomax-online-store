@@ -464,19 +464,23 @@ body {
   border-bottom: 1px solid #163349;
 }
 .neon-topbar b { color: #ff8a26; font-weight: 800; }
-.header .nav { max-width: 1580px !important; min-height: 88px !important; padding: 12px 28px !important; gap: 24px !important; }
+.header .nav { max-width: 1580px !important; min-height: 88px !important; padding: 12px 28px !important; gap: 16px !important; }
 .header .logo {
-  min-width: 205px; font-size: 38px !important; line-height: .8 !important;
+  flex:0 0 195px !important; min-width:195px; font-size: 38px !important; line-height: .8 !important;
   letter-spacing: 1px !important; -webkit-text-fill-color: initial !important;
   background: none !important; color: #f5fbff !important;
 }
 .header .logo span { -webkit-text-fill-color: #ff7d1d !important; }
 .header .logo small { margin-top: 11px !important; font-size: 6px !important; letter-spacing: 1.4px !important; color: #bdd1da !important; }
-.header .links { justify-content: flex-start !important; gap: 4px !important; }
-.header .links a { padding: 10px 11px !important; font-size: 11px !important; white-space: nowrap; text-shadow: none !important; }
+.header .links { flex:0 0 auto !important; min-width:max-content; justify-content:flex-start !important; gap:3px !important; }
+.header .links a { flex:0 0 auto; padding:10px 9px !important; font-size:10px !important; white-space:nowrap; text-shadow:none !important; }
 .header .links .neon-home-link { border: 1px solid #ff7d1d !important; background: #ff721413 !important; }
+.header #ecomaxLineLink {
+  display:inline-flex; align-items:center; justify-content:center; flex:0 0 112px !important; min-width:112px;
+  overflow:visible; white-space:nowrap;
+}
 .neon-header-search {
-  flex: 1 1 280px; min-width: 180px; max-width: 340px; position: relative;
+  flex:1 1 250px; min-width:210px; max-width:300px; position:relative; z-index:1;
 }
 .neon-header-search input {
   width: 100%; height: 42px; padding: 0 48px 0 16px;
@@ -491,6 +495,8 @@ body {
   background: linear-gradient(135deg,#ff9c30,#f05a0e) !important; color: white;
   box-shadow: 0 0 14px #ff741864 !important; text-shadow: none !important;
 }
+.header .actions { flex:0 0 auto !important; min-width:max-content; }
+.header .cart-button { min-width:124px; justify-content:center; white-space:nowrap; }
 
 .hero {
   display: block !important; max-width: 1580px !important; height: 570px !important; min-height: 570px !important;
@@ -668,15 +674,26 @@ body {
 .neon-category-card svg { opacity: .25; }
 
 @media(max-width: 1180px) {
-  .header .links a:nth-last-child(-n+3) { display: none; }
+  .header .links a:nth-last-child(-n+3) { display:none; }
+  .header #ecomaxLineLink { display:inline-flex !important; }
   .neon-header-search { max-width: 260px; }
   .hero-copy { padding-left: 42px !important; width: 48% !important; }
 }
+@media(max-width: 1450px) and (min-width: 761px) {
+  .header .nav { gap:11px !important; padding-inline:18px !important; }
+  .header .logo { flex-basis:178px !important; min-width:178px; font-size:34px !important; }
+  .header .links a { padding-inline:7px !important; font-size:9px !important; }
+  .header #loginLink,.header #registerLink { display:none !important; }
+  .neon-header-search { min-width:190px; max-width:250px; }
+}
 @media(max-width: 760px) {
   .neon-topbar, .neon-header-search { display: none; }
+  .header .links { display:none !important; }
   .header .nav { min-height: 68px !important; padding: 8px 14px !important; }
-  .header .logo { min-width: 0; font-size: 24px !important; }
+  .header .logo { flex:1 1 auto !important; min-width:0; font-size:24px !important; }
   .header .logo small { font-size: 4px !important; margin-top: 7px !important; }
+  .header .actions { min-width:0; }
+  .header .cart-button { min-width:92px; padding:9px 10px !important; }
   .hero { height: 620px !important; min-height: 620px !important; }
   .hero-copy {
     width: 100% !important; max-width: none !important; justify-content: flex-start;
